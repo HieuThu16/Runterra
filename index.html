@@ -129,6 +129,135 @@
     <script>
       const regionsData = [
         {
+          id: "void",
+          name: "Hư Không",
+          icon: "🕳️",
+          description: `Báo cáo Phân tích và Đề xuất Tướng Hư Không: Khám phá Vùng đất Hư Không và Tương lai của nó\n\nI. Giới thiệu về Vùng đất Hư Không\nA. Bản chất và Đặc điểm của Hư Không\nHư Không không phải là một địa điểm vật lý thông thường mà là một chiều không gian của "không gì cả"...\n\n(ĐÃ RÚT GỌN, bạn có thể dán toàn bộ nội dung báo cáo vào đây nếu muốn đầy đủ, hoặc chỉ giữ phần tóm tắt/giới thiệu chính)\n\nII. Phân tích các Tướng Hư Không hiện có\n(Đã tóm tắt, xem chi tiết trong báo cáo)\n\nIII. Đề xuất 5 Tướng Hư Không mới\n(Chi tiết bên dưới)\n\nIV. Kết luận và Khuyến nghị\n(Đã tóm tắt, xem chi tiết trong báo cáo)`,
+          existingChampions: [
+            {
+              name: "Bel'Veth",
+              role: "Đấu Sĩ",
+              description:
+                "Nữ hoàng Hư Không, sinh ra từ thành phố bị nuốt chửng, muốn tái tạo Runeterra theo hình ảnh méo mó của mình.",
+            },
+            {
+              name: "Kai'Sa",
+              role: "Xạ Thủ",
+              description:
+                "Người sống sót là con người, hòa nhập với lớp vỏ Hư Không sống, chiến đấu chống lại Hư Không nhưng bị coi là quái vật.",
+            },
+            {
+              name: "Kassadin",
+              role: "Sát Thủ",
+              description:
+                "Kẻ du hành, tìm cách trả thù Hư Không vì đã nuốt chửng gia đình mình, sử dụng các tạo tác Hư Không.",
+            },
+            {
+              name: "Cho'Gath",
+              role: "Đỡ Đòn",
+              description:
+                "Khủng bố của Hư Không, sinh vật bản năng nguyên thủy, nuốt chửng để phát triển kích thước và sức mạnh.",
+            },
+            {
+              name: "Kha'Zix",
+              role: "Sát Thủ",
+              description:
+                "Kẻ săn mồi siêu tiến hóa, tiêu thụ con mồi mạnh mẽ nhất để thích nghi và trở nên hoàn hảo hơn.",
+            },
+            {
+              name: "Malzahar",
+              role: "Pháp Sư",
+              description:
+                "Tiên tri, tin rằng Hư Không là sự cứu rỗi của Runeterra, truyền bá ảnh hưởng và triệu hồi Sinh vật Hư Không.",
+            },
+            {
+              name: "Vel'Koz",
+              role: "Pháp Sư",
+              description:
+                "Con Mắt Hư Không, sinh vật Hư Không cổ xưa nhất, tìm kiếm kiến thức bằng cách hủy diệt và phân tích.",
+            },
+            {
+              name: "Rek'Sai",
+              role: "Đấu Sĩ",
+              description:
+                "Kẻ đào hang Hư Không, kẻ săn mồi không ngừng, đào hầm để phục kích và nuốt chửng con mồi.",
+            },
+            {
+              name: "Kog'Maw",
+              role: "Xạ Thủ/Pháp Sư",
+              description:
+                "Miệng của Vực Thẳm, sinh vật tò mò, nuốt chửng để hiểu thế giới, sự ngây thơ nguy hiểm.",
+            },
+          ],
+          newChampions: [
+            {
+              name: "Xylos, Kẻ Gặm Nhấm Ký Ức",
+              role: "Hỗ Trợ/Pháp Sư",
+              description:
+                "Ký sinh trùng tâm linh từ Biển Oải Hương, tiêu thụ ký ức và bản sắc, để lại sự trống rỗng cho Bel'Veth tái tạo.",
+              skills: [
+                "Nội tại: Sương Mù Lãng Quên - Gây sát thương làm giảm tầm nhìn, hồi máu hoặc sát thương của kẻ địch.",
+                "Q: Lời Thì Thầm Hư Vô - Gây sát thương và khiến mục tiêu bị lú lẫn.",
+                "W: Vùng Đất Quên Lãng - Tạo vùng sương mù Hư Không, giảm tốc và tầm nhìn kẻ địch.",
+                "E: Liên Kết Ký Ức - Liên kết với đồng minh hoặc kẻ địch, hút năng lượng hoặc tăng sức mạnh.",
+                "R: Đại Tiệc Ký Ức - Hút ký ức diện rộng, câm lặng và tước đoạt giáp/kháng phép kẻ địch.",
+              ],
+            },
+            {
+              name: "Aethel, Hồn Ma Bị Bóp Méo",
+              role: "Đỡ Đòn/Đấu Sĩ",
+              description:
+                "Sinh vật nguyên thủy bị Hư Không biến dạng, lai giữa sự sống và hư vô.",
+              skills: [
+                "Nội tại: Vỏ Bọc Biến Dạng - Giảm sát thương và phản lại sát thương phép.",
+                "Q: Chấn Động Hư Vô - Gây sát thương và làm chậm diện rộng.",
+                "W: Tái Tạo Vô Định - Biến thành vật chất Hư Không, bất khả kháng cự và hồi máu.",
+                "E: Vết Nứt Kéo Lê - Kéo kẻ địch về phía mình.",
+                "R: Tiếng Vọng Của Sự Hủy Diệt - Gây hoảng sợ và tạo vùng đất biến dạng.",
+              ],
+            },
+            {
+              name: "Umbra, Kẻ Thao Túng Bóng Tối",
+              role: "Sát Thủ/Đấu Sĩ",
+              description:
+                "Thực thể ý thức từ bóng tối còn sót lại sau khi Bel'Veth tiêu thụ, thao túng bóng tối và nỗi sợ hãi.",
+              skills: [
+                "Nội tại: Lẩn Khuất Hư Vô - Tăng tốc và xuyên giáp khi tàng hình.",
+                "Q: Lưỡi Hái Bóng Đêm - Gây sát thương và lướt tới mục tiêu.",
+                "W: Vực Thẳm Nỗi Sợ - Gây sợ hãi và giảm tầm nhìn.",
+                "E: Lướt Bóng - Lướt qua kẻ địch, tái kích hoạt.",
+                "R: Đêm Tận Thế - Bao phủ khu vực trong bóng tối Hư Không, tăng sức mạnh bản thân.",
+              ],
+            },
+            {
+              name: "Chronos, Kẻ Ăn Mòn Thời Gian",
+              role: "Pháp Sư/Kiểm Soát",
+              description:
+                "Thực thể Hư Không biến dạng từ dòng chảy thời gian, làm suy yếu thời gian của kẻ thù.",
+              skills: [
+                "Nội tại: Dòng Chảy Bất Ổn - Lão hóa kẻ địch khi tích đủ dấu vết.",
+                "Q: Vết Nứt Thời Gian - Làm chậm, gây sát thương và stun ngắn.",
+                "W: Vòng Lặp Vô Tận - Giảm hồi chiêu kẻ địch, tăng hồi chiêu đồng minh.",
+                "E: Phân Rã Nhanh - Gây sát thương theo thời gian, hạ gục giảm hồi chiêu.",
+                "R: Thời Khắc Hư Vô - Kéo, gây sát thương và đóng băng thời gian kẻ địch.",
+              ],
+            },
+            {
+              name: "Lithos, Kẻ Biến Dạng Địa Hình",
+              role: "Đấu Sĩ/Đỡ Đòn",
+              description:
+                "Sinh vật khổng lồ từ sự tiêu thụ và biến dạng của vỏ Runeterra, bóp méo và tái tạo địa hình.",
+              skills: [
+                "Nội tại: Lớp Vỏ Hư Không - Tăng giáp/kháng phép khi mất máu, để lại dấu vết làm chậm.",
+                "Q: Nắm Đấm Địa Hình - Tạo cột đá hất tung và chặn đường.",
+                "W: Hố Sâu Nuốt Chửng - Gây sát thương liên tục, kéo kẻ địch vào trung tâm.",
+                "E: Lướt Địa Hình - Lướt, để lại đường ăn mòn làm chậm.",
+                "R: Biến Đổi Cảnh Quan - Biến đổi khu vực lớn thành địa hình Hư Không, tăng tốc đồng minh, làm chậm kẻ địch.",
+              ],
+            },
+          ],
+        },
+        {
           id: "shadowisles",
           name: "Quần Đảo Bóng Đêm",
           icon: "👻",
@@ -1771,60 +1900,12 @@
           newChampions: [],
         },
         {
-          id: "void",
-          name: "Hư Không",
-          icon: "🌀",
+          id: "runeterra",
+          name: "Runeterra",
+          icon: "🌌",
           description:
-            "Vùng không gian giữa các chiều không gian, nơi những sinh vật đáng sợ tìm cách nuốt chửng Runeterra. Hư Không là một mối đe dọa vũ trụ, một lực lượng hủy diệt thuần túy không thể hiểu được.",
-          existingChampions: [
-            {
-              id: "kha_zix",
-              name: "Kha'Zix",
-              icon: "🦋",
-              weapon: "Vuốt",
-              species: "Nam, Hư Không",
-              playstyle: "Sát thủ AD (Sát thương bùng nổ, Tàng hình, Tiến hóa)",
-              lore: "Một sinh vật Hư Không nguy hiểm, Kha'Zix tiến hóa bằng cách săn lùng và tiêu thụ những con mồi mạnh mẽ nhất.",
-            },
-            {
-              id: "kai_sa",
-              name: "Kai'Sa",
-              icon: "🔫",
-              weapon: "Vỏ bọc Hư Không",
-              species: "Nữ, Con người (Hư Không)",
-              playstyle:
-                "Xạ thủ (Sát thương bùng nổ, Di chuyển nhanh, Tiến hóa)",
-              lore: "Một cô gái bị nuốt chửng bởi Hư Không, Kai'Sa đã sống sót và trở lại với một vỏ bọc sống, sử dụng sức mạnh của Hư Không để chiến đấu chống lại nó.",
-            },
-            {
-              id: "vel_koz",
-              name: "Vel'Koz",
-              icon: "👁️",
-              weapon: "Tia năng lượng",
-              species: "Nam, Hư Không",
-              playstyle: "Pháp sư AP (Tầm xa, Sát thương duy trì, Phân tích)",
-              lore: "Một sinh vật Hư Không thông minh, Vel'Koz là một con mắt của Hư Không, phân tích và tiêu thụ mọi thứ trên đường đi của mình.",
-            },
-            {
-              id: "cho_gath",
-              name: "Cho'Gath",
-              icon: "🦖",
-              weapon: "Vuốt, Gai",
-              species: "Nam, Hư Không",
-              playstyle: "Đỡ đòn (Máu, Sát thương bùng nổ, Tăng kích thước)",
-              lore: "Một quái vật Hư Không khổng lồ, Cho'Gath là hiện thân của sự hủy diệt, lớn lên bằng cách tiêu thụ kẻ thù của mình.",
-            },
-            {
-              id: "rek_sai",
-              name: "Rek'Sai",
-              icon: "🐛",
-              weapon: "Vuốt, Đào hầm",
-              species: "Nữ, Hư Không",
-              playstyle:
-                "Đấu sĩ (Sát thương bùng nổ, Di chuyển nhanh, Đào hầm)",
-              lore: "Nữ hoàng của loài Xer'Sai, Rek'Sai là một kẻ săn mồi đáng sợ, đào hầm dưới lòng đất để phục kích con mồi của mình.",
-            },
-          ],
+            "Chào mừng bạn đến với Runeterra, thế giới của Liên Minh Huyền Thoại. Khám phá các vùng đất, tìm hiểu về các tướng và khám phá những câu chuyện huyền bí.",
+          existingChampions: [],
           newChampions: [],
         },
       ];
