@@ -1,0 +1,316 @@
+Sử dụng năng lượng giống với bài phép
+    Option 1: Sử dụng thêm cột 3 năng lượng cho bài bẫy 
+        ( ưu tiên quái , phép , bài bẫy )
+
+    Option 2: Tăng cột năng lượng phép lên 4 hoặc 5 
+
+
+Bài bẫy thì cần có điều kiện để kích hoạt 
+
+1 Normal Trap : Hiệu ứng 1 lần rồi biến mất
+    Lá bài được đặt, kích hoạt theo điều kiện để có hiệu ứng đơn lẻ.
+    "Tốc Độ Bẫy" (Giải quyết như Phép Nhanh, có thể bị đáp trả bởi Phép Nhanh/Bẫy khác)
+
+2 Continuous Trap
+    Duy trì trên sân, hiệu ứng kéo dài hoặc có thể lặp lại.
+    Lá bài được đặt, kích hoạt, sau đó duy trì như một Hào Quang/Địa Danh với hiệu ứng liên tục hoặc có thể kích hoạt
+    Kích hoạt ban đầu: "Tốc Độ Bẫy." Liên tục/Kích hoạt sau: Thay đổi (có thể bị động, hoặc cung cấp hành động tốc độ Chậm/Nhanh).
+
+3   Counter Trap
+    Vô hiệu hóa việc kích hoạt bài/hiệu ứng, Tốc Độ Phép 3
+    Lá bài được đặt, kích hoạt để vô hiệu hóa một bài phép, kỹ năng, hoặc thậm chí việc triệu hồi/chơi bài của một đơn vị ngay khi xảy ra.
+    "Tốc Độ Bẫy Ưu Tiên" (Giải quyết trước các mục khác trên chồng phép, hoặc có cửa sổ độc đáo để hủy một hành động trước khi nó hoàn toàn chạm vào chồng phép. Có khả năng bỏ qua Khiên Phép).
+
+
+    Ví dụ : 
+    Tên Bài: Trường Điện Từ Petricite
+
+Khu Vực: Demacia
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Phản Đòn
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một mạng lưới các cột petricite phát sáng, tạo ra một trường năng lượng vô hiệu hóa ma thuật.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn chơi một bài phép hoặc kỹ năng.
+Hiệu Quả: Vô hiệu hóa bài phép hoặc kỹ năng đó. Nếu đó là một bài phép Chậm, tiêu diệt đơn vị đã sử dụng nó.
+Lời Bài Hát: "Thứ ma thuật hỗn loạn của ngươi không có chỗ ở đây." - Pháp Sư Đoàn Trưởng
+Lý Do Thiết Kế: Phản ánh khả năng chống ma thuật mạnh mẽ của petricite. Việc trừng phạt nặng hơn đối với bài phép Chậm (thường là các bài phép mạnh, có tính thay đổi cục diện) thể hiện sự không khoan nhượng của Demacia đối với các mối đe dọa ma thuật lớn. Đây là một dạng "phản đòn" có điều kiện, mạnh mẽ nhưng công bằng theo kiểu Demacia.   
+Tên Bài: Thế Trận Tiên Phong
+
+Khu Vực: Demacia
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Những người lính Demacia từ đội Tiên Phong bất ngờ xuất hiện từ một vị trí ẩn nấp, tạo thành một bức tường khiên vững chắc.
+Điều Kiện Kích Hoạt: Khi một đồng minh bị một kẻ địch tấn công.
+Hiệu Quả: Triệu hồi một Lính Gác Tiên Phong 2|2 đang Chặn Kẻ địch đó.
+Lời Bài Hát: "Luôn sẵn sàng, luôn cảnh giác. Vì Demacia!"
+Lý Do Thiết Kế: Thể hiện tính kỷ luật và khả năng phòng thủ có tổ chức của quân đội Demacia, đặc biệt là đội Tiên Phong. Bẫy này cung cấp một lớp phòng thủ bất ngờ, bảo vệ các đơn vị quan trọng và duy trì sự hiện diện trên bàn cờ, phù hợp với lối chơi tập trung vào đơn vị của Demacia.   
+Tên Bài: Cạm Bẫy Pháp Sư Đoàn
+
+Khu Vực: Demacia
+Chi Phí Đặt: 2
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một chiếc còng tay petricite phóng ra từ bóng tối, khóa chặt khả năng phép thuật của mục tiêu.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn chơi một bài phép.
+Hiệu Quả: Câm Lặng đơn vị mạnh nhất của đối thủ.
+Lời Bài Hát: "Ma thuật không được kiểm soát là một mối hiểm họa." - Pháp Sư Đoàn
+Lý Do Thiết KSet Kế: Nhấn mạnh vai trò của Pháp Sư Đoàn trong việc kiểm soát và vô hiệu hóa các mối đe dọa ma thuật. Bẫy này cung cấp một công cụ gây rối hiệu quả về mặt chi phí, nhắm vào các đơn vị chủ chốt dựa vào hiệu ứng phép của chúng.   
+4.2 Freljord: Sinh Tồn Giữa Miền Bắc Khắc Nghiệt
+Freljord là một vùng đất lạnh giá, khắc nghiệt, bị chia cắt bởi xung đột giữa các bộ tộc. Các chủ đề chính bao gồm sự sinh tồn, ma thuật cổ xưa, Băng Vĩnh Cửu (True Ice), và những mãnh thú đáng sợ. Các chiến binh Băng Tộc (Iceborn) có khả năng sử dụng Băng Vĩnh Cửu. Bộ tộc Móng Vuốt Mùa Đông (Winter's Claw) nổi tiếng với các cuộc đột kích tàn bạo vào biên giới các vùng đất khác. Bẫy của Freljord có thể là các hiểm họa tự nhiên như tuyết lở, bẫy săn bắt, hoặc biểu hiện của sức mạnh nguyên thủy.   
+
+Môi trường của Freljord vốn dĩ nguy hiểm và mang tính bào mòn. Nhiều tướng và đơn vị Freljord tập trung vào các hiệu ứng Băng Giá (Frostbite), Thách Đấu (Challenger), và Áp Đảo (Overwhelm) để kiểm soát giao tranh và tồn tại lâu hơn đối thủ. "Lối Sống Cổ Xưa" (Old Ways) bao gồm việc chiến đấu để sinh tồn. Do đó, bẫy Freljord có thể tập trung vào việc trì hoãn (làm Băng Giá kẻ tấn công), gây sát thương diện rộng (tượng trưng cho bão tuyết hoặc tuyết lở), hoặc tạo ra những kẻ chặn đòn mạnh mẽ một cách bất ngờ. Chúng sẽ thể hiện bản chất không ngừng nghỉ, nghiệt ngã của sự sinh tồn ở phương bắc.   
+
+Tên Bài: Tuyết Lở!
+
+Khu Vực: Freljord
+Chi Phí Đặt: 5
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một khối tuyết khổng lồ đổ ập xuống từ sườn núi, vùi lấp kẻ địch.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn tấn công với 3 hoặc nhiều đơn vị.
+Hiệu Quả: Gây 2 sát thương lên tất cả đơn vị địch đang tấn công.
+Lời Bài Hát: "Tiếng gầm của núi non là khúc ca cuối cùng chúng được nghe."
+Lý Do Thiết Kế: Tái hiện một trong những hiểm họa tự nhiên chết người của Freljord. Đây là một công cụ kiểm soát diện rộng mạnh mẽ, trừng phạt việc đối thủ triển khai quá nhiều đơn vị tấn công, phù hợp với chủ đề sinh tồn và môi trường khắc nghiệt.   
+Tên Bài: Bẫy Rập Giá Rét
+
+Khu Vực: Freljord
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Mặt đất đóng băng đột ngột, khiến kẻ địch trượt ngã và mất khả năng chiến đấu.
+Điều Kiện Kích Hoạt: Khi một kẻ địch tấn công.
+Hiệu Quả: Làm Băng Giá (Frostbite) kẻ địch đó.
+Lời Bài Hát: "Cái lạnh sẽ tìm đến những kẻ yếu đuối."
+Lý Do Thiết Kế: Sử dụng cơ chế Băng Giá đặc trưng của Freljord để vô hiệu hóa một mối đe dọa. Đây là một cái bẫy phòng thủ hiệu quả, có thể ngăn chặn một đòn tấn công mạnh hoặc bảo vệ một đơn vị quan trọng. Nó phản ánh cách người Freljord sử dụng chính môi trường của họ làm vũ khí.
+Tên Bài: Linh Hồn Hộ Vệ
+
+Khu Vực: Freljord
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Liên Tục
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một tinh linh cổ xưa của vùng đất băng giá hiện hình để bảo vệ lãnh thổ.
+Điều Kiện Kích Hoạt: Khi Nexus của bạn chịu sát thương từ một bài phép hoặc kỹ năng của đối thủ.
+Hiệu Quả: Triệu hồi một Tinh Linh Hộ Vệ 3|3. Đầu mỗi vòng đấu của bạn, nếu bạn không điều khiển Tinh Linh Hộ Vệ, triệu hồi một Tinh Linh Hộ Vệ. (Lá bài này vẫn trên sân sau khi kích hoạt).
+Lời Bài Hát: "Vùng đất này không bỏ rơi những đứa con của nó."
+Lý Do Thiết Kế: Phản ánh mối liên kết tâm linh sâu sắc của người Freljord với vùng đất và các tinh linh cổ xưa. Đây là một bẫy mang tính phòng thủ và tạo giá trị theo thời gian, cung cấp một nguồn chặn đòn liên tục, phù hợp với chủ đề bền bỉ và kiên cường của Freljord.   
+4.3 Ionia: Cân Bằng, Linh Hồn Thuật và Kỹ Thuật Bí Truyền
+Ionia là một vùng đất của vẻ đẹp tự nhiên, ma thuật mạnh mẽ và sự hài hòa tâm linh, nhưng cũng đầy rẫy xung đột nội bộ (như giữa Kinkou và Hội Bóng Tối) và đang trong quá trình hồi phục sau cuộc xâm lược của Noxus. Cư dân Ionia theo đuổi sự cân bằng và hài hòa trong mọi thứ. Các cuộc xung đột như giữa Hội Kinkou (do Shen lãnh đạo, cố gắng duy trì sự cân bằng) và Hội Bóng Tối (do Zed lãnh đạo, sử dụng các kỹ thuật hắc ám bị cấm) cho thấy những phương pháp hành động bí mật và các lý tưởng xung đột về việc duy trì sự cân bằng. Bẫy của Ionia có thể liên quan đến việc đánh lạc hướng bằng linh hồn, kỹ thuật ninja, hoặc sự mất cân bằng nguyên tố.   
+
+Triết lý của Ionia thường xoay quanh sự cân bằng, dòng chảy và sự chính xác. Võ thuật và các môn phái tâm linh nhấn mạnh việc vượt qua hoặc chuyển hướng lực của đối thủ thay vì đối đầu trực diện. Xung đột Kinkou/Hội Bóng Tối  ngụ ý các phương pháp tinh vi, thường là bí mật. Do đó, bẫy Ionia có thể tập trung vào việc Trả Về (Recall) đơn vị (phá vỡ nhịp độ), làm Choáng (Stun) kẻ địch, tạo ảo ảnh (ví dụ: một kẻ chặn đòn giả), hoặc trừng phạt đối thủ vì đã dồn quá nhiều tài nguyên vào một hành động duy nhất. Chúng sẽ phản ánh sự nhấn mạnh của Ionia vào sự tinh tế và kiểm soát.   
+
+Tên Bài: Gió Thoảng Đánh Lạc Hướng
+
+Khu Vực: Ionia
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một cơn gió thoảng qua, nhẹ nhàng nhưng đủ mạnh để đẩy lùi một kẻ tấn công mất phương hướng.
+Điều Kiện Kích Hoạt: Khi một kẻ địch tấn công Nexus của bạn.
+Hiệu Quả: Trả Về (Recall) đơn vị đó.
+Lời Bài Hát: "Sự mất cân bằng sẽ tự sửa chữa."
+Lý Do Thiết Kế: Phản ánh triết lý của Ionia về việc chuyển hướng và tránh đối đầu trực tiếp. Trả Về là một cơ chế đặc trưng của Ionia, giúp phá vỡ nhịp độ của đối thủ và bảo vệ Nexus một cách hiệu quả.   
+Tên Bài: Ấn Niêm Kinkou
+
+Khu Vực: Ionia
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Phản Đòn
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một ấn chú Kinkou phát sáng, tạo ra một lá chắn tâm linh bảo vệ mục tiêu.
+Điều Kiện Kích Hoạt: Khi một kỹ năng hoặc bài phép của đối thủ nhắm vào một đồng minh.
+Hiệu Quả: Vô hiệu hóa kỹ năng hoặc bài phép đó. Cho đồng minh đó +0|+2.
+Lời Bài Hát: "Cân bằng phải được bảo vệ, bằng mọi giá." - Shen
+Lý Do Thiết Kế: Thể hiện vai trò của Hội Kinkou trong việc duy trì sự cân bằng và bảo vệ những người vô tội. Đây là một công cụ phòng thủ mạnh mẽ, không chỉ vô hiệu hóa mối đe dọa mà còn tăng cường khả năng sống sót của đồng minh, phù hợp với triết lý bảo vệ của Kinkou.   
+Tên Bài: Phục Kích Hắc Ảnh
+
+Khu Vực: Ionia
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một bóng đen tách ra từ Zed hoặc một ninja Hội Bóng Tối, tạo ra một bản sao để tấn công kẻ địch.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn triệu hồi một ακόλουθ (follower).
+Hiệu Quả: Tạo một Bản Sao Hắc Ám (Ephemeral, Exact Copy) của ακόλουθ đó và nó đang tấn công ακόλουθ gốc.
+Lời Bài Hát: "Bóng tối sẽ phán xét ngươi." - Zed
+Lý Do Thiết Kế: Lấy cảm hứng từ các kỹ thuật bóng tối của Zed và Hội Bóng Tối. Bẫy này tạo ra một tình huống bất lợi ngay lập tức cho đơn vị mới triệu hồi của đối thủ, có khả năng loại bỏ nó hoặc ít nhất là gây sát thương đáng kể, thể hiện sự nguy hiểm và tính bất ngờ của các ninja bóng tối.   
+4.4 Noxus: Sức Mạnh, Chinh Phạt và Chủ Nghĩa Thực Dụng Tàn Nhẫn
+Noxus là một đế chế tàn bạo, không ngừng bành trướng, coi trọng sức mạnh dưới mọi hình thức. Sức mạnh quân sự, chiến thuật xảo quyệt, và ảnh hưởng của các hội kín như Hắc Hoa Hồng (Black Rose) là những đặc điểm nổi bật. Học thuyết của Quân Đoàn Trifarian nhấn mạnh tầm nhìn, sức mạnh và sự xảo quyệt (guile). Hắc Hoa Hồng thường xuyên thao túng chính trị Noxus từ trong bóng tối. Bẫy của Noxus có thể là các cuộc phục kích quân sự, những nước cờ hy sinh, hoặc các âm mưu lừa lọc.   
+
+Noxus coi trọng sức mạnh và hành động quyết đoán. Lối chơi của họ thường liên quan đến việc triển khai đơn vị hung hãn và gây sát thương trực tiếp. "Sự xảo quyệt" là một trong ba nguyên tắc của họ , cho thấy sự sẵn lòng sử dụng các chiến thuật không chính thống nếu chúng mang lại chiến thắng. Họ không ngại hy sinh nếu điều đó phục vụ cho đế chế. Do đó, bẫy Noxus có thể mang lại những lợi thế tấn công mạnh mẽ khi được kích hoạt (ví dụ: cho tất cả đồng minh đang tấn công Áp Đảo hoặc +Sức Mạnh), dọn đường cho kẻ tấn công bằng cách loại bỏ một kẻ chặn đòn quan trọng, hoặc thậm chí gây sát thương cho chính đơn vị của mình để có hiệu ứng lớn hơn đối với kẻ địch. Chúng sẽ thể hiện sự hiệu quả tàn nhẫn và tâm lý "chiến thắng bằng mọi giá" của Noxus.   
+
+Tên Bài: Nước Cờ Quyết Định
+
+Khu Vực: Noxus
+Chi Phí Đặt: 2
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một chiến binh Noxus lao vào trận chiến với sự liều lĩnh, được thúc đẩy bởi một mệnh lệnh bất ngờ.
+Điều Kiện Kích Hoạt: Khi một đồng minh có 5 Sức Mạnh trở lên tấn công.
+Hiệu Quả: Cho đồng minh đó Xuyên Thấu (Overwhelm) và +2|+0 trong vòng này.
+Lời Bài Hát: "Sức mạnh áp đảo mọi thứ!"
+Lý Do Thiết Kế: Phản ánh triết lý của Noxus về việc tận dụng sức mạnh để giành chiến thắng một cách dứt khoát. Bẫy này tăng cường khả năng tấn công của các đơn vị mạnh, giúp kết thúc trận đấu nhanh hơn, phù hợp với lối chơi hung hãn của Noxus.   
+Tên Bài: Phục Kích Quân Đoàn Trifarian
+
+Khu Vực: Noxus
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Những người lính của Quân Đoàn Trifarian xuất hiện từ hai bên sườn, bao vây kẻ địch.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn tấn công, và bạn có ít đơn vị hơn họ.
+Hiệu Quả: Triệu hồi 2 Chiến Binh Trifarian 3|2.
+Lời Bài Hát: "Vì Noxus, chúng ta sẽ nghiền nát chúng!"
+Lý Do Thiết Kế: Thể hiện khả năng huy động lực lượng nhanh chóng và chiến thuật phục kích của quân đội Noxus, đặc biệt là Quân Đoàn Trifarian tinh nhuệ. Bẫy này giúp cân bằng lại số lượng đơn vị trên bàn và tạo ra một mối đe dọa bất ngờ.   
+Tên Bài: Âm Mưu Hắc Hoa Hồng
+
+Khu Vực: Noxus
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Phản Đòn
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một thông điệp bí mật được trao đổi, dẫn đến việc một kế hoạch của đối thủ bị phá sản.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn rút 2 lá bài trở lên trong một hành động duy nhất (không tính việc rút bài đầu vòng).
+Hiệu Quả: Đối thủ của bạn phải Bỏ (Discard) 1 lá bài ngẫu nhiên từ tay họ.
+Lời Bài Hát: "Ngay cả những kế hoạch hoàn hảo nhất cũng có lỗ hổng." - LeBlanc
+Lý Do Thiết Kế: Lấy cảm hứng từ sự thao túng và những âm mưu ngầm của Hắc Hoa Hồng. Bẫy này trừng phạt việc đối thủ cố gắng gia tăng tài nguyên quá nhanh, gây rối loạn kế hoạch của họ bằng cách loại bỏ một lá bài quan trọng, thể hiện sự tinh vi và xảo quyệt của tổ chức này.   
+4.5 Piltover & Zaun: Đổi Mới, Hextech, Hóa Kỹ và Những Hậu Quả Khôn Lường
+Hai thành phố song sinh của sự tiến bộ và bất bình đẳng. Piltover nổi tiếng với Hextech tinh vi và trật tự, trong khi Zaun là nơi của Hóa Kỹ (Chemtech) dễ bay hơi, hỗn loạn, chợ đen và các Nam Tước Hóa Chất (Chem-Barons). Các Nam Tước Hóa Chất kiểm soát các lãnh thổ riêng và duy trì một liên minh lỏng lẻo dựa trên lợi ích. Bẫy của hai thành phố này có thể là những cỗ máy tài tình, những thí nghiệm không ổn định, hoặc các hiệu ứng môi trường nguy hiểm.   
+
+Piltover là về sự đổi mới, bao gồm cả thử nghiệm và rủi ro. Zaun rõ ràng là về "sự phát triển không bị kiềm chế của các công nghệ dễ bay hơi". Sự đối ngẫu này cho thấy các loại bẫy có thể được thiết kế chính xác (Piltover) hoặc cực kỳ khó đoán (Zaun). Do đó, bẫy Piltover có thể liên quan đến việc rút bài, loại bỏ mục tiêu thông qua các thiết bị tài tình, hoặc tạo ra lợi thế tạm thời. Bẫy Zaun có thể có các yếu tố ngẫu nhiên, có khả năng phản tác dụng, hoặc tạo ra sự hỗn loạn trên diện rộng (ví dụ: gây sát thương cho TẤT CẢ đơn vị, hoặc buộc phải bỏ bài). Điều này cho phép một không gian thiết kế phong phú phản ánh các cách tiếp cận công nghệ tương phản của hai thành phố.   
+
+Tên Bài (Piltover): Lưới Bẫy Hextech
+
+Khu Vực: Piltover & Zaun
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một mạng lưới năng lượng Hextech vô hình được kích hoạt, giữ chân kẻ địch.
+Điều Kiện Kích Hoạt: Khi một kẻ địch tấn công.
+Hiệu Quả: Gây 1 sát thương lên kẻ địch đó và làm Choáng (Stun) nó.
+Lời Bài Hát: "Công nghệ là chìa khóa để kiểm soát." - Camille
+Lý Do Thiết Kế: Thể hiện sự tinh vi và ứng dụng thực tế của công nghệ Hextech trong việc kiểm soát và vô hiệu hóa. Bẫy này cung cấp một công cụ phòng thủ linh hoạt, vừa gây sát thương nhỏ vừa làm choáng một kẻ tấn công quan trọng.   
+Tên Bài (Piltover): Sự Cố Ngày Tiến Bộ
+
+Khu Vực: Piltover & Zaun
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một phát minh phức tạp của Heimerdinger hoặc một nhà khoa học Piltover khác gặp trục trặc, nhưng lại tạo ra một hiệu ứng bất ngờ có lợi.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn chơi một bài phép có chi phí từ 4 trở lên.
+Hiệu Quả: Sao chép bài phép đó vào tay bạn. Chi phí của bản sao giảm đi 1.
+Lời Bài Hát: "Đôi khi, những sai lầm dẫn đến những khám phá vĩ đại nhất!" - Heimerdinger
+Lý Do Thiết Kế: Phản ánh tinh thần đổi mới và đôi khi là sự không chắc chắn của các phát minh ở Piltover. Bẫy này mang lại lợi thế về tài nguyên bằng cách sao chép một bài phép mạnh của đối thủ, cho phép người chơi P&Z thích nghi và phản ứng.   
+Tên Bài (Zaun): Đám Mây Hóa Chất Bất Ổn
+
+Khu Vực: Piltover & Zaun
+Chi Phí Đặt: 2
+Loại Bẫy: Bẫy LoR Liên Tục
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một đám mây hóa chất độc hại lan tỏa từ một thùng chứa bị rò rỉ ở Zaun.
+Điều Kiện Kích Hoạt: Khi một ακόλουθ (của bất kỳ ai) được triệu hồi.
+Hiệu Quả: Gây 1 sát thương lên TẤT CẢ ακόλουθ. Hiệu ứng này kích hoạt lại vào cuối mỗi vòng đấu của bạn trong 2 vòng tiếp theo. (Lá bài này vẫn trên sân sau khi kích hoạt).
+Lời Bài Hát: "Không khí ở Zaun... luôn có chút gì đó đặc biệt."
+Lý Do Thiết Kế: Thể hiện môi trường ô nhiễm và nguy hiểm của Zaun, nơi các thí nghiệm hóa học không được kiểm soát có thể gây ra hậu quả lan rộng. Đây là một bẫy gây sát thương diện rộng theo thời gian, ảnh hưởng đến cả hai bên bàn cờ, phản ánh tính chất hỗn loạn và khó lường của Hóa Kỹ.   
+Tên Bài (Zaun): Bất Ngờ Của Kẻ Nhặt Rác
+
+Khu Vực: Piltover & Zaun
+Chi Phí Đặt: 1
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một kẻ nhặt rác ở Zaun nhanh tay gài một quả bom tự chế vào xác một cỗ máy vừa bị phá hủy.
+Điều Kiện Kích Hoạt: Khi một ακόλουθ địch bị tiêu diệt.
+Hiệu Quả: Tạo một Thùng Thuốc Nổ (Powder Keg).
+Lời Bài Hát: "Rác của người này là kho báu... hoặc là một quả bom."
+Lý Do Thiết Kế: Phản ánh sự khéo léo và khả năng tận dụng mọi thứ của cư dân Zaun, đặc biệt là những người sống ở tầng lớp dưới. Bẫy này tạo ra một lợi thế tiềm năng từ việc một đơn vị địch bị phá hủy, chuẩn bị cho các hiệu ứng sát thương mạnh hơn sau này, phù hợp với chủ đề "bất ngờ" và "tái chế" của Zaun.   
+4.6 Bilgewater: Hải Tặc, Vận May và Bí Ẩn Biển Sâu
+Bilgewater là một thành phố cảng vô luật pháp của hải tặc, những kẻ buôn lậu và thợ săn tiền thưởng. Các chủ đề chính bao gồm may mắn, rủi ro, sự phản bội, và sự tôn kính đối với nữ thần rắn biển Nagakabouros. Người Buhru bản địa tôn thờ Nagakabouros, nữ thần của sự sống, tăng trưởng và chuyển động vĩnh cửu, thường được gọi là Quý Bà Râu Rậm. Việc trả lễ bằng cách ném một đồng xu xuống biển trước khi ra khơi vẫn là một truyền thống được tôn trọng. Bẫy của Bilgewater có thể là các cuộc phục kích của hải tặc, những trò chơi gian lận, mồi nhử dưới biển sâu, hoặc lễ vật dâng lên thần linh của họ.   
+
+Bilgewater đồng nghĩa với cờ bạc, cướp bóc và những sự đảo ngược vận may đột ngột. Triết lý của Nagakabouros bao gồm sự chuyển động và việc giành lấy những gì bạn mong muốn. Nhiều lá bài Bilgewater trong LoR liên quan đến Cướp Bóc (Plunder), rút bài, hoặc các hiệu ứng ngẫu nhiên (như thùng thuốc nổ). Do đó, bẫy Bilgewater có thể liên quan đến việc đánh cắp bài của đối thủ, tạo ra các token "kho báu", buộc phải tung đồng xu để có hiệu ứng, hoặc có các hiệu ứng tăng tiến theo số lượng bài đã rút hoặc hiệu ứng Cướp Bóc đã kích hoạt. Chúng sẽ mang cảm giác hỗn loạn, cơ hội và có khả năng bùng nổ.   
+
+Tên Bài: Trò Chơi Gian Lận
+
+Khu Vực: Bilgewater
+Chi Phí Đặt: 2
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một ván bài bịp bợm, nơi Twisted Fate hoặc một tay cờ bạc khác tráo bài một cách khéo léo.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn chơi một bài phép.
+Hiệu Quả: Nếu bạn đã kích hoạt Cướp Bóc (Plunder) trong vòng này, sao chép bài phép đó vào tay bạn.
+Lời Bài Hát: "Luật chơi? Ta tự đặt ra luật chơi." - Twisted Fate
+Lý Do Thiết Kế: Phản ánh bản chất gian xảo và cơ hội của Bilgewater. Bẫy này thưởng cho lối chơi chủ động và việc kích hoạt Cướp Bóc, một cơ chế đặc trưng của Bilgewater, bằng cách cung cấp lợi thế về bài.   
+Tên Bài: Móng Vuốt Kraken
+
+Khu Vực: Bilgewater
+Chi Phí Đặt: 5
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một xúc tu khổng lồ của Kraken hoặc một sinh vật biển sâu tương tự trồi lên từ mặt nước, tóm lấy một con tàu hoặc một kẻ địch lớn.
+Điều Kiện Kích Hoạt: Khi một kẻ địch có 5 Máu trở lên tấn công.
+Hiệu Quả: Kéo (Drag) kẻ địch đó xuống đáy bộ bài của đối thủ.
+Lời Bài Hát: "Biển cả luôn đòi lại những gì thuộc về nó."
+Lý Do Thiết Kế: Lấy cảm hứng từ những câu chuyện về quái vật biển sâu và sự tôn thờ Nagakabouros (Nữ Thần Kraken). Đây là một công cụ loại bỏ mạnh mẽ, nhắm vào các mối đe dọa lớn, thể hiện sự nguy hiểm khôn lường của đại dương bao quanh Bilgewater.   
+Tên Bài: Cống Phẩm Người Chết
+
+Khu Vực: Bilgewater
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Phản Đòn
+Ý Tưởng Hình Ảnh/Cốt Truyện: Những đồng xu được ném xuống biển để xoa dịu các linh hồn hoặc Nagakabouros, đổi lại một chút may mắn.
+Điều Kiện Kích Hoạt: Khi một đơn vị (của bạn hoặc của đối thủ) bị tiêu diệt.
+Hiệu Quả: Nếu đó là đơn vị thứ 3 trở lên bị tiêu diệt trong vòng này, rút 1 lá bài.
+Lời Bài Hát: "Mỗi linh hồn đều có giá của nó." - Illaoi
+Lý Do Thiết Kế: Liên quan đến truyền thống "trả lễ" và vòng xoáy sinh tử không ngừng ở Bilgewater, nơi cái chết là chuyện thường ngày. Bẫy này tạo ra giá trị từ sự hỗn loạn của giao tranh, thưởng cho người chơi khi có nhiều đơn vị bị tiêu diệt, phản ánh bản chất tàn khốc nhưng cũng đầy cơ hội của thành phố cảng.   
+4.7 Quần Đảo Bóng Đêm: Bất Tử, Màn Sương Đen và Nỗi Buồn Dai Dẳng
+Quần Đảo Bóng Đêm là một vùng đất bị nguyền rủa, chìm trong Màn Sương Đen, nơi cư ngụ của những linh hồn bị dày vò. Trước sự kiện Đại Suy Vong (The Ruination), đây từng là Quần Đảo Phước Lành, một nền văn minh cao quý. Màn Sương Đen, bắt nguồn từ trái tim tan vỡ của Viego, lan tỏa ra từ Quần Đảo Bóng Đêm vào những đêm nhất định (sự kiện Harrowing), tìm kiếm thêm linh hồn sống để nuốt chửng. Bẫy của Quần Đảo Bóng Đêm có thể là những cạm bẫy linh hồn, biểu hiện của Màn Sương Đen, hoặc dư âm của Đại Suy Vong.   
+
+Quần Đảo Bóng Đêm về cơ bản là sự tha hóa của sự sống và sự duy trì của trạng thái bất tử. Nhiều lá bài của Quần Đảo Bóng Đêm được hưởng lợi từ việc đồng minh chết (Hơi Thở Cuối Cùng - Last Breath) hoặc liên quan đến việc hồi sinh đơn vị. Màn Sương Đen tích cực tìm cách gài bẫy các linh hồn sống. Do đó, bẫy của Quần Đảo Bóng Đêm có thể hút sinh lực từ đơn vị địch, triệu hồi những kẻ tấn công Thoáng Qua khi kẻ địch hành động, trừng phạt đối thủ vì chơi quá nhiều đơn vị (áp đảo họ bằng các linh hồn), hoặc có hiệu ứng mạnh hơn nếu đồng minh vừa chết gần đây. Chúng sẽ thể hiện bản chất nghiệt ngã và không ngừng nghỉ của khu vực này.   
+
+Tên Bài: Hút Hồn
+
+Khu Vực: Shadow Isles
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Những bóng ma vươn tay ra từ mặt đất, hút lấy sinh khí của kẻ địch.
+Điều Kiện Kích Hoạt: Khi một ακόλουθ địch tấn công.
+Hiệu Quả: Gây sát thương bằng một nửa Sức Mạnh của ακόλουθ đó (làm tròn lên) lên chính nó và hồi máu cho Nexus của bạn bằng lượng sát thương đó.
+Lời Bài Hát: "Nỗi đau của ngươi nuôi dưỡng chúng ta."
+Lý Do Thiết Kế: Phản ánh bản chất ký sinh và hút sinh lực của các thực thể trên Quần Đảo Bóng Đêm. Bẫy này vừa gây sát thương lên kẻ tấn công vừa hồi phục cho người chơi, một hiệu ứng phòng thủ và duy trì mạnh mẽ.   
+Tên Bài: Tiếng Gọi Đại Họa
+
+Khu Vực: Shadow Isles
+Chi Phí Đặt: 6
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Màn Sương Đen cuộn trào, và một thực thể hùng mạnh (như Hecarim hoặc Thresh) xuất hiện để tiêu diệt một mục tiêu quan trọng.
+Điều Kiện Kích Hoạt: Nếu một Tướng (Champion) địch tấn công và bạn không điều khiển Tướng nào.
+Hiệu Quả: Tiêu diệt Tướng địch đó.
+Lời Bài Hát: "Không ai thoát khỏi Màn Sương."
+Lý Do Thiết Kế: Lấy cảm hứng từ sự kiện Đại Họa (Harrowing) và sức mạnh hủy diệt của Màn Sương Đen nhắm vào những linh hồn mạnh mẽ nhất. Đây là một cái bẫy có chi phí cao nhưng hiệu quả cực lớn, có khả năng thay đổi cục diện trận đấu bằng cách loại bỏ một Tướng địch chủ chốt. Điều kiện kích hoạt của nó tạo ra một tình huống "được ăn cả, ngã về không" đặc trưng của Quần Đảo Bóng Đêm.   
+4.8 Shurima: Đế Chế Đã Mất, Sức Mạnh Thăng Hoa và Hiểm Nguy Sa Mạc
+Shurima là một sa mạc rộng lớn, ẩn chứa tàn tích của một đế chế đã sụp đổ. Các chủ đề chính bao gồm sức mạnh cổ xưa, các thực thể Thăng Hoa thần thánh, các bộ tộc du mục, những bí mật bị chôn vùi, và chính sa mạc nguy hiểm. Sự phản bội của Xerath đã dẫn đến sự sụp đổ của Shurima. Những thực thể Thăng Hoa không hoàn hảo hoặc bị tha hóa được gọi là Baccai , mang trong mình sức mạnh méo mó. Bẫy của Shurima có thể là cát lún, bẫy trong lăng mộ, những lời nguyền cổ xưa, hoặc cơn thịnh nộ của các Thăng Hoa đã sa ngã.   
+
+Cốt truyện của Shurima là về sức mạnh cổ xưa, bền bỉ và sự trỗi dậy chậm chạp của một đế chế đã mất. Nhiều lá bài Shurima liên quan đến Địa Danh (Landmarks) (như Đĩa Mặt Trời - Sun Disc), Tiên Đoán (Predict) các sự kiện tương lai, hoặc các đơn vị mạnh dần theo thời gian. Bản thân sa mạc là một mối đe dọa từ từ, gặm nhấm. Do đó, bẫy Shurima có thể tập trung vào việc vô hiệu hóa tạm thời các đơn vị địch (như chôn vùi chúng trong cát), tạo ra các Địa Danh có giá trị khi được kích hoạt, hoặc tạo ra tài nguyên theo thời gian. Chúng có thể phản ánh sức mạnh từ từ, không thể tránh khỏi của sa mạc và đế chế đang thức tỉnh.   
+
+Tên Bài: Lời Nguyền Lăng Mộ Vua
+
+Khu Vực: Shurima
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Liên Tục
+Ý Tưởng Hình Ảnh/Cốt Truyện: Những chữ tượng hình cổ xưa trên tường lăng mộ phát sáng, giải phóng một lời nguyền lên những kẻ xâm phạm.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn triệu hồi một đơn vị.
+Hiệu Quả: Tất cả kẻ địch nhận -1|-0. Hiệu ứng này duy trì. Khi một kẻ địch bị tiêu diệt, gây 1 sát thương lên Nexus của đối thủ. (Lá bài này vẫn trên sân sau khi kích hoạt).
+Lời Bài Hát: "Sự yên nghỉ của các vị vua không thể bị xâm phạm."
+Lý Do Thiết Kế: Phản ánh những lời nguyền và cạm bẫy được đặt trong các lăng mộ cổ của Shurima để bảo vệ kho báu và hài cốt hoàng gia. Đây là một bẫy gây suy yếu và bào mòn đối thủ theo thời gian, phù hợp với chủ đề về di sản cổ xưa và sự báo thù tiềm ẩn của Shurima.   
+Tên Bài: Hố Cát Lún
+
+Khu Vực: Shurima
+Chi Phí Đặt: 3
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Mặt cát đột ngột sụt xuống, kéo theo một kẻ địch không ngờ tới.
+Điều Kiện Kích Hoạt: Khi một ακόλουθ địch không có từ khóa được triệu hồi.
+Hiệu Quả: Làm Choáng (Stun) ακόλουθ đó.
+Lời Bài Hát: "Sa mạc có nhiều cách để nuốt chửng những kẻ bất cẩn."
+Lý Do Thiết Kế: Tái hiện một trong những hiểm họa tự nhiên của sa mạc Shurima. Bẫy này nhắm vào các đơn vị "thường" của đối thủ, những đơn vị không có khả năng đặc biệt để thoát khỏi mối nguy hiểm bất ngờ, gây rối loạn kế hoạch triển khai của họ.   
+4.9 Targon: Sức Mạnh Thiên Giới, Phán Xét Thần Thánh và Quy Mô Vũ Trụ
+Ngọn núi Targon khổng lồ là một cánh cổng dẫn đến cõi thiên giới, quê hương của các Thượng Nhân (Aspects) và những vật chủ trần thế của họ. Đỉnh núi Targon liên tục lung linh dưới ánh sáng thiên hà. Các chủ đề chính bao gồm sức mạnh vũ trụ, định mệnh, sự phán xét, và xung đột giữa Solari và Lunari. Mối quan hệ giữa Thượng Nhân và vật chủ của họ  có thể dẫn đến các loại bẫy giúp tăng cường hoặc biến đổi đơn vị. Bẫy của Targon có thể là sự can thiệp của thiên giới, các sự kiện định mệnh, hoặc biểu hiện sức mạnh của một Thượng Nhân.   
+
+Targon đối phó với các thực thể vũ trụ, định mệnh và sức mạnh bao la. Các Thượng Nhân đại diện cho các lực lượng cơ bản và thường hành động với một cảm giác về thiết kế vĩ đại hoặc sự không thể tránh khỏi. Lối chơi của Targon thường liên quan đến việc Thỉnh Cầu (Invoke) các lá bài thiên hà mạnh mẽ hoặc đạt được các điều kiện "định mệnh". Do đó, bẫy Targon có thể có các hiệu ứng rất mạnh mẽ, có khả năng thay đổi cục diện trận đấu, nhưng với các điều kiện kích hoạt khó khăn hoặc cụ thể (ví dụ: "Nếu đối thủ của bạn đã tấn công bằng 3+ đơn vị trong vòng này và Máu Nexus của bạn dưới 10"). Chúng có thể không phải là về sự lừa lọc tinh vi mà là về việc thực thi các phán xét hoặc sự bảo vệ vĩ đại của thiên giới, mang lại cảm giác như một định mệnh không thể tránh khỏi một khi được kích hoạt.   
+
+Tên Bài: Ánh Nhìn Thượng Nhân
+
+Khu Vực: Targon
+Chi Phí Đặt: 4
+Loại Bẫy: Bẫy LoR Phản Đòn
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một tia sáng từ thiên đỉnh chiếu xuống, vô hiệu hóa một ma thuật phàm tục.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn chơi một bài phép hoặc kỹ năng.
+Hiệu Quả: Vô hiệu hóa bài phép hoặc kỹ năng đó. Nếu bạn đã Thỉnh Cầu (Invoke) trong vòng này, tạo một lá bài Thượng Giới (Celestial) ngẫu nhiên vào tay bạn.
+Lời Bài Hát: "Số phận đã được định đoạt."
+Lý Do Thiết Kế: Phản ánh sự can thiệp của các Thượng Nhân vào các sự kiện trên Runeterra. Bẫy này không chỉ cung cấp khả năng phản đòn mạnh mẽ mà còn có thể tạo ra lợi thế tài nguyên nếu người chơi đã tương tác với cơ chế Thỉnh Cầu đặc trưng của Targon.   
+Tên Bài: Sao Chổi Rơi
+
+Khu Vực: Targon
+Chi Phí Đặt: 7
+Loại Bẫy: Bẫy LoR Thường
+Ý Tưởng Hình Ảnh/Cốt Truyện: Một ngôi sao chổi rực lửa lao xuống từ bầu trời đêm, giáng một đòn hủy diệt xuống chiến trường.
+Điều Kiện Kích Hoạt: Khi đối thủ của bạn có 3 đơn vị trở lên trên bàn và tấn công bằng tất cả chúng.
+Hiệu Quả: Gây 3 sát thương lên tất cả đơn vị địch và Nexus của đối thủ.
+Lời Bài Hát: "Bầu trời cũng có thể sụp đổ."
+Lý Do Thiết Kế: Tượng trưng cho sức mạnh vũ trụ kinh hoàng mà Targon có thể triệu hồi. Đây là một cái bẫy có chi phí cao và điều kiện kích hoạt cụ thể, nhưng mang lại một hiệu ứng quét bàn mạnh mẽ, có khả năng lật ngược tình thế một cách ngoạn mục, phù hợp với quy mô "thiên văn" của Targon.   
+5
