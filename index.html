@@ -158,18 +158,17 @@
         </div>
       </section>
     </main>
-
     <!-- Champion Detail Modal -->
     <div
       id="championModal"
       class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
     >
       <div
-        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-y-auto modal-content relative"
       >
         <button
           id="modalCloseButton"
-          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
         >
           &times;
         </button>
@@ -197,7 +196,6 @@
         >
           Thêm Tướng Mới
         </h2>
-
         <form id="addChampionForm" class="space-y-4">
           <!-- Basic Info -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -226,6 +224,57 @@
             </div>
           </div>
 
+          <!-- Extended Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tên Đầy Đủ</label
+              >
+              <input
+                type="text"
+                id="championFullName"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="Tên đầy đủ và danh hiệu"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Loài</label
+              >
+              <input
+                type="text"
+                id="championSpecies"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="Con người, Hồn ma, Yordle..."
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tuổi</label
+              >
+              <input
+                type="text"
+                id="championAge"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="25 tuổi, Hàng nghìn năm..."
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Vũ Khí</label
+              >
+              <input
+                type="text"
+                id="championWeapon"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="Kiếm, Ma thuật, Súng..."
+              />
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-2"
@@ -243,6 +292,7 @@
                 <option value="Sát Thủ">Sát Thủ</option>
                 <option value="Hỗ Trợ">Hỗ Trợ</option>
                 <option value="Đỡ Đòn">Đỡ Đòn</option>
+                <option value="Hỗ Trợ/Đỡ Đòn">Hỗ Trợ/Đỡ Đòn</option>
                 <option value="Lai/Đa Dạng">Lai/Đa Dạng</option>
               </select>
             </div>
@@ -269,20 +319,47 @@
           <!-- Lore -->
           <div>
             <label class="block text-sm font-medium text-slate-300 mb-2"
-              >Câu Chuyện (Lore) *</label
+              >Câu Chuyện Tóm Tắt (Lore) *</label
             >
             <textarea
               id="championLore"
               rows="3"
               class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
-              placeholder="Mô tả về tướng..."
+              placeholder="Mô tả ngắn gọn về tướng..."
               required
             ></textarea>
           </div>
 
+          <!-- Full Lore -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Câu Chuyện Đầy Đủ</label
+            >
+            <textarea
+              id="championFullLore"
+              rows="5"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              placeholder="Câu chuyện chi tiết về tướng..."
+            ></textarea>
+          </div>
+
+          <!-- Gameplay -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Lối Chơi</label
+            >
+            <textarea
+              id="championGameplay"
+              rows="3"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              placeholder="Mô tả lối chơi và vai trò trong game..."
+            ></textarea>
+          </div>
           <!-- Skills Section (only for new champions) -->
           <div id="skillsSection" class="hidden">
-            <h3 class="text-lg font-semibold text-cyan-300 mb-4">Kỹ Năng</h3>
+            <h3 class="text-lg font-semibold text-cyan-300 mb-4">
+              🎯 Kỹ Năng Chi Tiết
+            </h3>
             <div id="skillsContainer">
               <!-- Skills will be added here -->
             </div>
@@ -292,6 +369,23 @@
               class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               ➕ Thêm Kỹ Năng
+            </button>
+          </div>
+
+          <!-- Special Features Section -->
+          <div id="specialFeaturesSection">
+            <h3 class="text-lg font-semibold text-yellow-300 mb-4">
+              ⭐ Điểm Đặc Biệt
+            </h3>
+            <div id="featuresContainer">
+              <!-- Features will be added here -->
+            </div>
+            <button
+              type="button"
+              id="addFeatureBtn"
+              class="mt-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors"
+            >
+              ➕ Thêm Điểm Đặc Biệt
             </button>
           </div>
 
@@ -366,7 +460,6 @@
         </div>
       </div>
     </div>
-
     <!-- Footer -->
     <footer class="text-center py-8 mt-12 border-t border-slate-700">
       <p class="text-slate-500 text-sm">
@@ -374,9 +467,9 @@
       </p>
     </footer>
     <!-- Load JavaScript modules -->
-    <script src="js/data.js"></script>
-    <script src="js/database.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/data.js?v=2.1"></script>
+    <script src="js/database.js?v=2.1"></script>
+    <script src="js/app.js?v=2.1"></script>
 
     <script>
       // Initialize the application when DOM is loaded

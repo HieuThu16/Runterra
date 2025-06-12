@@ -155,10 +155,56 @@ const championsDatabase = {
         {
           id: "thresh",
           name: "Thresh",
+          fullName: "Thresh, Cai Ngục Xiềng Xích (The Chain Warden)",
           icon: "⛓️",
-          role: "Hỗ Trợ",
+          role: "Hỗ Trợ/Đỡ Đòn",
           region: "shadowisles",
+          species: "Hồn ma/Thực thể ma quái",
+          age: "Nhiều thập kỷ và thế kỷ sau Đại Suy Vong",
+          weapon: "Xiềng xích và lồng đèn ma quái",
           lore: "Một linh hồn tàn bạo và xảo quyệt, Thresh từng là một cai ngục độc ác khi còn sống.",
+          fullLore:
+            "Thresh từng là một người quản ngục khiêm tốn của một hội kín trên Quần Đảo Phước Lành, có nhiệm vụ thu thập và bảo vệ kiến thức huyền bí cùng các hiện vật nguy hiểm. Ngay cả trong vai trò này, xu hướng tàn ác bẩm sinh của hắn đã được đồng nghiệp nhận thấy, dù chưa có bằng chứng rõ ràng về những hành vi giết người.\n\nNhiều năm cô độc trong bóng tối đã khiến Thresh trở nên cay đắng và ghen tị, chỉ có những suy nghĩ oán hận làm bạn. Khi Đại Suy Vong xảy ra, Thresh là một trong những người đầu tiên bị ảnh hưởng bởi thảm họa ma thuật này. Tuy nhiên, thay vì đau khổ như những người khác, hắn lại 'say sưa' trong số phận mới của mình.\n\nHắn săn lùng những linh hồn mà hắn coi là yếu kém hơn, đặc biệt là những người sẽ chịu đựng nhiều nhất từ sự chú ý của hắn. Cái chết không mang lại sự giải thoát, vì hắn xé nát linh hồn của tất cả những kẻ hắn giết, giam cầm chúng trong chiếc lồng đèn bị nguyền rủa của hắn để làm chứng nhân bất đắc dĩ cho những hành vi tàn bạo của hắn mãi mãi.",
+          gameplay:
+            "Thresh là một tướng hỗ trợ và đỡ đòn với độ khó trung bình. Hắn nổi tiếng với khả năng kiểm soát giao tranh và bảo vệ đồng minh một cách hiệu quả. Lối chơi của Thresh tập trung vào việc gây áp lực lên đối thủ, kéo kẻ địch bằng Án Tử, và tạo lá chắn cho đồng minh bằng Con Đường Tăm Tối.",
+          skills: [
+            {
+              type: "Passive",
+              name: "Đọa Đày (Damnation)",
+              description:
+                "Thresh có thể thu thập linh hồn của kẻ địch bị hạ gục gần hắn, vĩnh viễn tăng Giáp và Sức mạnh Phép Thuật. Các đòn đánh của Thresh tích tụ sức mạnh, gây thêm sát thương dựa trên thời gian chờ giữa hai đòn đánh.",
+            },
+            {
+              type: "Q",
+              name: "Án Tử (Death Sentence)",
+              description:
+                "Thresh trói kẻ địch bằng xiềng xích và kéo chúng về phía mình. Kích hoạt lại kỹ năng này sẽ kéo Thresh đến vị trí kẻ địch.",
+            },
+            {
+              type: "W",
+              name: "Con Đường Tăm Tối (Dark Passage)",
+              description:
+                "Thresh ném ra một chiếc lồng đèn, tạo lá chắn cho đồng minh gần đó. Đồng minh có thể nhấp vào lồng đèn để lướt đến vị trí của Thresh.",
+            },
+            {
+              type: "E",
+              name: "Lưỡi Hái Xoáy (Flay)",
+              description:
+                "(Nội tại) Các đòn đánh của Thresh tích tụ, gây thêm sát thương càng lâu chờ giữa các đòn. (Kích hoạt) Thresh quét xiềng xích, hất văng tất cả kẻ địch trúng phải theo hướng của đòn đánh.",
+            },
+            {
+              type: "R",
+              name: "Đóng Hộp (The Box)",
+              description:
+                "Thresh tạo ra một nhà tù với năm bức tường ma thuật. Kẻ địch chạm vào tường sẽ bị làm chậm và chịu sát thương phép. Mỗi bức tường chỉ có thể bị phá vỡ một lần.",
+            },
+          ],
+          specialFeatures: [
+            "Khả năng thu thập linh hồn vĩnh viễn tăng chỉ số là một cơ chế độc đáo",
+            "Chiếc lồng đèn (W) là công cụ hỗ trợ vô cùng linh hoạt để cứu đồng đội",
+            "Một trong số ít các hồn ma giữ được phần lớn bản thân sau Đại Suy Vong",
+            "Nạn nhân bị giam cầm vĩnh viễn trong lồng đèn, trở thành chứng nhân cho hành vi tàn bạo",
+          ],
         },
         {
           id: "viego",

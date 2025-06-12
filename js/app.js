@@ -60,10 +60,13 @@ class RuneterraApp {
       ?.addEventListener("click", () => this.closeAddChampionModal()); // Form events
     document
       .getElementById("addChampionForm")
-      ?.addEventListener("submit", (e) => this.handleAddChampion(e));
+      ?.addEventListener("submit", (e) => this.handleAddChampionExtended(e));
     document
       .getElementById("addSkillBtn")
       ?.addEventListener("click", () => this.addSkillField());
+    document
+      .getElementById("addFeatureBtn")
+      ?.addEventListener("click", () => this.addFeatureField());
 
     // Database management events
     document
@@ -188,24 +191,77 @@ class RuneterraApp {
     card.addEventListener("click", () => this.openModal(champion));
     return card;
   }
-
   openModal(champion) {
+    console.log("Opening modal for champion:", champion);
+    console.log("Champion skills:", champion.skills);
+    console.log("Champion specialFeatures:", champion.specialFeatures);
+
     const modal = document.getElementById("championModal");
     const modalBody = document.getElementById("modalBody");
 
-    if (!modal || !modalBody) return;
+    if (!modal || !modalBody) {
+      console.error("Modal elements not found!");
+      return;
+    }
 
+    // Enhanced skills display for detailed champion data
     let skillsHtml = "";
     if (champion.skills && champion.skills.length > 0) {
-      skillsHtml = `
+      // Check if skills are objects with detailed info
+      if (typeof champion.skills[0] === "object" && champion.skills[0].type) {
+        skillsHtml = `
+          <div class="mt-6">
+            <h4 class="text-lg font-semibold text-cyan-300 mb-3">🎯 Kỹ Năng Chi Tiết:</h4>
+            <div class="space-y-3">
+              ${champion.skills
+                .map(
+                  (skill) => `
+                <div class="bg-slate-700 p-4 rounded-lg border-l-4 border-cyan-500">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-cyan-600 text-white px-2 py-1 rounded text-xs font-bold">${skill.type}</span>
+                    <h5 class="text-cyan-300 font-semibold">${skill.name}</h5>
+                  </div>
+                  <p class="text-sm text-slate-300 leading-relaxed">${skill.description}</p>
+                </div>
+              `
+                )
+                .join("")}
+            </div>
+          </div>
+        `;
+      } else {
+        // Simple skills display for basic champion data
+        skillsHtml = `
+          <div class="mt-6">
+            <h4 class="text-lg font-semibold text-cyan-300 mb-3">Kỹ Năng:</h4>
+            <div class="space-y-2">
+              ${champion.skills
+                .map(
+                  (skill) => `
+                <div class="bg-slate-700 p-3 rounded-md">
+                  <p class="text-sm text-slate-300">${skill}</p>
+                </div>
+              `
+                )
+                .join("")}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Special features display
+    let specialFeaturesHtml = "";
+    if (champion.specialFeatures && champion.specialFeatures.length > 0) {
+      specialFeaturesHtml = `
         <div class="mt-6">
-          <h4 class="text-lg font-semibold text-cyan-300 mb-3">Kỹ Năng:</h4>
+          <h4 class="text-lg font-semibold text-yellow-300 mb-3">⭐ Điểm Đặc Biệt:</h4>
           <div class="space-y-2">
-            ${champion.skills
+            ${champion.specialFeatures
               .map(
-                (skill) => `
-              <div class="bg-slate-700 p-3 rounded-md">
-                <p class="text-sm text-slate-300">${skill}</p>
+                (feature) => `
+              <div class="bg-yellow-900/30 p-3 rounded-md border border-yellow-600/50">
+                <p class="text-sm text-yellow-100">• ${feature}</p>
               </div>
             `
               )
@@ -215,6 +271,86 @@ class RuneterraApp {
       `;
     }
 
+    // Additional info section
+    let additionalInfoHtml = "";
+    if (
+      champion.fullName ||
+      champion.species ||
+      champion.age ||
+      champion.weapon ||
+      champion.gameplay
+    ) {
+      additionalInfoHtml = `
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${
+            champion.fullName
+              ? `
+            <div class="bg-slate-700/50 p-3 rounded-lg">
+              <h5 class="text-cyan-300 font-semibold text-sm mb-1">📛 Tên Đầy Đủ:</h5>
+              <p class="text-slate-300 text-sm">${champion.fullName}</p>
+            </div>
+          `
+              : ""
+          }
+          ${
+            champion.species
+              ? `
+            <div class="bg-slate-700/50 p-3 rounded-lg">
+              <h5 class="text-cyan-300 font-semibold text-sm mb-1">🧬 Loài:</h5>
+              <p class="text-slate-300 text-sm">${champion.species}</p>
+            </div>
+          `
+              : ""
+          }
+          ${
+            champion.age
+              ? `
+            <div class="bg-slate-700/50 p-3 rounded-lg">
+              <h5 class="text-cyan-300 font-semibold text-sm mb-1">📅 Tuổi:</h5>
+              <p class="text-slate-300 text-sm">${champion.age}</p>
+            </div>
+          `
+              : ""
+          }
+          ${
+            champion.weapon
+              ? `
+            <div class="bg-slate-700/50 p-3 rounded-lg">
+              <h5 class="text-cyan-300 font-semibold text-sm mb-1">⚔️ Vũ Khí:</h5>
+              <p class="text-slate-300 text-sm">${champion.weapon}</p>
+            </div>
+          `
+              : ""
+          }
+        </div>
+      `;
+    }
+
+    // Gameplay section
+    let gameplayHtml = "";
+    if (champion.gameplay) {
+      gameplayHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-green-300 mb-3">🎮 Lối Chơi:</h4>
+          <div class="bg-green-900/30 p-4 rounded-lg border border-green-600/50">
+            <p class="text-sm text-green-100 leading-relaxed">${champion.gameplay}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Full lore section
+    let fullLoreHtml = "";
+    if (champion.fullLore && champion.fullLore !== champion.lore) {
+      fullLoreHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-purple-300 mb-3">📖 Câu Chuyện Đầy Đủ:</h4>
+          <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-600/50 max-h-64 overflow-y-auto">
+            <p class="text-sm text-purple-100 leading-relaxed whitespace-pre-line">${champion.fullLore}</p>
+          </div>
+        </div>
+      `;
+    }
     modalBody.innerHTML = `
       <div class="text-6xl mb-4 text-center">${champion.icon || "🎭"}</div>
       <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
@@ -223,16 +359,29 @@ class RuneterraApp {
       <p class="text-lg text-slate-400 mb-4 text-center">${
         champion.role || "Unknown Role"
       } - ${champion.regionName || "Unknown Region"}</p>
-      <div class="text-slate-300 leading-relaxed">
-        <p>${champion.lore || "Chưa có thông tin lore."}</p>
+      
+      ${additionalInfoHtml}
+      
+      <div class="mt-6">
+        <h4 class="text-lg font-semibold text-slate-300 mb-3">📜 Tóm Tắt:</h4>
+        <div class="text-slate-300 leading-relaxed bg-slate-700/50 p-4 rounded-lg">
+          <p>${champion.lore || "Chưa có thông tin lore."}</p>
+        </div>
       </div>
+      
+      ${gameplayHtml}
       ${skillsHtml}
+      ${specialFeaturesHtml}
+      ${fullLoreHtml}
+      
       ${
         champion.special
-          ? '<div class="mt-4 p-4 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg"><p class="text-sm text-white"><strong>Đặc biệt:</strong> Tướng có khả năng biến đổi giữa 4 dạng với cơ chế mua đồ tự động.</p></div>'
+          ? '<div class="mt-6 p-4 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg"><p class="text-sm text-white"><strong>🌟 Đặc biệt:</strong> Tướng có khả năng biến đổi giữa 4 dạng với cơ chế mua đồ tự động.</p></div>'
           : ""
       }
     `;
+
+    console.log("Modal HTML generated:", modalBody.innerHTML);
 
     modal.classList.remove("hidden");
   }
@@ -270,25 +419,35 @@ class RuneterraApp {
     document.getElementById("addChampionForm")?.reset();
     this.clearSkillFields();
   }
-
   addSkillField() {
     const container = document.getElementById("skillsContainer");
     if (!container) return;
 
     const skillDiv = document.createElement("div");
     skillDiv.className =
-      "skill-field grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 bg-slate-700 rounded-lg";
+      "skill-field grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-slate-700 rounded-lg";
 
     skillDiv.innerHTML = `
       <div>
+        <label class="block text-sm font-medium text-slate-300 mb-2">Loại Kỹ Năng</label>
+        <select class="skill-type w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" required>
+          <option value="">Chọn loại</option>
+          <option value="Passive">Passive</option>
+          <option value="Q">Q</option>
+          <option value="W">W</option>
+          <option value="E">E</option>
+          <option value="R">R</option>
+        </select>
+      </div>
+      <div>
         <label class="block text-sm font-medium text-slate-300 mb-2">Tên Kỹ Năng</label>
-        <input type="text" class="skill-name w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" placeholder="Q: Tên kỹ năng" required>
+        <input type="text" class="skill-name w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" placeholder="Tên kỹ năng" required>
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-2">Mô Tả Kỹ Năng</label>
-        <input type="text" class="skill-desc w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" placeholder="Mô tả hiệu ứng kỹ năng" required>
+        <textarea class="skill-desc w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" rows="2" placeholder="Mô tả hiệu ứng kỹ năng" required></textarea>
       </div>
-      <div class="md:col-span-2 flex justify-end">
+      <div class="md:col-span-3 flex justify-end">
         <button type="button" class="remove-skill px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm">
           ❌ Xóa
         </button>
@@ -303,10 +462,37 @@ class RuneterraApp {
     });
   }
 
+  addFeatureField() {
+    const container = document.getElementById("featuresContainer");
+    if (!container) return;
+
+    const featureDiv = document.createElement("div");
+    featureDiv.className = "feature-field flex gap-2 mb-3";
+
+    featureDiv.innerHTML = `
+      <input type="text" class="feature-text flex-1 bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5" placeholder="Nhập điểm đặc biệt..." required>
+      <button type="button" class="remove-feature px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm">
+        ❌
+      </button>
+    `;
+
+    container.appendChild(featureDiv);
+
+    // Add remove event listener
+    featureDiv
+      .querySelector(".remove-feature")
+      ?.addEventListener("click", () => {
+        featureDiv.remove();
+      });
+  }
   clearSkillFields() {
-    const container = document.getElementById("skillsContainer");
-    if (container) {
-      container.innerHTML = "";
+    const skillsContainer = document.getElementById("skillsContainer");
+    const featuresContainer = document.getElementById("featuresContainer");
+    if (skillsContainer) {
+      skillsContainer.innerHTML = "";
+    }
+    if (featuresContainer) {
+      featuresContainer.innerHTML = "";
     }
   }
 
@@ -379,6 +565,122 @@ class RuneterraApp {
           this.currentChampionType === "old" ? "tướng cũ" : "tướng mới"
         } "${name}" thành công!\n\n⚠️ Lưu ý: Để tướng hiển thị sau khi deploy, hãy copy code và thêm vào file data.js`
       ); // Show code modal
+      this.showCodeModal(code);
+    } catch (error) {
+      console.error("Lỗi khi thêm tướng:", error);
+      alert(`Lỗi: ${error.message}`);
+    }
+  }
+
+  // Updated handleAddChampion method with extended fields
+  handleAddChampionExtended(e) {
+    e.preventDefault();
+
+    try {
+      const name = document.getElementById("championName")?.value;
+      const icon = document.getElementById("championIcon")?.value;
+      const role = document.getElementById("championRole")?.value;
+      const region = document.getElementById("championRegion")?.value;
+      const lore = document.getElementById("championLore")?.value;
+
+      // Extended fields
+      const fullName = document.getElementById("championFullName")?.value;
+      const species = document.getElementById("championSpecies")?.value;
+      const age = document.getElementById("championAge")?.value;
+      const weapon = document.getElementById("championWeapon")?.value;
+      const fullLore = document.getElementById("championFullLore")?.value;
+      const gameplay = document.getElementById("championGameplay")?.value;
+
+      // Validate required fields
+      if (!name || !icon || !role || !region || !lore) {
+        alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
+        return;
+      }
+
+      // Create champion object
+      const newChampion = {
+        name: name,
+        icon: icon,
+        role: role,
+        region: region,
+        lore: lore,
+      };
+
+      // Add optional fields if provided
+      if (fullName) newChampion.fullName = fullName;
+      if (species) newChampion.species = species;
+      if (age) newChampion.age = age;
+      if (weapon) newChampion.weapon = weapon;
+      if (fullLore) newChampion.fullLore = fullLore;
+      if (gameplay) newChampion.gameplay = gameplay;
+
+      // Add skills if it's a new champion
+      if (this.currentChampionType === "new") {
+        const skillFields = document.querySelectorAll(".skill-field");
+        const skills = [];
+
+        skillFields.forEach((field) => {
+          const skillType = field.querySelector(".skill-type")?.value;
+          const skillName = field.querySelector(".skill-name")?.value;
+          const skillDesc = field.querySelector(".skill-desc")?.value;
+
+          if (skillType && skillName && skillDesc) {
+            skills.push({
+              type: skillType,
+              name: skillName,
+              description: skillDesc,
+            });
+          }
+        });
+
+        if (skills.length === 0) {
+          alert("Tướng mới cần có ít nhất 1 kỹ năng!");
+          return;
+        }
+
+        newChampion.skills = skills;
+      }
+
+      // Add special features
+      const featureFields = document.querySelectorAll(
+        ".feature-field .feature-text"
+      );
+      const specialFeatures = [];
+      featureFields.forEach((field) => {
+        if (field.value.trim()) {
+          specialFeatures.push(field.value.trim());
+        }
+      });
+      if (specialFeatures.length > 0) {
+        newChampion.specialFeatures = specialFeatures;
+      }
+
+      // Add champion to database
+      this.db.addChampion(
+        region,
+        newChampion,
+        this.currentChampionType === "new"
+      );
+
+      // Generate code for manual addition to data.js
+      const code = this.db.generateChampionCode(
+        region,
+        newChampion,
+        this.currentChampionType === "new"
+      );
+
+      // Close modal and refresh champions
+      this.closeAddChampionModal();
+      this.loadChampions();
+
+      // Show success message and code modal
+      alert(
+        `✅ Đã thêm ${
+          this.currentChampionType === "old" ? "tướng cũ" : "tướng mới"
+        } "${name}" thành công!\n\n⚠️ Lưu ý: Để tướng hiển thị sau khi deploy, hãy copy code và thêm vào file data.js`
+      );
+
+      // Show code modal
       this.showCodeModal(code);
     } catch (error) {
       console.error("Lỗi khi thêm tướng:", error);
