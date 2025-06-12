@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Translation Debug Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8 text-center">
+        🔍 Translation Debug Test
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Language Control -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-xl font-semibold mb-4">Language Control</h2>
+          <div class="space-y-3">
+            <button
+              id="setVi"
+              class="w-full px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+            >
+              🇻🇳 Set Vietnamese
+            </button>
+            <button
+              id="setEn"
+              class="w-full px-4 py-2 bg-green-600 rounded hover:bg-green-700"
+            >
+              🇺🇸 Set English
+            </button>
+            <button
+              id="setCh"
+              class="w-full px-4 py-2 bg-red-600 rounded hover:bg-red-700"
+            >
+              🇨🇳 Set Chinese
+            </button>
+          </div>
+          <div id="currentLangDisplay" class="mt-4 p-3 bg-gray-700 rounded">
+            Current: Loading...
+          </div>
+        </div>
+
+        <!-- Champion Data Display -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-xl font-semibold mb-4">Thresh Data Preview</h2>
+          <div id="threshData" class="space-y-2 text-sm">
+            Loading Thresh data...
+          </div>
+          <button
+            id="refreshThresh"
+            class="mt-4 w-full px-4 py-2 bg-purple-600 rounded hover:bg-purple-700"
+          >
+            🔄 Refresh Thresh Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Debug Log -->
+      <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Debug Log</h2>
+        <div
+          id="debugLog"
+          class="bg-black p-4 rounded text-green-400 font-mono text-sm h-64 overflow-y-auto"
+        >
+          Starting debug session...<br />
+        </div>
+        <button
+          id="clearLog"
+          class="mt-4 px-4 py-2 bg-red-600 rounded hover:bg-red-700"
+        >
+          Clear Log
+        </button>
+      </div>
+    </div>
+
+    <!-- Load scripts -->
+    <script src="js/translation-service.js?v=2.4"></script>
+    <script src="js/languages.js?v=2.4"></script>
+    <script src="js/data.js?v=2.4"></script>
+    <script src="js/database.js?v=2.4"></script>
+    <script src="js/app.js?v=2.4"></script>
+
+    <script>
+      let app, languageManager, db;
+
+      function log(message) {
+        const logDiv = document.getElementById("debugLog");
+        const timestamp = new Date().toLocaleTimeString();
+        logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+        console.log(`[DEBUG] ${message}`);
+      }
+
+      function updateCurrentLang() {
+        const currentLang = languageManager?.getCurrentLanguage() || "unknown";
+        const langInfo = languages[currentLang];
+        document.getElementById("currentLangDisplay").innerHTML = `
+                <strong>Current Language:</strong> ${langInfo?.flag} ${langInfo?.name} (${currentLang})
+            `;
+      }
+
+      function displayThreshData() {
+        try {
+          // Get Thresh from multiple sources to compare
+          log("Getting Thresh data from different sources...");
+
+          // From original championsDatabase
+          const originalThresh = window.championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          // From database getChampions method
+          const dbChampions = db?.getChampions("shadowisles", "old");
+          const dbThresh = dbChampions?.find((c) => c.name === "Thresh");
+
+          log(`Original Thresh name: "${originalThresh?.name || "NOT FOUND"}"`);
+          log(`DB Thresh name: "${dbThresh?.name || "NOT FOUND"}"`);
+          log(
+            `Original Thresh lore: "${
+              originalThresh?.lore?.substring(0, 50) || "NO LORE"
+            }..."`
+          );
+          log(
+            `DB Thresh lore: "${
+              dbThresh?.lore?.substring(0, 50) || "NO LORE"
+            }..."`
+          );
+
+          const threshDisplay = document.getElementById("threshData");
+          threshDisplay.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="bg-gray-700 p-3 rounded">
+                            <strong>Original Database:</strong><br>
+                            Name: ${originalThresh?.name || "NOT FOUND"}<br>
+                            Lore: ${
+                              originalThresh?.lore?.substring(0, 100) ||
+                              "NO LORE"
+                            }...
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <strong>DB.getChampions():</strong><br>
+                            Name: ${dbThresh?.name || "NOT FOUND"}<br>
+                            Lore: ${
+                              dbThresh?.lore?.substring(0, 100) || "NO LORE"
+                            }...
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <strong>Comparison:</strong><br>
+                            Same name: ${
+                              originalThresh?.name === dbThresh?.name
+                                ? "✅ YES"
+                                : "❌ NO"
+                            }<br>
+                            Same lore: ${
+                              originalThresh?.lore === dbThresh?.lore
+                                ? "✅ YES"
+                                : "❌ NO"
+                            }
+                        </div>
+                    </div>
+                `;
+        } catch (error) {
+          log(`Error displaying Thresh data: ${error.message}`);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          log("Initializing components...");
+
+          // Initialize components
+          app = new RuneterraApp();
+          languageManager = app.languageManager;
+          db = app.db;
+
+          log("Components initialized successfully");
+          updateCurrentLang();
+          displayThreshData();
+
+          // Event listeners
+          document
+            .getElementById("setVi")
+            .addEventListener("click", async () => {
+              log("Changing to Vietnamese...");
+              await languageManager.changeLanguage("vi");
+              updateCurrentLang();
+              displayThreshData();
+              log("Changed to Vietnamese complete");
+            });
+
+          document
+            .getElementById("setEn")
+            .addEventListener("click", async () => {
+              log("Changing to English...");
+              await languageManager.changeLanguage("en");
+              updateCurrentLang();
+              displayThreshData();
+              log("Changed to English complete");
+            });
+
+          document
+            .getElementById("setCh")
+            .addEventListener("click", async () => {
+              log("Changing to Chinese...");
+              await languageManager.changeLanguage("zh");
+              updateCurrentLang();
+              displayThreshData();
+              log("Changed to Chinese complete");
+            });
+
+          document
+            .getElementById("refreshThresh")
+            .addEventListener("click", () => {
+              log("Refreshing Thresh data...");
+              displayThreshData();
+            });
+
+          document.getElementById("clearLog").addEventListener("click", () => {
+            document.getElementById("debugLog").innerHTML = "Log cleared.<br>";
+          });
+        } catch (error) {
+          log(`Initialization error: ${error.message}`);
+        }
+      });
+    </script>
+  </body>
+</html>

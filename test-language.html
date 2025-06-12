@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Language System with Auto Translation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <h1 class="text-3xl font-bold mb-6">🌐 Test Hệ Thống Dịch Tự Động</h1>
+
+    <div class="mb-6 p-4 bg-blue-900 rounded-lg">
+      <h2 class="text-lg font-bold mb-2">Chọn ngôn ngữ:</h2>
+      <div class="flex gap-2">
+        <button id="testVi" class="px-4 py-2 bg-blue-600 rounded mr-2">
+          🇻🇳 Tiếng Việt
+        </button>
+        <button id="testEn" class="px-4 py-2 bg-green-600 rounded mr-2">
+          🇺🇸 English
+        </button>
+        <button id="testZh" class="px-4 py-2 bg-red-600 rounded">
+          🇨🇳 中文
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-slate-800 p-4 rounded-lg">
+        <h3 class="text-lg font-bold mb-4">🔤 Bản dịch UI:</h3>
+        <div class="space-y-2">
+          <p>
+            Tiêu đề ứng dụng:
+            <span class="text-cyan-300" id="appTitle" data-translate="appTitle"
+              >Loading...</span
+            >
+          </p>
+          <p>
+            Game 5vs5:
+            <span class="text-green-300" id="game5vs5" data-translate="game5vs5"
+              >Loading...</span
+            >
+          </p>
+          <p>
+            Thêm tướng:
+            <span
+              class="text-yellow-300"
+              id="addChampion"
+              data-translate="addChampion"
+              >Loading...</span
+            >
+          </p>
+          <p>
+            Kỹ năng:
+            <span class="text-purple-300" id="skills" data-translate="skills"
+              >Loading...</span
+            >
+          </p>
+          <p>
+            Tên đầy đủ:
+            <span class="text-pink-300" id="fullName" data-translate="fullName"
+              >Loading...</span
+            >
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-slate-800 p-4 rounded-lg">
+        <h3 class="text-lg font-bold mb-4">🎭 Test Dịch Champion:</h3>
+        <div id="championTest">
+          <p><strong>Tên:</strong> <span id="championName">Thresh</span></p>
+          <p><strong>Vai trò:</strong> <span id="championRole">Hỗ Trợ</span></p>
+          <p>
+            <strong>Lore:</strong>
+            <span id="championLore"
+              >Được gọi là Kẻ Canh Gác Xích Xen, Thresh là một linh hồn độc ác
+              từ Quần Đảo Bóng Đêm.</span
+            >
+          </p>
+          <div class="mt-3">
+            <strong>Kỹ năng:</strong>
+            <ul id="championSkills" class="list-disc list-inside mt-2">
+              <li>Death Sentence: Ném móc câu để kéo kẻ thù</li>
+              <li>Dark Passage: Tạo lồng đèn để đồng minh dịch chuyển</li>
+              <li>Flay: Quét xích để đẩy lùi kẻ thù</li>
+              <li>The Box: Tạo hộp tù làm chậm kẻ thù</li>
+            </ul>
+          </div>
+        </div>
+        <button
+          id="translateChampion"
+          class="mt-4 px-4 py-2 bg-purple-600 rounded hover:bg-purple-700"
+        >
+          🌐 Dịch Champion
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-yellow-900 rounded-lg">
+      <h3 class="text-lg font-bold mb-2">📊 Thống kê Cache:</h3>
+      <div id="cacheStats" class="text-sm">
+        <p>Số mục trong cache: <span id="cacheSize">0</span></p>
+        <p>Dung lượng cache: <span id="cacheMemory">0 KB</span></p>
+      </div>
+      <button
+        id="clearCache"
+        class="mt-2 px-3 py-1 bg-red-600 rounded hover:bg-red-700 text-sm"
+      >
+        🗑️ Xóa Cache
+      </button>
+    </div>
+
+    <div
+      id="loadingIndicator"
+      class="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg hidden"
+    >
+      🌐 Đang dịch...
+    </div>
+
+    <script src="js/translation-service.js"></script>
+    <script src="js/languages.js"></script>
+    <script>
+      const languageManager = new LanguageManager();
+      const translationService = new TranslationService();
+
+      // Sample champion data for testing
+      const sampleChampion = {
+        name: "Thresh",
+        role: "Hỗ Trợ",
+        lore: "Được gọi là Kẻ Canh Gác Xích Xen, Thresh là một linh hồn độc ác từ Quần Đảo Bóng Đêm.",
+        skills: [
+          "Death Sentence: Ném móc câu để kéo kẻ thù",
+          "Dark Passage: Tạo lồng đèn để đồng minh dịch chuyển",
+          "Flay: Quét xích để đẩy lùi kẻ thù",
+          "The Box: Tạo hộp tù làm chậm kẻ thù",
+        ],
+      };
+
+      // Update cache stats
+      function updateCacheStats() {
+        const stats = translationService.getCacheStats();
+        document.getElementById("cacheSize").textContent = stats.size;
+        document.getElementById("cacheMemory").textContent =
+          Math.round(stats.memoryUsage / 1024) + " KB";
+      }
+
+      // Show loading indicator
+      function showLoading(show) {
+        const indicator = document.getElementById("loadingIndicator");
+        if (show) {
+          indicator.classList.remove("hidden");
+        } else {
+          indicator.classList.add("hidden");
+        }
+      }
+
+      // Language change handlers
+      document.getElementById("testVi").addEventListener("click", async () => {
+        showLoading(true);
+        await languageManager.changeLanguage("vi");
+        showLoading(false);
+        updateCacheStats();
+      });
+
+      document.getElementById("testEn").addEventListener("click", async () => {
+        showLoading(true);
+        await languageManager.changeLanguage("en");
+        showLoading(false);
+        updateCacheStats();
+      });
+
+      document.getElementById("testZh").addEventListener("click", async () => {
+        showLoading(true);
+        await languageManager.changeLanguage("zh");
+        showLoading(false);
+        updateCacheStats();
+      });
+
+      // Champion translation test
+      document
+        .getElementById("translateChampion")
+        .addEventListener("click", async () => {
+          const currentLang = languageManager.getCurrentLanguage();
+          if (currentLang === "vi") {
+            alert("Hãy chọn ngôn ngữ khác để test dịch champion!");
+            return;
+          }
+
+          showLoading(true);
+
+          try {
+            const translatedChampion =
+              await translationService.translateChampion(
+                sampleChampion,
+                currentLang
+              );
+
+            document.getElementById("championName").textContent =
+              translatedChampion.name;
+            document.getElementById("championRole").textContent =
+              translatedChampion.role;
+            document.getElementById("championLore").textContent =
+              translatedChampion.lore;
+
+            const skillsList = document.getElementById("championSkills");
+            skillsList.innerHTML = "";
+            translatedChampion.skills.forEach((skill) => {
+              const li = document.createElement("li");
+              li.textContent = skill;
+              skillsList.appendChild(li);
+            });
+
+            updateCacheStats();
+          } catch (error) {
+            console.error("Translation error:", error);
+            alert("Lỗi khi dịch: " + error.message);
+          }
+
+          showLoading(false);
+        });
+
+      // Clear cache
+      document.getElementById("clearCache").addEventListener("click", () => {
+        translationService.clearCache();
+        updateCacheStats();
+        alert("Đã xóa cache!");
+      });
+
+      // Initial load
+      languageManager.updateContent();
+      updateCacheStats();
+    </script>
+  </body>
+</html>

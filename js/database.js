@@ -2,7 +2,41 @@
 class ChampionsDB {
   constructor() {
     this.storageKey = "runeterra_champions_db";
-    this.data = this.loadFromStorage() || championsDatabase;
+    const savedData = this.loadFromStorage();
+    this.data = savedData || championsDatabase;
+
+    // Debug: Check what data is loaded
+    console.log(
+      "ChampionsDB constructor - savedData:",
+      savedData ? "exists" : "null"
+    );
+    console.log(
+      "ChampionsDB constructor - using data source:",
+      savedData ? "localStorage" : "championsDatabase"
+    );
+
+    if (this.data.regions) {
+      const shadowIsles = this.data.regions.find((r) => r.id === "shadowisles");
+      if (shadowIsles) {
+        const thresh = shadowIsles.existingChampions.find(
+          (c) => c.name === "Thresh"
+        );
+        console.log(
+          "ChampionsDB constructor - Thresh data found:",
+          thresh ? "yes" : "no"
+        );
+        if (thresh) {
+          console.log(
+            "ChampionsDB constructor - Thresh skills:",
+            thresh.skills ? "exists" : "missing"
+          );
+          console.log(
+            "ChampionsDB constructor - Thresh specialFeatures:",
+            thresh.specialFeatures ? "exists" : "missing"
+          );
+        }
+      }
+    }
   }
 
   // Lưu dữ liệu vào localStorage
@@ -118,12 +152,20 @@ class ChampionsDB {
     this.saveToStorage();
     return true;
   }
-
   // Lấy tất cả champions theo filter
   getChampions(regionId = "all", championType = "old") {
     let champions = [];
 
-    this.data.regions.forEach((region) => {
+    // Always prioritize window.championsDatabase for translated data
+    const dataSource = window.championsDatabase || this.data;
+
+    console.log(
+      `getChampions - Using data source: ${
+        window.championsDatabase ? "window.championsDatabase" : "this.data"
+      }`
+    );
+
+    dataSource.regions.forEach((region) => {
       if (regionId === "all" || regionId === region.id) {
         const championList =
           championType === "old"
@@ -131,7 +173,26 @@ class ChampionsDB {
             : region.newChampions;
         if (championList && championList.length > 0) {
           champions = champions.concat(
-            championList.map((champ) => ({ ...champ, regionName: region.name }))
+            championList.map((champ) => {
+              // Create a copy to avoid modifying original data
+              const championWithRegion = { ...champ };
+              championWithRegion.regionName = region.name;
+
+              // Debug log for Thresh specifically
+              if (champ.name === "Thresh") {
+                console.log(`getChampions - Thresh data:`, {
+                  name: championWithRegion.name,
+                  lore: championWithRegion.lore
+                    ? championWithRegion.lore.substring(0, 50) + "..."
+                    : "N/A",
+                  skills: championWithRegion.skills
+                    ? championWithRegion.skills.length
+                    : 0,
+                });
+              }
+
+              return championWithRegion;
+            })
           );
         }
       }
@@ -142,10 +203,11 @@ class ChampionsDB {
       championType === "new" &&
       (regionId === "all" || regionId === "special")
     ) {
-      champions.push({
-        ...this.data.specialChampions.apocalypseKnight,
-        regionName: "Đặc Biệt",
-      });
+      const specialChampion = JSON.parse(
+        JSON.stringify(this.data.specialChampions.apocalypseKnight)
+      );
+      specialChampion.regionName = "Đặc Biệt";
+      champions.push(specialChampion);
     }
 
     return champions;

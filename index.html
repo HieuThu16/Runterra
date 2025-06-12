@@ -11,15 +11,53 @@
   <body class="bg-slate-900 text-slate-100 min-h-screen">
     <!-- Header -->
     <header class="bg-slate-800 shadow-lg">
-      <div class="container mx-auto px-4 py-6">
+      <div
+        class="container mx-auto px-4 py-6 flex justify-between items-center"
+      >
         <h1
-          class="text-4xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+          class="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+          data-translate="appTitle"
         >
           🎮 Runeterra Games Hub
         </h1>
+
+        <!-- Language Selector -->
+        <div class="relative">
+          <button
+            id="languageSelector"
+            class="flex items-center space-x-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-all duration-300"
+          >
+            🇻🇳 Tiếng Việt
+          </button>
+          <div
+            id="languageMenu"
+            class="absolute right-0 mt-2 bg-slate-800 border border-slate-600 rounded-lg shadow-lg hidden z-50"
+          >
+            <button
+              class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
+              data-lang="vi"
+            >
+              <span>🇻🇳</span>
+              <span>Tiếng Việt</span>
+            </button>
+            <button
+              class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
+              data-lang="en"
+            >
+              <span>🇺🇸</span>
+              <span>English</span>
+            </button>
+            <button
+              class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
+              data-lang="zh"
+            >
+              <span>🇨🇳</span>
+              <span>中文</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
-
     <!-- Game Navigation -->
     <nav class="bg-slate-800 border-b border-slate-700">
       <div class="container mx-auto px-4 py-4">
@@ -27,12 +65,14 @@
           <button
             id="game5vs5Tab"
             class="game-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
+            data-translate="game5vs5"
           >
             ⚔️ Game 5vs5
           </button>
           <button
             id="cardGameTab"
             class="game-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+            data-translate="cardGame"
           >
             🃏 Game Lá Bài
           </button>
@@ -49,19 +89,26 @@
           <label
             for="regionFilter"
             class="block text-sm font-medium text-slate-300 mb-2"
+            data-translate="selectRegion"
             >Chọn Vùng Đất:</label
           >
           <select
             id="regionFilter"
             class="bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
           >
-            <option value="all">Tất Cả Vùng Đất</option>
-            <option value="void">🕳️ Hư Không</option>
-            <option value="shadowisles">👻 Quần Đảo Bóng Đêm</option>
-            <option value="demacia">⚜️ Demacia</option>
-            <option value="noxus">🗡️ Noxus</option>
-            <option value="ionia">🌸 Ionia</option>
-            <option value="piltover">⚙️ Piltover</option>
+            <option value="all" data-translate="allRegions">
+              Tất Cả Vùng Đất
+            </option>
+            <option value="void" data-translate="void">🕳️ Hư Không</option>
+            <option value="shadowisles" data-translate="shadowisles">
+              👻 Quần Đảo Bóng Đêm
+            </option>
+            <option value="demacia" data-translate="demacia">⚜️ Demacia</option>
+            <option value="noxus" data-translate="noxus">🗡️ Noxus</option>
+            <option value="ionia" data-translate="ionia">🌸 Ionia</option>
+            <option value="piltover" data-translate="piltover">
+              ⚙️ Piltover
+            </option>
           </select>
         </div>
         <!-- Champion Type Tabs -->
@@ -69,48 +116,61 @@
           <button
             id="oldChampionsTab"
             class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
+            data-translate="oldChampions"
           >
             📚 Tướng Cũ
           </button>
           <button
             id="newChampionsTab"
             class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+            data-translate="newChampions"
           >
             ✨ Tướng Mới
           </button>
           <button
             id="addChampionBtn"
             class="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-all duration-300"
+            data-translate="addChampion"
           >
             ➕ Thêm Tướng
           </button>
         </div>
-
         <!-- Database Management -->
         <div class="flex justify-center space-x-2 mb-6">
           <button
             id="downloadDbBtn"
             class="px-3 py-1 text-sm rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-300"
+            data-translate="backup"
           >
             📥 Backup
           </button>
           <button
             id="uploadDbBtn"
             class="px-3 py-1 text-sm rounded-lg bg-purple-600 text-white font-medium hover:bg-purple-700 transition-all duration-300"
+            data-translate="restore"
           >
             📤 Restore
           </button>
           <button
             id="resetDbBtn"
             class="px-3 py-1 text-sm rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-300"
+            data-translate="reset"
           >
             🔄 Reset
           </button>
           <button
             id="statsBtn"
             class="px-3 py-1 text-sm rounded-lg bg-cyan-600 text-white font-medium hover:bg-cyan-700 transition-all duration-300"
+            data-translate="stats"
           >
             📊 Stats
+          </button>
+          <button
+            id="clearTranslationCacheBtn"
+            class="px-3 py-1 text-sm rounded-lg bg-orange-600 text-white font-medium hover:bg-orange-700 transition-all duration-300"
+            title="Xóa cache dịch thuật"
+          >
+            🌐 Clear Cache
           </button>
         </div>
         <input type="file" id="uploadDbInput" accept=".json" class="hidden" />
@@ -123,19 +183,24 @@
           <!-- Champions will be loaded here -->
         </div>
       </section>
-
       <!-- Card Game Content -->
       <section id="cardGameContent" class="game-content hidden">
         <div class="text-center">
-          <h2 class="text-3xl font-bold text-cyan-400 mb-6">
+          <h2
+            class="text-3xl font-bold text-cyan-400 mb-6"
+            data-translate="cardGameTitle"
+          >
             🃏 Game Lá Bài Runeterra
           </h2>
           <div class="bg-slate-800 p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
             <div class="text-6xl mb-4">🚧</div>
-            <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+            <h3
+              class="text-xl font-semibold text-cyan-300 mb-4"
+              data-translate="inDevelopment"
+            >
               Đang Phát Triển
             </h3>
-            <p class="text-slate-400 mb-6">
+            <p class="text-slate-400 mb-6" data-translate="cardGameDesc">
               Game lá bài Runeterra đang được phát triển với các cơ chế mới thú
               vị. Sẽ có các loại bài bẫy, bài phép thuật và nhiều chiến thuật đa
               dạng.
@@ -143,15 +208,27 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="bg-slate-700 p-4 rounded-lg">
                 <div class="text-2xl mb-2">🎯</div>
-                <h4 class="font-semibold text-cyan-300 mb-2">Bài Bẫy</h4>
-                <p class="text-sm text-slate-400">
+                <h4
+                  class="font-semibold text-cyan-300 mb-2"
+                  data-translate="trapCards"
+                >
+                  Bài Bẫy
+                </h4>
+                <p class="text-sm text-slate-400" data-translate="trapDesc">
                   Thiết lập bẫy để phục kích đối thủ
                 </p>
               </div>
               <div class="bg-slate-700 p-4 rounded-lg">
                 <div class="text-2xl mb-2">⚡</div>
-                <h4 class="font-semibold text-cyan-300 mb-2">Phép Thuật</h4>
-                <p class="text-sm text-slate-400">Sử dụng ma thuật mạnh mẽ</p>
+                <h4
+                  class="font-semibold text-cyan-300 mb-2"
+                  data-translate="spellCards"
+                >
+                  Phép Thuật
+                </h4>
+                <p class="text-sm text-slate-400" data-translate="spellDesc">
+                  Sử dụng ma thuật mạnh mẽ
+                </p>
               </div>
             </div>
           </div>
@@ -462,14 +539,16 @@
     </div>
     <!-- Footer -->
     <footer class="text-center py-8 mt-12 border-t border-slate-700">
-      <p class="text-slate-500 text-sm">
+      <p class="text-slate-500 text-sm" data-translate="footerText">
         🎮 Runeterra Games Hub - Khám phá tướng cũ, mới và game lá bài
       </p>
     </footer>
     <!-- Load JavaScript modules -->
-    <script src="js/data.js?v=2.1"></script>
-    <script src="js/database.js?v=2.1"></script>
-    <script src="js/app.js?v=2.1"></script>
+    <script src="js/translation-service.js?v=2.8"></script>
+    <script src="js/languages.js?v=2.8"></script>
+    <script src="js/data.js?v=2.8"></script>
+    <script src="js/database.js?v=2.8"></script>
+    <script src="js/app.js?v=2.8"></script>
 
     <script>
       // Initialize the application when DOM is loaded

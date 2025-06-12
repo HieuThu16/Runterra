@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug Translation Issue</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8 text-center">
+        🐛 Debug Translation Issue
+      </h1>
+
+      <div class="mb-6 p-4 bg-red-900 border border-red-600 rounded-lg">
+        <h2 class="text-xl font-semibold text-red-300 mb-2">❌ Problem:</h2>
+        <p class="text-red-100">
+          Khi chuyển sang tiếng Anh, UI được dịch nhưng nội dung Thresh (Lore,
+          Gameplay, Skills) vẫn tiếng Việt.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Controls -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-xl font-semibold mb-4">🔧 Test Controls</h2>
+          <div class="space-y-3">
+            <button
+              id="switchEn"
+              class="w-full px-4 py-3 bg-green-600 rounded hover:bg-green-700 font-semibold"
+            >
+              🇺🇸 Switch to English & Translate
+            </button>
+            <button
+              id="checkThresh"
+              class="w-full px-4 py-3 bg-blue-600 rounded hover:bg-blue-700 font-semibold"
+            >
+              🔍 Check Thresh Data
+            </button>
+            <button
+              id="openModal"
+              class="w-full px-4 py-3 bg-purple-600 rounded hover:bg-purple-700 font-semibold"
+            >
+              🎭 Open Thresh Modal
+            </button>
+            <button
+              id="clearCache"
+              class="w-full px-4 py-3 bg-red-600 rounded hover:bg-red-700 font-semibold"
+            >
+              🗑️ Clear Translation Cache
+            </button>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-xl font-semibold mb-4">📊 Status</h2>
+          <div class="space-y-3 text-sm">
+            <div class="p-3 bg-gray-700 rounded">
+              <strong>Current Language:</strong> <span id="currentLang">-</span>
+            </div>
+            <div class="p-3 bg-gray-700 rounded">
+              <strong>Translation Status:</strong>
+              <span id="transStatus">-</span>
+            </div>
+            <div class="p-3 bg-gray-700 rounded">
+              <strong>Cache Size:</strong> <span id="cacheSize">-</span>
+            </div>
+            <div class="p-3 bg-gray-700 rounded">
+              <strong>Last Action:</strong> <span id="lastAction">Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thresh Data Analysis -->
+      <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">🎭 Thresh Data Analysis</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Before Translation -->
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h3 class="font-semibold text-blue-300 mb-3">📥 Original Data</h3>
+            <div class="text-xs space-y-2">
+              <div><strong>Name:</strong> <span id="origName">-</span></div>
+              <div><strong>Role:</strong> <span id="origRole">-</span></div>
+              <div>
+                <strong>Lore:</strong>
+                <div
+                  id="origLore"
+                  class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+                >
+                  -
+                </div>
+              </div>
+              <div>
+                <strong>Gameplay:</strong>
+                <div
+                  id="origGameplay"
+                  class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+                >
+                  -
+                </div>
+              </div>
+              <div>
+                <strong>Skills Count:</strong> <span id="origSkills">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- After Translation -->
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h3 class="font-semibold text-green-300 mb-3">
+              📤 Translated Data
+            </h3>
+            <div class="text-xs space-y-2">
+              <div><strong>Name:</strong> <span id="transName">-</span></div>
+              <div><strong>Role:</strong> <span id="transRole">-</span></div>
+              <div>
+                <strong>Lore:</strong>
+                <div
+                  id="transLore"
+                  class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+                >
+                  -
+                </div>
+              </div>
+              <div>
+                <strong>Gameplay:</strong>
+                <div
+                  id="transGameplay"
+                  class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+                >
+                  -
+                </div>
+              </div>
+              <div>
+                <strong>Skills Count:</strong> <span id="transSkills">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debug Log -->
+      <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">📝 Debug Log</h2>
+        <div
+          id="debugLog"
+          class="bg-black p-4 rounded text-green-400 font-mono text-xs h-64 overflow-y-auto"
+        >
+          Debug initialized...<br />
+        </div>
+        <button
+          id="clearLog"
+          class="mt-3 px-4 py-2 bg-red-600 rounded text-sm hover:bg-red-700"
+        >
+          Clear Log
+        </button>
+      </div>
+    </div>
+    <!-- Load scripts -->
+    <script src="js/translation-service.js?v=2.7"></script>
+    <script src="js/languages.js?v=2.7"></script>
+    <script src="js/data.js?v=2.7"></script>
+    <script src="js/database.js?v=2.7"></script>
+    <script src="js/app.js?v=2.7"></script>
+
+    <script>
+      let app, languageManager, db;
+      let originalThresh = null;
+
+      function log(message, isError = false) {
+        const logDiv = document.getElementById("debugLog");
+        const timestamp = new Date().toLocaleTimeString();
+        const color = isError ? "text-red-400" : "text-green-400";
+        logDiv.innerHTML += `<span class="${color}">[${timestamp}] ${message}</span><br>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+        console.log(message);
+      }
+
+      function updateStatus() {
+        document.getElementById("currentLang").textContent =
+          languageManager.getCurrentLanguage();
+        document.getElementById("transStatus").textContent =
+          languageManager.isTranslating ? "Translating..." : "Ready";
+
+        const cacheStats = languageManager.translationService.getCacheStats();
+        document.getElementById(
+          "cacheSize"
+        ).textContent = `${cacheStats.size} items`;
+      }
+
+      function findThreshInData() {
+        try {
+          // Get from window.championsDatabase (where translations are stored)
+          const thresh = window.championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          log(
+            `Found Thresh in window.championsDatabase: ${thresh ? "YES" : "NO"}`
+          );
+          if (thresh) {
+            log(`- Name: "${thresh.name}"`);
+            log(`- Role: "${thresh.role}"`);
+            log(
+              `- Lore starts with: "${(thresh.lore || "").substring(0, 50)}..."`
+            );
+          }
+          return thresh;
+        } catch (error) {
+          log(`Error finding Thresh: ${error.message}`, true);
+          return null;
+        }
+      }
+
+      function findThreshFromApp() {
+        try {
+          // Get from app database
+          const champions = db.getChampions("shadowisles", "old");
+          const thresh = champions.find((c) => c.name === "Thresh");
+
+          log(`Found Thresh from app.db: ${thresh ? "YES" : "NO"}`);
+          if (thresh) {
+            log(`- Name: "${thresh.name}"`);
+            log(`- Role: "${thresh.role}"`);
+            log(
+              `- Lore starts with: "${(thresh.lore || "").substring(0, 50)}..."`
+            );
+          }
+          return thresh;
+        } catch (error) {
+          log(`Error getting Thresh from app: ${error.message}`, true);
+          return null;
+        }
+      }
+
+      function displayThreshData(thresh, prefix) {
+        if (!thresh) {
+          document.getElementById(prefix + "Name").textContent = "NOT FOUND";
+          document.getElementById(prefix + "Role").textContent = "NOT FOUND";
+          document.getElementById(prefix + "Lore").textContent = "NOT FOUND";
+          document.getElementById(prefix + "Gameplay").textContent =
+            "NOT FOUND";
+          document.getElementById(prefix + "Skills").textContent = "NOT FOUND";
+          return;
+        }
+
+        document.getElementById(prefix + "Name").textContent =
+          thresh.name || "N/A";
+        document.getElementById(prefix + "Role").textContent =
+          thresh.role || "N/A";
+        document.getElementById(prefix + "Lore").textContent =
+          thresh.lore || "N/A";
+        document.getElementById(prefix + "Gameplay").textContent =
+          thresh.gameplay || "N/A";
+        document.getElementById(prefix + "Skills").textContent = thresh.skills
+          ? thresh.skills.length
+          : 0;
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          log("🚀 Initializing debug test...");
+          app = new RuneterraApp();
+          languageManager = app.languageManager;
+          db = app.db;
+
+          updateStatus();
+          log("✅ App initialized successfully");
+
+          // Save original Thresh data
+          originalThresh = findThreshInData();
+          if (originalThresh) {
+            displayThreshData(originalThresh, "orig");
+          }
+
+          // Event listeners
+          document
+            .getElementById("switchEn")
+            .addEventListener("click", async () => {
+              log("🔄 SWITCHING TO ENGLISH...");
+              document.getElementById("lastAction").textContent =
+                "Switching to English...";
+
+              try {
+                await languageManager.changeLanguage("en");
+                log("✅ Language switched to English");
+
+                // Check Thresh data after translation
+                const translatedThresh = findThreshFromApp();
+                displayThreshData(translatedThresh, "trans");
+
+                updateStatus();
+                document.getElementById("lastAction").textContent =
+                  "Switched to English";
+              } catch (error) {
+                log(`❌ Error switching language: ${error.message}`, true);
+                document.getElementById("lastAction").textContent =
+                  "Error switching language";
+              }
+            });
+
+          document
+            .getElementById("checkThresh")
+            .addEventListener("click", () => {
+              log("🔍 CHECKING THRESH DATA...");
+              document.getElementById("lastAction").textContent =
+                "Checking Thresh data...";
+
+              const threshFromData = findThreshInData();
+              const threshFromApp = findThreshFromApp();
+
+              log(`Data comparison:`);
+              log(
+                `- window.championsDatabase Thresh: ${
+                  threshFromData ? "Found" : "Not found"
+                }`
+              );
+              log(`- app.db Thresh: ${threshFromApp ? "Found" : "Not found"}`);
+
+              if (threshFromData && threshFromApp) {
+                log(
+                  `- Same object reference: ${
+                    threshFromData === threshFromApp ? "YES" : "NO"
+                  }`
+                );
+                log(
+                  `- Names match: ${
+                    threshFromData.name === threshFromApp.name ? "YES" : "NO"
+                  }`
+                );
+                log(
+                  `- Lore match: ${
+                    threshFromData.lore === threshFromApp.lore ? "YES" : "NO"
+                  }`
+                );
+              }
+
+              displayThreshData(threshFromApp, "trans");
+              document.getElementById("lastAction").textContent =
+                "Thresh data checked";
+            });
+
+          document.getElementById("openModal").addEventListener("click", () => {
+            const thresh = findThreshFromApp();
+            if (thresh) {
+              log("🎭 Opening Thresh modal...");
+              app.openModal(thresh);
+              document.getElementById("lastAction").textContent =
+                "Modal opened";
+            } else {
+              log("❌ No Thresh data to show modal", true);
+              document.getElementById("lastAction").textContent =
+                "No Thresh data";
+            }
+          });
+
+          document
+            .getElementById("clearCache")
+            .addEventListener("click", () => {
+              log("🗑️ Clearing translation cache...");
+              languageManager.translationService.clearCache();
+              updateStatus();
+              document.getElementById("lastAction").textContent =
+                "Cache cleared";
+            });
+
+          document.getElementById("clearLog").addEventListener("click", () => {
+            document.getElementById("debugLog").innerHTML = "Log cleared.<br>";
+          });
+        } catch (error) {
+          log(`❌ Initialization error: ${error.message}`, true);
+        }
+      });
+    </script>
+  </body>
+</html>

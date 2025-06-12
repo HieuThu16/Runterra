@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-Language System Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8 text-center">
+        🌐 Multi-Language System Test
+      </h1>
+
+      <!-- Language Selector Test -->
+      <div class="mb-8 p-6 bg-gray-800 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Language Selector Test</h2>
+        <div class="flex items-center space-x-4">
+          <button
+            id="testVi"
+            class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+          >
+            🇻🇳 Vietnamese
+          </button>
+          <button
+            id="testEn"
+            class="px-4 py-2 bg-green-600 rounded hover:bg-green-700"
+          >
+            🇺🇸 English
+          </button>
+          <button
+            id="testZh"
+            class="px-4 py-2 bg-red-600 rounded hover:bg-red-700"
+          >
+            🇨🇳 Chinese
+          </button>
+        </div>
+        <div id="currentLang" class="mt-4 p-3 bg-gray-700 rounded">
+          Current Language: <span id="langDisplay">-</span>
+        </div>
+      </div>
+
+      <!-- Translation Test -->
+      <div class="mb-8 p-6 bg-gray-800 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Translation Test</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-2"
+              >Input Text (Vietnamese):</label
+            >
+            <textarea
+              id="inputText"
+              class="w-full p-3 bg-gray-700 rounded border border-gray-600 text-white"
+              rows="3"
+              placeholder="Nhập văn bản tiếng Việt..."
+            >
+Thresh là một tướng rất mạnh trong vùng đất Shadow Isles với khả năng hỗ trợ đồng đội xuất sắc.</textarea
+            >
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2"
+              >Translated Text:</label
+            >
+            <div
+              id="translatedText"
+              class="w-full p-3 bg-gray-700 rounded border border-gray-600 min-h-[84px] flex items-center"
+            >
+              Translation will appear here...
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 flex space-x-2">
+          <button
+            id="translateToEn"
+            class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+          >
+            Translate to English
+          </button>
+          <button
+            id="translateToZh"
+            class="px-4 py-2 bg-purple-600 rounded hover:bg-purple-700"
+          >
+            Translate to Chinese
+          </button>
+        </div>
+      </div>
+
+      <!-- Cache Test -->
+      <div class="mb-8 p-6 bg-gray-800 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Cache System Test</h2>
+        <div id="cacheStats" class="mb-4 p-3 bg-gray-700 rounded">
+          Loading cache statistics...
+        </div>
+        <div class="flex space-x-2">
+          <button
+            id="refreshStats"
+            class="px-4 py-2 bg-cyan-600 rounded hover:bg-cyan-700"
+          >
+            Refresh Stats
+          </button>
+          <button
+            id="clearCache"
+            class="px-4 py-2 bg-red-600 rounded hover:bg-red-700"
+          >
+            Clear Cache
+          </button>
+        </div>
+      </div>
+
+      <!-- UI Elements Test -->
+      <div class="mb-8 p-6 bg-gray-800 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">UI Translation Test</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div
+            data-translate="appTitle"
+            class="p-3 bg-gray-700 rounded text-center"
+          >
+            App Title
+          </div>
+          <div
+            data-translate="game5vs5"
+            class="p-3 bg-gray-700 rounded text-center"
+          >
+            5vs5 Game
+          </div>
+          <div
+            data-translate="cardGame"
+            class="p-3 bg-gray-700 rounded text-center"
+          >
+            Card Game
+          </div>
+          <div
+            data-translate="addChampion"
+            class="p-3 bg-gray-700 rounded text-center"
+          >
+            Add Champion
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Display -->
+      <div id="statusDisplay" class="p-4 bg-gray-800 rounded-lg">
+        <h3 class="font-semibold mb-2">Test Status:</h3>
+        <div id="statusText" class="text-gray-300">Ready to test...</div>
+      </div>
+    </div>
+
+    <!-- Load the actual translation system -->
+    <script src="js/translation-service.js"></script>
+    <script src="js/languages.js"></script>
+
+    <script>
+      // Initialize test system
+      let translationService;
+      let languageManager;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          translationService = new TranslationService();
+          languageManager = new LanguageManager();
+
+          updateStatus("✅ Translation system loaded successfully");
+          updateCacheStats();
+          updateCurrentLanguage();
+
+          // Set up event listeners
+          setupEventListeners();
+        } catch (error) {
+          updateStatus("❌ Error loading translation system: " + error.message);
+        }
+      });
+
+      function setupEventListeners() {
+        // Language change buttons
+        document
+          .getElementById("testVi")
+          .addEventListener("click", () => changeLanguage("vi"));
+        document
+          .getElementById("testEn")
+          .addEventListener("click", () => changeLanguage("en"));
+        document
+          .getElementById("testZh")
+          .addEventListener("click", () => changeLanguage("zh"));
+
+        // Translation buttons
+        document
+          .getElementById("translateToEn")
+          .addEventListener("click", () => testTranslation("en"));
+        document
+          .getElementById("translateToZh")
+          .addEventListener("click", () => testTranslation("zh"));
+
+        // Cache buttons
+        document
+          .getElementById("refreshStats")
+          .addEventListener("click", updateCacheStats);
+        document
+          .getElementById("clearCache")
+          .addEventListener("click", clearTranslationCache);
+      }
+
+      async function changeLanguage(langCode) {
+        try {
+          updateStatus(`🌐 Switching to ${langCode}...`);
+          await languageManager.changeLanguage(langCode);
+          updateCurrentLanguage();
+          updateStatus(`✅ Language changed to ${langCode}`);
+        } catch (error) {
+          updateStatus(`❌ Error changing language: ${error.message}`);
+        }
+      }
+
+      async function testTranslation(targetLang) {
+        const inputText = document.getElementById("inputText").value.trim();
+        if (!inputText) {
+          updateStatus("❌ Please enter some text to translate");
+          return;
+        }
+
+        try {
+          updateStatus(`🔄 Translating to ${targetLang}...`);
+          const translatedText = await translationService.translateText(
+            inputText,
+            targetLang,
+            "vi"
+          );
+          document.getElementById("translatedText").textContent =
+            translatedText;
+          updateStatus(`✅ Translation completed`);
+          updateCacheStats();
+        } catch (error) {
+          updateStatus(`❌ Translation error: ${error.message}`);
+        }
+      }
+
+      function updateCacheStats() {
+        try {
+          const stats = translationService.getCacheStats();
+          document.getElementById("cacheStats").innerHTML = `
+                    <strong>Cache Statistics:</strong><br>
+                    📊 Cached translations: ${stats.size}<br>
+                    💾 Memory usage: ${Math.round(
+                      stats.memoryUsage / 1024
+                    )} KB<br>
+                    🕒 Last updated: ${new Date().toLocaleTimeString()}
+                `;
+        } catch (error) {
+          document.getElementById("cacheStats").textContent =
+            "Error loading cache stats";
+        }
+      }
+
+      function clearTranslationCache() {
+        try {
+          translationService.clearCache();
+          updateCacheStats();
+          updateStatus("✅ Cache cleared successfully");
+        } catch (error) {
+          updateStatus(`❌ Error clearing cache: ${error.message}`);
+        }
+      }
+
+      function updateCurrentLanguage() {
+        const currentLang = languageManager.getCurrentLanguage();
+        const langInfo = languages[currentLang];
+        document.getElementById(
+          "langDisplay"
+        ).textContent = `${langInfo.flag} ${langInfo.name} (${currentLang})`;
+      }
+
+      function updateStatus(message) {
+        document.getElementById(
+          "statusText"
+        ).textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+      }
+    </script>
+  </body>
+</html>

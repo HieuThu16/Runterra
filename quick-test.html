@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Test - Runeterra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8 text-center">
+        🔧 Quick JavaScript Test
+      </h1>
+
+      <div id="testResults" class="space-y-4">
+        <div class="p-4 bg-gray-800 rounded-lg">
+          <h3 class="font-semibold mb-2">Loading JavaScript Files...</h3>
+          <div id="loadStatus" class="text-gray-400">Initializing...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load JavaScript files in order -->
+    <script>
+      console.log("🔧 Starting JavaScript tests...");
+
+      function updateStatus(message, isError = false) {
+        const status = document.getElementById("loadStatus");
+        if (status) {
+          status.innerHTML += "<br>" + (isError ? "❌ " : "✅ ") + message;
+          if (isError) {
+            status.className = "text-red-400";
+          }
+        }
+        console.log(isError ? "❌" : "✅", message);
+      }
+
+      updateStatus("Starting tests...");
+    </script>
+
+    <script
+      src="js/translation-service.js?v=2.3"
+      onerror="updateStatus('Failed to load translation-service.js', true)"
+      onload="updateStatus('Loaded translation-service.js')"
+    ></script>
+    <script
+      src="js/languages.js?v=2.3"
+      onerror="updateStatus('Failed to load languages.js', true)"
+      onload="updateStatus('Loaded languages.js')"
+    ></script>
+    <script
+      src="js/data.js?v=2.3"
+      onerror="updateStatus('Failed to load data.js', true)"
+      onload="updateStatus('Loaded data.js')"
+    ></script>
+    <script
+      src="js/database.js?v=2.3"
+      onerror="updateStatus('Failed to load database.js', true)"
+      onload="updateStatus('Loaded database.js')"
+    ></script>
+    <script
+      src="js/app.js?v=2.3"
+      onerror="updateStatus('Failed to load app.js', true)"
+      onload="updateStatus('Loaded app.js')"
+    ></script>
+
+    <script>
+      // Test after all scripts loaded
+      setTimeout(() => {
+        try {
+          updateStatus("Testing TranslationService...");
+          const translationService = new TranslationService();
+          updateStatus("TranslationService created successfully");
+
+          updateStatus("Testing LanguageManager...");
+          const languageManager = new LanguageManager();
+          updateStatus("LanguageManager created successfully");
+
+          updateStatus("Testing RuneterraApp...");
+          const app = new RuneterraApp();
+          updateStatus("RuneterraApp created successfully");
+
+          updateStatus("All tests passed! 🎉");
+        } catch (error) {
+          updateStatus("Error during testing: " + error.message, true);
+          console.error("Test error:", error);
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

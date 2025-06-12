@@ -1,10 +1,37 @@
 // Application Logic
 class RuneterraApp {
   constructor() {
+    // Ensure window.championsDatabase is initialized for translations
+    if (!window.championsDatabase) {
+      window.championsDatabase = JSON.parse(JSON.stringify(championsDatabase));
+      console.log(
+        "RuneterraApp constructor - Initialized window.championsDatabase"
+      );
+    }
+
+    // Debug: Check if championsDatabase is loaded properly
+    console.log(
+      "RuneterraApp constructor - championsDatabase:",
+      championsDatabase
+    );
+    if (championsDatabase && championsDatabase.regions) {
+      const shadowIsles = championsDatabase.regions.find(
+        (r) => r.id === "shadowisles"
+      );
+      if (shadowIsles) {
+        const thresh = shadowIsles.existingChampions.find(
+          (c) => c.name === "Thresh"
+        );
+        console.log("RuneterraApp constructor - Raw Thresh data:", thresh);
+      }
+    }
     this.db = new ChampionsDB();
     this.currentGame = "5vs5";
     this.currentRegion = "all";
     this.currentChampionType = "old";
+
+    // Initialize language manager
+    this.languageManager = new LanguageManager();
 
     this.initializeEventListeners();
     this.loadChampions();
@@ -84,8 +111,9 @@ class RuneterraApp {
     document
       .getElementById("statsBtn")
       ?.addEventListener("click", () => this.showStats());
-
-    // Code modal events
+    document
+      .getElementById("clearTranslationCacheBtn")
+      ?.addEventListener("click", () => this.clearTranslationCache()); // Code modal events
     document
       .getElementById("codeModalCloseButton")
       ?.addEventListener("click", () => this.closeCodeModal());
@@ -95,6 +123,40 @@ class RuneterraApp {
     document
       .getElementById("copyCodeBtn")
       ?.addEventListener("click", () => this.copyCode());
+
+    // Language selector events
+    document
+      .getElementById("languageSelector")
+      ?.addEventListener("click", () => this.toggleLanguageMenu()); // Language option events
+    document.querySelectorAll(".language-option").forEach((option) => {
+      option.addEventListener("click", async (e) => {
+        const lang = e.currentTarget.getAttribute("data-lang");
+        console.log("Changing language to:", lang);
+
+        try {
+          await this.languageManager.changeLanguage(lang);
+          this.closeLanguageMenu();
+          console.log("Language changed successfully");
+        } catch (error) {
+          console.error("Error changing language:", error);
+          alert("Lỗi khi chuyển ngôn ngữ: " + error.message);
+        }
+      });
+    });
+
+    // Close language menu when clicking outside
+    document.addEventListener("click", (e) => {
+      const languageMenu = document.getElementById("languageMenu");
+      const languageSelector = document.getElementById("languageSelector");
+
+      if (
+        languageMenu &&
+        !languageSelector.contains(e.target) &&
+        !languageMenu.contains(e.target)
+      ) {
+        this.closeLanguageMenu();
+      }
+    });
   }
 
   switchGame(game) {
@@ -134,7 +196,6 @@ class RuneterraApp {
 
     this.loadChampions();
   }
-
   loadChampions() {
     const grid = document.getElementById("championsGrid");
     if (!grid) return;
@@ -146,6 +207,23 @@ class RuneterraApp {
         this.currentRegion,
         this.currentChampionType
       );
+
+      // Debug: Check if we can find Thresh directly in raw data
+      if (
+        this.currentRegion === "all" ||
+        this.currentRegion === "shadowisles"
+      ) {
+        console.log(
+          "Raw data check - Shadow Isles region:",
+          championsDatabase.regions.find((r) => r.id === "shadowisles")
+        );
+        const threshRaw = championsDatabase.regions
+          .find((r) => r.id === "shadowisles")
+          ?.existingChampions.find((c) => c.name === "Thresh");
+        console.log("Raw Thresh data:", threshRaw);
+      }
+
+      console.log("Loaded champions:", champions);
 
       if (champions.length === 0) {
         grid.innerHTML =
@@ -192,9 +270,29 @@ class RuneterraApp {
     return card;
   }
   openModal(champion) {
+    console.log("=== CHAMPION MODAL DEBUG ===");
     console.log("Opening modal for champion:", champion);
+    console.log("Champion name:", champion.name);
+    console.log("Champion lore:", champion.lore);
     console.log("Champion skills:", champion.skills);
     console.log("Champion specialFeatures:", champion.specialFeatures);
+    console.log("Champion fullLore:", champion.fullLore);
+    console.log("Champion fullName:", champion.fullName);
+    console.log("Current language:", this.languageManager.getCurrentLanguage());
+
+    // Additional debug: Check if this champion exists in window.championsDatabase
+    if (window.championsDatabase) {
+      const windowChampion = window.championsDatabase.regions
+        .find((r) => r.id === "shadowisles")
+        ?.existingChampions?.find((c) => c.name === champion.name);
+      console.log("Same champion in window.championsDatabase:", windowChampion);
+      if (windowChampion && champion.name === "Thresh") {
+        console.log("Window Thresh lore:", windowChampion.lore);
+        console.log("Modal Thresh lore:", champion.lore);
+        console.log("Are they the same object?", windowChampion === champion);
+      }
+    }
+    console.log("=== END DEBUG ===");
 
     const modal = document.getElementById("championModal");
     const modalBody = document.getElementById("modalBody");
@@ -211,7 +309,9 @@ class RuneterraApp {
       if (typeof champion.skills[0] === "object" && champion.skills[0].type) {
         skillsHtml = `
           <div class="mt-6">
-            <h4 class="text-lg font-semibold text-cyan-300 mb-3">🎯 Kỹ Năng Chi Tiết:</h4>
+            <h4 class="text-lg font-semibold text-cyan-300 mb-3">${this.languageManager.getTranslation(
+              "skillsDetailed"
+            )}:</h4>
             <div class="space-y-3">
               ${champion.skills
                 .map(
@@ -233,7 +333,9 @@ class RuneterraApp {
         // Simple skills display for basic champion data
         skillsHtml = `
           <div class="mt-6">
-            <h4 class="text-lg font-semibold text-cyan-300 mb-3">Kỹ Năng:</h4>
+            <h4 class="text-lg font-semibold text-cyan-300 mb-3">${this.languageManager.getTranslation(
+              "skills"
+            )}:</h4>
             <div class="space-y-2">
               ${champion.skills
                 .map(
@@ -255,7 +357,9 @@ class RuneterraApp {
     if (champion.specialFeatures && champion.specialFeatures.length > 0) {
       specialFeaturesHtml = `
         <div class="mt-6">
-          <h4 class="text-lg font-semibold text-yellow-300 mb-3">⭐ Điểm Đặc Biệt:</h4>
+          <h4 class="text-lg font-semibold text-yellow-300 mb-3">${this.languageManager.getTranslation(
+            "specialFeatures"
+          )}:</h4>
           <div class="space-y-2">
             ${champion.specialFeatures
               .map(
@@ -271,57 +375,73 @@ class RuneterraApp {
       `;
     }
 
-    // Additional info section
+    // Additional info section - Enhanced with more attributes
     let additionalInfoHtml = "";
-    if (
-      champion.fullName ||
-      champion.species ||
-      champion.age ||
-      champion.weapon ||
-      champion.gameplay
-    ) {
+    const additionalFields = [];
+    if (champion.fullName)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("fullName"),
+        value: champion.fullName,
+      });
+    if (champion.species)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("species"),
+        value: champion.species,
+      });
+    if (champion.age)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("age"),
+        value: champion.age,
+      });
+    if (champion.weapon)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("weapon"),
+        value: champion.weapon,
+      });
+    if (champion.origin)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("origin"),
+        value: champion.origin,
+      });
+    if (champion.affiliation)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("affiliation"),
+        value: champion.affiliation,
+      });
+    if (champion.status)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("status"),
+        value: champion.status,
+      });
+    if (champion.title)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("title"),
+        value: champion.title,
+      });
+    if (champion.rarity)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("rarity"),
+        value: champion.rarity,
+      });
+    if (champion.cost)
+      additionalFields.push({
+        label: this.languageManager.getTranslation("cost"),
+        value: champion.cost,
+      });
+
+    if (additionalFields.length > 0) {
       additionalInfoHtml = `
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          ${
-            champion.fullName
-              ? `
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+          ${additionalFields
+            .map(
+              (field) => `
             <div class="bg-slate-700/50 p-3 rounded-lg">
-              <h5 class="text-cyan-300 font-semibold text-sm mb-1">📛 Tên Đầy Đủ:</h5>
-              <p class="text-slate-300 text-sm">${champion.fullName}</p>
+              <h5 class="text-cyan-300 font-semibold text-sm mb-1">${field.label}:</h5>
+              <p class="text-slate-300 text-sm">${field.value}</p>
             </div>
           `
-              : ""
-          }
-          ${
-            champion.species
-              ? `
-            <div class="bg-slate-700/50 p-3 rounded-lg">
-              <h5 class="text-cyan-300 font-semibold text-sm mb-1">🧬 Loài:</h5>
-              <p class="text-slate-300 text-sm">${champion.species}</p>
-            </div>
-          `
-              : ""
-          }
-          ${
-            champion.age
-              ? `
-            <div class="bg-slate-700/50 p-3 rounded-lg">
-              <h5 class="text-cyan-300 font-semibold text-sm mb-1">📅 Tuổi:</h5>
-              <p class="text-slate-300 text-sm">${champion.age}</p>
-            </div>
-          `
-              : ""
-          }
-          ${
-            champion.weapon
-              ? `
-            <div class="bg-slate-700/50 p-3 rounded-lg">
-              <h5 class="text-cyan-300 font-semibold text-sm mb-1">⚔️ Vũ Khí:</h5>
-              <p class="text-slate-300 text-sm">${champion.weapon}</p>
-            </div>
-          `
-              : ""
-          }
+            )
+            .join("")}
         </div>
       `;
     }
@@ -331,9 +451,84 @@ class RuneterraApp {
     if (champion.gameplay) {
       gameplayHtml = `
         <div class="mt-6">
-          <h4 class="text-lg font-semibold text-green-300 mb-3">🎮 Lối Chơi:</h4>
+          <h4 class="text-lg font-semibold text-green-300 mb-3">${this.languageManager.getTranslation(
+            "gameplay"
+          )}:</h4>
           <div class="bg-green-900/30 p-4 rounded-lg border border-green-600/50">
-            <p class="text-sm text-green-100 leading-relaxed">${champion.gameplay}</p>
+            <p class="text-sm text-green-100 leading-relaxed">${
+              champion.gameplay
+            }</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Stats section if available
+    let statsHtml = "";
+    if (champion.stats) {
+      statsHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-orange-300 mb-3">${this.languageManager.getTranslation(
+            "statsTitle"
+          )}:</h4>
+          <div class="bg-orange-900/30 p-4 rounded-lg border border-orange-600/50">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+              ${Object.entries(champion.stats)
+                .map(
+                  ([key, value]) => `
+                <div class="text-orange-100">
+                  <span class="text-orange-300 font-medium">${key}:</span> ${value}
+                </div>
+              `
+                )
+                .join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Relationships section if available
+    let relationshipsHtml = "";
+    if (champion.relationships && champion.relationships.length > 0) {
+      relationshipsHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-pink-300 mb-3">${this.languageManager.getTranslation(
+            "relationships"
+          )}:</h4>
+          <div class="space-y-2">
+            ${champion.relationships
+              .map(
+                (rel) => `
+              <div class="bg-pink-900/30 p-3 rounded-md border border-pink-600/50">
+                <p class="text-sm text-pink-100"><strong>${rel.type}:</strong> ${rel.description}</p>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    // Abilities/Powers section if different from skills
+    let abilitiesHtml = "";
+    if (champion.abilities && champion.abilities.length > 0) {
+      abilitiesHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-indigo-300 mb-3">${this.languageManager.getTranslation(
+            "abilities"
+          )}:</h4>
+          <div class="space-y-2">
+            ${champion.abilities
+              .map(
+                (ability) => `
+              <div class="bg-indigo-900/30 p-3 rounded-md border border-indigo-600/50">
+                <p class="text-sm text-indigo-100">• ${ability}</p>
+              </div>
+            `
+              )
+              .join("")}
           </div>
         </div>
       `;
@@ -344,13 +539,34 @@ class RuneterraApp {
     if (champion.fullLore && champion.fullLore !== champion.lore) {
       fullLoreHtml = `
         <div class="mt-6">
-          <h4 class="text-lg font-semibold text-purple-300 mb-3">📖 Câu Chuyện Đầy Đủ:</h4>
+          <h4 class="text-lg font-semibold text-purple-300 mb-3">${this.languageManager.getTranslation(
+            "fullStory"
+          )}:</h4>
           <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-600/50 max-h-64 overflow-y-auto">
-            <p class="text-sm text-purple-100 leading-relaxed whitespace-pre-line">${champion.fullLore}</p>
+            <p class="text-sm text-purple-100 leading-relaxed whitespace-pre-line">${
+              champion.fullLore
+            }</p>
           </div>
         </div>
       `;
     }
+
+    // Additional notes or trivia
+    let notesHtml = "";
+    if (champion.notes || champion.trivia) {
+      const content = champion.notes || champion.trivia;
+      notesHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-gray-300 mb-3">${this.languageManager.getTranslation(
+            "notes"
+          )}:</h4>
+          <div class="bg-gray-900/30 p-4 rounded-lg border border-gray-600/50">
+            <p class="text-sm text-gray-100 leading-relaxed">${content}</p>
+          </div>
+        </div>
+      `;
+    }
+
     modalBody.innerHTML = `
       <div class="text-6xl mb-4 text-center">${champion.icon || "🎭"}</div>
       <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
@@ -360,19 +576,24 @@ class RuneterraApp {
         champion.role || "Unknown Role"
       } - ${champion.regionName || "Unknown Region"}</p>
       
-      ${additionalInfoHtml}
-      
+      ${additionalInfoHtml}      
       <div class="mt-6">
-        <h4 class="text-lg font-semibold text-slate-300 mb-3">📜 Tóm Tắt:</h4>
+        <h4 class="text-lg font-semibold text-slate-300 mb-3">${this.languageManager.getTranslation(
+          "basicInfo"
+        )}:</h4>
         <div class="text-slate-300 leading-relaxed bg-slate-700/50 p-4 rounded-lg">
           <p>${champion.lore || "Chưa có thông tin lore."}</p>
         </div>
       </div>
       
       ${gameplayHtml}
+      ${statsHtml}
       ${skillsHtml}
+      ${abilitiesHtml}
       ${specialFeaturesHtml}
+      ${relationshipsHtml}
       ${fullLoreHtml}
+      ${notesHtml}
       
       ${
         champion.special
@@ -713,14 +934,20 @@ class RuneterraApp {
     // Reset file input
     event.target.value = "";
   }
-
   resetDatabase() {
     if (
       confirm("🔄 Bạn có chắc muốn reset tất cả dữ liệu về trạng thái ban đầu?")
     ) {
+      // Clear localStorage and reload from original data
+      localStorage.removeItem("runeterra_champions_db");
       this.db.resetDatabase();
       this.loadChampions();
       alert("🎉 Reset dữ liệu thành công!");
+      console.log("Database reset - checking Thresh again:");
+      const threshCheck = this.db
+        .getChampions("shadowisles", "old")
+        .find((c) => c.name === "Thresh");
+      console.log("Thresh after reset:", threshCheck);
     }
   }
 
@@ -748,7 +975,6 @@ class RuneterraApp {
   closeCodeModal() {
     document.getElementById("codeModal")?.classList.add("hidden");
   }
-
   copyCode() {
     const codeText = document.getElementById("codeDisplay")?.textContent;
     if (codeText) {
@@ -760,6 +986,38 @@ class RuneterraApp {
           btn.textContent = originalText;
         }, 2000);
       });
+    }
+  }
+  // Language menu control methods
+  toggleLanguageMenu() {
+    const languageMenu = document.getElementById("languageMenu");
+    if (languageMenu) {
+      languageMenu.classList.toggle("hidden");
+    }
+  }
+
+  closeLanguageMenu() {
+    const languageMenu = document.getElementById("languageMenu");
+    if (languageMenu) {
+      languageMenu.classList.add("hidden");
+    }
+  }
+
+  // Translation cache management
+  clearTranslationCache() {
+    if (this.languageManager && this.languageManager.translationService) {
+      const stats = this.languageManager.translationService.getCacheStats();
+      const confirmation = confirm(
+        `⚠️ Bạn có chắc chắn muốn xóa cache dịch thuật?\n\n` +
+          `Cache hiện tại: ${stats.size} mục\n` +
+          `Dung lượng: ${Math.round(stats.memoryUsage / 1024)} KB\n\n` +
+          `Điều này sẽ làm cho việc dịch chậm hơn lần đầu tiên.`
+      );
+
+      if (confirmation) {
+        this.languageManager.translationService.clearCache();
+        alert("✅ Đã xóa cache dịch thuật thành công!");
+      }
     }
   }
 }

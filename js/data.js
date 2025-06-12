@@ -209,18 +209,116 @@ const championsDatabase = {
         {
           id: "viego",
           name: "Viego",
+          fullName: "Viego, Hắc Diệt Đế Vương (The Ruined King)",
           icon: "👑",
-          role: "Đấu Sĩ",
+          role: "Đấu Sĩ/Sát Thủ",
           region: "shadowisles",
+          species: "Hồn ma/Thực thể ma quái (Hồn ma bất tử)",
+          age: "Mất cách đây hơn một ngàn năm - tồn tại dưới dạng hồn ma trong thời gian rất dài",
+          weapon:
+            "Lưỡi Gươm Suy Vong (Blade of the Ruined King) - thanh kiếm hai lưỡi",
           lore: "Một vị vua bi thảm và đầy thù hận, Viego đã giải phóng Đại Suy Vong.",
+          fullLore:
+            "Viego từng là người cai trị một vương quốc đã mất từ lâu. Hắn không có ý định lãnh đạo nhưng lại lên ngôi sau cái chết bất ngờ của anh trai. Hắn sống một cuộc đời ích kỷ cho đến khi gặp Isolde, một thợ may nghèo. Say đắm trước vẻ đẹp của nàng, Viego cưới Isolde và dành cả cuộc đời mình cho nàng, hiếm khi rời xa và luôn ban tặng quà cáp.\n\nMột sát thủ định ám sát Viego nhưng lại làm Isolde bị thương bằng một con dao độc. Isolde rơi vào trạng thái hôn mê và qua đời, khiến Viego chìm vào điên loạn. Hắn ẩn mình cùng thi thể nàng, trở nên đầy thù hận và bạo lực, hy sinh mọi của cải của vương quốc để tìm cách cứu nàng.\n\nHắn tìm hiểu về bí mật của Quần Đảo Phước Lành và dòng nước có khả năng chữa lành mọi bệnh tật. Với đội quân hùng mạnh, hắn tấn công vùng đất yên bình này, tàn sát mọi kẻ cản đường để đưa thi thể Isolde vào dòng nước thiêng. Trong một khoảnh khắc, Isolde trở lại, nhưng là một hồn ma đáng sợ của bóng tối và sự phẫn nộ. Trong cơn đau đớn và bối rối, nàng đã đâm thanh kiếm bị nguyền rủa của Viego xuyên qua tim hắn.\n\nSự va chạm giữa ma thuật của dòng nước và thanh kiếm cổ xưa đã tạo ra một vụ nổ năng lượng xé toạc Quần Đảo, giam cầm mọi thứ nó chạm vào trong trạng thái bất tử đau đớn. Đây chính là sự kiện Đại Suy Vong. Viego không nhớ gì về sự kiện này. Hắn biến thành một hồn ma bất tử, bị hành hạ bởi nỗi ám ảnh khao khát nữ hoàng đã chết của mình.\n\nVới tư cách là Hắc Diệt Đế Vương, hắn kiểm soát các Harrowing chết chóc, càn quét Runeterra để tìm kiếm bất cứ thứ gì có thể đưa Isolde trở lại, hủy diệt mọi thứ trên đường đi khi Sương Đen tuôn ra không ngừng từ trái tim tan vỡ của hắn.",
+          gameplay:
+            "Viego là tướng đấu sĩ/sát thủ với độ khó trung bình. Hắn là một tướng đi rừng xuất sắc, nổi bật với khả năng ngụy trang, giao tranh và thoát khỏi giao tranh, cùng khả năng kiểm soát đám đông. Điểm mạnh nhất của Viego là cơ chế chiếm hữu độc đáo, cho phép hắn tạm thời chiếm hữu thể xác kẻ địch đã chết, sử dụng kỹ năng và trang bị của chúng, và được sử dụng chiêu cuối của mình miễn phí. Khả năng hồi máu tự nhiên từ Q giúp hắn duy trì tốt trong rừng, và hắn là một lực lượng gây rối tuyệt vời trong giao tranh tổng.",
+          skills: [
+            {
+              type: "Passive",
+              name: "Thống Trị Tối Cao (Sovereign's Domination)",
+              description:
+                "Kẻ địch bị hạ gục bởi Viego trở thành hồn ma. Bằng cách tấn công một hồn ma, Viego tạm thời chiếm hữu thể xác kẻ địch đã chết, hồi máu dựa trên phần trăm máu tối đa của mục tiêu và có quyền truy cập vào các kỹ năng cơ bản và trang bị của chúng. Hắn thay thế chiêu cuối của kẻ địch bằng một lần sử dụng chiêu cuối của mình miễn phí. Khi chiếm hữu, Viego nhận thêm tốc độ di chuyển khi di chuyển về phía tướng địch.",
+            },
+            {
+              type: "Q",
+              name: "Lưỡi Gươm Suy Vong (Blade of the Ruined King)",
+              description:
+                "(Nội tại) Đòn đánh của Viego gây thêm sát thương dựa trên phần trăm máu hiện tại của kẻ địch. Nếu tấn công kẻ địch vừa trúng kỹ năng của Viego, đòn đánh đó sẽ tấn công hai lần, đòn thứ hai hút máu thay vì gây sát thương, vẫn áp dụng hiệu ứng đòn đánh và có thể chí mạng. (Kích hoạt) Viego đâm kiếm về phía trước, gây sát thương vật lý lên tất cả kẻ địch trúng chiêu. Kỹ năng này gây thêm sát thương lên quái rừng.",
+            },
+            {
+              type: "W",
+              name: "Móng Vuốt Hắc Ám (Spectral Maw / Harrowed Path)",
+              description:
+                "Viego vận sức, sau đó lướt về hướng chỉ định, phóng ra một làn sương làm choáng và gây sát thương phép lên kẻ địch đầu tiên nó chạm phải. Thời gian choáng và phạm vi bay của làn sương tăng lên theo thời gian vận sức.",
+            },
+            {
+              type: "E",
+              name: "Lãnh Thổ Sương Đen (Harrowed Path / Spectral Maw)",
+              description:
+                "Khi kích hoạt, Viego phát tán một màn sương đen bao bọc lấy một bức tường cạnh đó. Khi ở trong màn sương, Viego được ngụy trang, đồng thời tăng tốc độ đánh và tốc độ di chuyển.",
+            },
+            {
+              type: "R",
+              name: "Tuyệt Mệnh (Heartbreaker)",
+              description:
+                "Viego thoát khỏi thể xác mà hắn đang chiếm hữu và dịch chuyển về phía trước, tấn công tướng địch trong phạm vi có tỉ lệ máu thấp nhất và gây thêm sát thương dựa trên lượng máu đã mất. Những kẻ địch khác trong tầm sẽ bị hất văng đi.",
+            },
+          ],
+          specialFeatures: [
+            "Cơ chế chiếm hữu linh hồn độc đáo (Sovereign's Domination) là điểm nổi bật nhất, cho phép Viego thích nghi với mọi tình huống giao tranh bằng cách sử dụng kỹ năng của kẻ địch, tạo ra sự linh hoạt chiến thuật hiếm có",
+            "Khả năng ngụy trang và tăng tốc độ trong Sương Đen (E) giúp hắn tiếp cận hoặc thoát khỏi giao tranh hiệu quả, khiến hắn trở thành một mối đe dọa khó lường",
+            "Chiêu cuối có khả năng kết liễu và cô lập mục tiêu, tạo ra những pha đột biến trong giao tranh",
+            "Viego là nguyên nhân trực tiếp gây ra Đại Suy Vong, khiến hắn trở thành nhân vật trung tâm trong bi kịch của Quần Đảo Bóng Đêm",
+            "Không chỉ là một tướng đến từ Quần Đảo Bóng Đêm; hắn là nguyên nhân trực tiếp dẫn đến sự tồn tại của nó như một vùng đất bị nguyền rủa",
+            "Tình yêu điên cuồng và ám ảnh của Viego là động lực cho mọi hành động tàn bạo của hắn, thể hiện một ví dụ cực đoan về tình yêu biến thành nỗi ám ảnh hủy diệt",
+            "Cốt truyện của Viego là một câu chuyện cảnh báo về cách những cảm xúc cao quý, khi bị đẩy đến cực đoan không lành mạnh, có thể dẫn đến sự tàn phá trên diện rộng",
+          ],
         },
         {
           id: "karthus",
           name: "Karthus",
+          fullName: "Karthus, Tiếng Ru Tử Thần (The Deathsinger)",
           icon: "💀",
           role: "Pháp Sư",
           region: "shadowisles",
+          species: "Hồn ma/Thực thể ma quái (Hồn ma không xương thịt)",
+          age: "Không rõ tuổi số học - Sinh ra ở Noxus, biến đổi thành hồn ma khi đã trưởng thành",
+          weapon: "Ma thuật tử thần và khúc ca báo hiệu",
           lore: "Một kẻ báo hiệu linh hồn, Karthus coi cái chết không phải là kết thúc mà là một dạng siêu thoát.",
+          fullLore:
+            "Karthus sinh ra trong nghèo khó ở Noxus, mẹ hắn mất khi sinh hắn, để lại hắn và ba chị em gái sống trong một căn nhà ổ chuột đầy chuột. Lớn lên, hắn chứng kiến cái chết hàng ngày và bị ám ảnh sâu sắc bởi nó. Hắn thường lén lút vào ban đêm để chứng kiến khoảnh khắc linh hồn rời khỏi thể xác, một mong muốn chỉ được thỏa mãn khi các chị em của hắn chết vì bệnh dịch. Trải nghiệm này đã củng cố niềm tin của hắn rằng cái chết không phải là một kết thúc đáng sợ mà là một sự giải thoát, một sự khai sáng.\n\nSau cái chết của các chị em, Karthus gia nhập một hội những người ghi chép số liệu, bắt đầu từ người đào mộ và sau đó là người thu thập xác chết. Những bài hát tang lễ của hắn trở nên nổi tiếng, nói về vẻ đẹp của cái chết và sự chấp nhận cõi vĩnh hằng. Hắn làm việc trong đền thờ, chăm sóc người bệnh trong những giây phút cuối đời, tìm kiếm sự khôn ngoan trong ánh mắt mờ dần của họ.\n\nKarthus kết luận rằng hắn không thể học hỏi thêm từ người phàm; chỉ có người chết mới có thể trả lời câu hỏi của hắn. Tin đồn về Quần Đảo Bóng Đêm, nơi cái chết không phải là dấu chấm hết, đã thu hút hắn. Hắn đến Quần Đảo Bóng Đêm, nơi Sương Đen chảy qua hắn, tàn phá thể xác và linh hồn. Nhưng sức mạnh của mong muốn vượt qua sự hữu tử đã không hủy diệt hắn mà tái tạo hắn thành một 'hồn ma không xương thịt'.\n\nKarthus cảm thấy sự mặc khải, trở thành thứ mà hắn luôn tin rằng mình nên trở thành: một thực thể đứng ở ngưỡng cửa của sự sống và cái chết. Quan điểm độc đáo của Karthus về cái chết—coi đó là 'vẻ đẹp và sự thuần khiết' và 'sự siêu thoát'—đặt hắn khác biệt so với các tướng Quần Đảo Bóng Đêm khác, những người thường bị dày vò bởi sự bất tử của mình. Hắn quyết tâm trở lại Valoran để chia sẻ 'món quà' của sự bất tử với người sống, giải thoát họ khỏi những lo toan trần tục. Karthus trở thành sứ giả của Quần Đảo Bóng Đêm, người báo hiệu sự lãng quên, với những bài ca than vãn là những bài thánh ca ca ngợi vinh quang của cái chết.",
+          gameplay:
+            "Karthus là một pháp sư với độ khó trung bình. Lối chơi của hắn xoay quanh việc gây sát thương phép diện rộng liên tục và khả năng gây sát thương toàn bản đồ. Hắn đặc biệt hiệu quả trong việc dọn lính nhanh và gây áp lực toàn bản đồ với chiêu cuối Khúc Gọi Hồn (Requiem). Khả năng tiếp tục sử dụng kỹ năng sau khi chết là một điểm độc đáo, cho phép hắn duy trì ảnh hưởng trong giao tranh ngay cả khi bị hạ gục.",
+          skills: [
+            {
+              type: "Passive",
+              name: "Vượt Qua Tử Vong (Death Defied)",
+              description:
+                "Khi chết, Karthus biến thành dạng linh hồn, cho phép hắn tiếp tục sử dụng kỹ năng trong một thời gian ngắn mà không tốn năng lượng.",
+            },
+            {
+              type: "Q",
+              name: "Tàn Phá (Lay Waste)",
+              description:
+                "Karthus gây sát thương phép tại một vị trí mục tiêu. Lượng sát thương tăng gấp đôi nếu chỉ trúng một mục tiêu.",
+            },
+            {
+              type: "W",
+              name: "Bức Tường Đau Khổ (Wall of Pain)",
+              description:
+                "Karthus triệu hồi một bức tường năng lượng làm chậm và giảm kháng phép của kẻ địch chạm vào nó.",
+            },
+            {
+              type: "E",
+              name: "Ô Uế (Defile)",
+              description:
+                "(Nội tại) Hồi lại năng lượng mỗi khi Karthus hạ gục kẻ địch. (Kích hoạt) Vùng xung quanh Karthus gây sát thương phép liên tục cho tất cả kẻ địch trong khu vực, nhưng nhanh chóng tiêu hao năng lượng. Đây là một kỹ năng bật/tắt.",
+            },
+            {
+              type: "R",
+              name: "Khúc Gọi Hồn (Requiem)",
+              description:
+                "Sau một thời gian vận sức ngắn, kỹ năng này gây sát thương phép lên tất cả tướng địch có thể bị nhắm mục tiêu trên bản đồ.",
+            },
+          ],
+          specialFeatures: [
+            "Khả năng tiếp tục chiến đấu sau khi chết (Death Defied) là một đặc điểm chiến lược mạnh mẽ, cho phép hắn gây sát thương cuối cùng trong giao tranh tổng",
+            "Chiêu cuối toàn bản đồ (Requiem) là công cụ mạnh mẽ để kết liễu kẻ địch yếu máu hoặc hỗ trợ giao tranh từ xa, tạo ra áp lực liên tục lên toàn bản đồ",
+            "Sự ám ảnh của hắn với cái chết không phải là nỗi sợ hãi mà là sự 'khai sáng' và 'vẻ đẹp', một quan điểm triết học độc đáo về cõi vĩnh hằng",
+            "Dạng linh hồn của hắn được cho là miễn nhiễm với vũ khí thông thường và có thể di chuyển qua tường",
+            "Khác biệt với các tướng Quần Đảo Bóng Đêm khác - hắn chấp nhận và ca ngợi cái chết thay vì bị dày vò bởi nó",
+            "Nhiệm vụ của hắn là 'mang niềm vui của cái chết đến cho người phàm' như một hành động nhân từ trong tâm trí méo mó của hắn",
+          ],
         },
         {
           id: "kalista",

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Translation Flow Debug - Runeterra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-cyan-400 mb-8">
+        🔍 Translation Data Flow Debug
+      </h1>
+
+      <!-- Status Panel -->
+      <div class="bg-slate-800 p-6 rounded-lg mb-6">
+        <h2 class="text-xl font-semibold text-green-300 mb-4">
+          📊 System Status
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div><strong>Language:</strong> <span id="currentLang">-</span></div>
+          <div>
+            <strong>Translation Status:</strong> <span id="transStatus">-</span>
+          </div>
+          <div><strong>Cache Items:</strong> <span id="cacheSize">-</span></div>
+          <div>
+            <strong>Data Source:</strong> <span id="dataSource">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language Controls -->
+      <div class="bg-slate-800 p-6 rounded-lg mb-6">
+        <h2 class="text-xl font-semibold text-blue-300 mb-4">
+          🌐 Language Controls
+        </h2>
+        <div class="flex space-x-4">
+          <button
+            id="switchToEn"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            🇺🇸 Switch to English
+          </button>
+          <button
+            id="switchToVi"
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            🇻🇳 Switch to Vietnamese
+          </button>
+          <button
+            id="refreshData"
+            class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+          >
+            🔄 Refresh Data
+          </button>
+          <button
+            id="clearCache"
+            class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700"
+          >
+            🗑️ Clear Cache
+          </button>
+        </div>
+      </div>
+
+      <!-- Thresh Data Comparison -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Original Data -->
+        <div class="bg-slate-800 p-6 rounded-lg">
+          <h3 class="text-lg font-semibold text-red-300 mb-4">
+            📦 Original Data (championsDatabase)
+          </h3>
+          <div class="text-xs space-y-2">
+            <div><strong>Name:</strong> <span id="origName">-</span></div>
+            <div><strong>Role:</strong> <span id="origRole">-</span></div>
+            <div>
+              <strong>Lore:</strong>
+              <div
+                id="origLore"
+                class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+              >
+                -
+              </div>
+            </div>
+            <div>
+              <strong>Skills Count:</strong> <span id="origSkills">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Window Data -->
+        <div class="bg-slate-800 p-6 rounded-lg">
+          <h3 class="text-lg font-semibold text-green-300 mb-4">
+            🪟 Window Data (window.championsDatabase)
+          </h3>
+          <div class="text-xs space-y-2">
+            <div><strong>Name:</strong> <span id="windowName">-</span></div>
+            <div><strong>Role:</strong> <span id="windowRole">-</span></div>
+            <div>
+              <strong>Lore:</strong>
+              <div
+                id="windowLore"
+                class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+              >
+                -
+              </div>
+            </div>
+            <div>
+              <strong>Skills Count:</strong> <span id="windowSkills">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Database getChampions Test -->
+      <div class="bg-slate-800 p-6 rounded-lg mb-6">
+        <h3 class="text-lg font-semibold text-purple-300 mb-4">
+          🗃️ Database getChampions() Result
+        </h3>
+        <div class="text-xs space-y-2">
+          <div><strong>Name:</strong> <span id="dbName">-</span></div>
+          <div><strong>Role:</strong> <span id="dbRole">-</span></div>
+          <div>
+            <strong>Lore:</strong>
+            <div
+              id="dbLore"
+              class="mt-1 text-gray-300 text-xs max-h-20 overflow-y-auto"
+            >
+              -
+            </div>
+          </div>
+          <div><strong>Skills Count:</strong> <span id="dbSkills">-</span></div>
+        </div>
+      </div>
+
+      <!-- Test Modal Button -->
+      <div class="bg-slate-800 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-yellow-300 mb-4">
+          🎭 Modal Test
+        </h3>
+        <button
+          id="testModal"
+          class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+        >
+          Open Thresh Modal
+        </button>
+      </div>
+
+      <!-- Debug Log -->
+      <div class="bg-slate-800 p-6 rounded-lg mt-6">
+        <h3 class="text-lg font-semibold text-cyan-300 mb-4">📝 Debug Log</h3>
+        <div
+          id="debugLog"
+          class="text-xs text-gray-300 max-h-40 overflow-y-auto bg-slate-900 p-4 rounded font-mono"
+        >
+          Ready...
+        </div>
+      </div>
+    </div>
+
+    <!-- Load JavaScript modules -->
+    <script src="js/translation-service.js?v=2.8"></script>
+    <script src="js/languages.js?v=2.8"></script>
+    <script src="js/data.js?v=2.8"></script>
+    <script src="js/database.js?v=2.8"></script>
+    <script src="js/app.js?v=2.8"></script>
+
+    <script>
+      let db, languageManager, runeterra;
+
+      function log(message) {
+        const logEl = document.getElementById("debugLog");
+        const timestamp = new Date().toLocaleTimeString();
+        logEl.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+        logEl.scrollTop = logEl.scrollHeight;
+        console.log(message);
+      }
+
+      function updateStatus() {
+        document.getElementById("currentLang").textContent = languageManager
+          ? languageManager.getCurrentLanguage()
+          : "Not initialized";
+        document.getElementById("transStatus").textContent =
+          languageManager && languageManager.isTranslating
+            ? "Translating..."
+            : "Ready";
+
+        const cacheStats = languageManager
+          ? languageManager.translationService.getCacheStats()
+          : { size: 0 };
+        document.getElementById(
+          "cacheSize"
+        ).textContent = `${cacheStats.size} items`;
+
+        document.getElementById("dataSource").textContent =
+          window.championsDatabase
+            ? "window.championsDatabase"
+            : "not available";
+      }
+
+      function updateThreshData() {
+        try {
+          // Original data
+          const origThresh = championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          if (origThresh) {
+            document.getElementById("origName").textContent = origThresh.name;
+            document.getElementById("origRole").textContent = origThresh.role;
+            document.getElementById("origLore").textContent =
+              origThresh.lore || "N/A";
+            document.getElementById("origSkills").textContent =
+              origThresh.skills ? origThresh.skills.length : 0;
+          }
+
+          // Window data
+          const windowThresh = window.championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          if (windowThresh) {
+            document.getElementById("windowName").textContent =
+              windowThresh.name;
+            document.getElementById("windowRole").textContent =
+              windowThresh.role;
+            document.getElementById("windowLore").textContent =
+              windowThresh.lore || "N/A";
+            document.getElementById("windowSkills").textContent =
+              windowThresh.skills ? windowThresh.skills.length : 0;
+          } else {
+            ["windowName", "windowRole", "windowLore", "windowSkills"].forEach(
+              (id) => {
+                document.getElementById(id).textContent = "Not available";
+              }
+            );
+          }
+
+          // Database getChampions result
+          if (db) {
+            const champions = db.getChampions("shadowisles", "old");
+            const dbThresh = champions.find((c) => c.name === "Thresh");
+
+            if (dbThresh) {
+              document.getElementById("dbName").textContent = dbThresh.name;
+              document.getElementById("dbRole").textContent = dbThresh.role;
+              document.getElementById("dbLore").textContent =
+                dbThresh.lore || "N/A";
+              document.getElementById("dbSkills").textContent = dbThresh.skills
+                ? dbThresh.skills.length
+                : 0;
+            }
+          }
+        } catch (error) {
+          log(`Error updating Thresh data: ${error.message}`);
+        }
+      }
+
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          log("🚀 Initializing debug environment...");
+
+          // Ensure window.championsDatabase exists
+          if (!window.championsDatabase) {
+            window.championsDatabase = JSON.parse(
+              JSON.stringify(championsDatabase)
+            );
+            log("✅ Initialized window.championsDatabase");
+          }
+
+          db = new ChampionsDB();
+          languageManager = new LanguageManager();
+          runeterra = new RuneterraApp();
+
+          log("✅ All components initialized");
+
+          updateStatus();
+          updateThreshData();
+
+          setInterval(updateStatus, 1000);
+        } catch (error) {
+          log(`❌ Initialization error: ${error.message}`);
+        }
+      });
+
+      // Event listeners
+      document
+        .getElementById("switchToEn")
+        .addEventListener("click", async function () {
+          log("🌐 Switching to English...");
+          try {
+            await languageManager.changeLanguage("en");
+            log("✅ Language switched to English");
+            setTimeout(() => {
+              updateThreshData();
+            }, 2000);
+          } catch (error) {
+            log(`❌ Error switching to English: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("switchToVi")
+        .addEventListener("click", async function () {
+          log("🌐 Switching to Vietnamese...");
+          try {
+            await languageManager.changeLanguage("vi");
+            log("✅ Language switched to Vietnamese");
+            updateThreshData();
+          } catch (error) {
+            log(`❌ Error switching to Vietnamese: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("refreshData")
+        .addEventListener("click", function () {
+          log("🔄 Refreshing data...");
+          updateThreshData();
+        });
+
+      document
+        .getElementById("clearCache")
+        .addEventListener("click", function () {
+          log("🗑️ Clearing translation cache...");
+          if (languageManager) {
+            languageManager.clearTranslationCache();
+            log("✅ Cache cleared");
+          }
+        });
+
+      document
+        .getElementById("testModal")
+        .addEventListener("click", function () {
+          log("🎭 Testing modal with current Thresh data...");
+          try {
+            const champions = db.getChampions("shadowisles", "old");
+            const thresh = champions.find((c) => c.name === "Thresh");
+
+            if (thresh) {
+              log(
+                `📦 Modal will show Thresh with lore: "${
+                  thresh.lore ? thresh.lore.substring(0, 50) + "..." : "N/A"
+                }"`
+              );
+              runeterra.openModal(thresh);
+            } else {
+              log("❌ Thresh not found in champions data");
+            }
+          } catch (error) {
+            log(`❌ Modal test error: ${error.message}`);
+          }
+        });
+    </script>
+  </body>
+</html>
