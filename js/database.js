@@ -150,7 +150,6 @@ class ChampionsDB {
 
     return champions;
   }
-
   // Export database to JSON
   exportDatabase() {
     return JSON.stringify(this.data, null, 2);
@@ -167,6 +166,56 @@ class ChampionsDB {
       console.error("Lỗi khi import database:", error);
       return false;
     }
+  }
+
+  // Download database as JSON file
+  downloadDatabase() {
+    const dataStr = this.exportDatabase();
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `runeterra_champions_backup_${
+      new Date().toISOString().split("T")[0]
+    }.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  // Upload and import database from file
+  uploadDatabase(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const result = this.importDatabase(e.target.result);
+          resolve(result);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+  }
+
+  // Generate code snippet for adding champion to data.js
+  generateChampionCode(regionId, championData, isNew = true) {
+    const championCode = {
+      name: championData.name,
+      icon: championData.icon,
+      role: championData.role,
+      region: regionId,
+      lore: championData.lore,
+      ...(isNew && championData.skills ? { skills: championData.skills } : {}),
+    };
+
+    const codeString = JSON.stringify(championCode, null, 6);
+    const arrayType = isNew ? "newChampions" : "existingChampions";
+
+    return `// Thêm vào ${arrayType} của region "${regionId}" trong file js/data.js:\n${codeString},`;
   }
 
   // Lấy thống kê

@@ -57,15 +57,41 @@ class RuneterraApp {
       });
     document
       .getElementById("cancelAddBtn")
-      ?.addEventListener("click", () => this.closeAddChampionModal());
-
-    // Form events
+      ?.addEventListener("click", () => this.closeAddChampionModal()); // Form events
     document
       .getElementById("addChampionForm")
       ?.addEventListener("submit", (e) => this.handleAddChampion(e));
     document
       .getElementById("addSkillBtn")
       ?.addEventListener("click", () => this.addSkillField());
+
+    // Database management events
+    document
+      .getElementById("downloadDbBtn")
+      ?.addEventListener("click", () => this.downloadDatabase());
+    document
+      .getElementById("uploadDbBtn")
+      ?.addEventListener("click", () => this.uploadDatabase());
+    document
+      .getElementById("uploadDbInput")
+      ?.addEventListener("change", (e) => this.handleFileUpload(e));
+    document
+      .getElementById("resetDbBtn")
+      ?.addEventListener("click", () => this.resetDatabase());
+    document
+      .getElementById("statsBtn")
+      ?.addEventListener("click", () => this.showStats());
+
+    // Code modal events
+    document
+      .getElementById("codeModalCloseButton")
+      ?.addEventListener("click", () => this.closeCodeModal());
+    document.getElementById("codeModal")?.addEventListener("click", (e) => {
+      if (e.target.id === "codeModal") this.closeCodeModal();
+    });
+    document
+      .getElementById("copyCodeBtn")
+      ?.addEventListener("click", () => this.copyCode());
   }
 
   switchGame(game) {
@@ -329,10 +355,15 @@ class RuneterraApp {
         }
 
         newChampion.skills = skills;
-      }
-
-      // Add champion to database
+      } // Add champion to database
       this.db.addChampion(
+        region,
+        newChampion,
+        this.currentChampionType === "new"
+      );
+
+      // Generate code for manual addition to data.js
+      const code = this.db.generateChampionCode(
         region,
         newChampion,
         this.currentChampionType === "new"
@@ -342,63 +373,92 @@ class RuneterraApp {
       this.closeAddChampionModal();
       this.loadChampions();
 
+      // Show success message and code modal
       alert(
-        `Đã thêm ${
+        `✅ Đã thêm ${
           this.currentChampionType === "old" ? "tướng cũ" : "tướng mới"
-        } "${name}" thành công!`
-      );
+        } "${name}" thành công!\n\n⚠️ Lưu ý: Để tướng hiển thị sau khi deploy, hãy copy code và thêm vào file data.js`
+      ); // Show code modal
+      this.showCodeModal(code);
     } catch (error) {
       console.error("Lỗi khi thêm tướng:", error);
       alert(`Lỗi: ${error.message}`);
     }
   }
 
-  // Utility methods for database management
-  exportData() {
-    const data = this.db.exportDatabase();
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `runeterra-champions-${
-      new Date().toISOString().split("T")[0]
-    }.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  // Database management methods
+  downloadDatabase() {
+    this.db.downloadDatabase();
   }
 
-  importData(jsonData) {
-    if (this.db.importDatabase(jsonData)) {
+  uploadDatabase() {
+    document.getElementById("uploadDbInput")?.click();
+  }
+
+  async handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      await this.db.uploadDatabase(file);
       this.loadChampions();
-      alert("Import dữ liệu thành công!");
-    } else {
-      alert("Lỗi khi import dữ liệu!");
+      alert("🎉 Restore dữ liệu thành công!");
+    } catch (error) {
+      console.error("Error uploading database:", error);
+      alert("❌ Lỗi khi restore dữ liệu!");
     }
+
+    // Reset file input
+    event.target.value = "";
   }
 
-  resetData() {
+  resetDatabase() {
     if (
-      confirm("Bạn có chắc muốn reset tất cả dữ liệu về trạng thái ban đầu?")
+      confirm("🔄 Bạn có chắc muốn reset tất cả dữ liệu về trạng thái ban đầu?")
     ) {
       this.db.resetDatabase();
       this.loadChampions();
-      alert("Đã reset database thành công!");
+      alert("🎉 Reset dữ liệu thành công!");
     }
   }
 
   showStats() {
     const stats = this.db.getStats();
     let message = `📊 Thống kê Champions:\n\n`;
-    message += `Tổng cộng: ${stats.total} tướng\n`;
-    message += `Tướng cũ: ${stats.old}\n`;
-    message += `Tướng mới: ${stats.new}\n\n`;
-    message += `Theo vùng đất:\n`;
+    message += `🎯 Tổng: ${stats.total} tướng\n`;
+    message += `📚 Tướng cũ: ${stats.old}\n`;
+    message += `✨ Tướng mới: ${stats.new}\n\n`;
+    message += `📍 Theo vùng đất:\n`;
 
     Object.entries(stats.regions).forEach(([region, data]) => {
-      message += `${region}: ${data.total} tướng (${data.old} cũ, ${data.new} mới)\n`;
+      message += `• ${region}: ${data.total} (${data.old} cũ, ${data.new} mới)\n`;
     });
 
     alert(message);
+  }
+
+  // Code modal methods
+  showCodeModal(code) {
+    document.getElementById("codeDisplay").textContent = code;
+    document.getElementById("codeModal")?.classList.remove("hidden");
+  }
+
+  closeCodeModal() {
+    document.getElementById("codeModal")?.classList.add("hidden");
+  }
+
+  copyCode() {
+    const codeText = document.getElementById("codeDisplay")?.textContent;
+    if (codeText) {
+      navigator.clipboard.writeText(codeText).then(() => {
+        const btn = document.getElementById("copyCodeBtn");
+        const originalText = btn.textContent;
+        btn.textContent = "✅ Copied!";
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+      });
+    }
   }
 }
 

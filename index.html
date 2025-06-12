@@ -64,7 +64,6 @@
             <option value="piltover">⚙️ Piltover</option>
           </select>
         </div>
-
         <!-- Champion Type Tabs -->
         <div class="flex justify-center space-x-4 mb-6">
           <button
@@ -86,6 +85,35 @@
             ➕ Thêm Tướng
           </button>
         </div>
+
+        <!-- Database Management -->
+        <div class="flex justify-center space-x-2 mb-6">
+          <button
+            id="downloadDbBtn"
+            class="px-3 py-1 text-sm rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-300"
+          >
+            📥 Backup
+          </button>
+          <button
+            id="uploadDbBtn"
+            class="px-3 py-1 text-sm rounded-lg bg-purple-600 text-white font-medium hover:bg-purple-700 transition-all duration-300"
+          >
+            📤 Restore
+          </button>
+          <button
+            id="resetDbBtn"
+            class="px-3 py-1 text-sm rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-300"
+          >
+            🔄 Reset
+          </button>
+          <button
+            id="statsBtn"
+            class="px-3 py-1 text-sm rounded-lg bg-cyan-600 text-white font-medium hover:bg-cyan-700 transition-all duration-300"
+          >
+            📊 Stats
+          </button>
+        </div>
+        <input type="file" id="uploadDbInput" accept=".json" class="hidden" />
 
         <!-- Champions Grid -->
         <div
@@ -284,6 +312,58 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Code Display Modal -->
+    <div
+      id="codeModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          id="codeModalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+        >
+          &times;
+        </button>
+        <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center">
+          💾 Code để thêm vào data.js
+        </h2>
+        <div class="bg-slate-900 p-4 rounded-lg border border-slate-600">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-slate-300 text-sm">
+              ⚠️ Copy code này và thêm vào file js/data.js để lưu vĩnh viễn
+            </span>
+            <button
+              id="copyCodeBtn"
+              class="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            >
+              📋 Copy
+            </button>
+          </div>
+          <pre
+            id="codeDisplay"
+            class="text-green-400 text-sm overflow-x-auto whitespace-pre-wrap"
+          ></pre>
+        </div>
+        <div class="mt-6 p-4 bg-yellow-900 border border-yellow-600 rounded-lg">
+          <h3 class="text-yellow-300 font-semibold mb-2">📝 Hướng dẫn:</h3>
+          <ol class="text-yellow-100 text-sm space-y-1">
+            <li>1. Copy code ở trên</li>
+            <li>
+              2. Mở file
+              <code class="bg-slate-700 px-1 rounded">js/data.js</code>
+            </li>
+            <li>
+              3. Tìm đúng region và array (newChampions hoặc existingChampions)
+            </li>
+            <li>4. Paste code vào cuối array, nhớ thêm dấu phẩy</li>
+            <li>5. Save file và deploy lại lên Vercel</li>
+          </ol>
+        </div>
       </div>
     </div>
 
