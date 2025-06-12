@@ -1,10 +1,10 @@
-@ -0,0 +1,2065 @@
 <!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Khám Phá Runeterra</title>
+    <title>Runeterra Games Hub</title>
+    <link rel="icon" href="https://fav.farm/🎮" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       body {
@@ -33,226 +33,446 @@
       .region-nav-container::-webkit-scrollbar {
         display: none;
       }
+      .game-tab {
+        transition: all 0.3s ease;
+      }
+      .game-tab.active {
+        background: linear-gradient(45deg, #06b6d4, #3b82f6);
+        box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+      }
     </style>
-    <!-- Application Structure Plan:
-        The SPA uses a main navigation bar at the top to select a region.
-        1.  **Region Navigation:** A horizontally scrollable row of buttons, each representing a major region of Runeterra. Clicking a button will dynamically load the content for that specific region into the main content area.
-        2.  **Dynamic Region Content Area:** This is the primary display area that updates based on the selected region. Each region's content includes:
-            * **Region Overview:** An introductory paragraph and icon for the selected region.
-            * **Existing Champions:** A grid of existing champions belonging to that region, each displayed as a card with a serial number. Clicking a champion card opens a modal with detailed information (weapon, species, playstyle, lore).
-            * **New Champion Concepts:** A grid of 5 suggested new champion ideas for the selected region (if available), also with serial numbers and expandable skill sections.
-        This structure prioritizes exploration by region, allowing users to dive deep into the lore and champion roster of each area, including new conceptual ideas. The previous "Overview" and "Thematic Analysis" sections are integrated into the region-specific views or streamlined for this broader scope. The playstyle chart is removed to simplify the data presentation for multiple regions.
-    -->
-    <!-- Visualization & Content Choices:
-        -   **Region Navigation:** Report Info: All Regions. Goal: Navigate, Select. Viz/Presentation: Horizontal scrollable HTML buttons. Interaction: Click to load region data. Justification: Efficiently presents many regions for selection. Library/Method: HTML, Tailwind, JS.
-        -   **Region Overview (Dynamic):** Report Info: Region descriptions. Goal: Inform, Contextualize. Viz/Presentation: Text block and icon. Interaction: None. Justification: Provides immediate context for the selected region. Library/Method: HTML, JS.
-        -   **Existing Champions (Dynamic Grid & Modal):** Report Info: Existing champions per region. Goal: Explore, Detail. Viz/Presentation: JS-rendered HTML cards (now with serial numbers), Tailwind modal for details. Interaction: Click to view details. Justification: Interactive browsing and focused information display for each region's champions. Library/Method: HTML, Tailwind, JS.
-        -   **New Champion Concepts (Dynamic Grid & Expandable):** Report Info: New champion ideas per region. Goal: Inform, Inspire. Viz/Presentation: JS-rendered HTML cards (now with serial numbers), expandable skill sections. Interaction: Click to expand/collapse skills. Justification: Presents new ideas clearly and allows detailed exploration. Library/Method: HTML, JS.
-        -   CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. Icons are Unicode characters.
-    -->
   </head>
-  <body class="bg-slate-900 text-slate-300 min-h-screen">
-    <header class="bg-slate-800 shadow-md sticky top-0 z-40">
-      <nav class="container mx-auto px-6 py-3">
+  <body class="bg-slate-900 text-slate-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-slate-800 shadow-lg">
+      <div class="container mx-auto px-4 py-6">
         <h1
-          class="text-2xl font-bold text-cyan-400 mb-4 text-center sm:text-left"
+          class="text-4xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
         >
-          Khám Phá Runeterra
+          🎮 Runeterra Games Hub
         </h1>
-        <div
-          id="region-nav"
-          class="flex space-x-2 pb-2 region-nav-container"
-        ></div>
-      </nav>
+      </div>
     </header>
 
-    <main class="container mx-auto px-6 py-8">
-      <section id="region-content" class="content-section">
-        <h2 class="section-title text-center">Chào Mừng đến Runeterra</h2>
-        <p class="mb-8 text-slate-400 text-center max-w-2xl mx-auto">
-          Chọn một vùng đất từ thanh điều hướng phía trên để khám phá các tướng
-          hiện có và những gợi ý tướng mới độc đáo cho khu vực đó.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="card text-center">
-            <div class="region-icon mx-auto">🗺️</div>
-            <h3 class="text-xl font-semibold text-cyan-300 mb-2">
-              Đa Dạng Vùng Đất
+    <!-- Game Navigation -->
+    <nav class="bg-slate-800 border-b border-slate-700">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-center space-x-4">
+          <button
+            id="game5vs5Tab"
+            class="game-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
+          >
+            ⚔️ Game 5vs5
+          </button>
+          <button
+            id="cardGameTab"
+            class="game-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+          >
+            🃏 Game Lá Bài
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- 5vs5 Game Content -->
+      <section id="game5vs5Content" class="game-content">
+        <!-- Region Filter -->
+        <div class="mb-6">
+          <label
+            for="regionFilter"
+            class="block text-sm font-medium text-slate-300 mb-2"
+            >Chọn Vùng Đất:</label
+          >
+          <select
+            id="regionFilter"
+            class="bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
+          >
+            <option value="all">Tất Cả Vùng Đất</option>
+            <option value="void">🕳️ Hư Không</option>
+            <option value="shadowisles">👻 Quần Đảo Bóng Đêm</option>
+            <option value="demacia">⚜️ Demacia</option>
+            <option value="noxus">🗡️ Noxus</option>
+            <option value="ionia">🌸 Ionia</option>
+            <option value="piltover">⚙️ Piltover</option>
+          </select>
+        </div>
+
+        <!-- Champion Type Tabs -->
+        <div class="flex justify-center space-x-4 mb-6">
+          <button
+            id="oldChampionsTab"
+            class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
+          >
+            📚 Tướng Cũ
+          </button>
+          <button
+            id="newChampionsTab"
+            class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+          >
+            ✨ Tướng Mới
+          </button>
+          <button
+            id="addChampionBtn"
+            class="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-all duration-300"
+          >
+            ➕ Thêm Tướng
+          </button>
+        </div>
+
+        <!-- Champions Grid -->
+        <div
+          id="championsGrid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          <!-- Champions will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Card Game Content -->
+      <section id="cardGameContent" class="game-content hidden">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold text-cyan-400 mb-6">
+            🃏 Game Lá Bài Runeterra
+          </h2>
+          <div class="bg-slate-800 p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
+            <div class="text-6xl mb-4">🚧</div>
+            <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+              Đang Phát Triển
             </h3>
-            <p class="text-sm text-slate-400">
-              Runeterra là một thế giới rộng lớn với nhiều vùng đất độc đáo, mỗi
-              nơi có lịch sử, văn hóa và ma thuật riêng. Từ những thành phố công
-              nghệ cao đến những vùng đất hoang dã cổ xưa, mỗi góc của Runeterra
-              đều ẩn chứa những câu chuyện và bí ẩn.
+            <p class="text-slate-400 mb-6">
+              Game lá bài Runeterra đang được phát triển với các cơ chế mới thú
+              vị. Sẽ có các loại bài bẫy, bài phép thuật và nhiều chiến thuật đa
+              dạng.
             </p>
-          </div>
-          <div class="card text-center">
-            <div class="champion-icon mx-auto">⚔️</div>
-            <h3 class="text-xl font-semibold text-cyan-300 mb-2">
-              Kho Tàng Tướng
-            </h3>
-            <p class="text-sm text-slate-400">
-              Mỗi vùng đất là nơi sinh sống của vô số tướng, mỗi người có những
-              khả năng, cốt truyện và vai trò chiến đấu riêng. Ứng dụng này sẽ
-              giúp bạn khám phá các tướng hiện có và những ý tưởng mới đầy sáng
-              tạo cho từng khu vực.
-            </p>
-          </div>
-          <div class="card text-center">
-            <div class="region-icon mx-auto">✨</div>
-            <h3 class="text-xl font-semibold text-cyan-300 mb-2">
-              Tương Lai Runeterra
-            </h3>
-            <p class="text-sm text-slate-400">
-              Với những gợi ý tướng mới, chúng ta có thể hình dung ra những khả
-              năng thú vị để mở rộng vũ trụ Liên Minh Huyền Thoại, mang đến
-              những lối chơi và câu chuyện chưa từng có cho người chơi.
-            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-700 p-4 rounded-lg">
+                <div class="text-2xl mb-2">🎯</div>
+                <h4 class="font-semibold text-cyan-300 mb-2">Bài Bẫy</h4>
+                <p class="text-sm text-slate-400">
+                  Thiết lập bẫy để phục kích đối thủ
+                </p>
+              </div>
+              <div class="bg-slate-700 p-4 rounded-lg">
+                <div class="text-2xl mb-2">⚡</div>
+                <h4 class="font-semibold text-cyan-300 mb-2">Phép Thuật</h4>
+                <p class="text-sm text-slate-400">Sử dụng ma thuật mạnh mẽ</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <div id="championModal" class="modal hidden">
-      <div class="modal-content">
-        <button id="modalCloseButton" class="modal-close-btn">&times;</button>
+    <!-- Champion Detail Modal -->
+    <div
+      id="championModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          id="modalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+        >
+          &times;
+        </button>
         <div id="modalBody"></div>
       </div>
     </div>
 
+    <!-- Add Champion Modal -->
+    <div
+      id="addChampionModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          id="addModalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+        >
+          &times;
+        </button>
+        <h2
+          class="text-2xl font-bold text-cyan-300 mb-6 text-center"
+          id="addModalTitle"
+        >
+          Thêm Tướng Mới
+        </h2>
+
+        <form id="addChampionForm" class="space-y-4">
+          <!-- Basic Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tên Tướng *</label
+              >
+              <input
+                type="text"
+                id="championName"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Icon (Emoji) *</label
+              >
+              <input
+                type="text"
+                id="championIcon"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="🎭"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Vai Trò *</label
+              >
+              <select
+                id="championRole"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                required
+              >
+                <option value="">Chọn vai trò</option>
+                <option value="Đấu Sĩ">Đấu Sĩ</option>
+                <option value="Xạ Thủ">Xạ Thủ</option>
+                <option value="Pháp Sư">Pháp Sư</option>
+                <option value="Sát Thủ">Sát Thủ</option>
+                <option value="Hỗ Trợ">Hỗ Trợ</option>
+                <option value="Đỡ Đòn">Đỡ Đòn</option>
+                <option value="Lai/Đa Dạng">Lai/Đa Dạng</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Vùng Đất *</label
+              >
+              <select
+                id="championRegion"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                required
+              >
+                <option value="">Chọn vùng đất</option>
+                <option value="void">Hư Không</option>
+                <option value="shadowisles">Quần Đảo Bóng Đêm</option>
+                <option value="demacia">Demacia</option>
+                <option value="noxus">Noxus</option>
+                <option value="ionia">Ionia</option>
+                <option value="piltover">Piltover</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Lore -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Câu Chuyện (Lore) *</label
+            >
+            <textarea
+              id="championLore"
+              rows="3"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              placeholder="Mô tả về tướng..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Skills Section (only for new champions) -->
+          <div id="skillsSection" class="hidden">
+            <h3 class="text-lg font-semibold text-cyan-300 mb-4">Kỹ Năng</h3>
+            <div id="skillsContainer">
+              <!-- Skills will be added here -->
+            </div>
+            <button
+              type="button"
+              id="addSkillBtn"
+              class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              ➕ Thêm Kỹ Năng
+            </button>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="flex justify-center space-x-4 pt-4">
+            <button
+              type="button"
+              id="cancelAddBtn"
+              class="px-6 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              Hủy
+            </button>
+            <button
+              type="submit"
+              class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              Thêm Tướng
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="text-center py-8 mt-12 border-t border-slate-700">
       <p class="text-slate-500 text-sm">
-        Ứng dụng khám phá Runeterra - Dựa trên dữ liệu tướng và gợi ý thiết kế.
+        🎮 Runeterra Games Hub - Khám phá tướng cũ, mới và game lá bài
       </p>
     </footer>
 
     <script>
+      // Dữ liệu tướng theo vùng đất
       const regionsData = [
         {
           id: "void",
           name: "Hư Không",
           icon: "🕳️",
-          description: `Báo cáo Phân tích và Đề xuất Tướng Hư Không: Khám phá Vùng đất Hư Không và Tương lai của nó\n\nI. Giới thiệu về Vùng đất Hư Không\nA. Bản chất và Đặc điểm của Hư Không\nHư Không không phải là một địa điểm vật lý thông thường mà là một chiều không gian của "không gì cả"...\n\n(ĐÃ RÚT GỌN, bạn có thể dán toàn bộ nội dung báo cáo vào đây nếu muốn đầy đủ, hoặc chỉ giữ phần tóm tắt/giới thiệu chính)\n\nII. Phân tích các Tướng Hư Không hiện có\n(Đã tóm tắt, xem chi tiết trong báo cáo)\n\nIII. Đề xuất 5 Tướng Hư Không mới\n(Chi tiết bên dưới)\n\nIV. Kết luận và Khuyến nghị\n(Đã tóm tắt, xem chi tiết trong báo cáo)`,
           existingChampions: [
             {
+              id: "belveth",
               name: "Bel'Veth",
+              icon: "👑",
               role: "Đấu Sĩ",
-              description:
-                "Nữ hoàng Hư Không, sinh ra từ thành phố bị nuốt chửng, muốn tái tạo Runeterra theo hình ảnh méo mó của mình.",
+              region: "void",
+              lore: "Nữ hoàng Hư Không, sinh ra từ thành phố bị nuốt chửng, muốn tái tạo Runeterra theo hình ảnh méo mó của mình.",
             },
             {
+              id: "kaisa",
               name: "Kai'Sa",
+              icon: "🏹",
               role: "Xạ Thủ",
-              description:
-                "Người sống sót là con người, hòa nhập với lớp vỏ Hư Không sống, chiến đấu chống lại Hư Không nhưng bị coi là quái vật.",
+              region: "void",
+              lore: "Người sống sót là con người, hòa nhập với lớp vỏ Hư Không sống, chiến đấu chống lại Hư Không nhưng bị coi là quái vật.",
             },
             {
+              id: "kassadin",
               name: "Kassadin",
+              icon: "⚡",
               role: "Sát Thủ",
-              description:
-                "Kẻ du hành, tìm cách trả thù Hư Không vì đã nuốt chửng gia đình mình, sử dụng các tạo tác Hư Không.",
+              region: "void",
+              lore: "Kẻ du hành, tìm cách trả thù Hư Không vì đã nuốt chửng gia đình mình, sử dụng các tạo tác Hư Không.",
             },
             {
+              id: "chogath",
               name: "Cho'Gath",
+              icon: "👹",
               role: "Đỡ Đòn",
-              description:
-                "Khủng bố của Hư Không, sinh vật bản năng nguyên thủy, nuốt chửng để phát triển kích thước và sức mạnh.",
+              region: "void",
+              lore: "Khủng bố của Hư Không, sinh vật bản năng nguyên thủy, nuốt chửng để phát triển kích thước và sức mạnh.",
             },
             {
+              id: "khazix",
               name: "Kha'Zix",
+              icon: "🦂",
               role: "Sát Thủ",
-              description:
-                "Kẻ săn mồi siêu tiến hóa, tiêu thụ con mồi mạnh mẽ nhất để thích nghi và trở nên hoàn hảo hơn.",
+              region: "void",
+              lore: "Kẻ săn mồi siêu tiến hóa, tiêu thụ con mồi mạnh mẽ nhất để thích nghi và trở nên hoàn hảo hơn.",
             },
             {
+              id: "malzahar",
               name: "Malzahar",
+              icon: "🔮",
               role: "Pháp Sư",
-              description:
-                "Tiên tri, tin rằng Hư Không là sự cứu rỗi của Runeterra, truyền bá ảnh hưởng và triệu hồi Sinh vật Hư Không.",
+              region: "void",
+              lore: "Tiên tri, tin rằng Hư Không là sự cứu rỗi của Runeterra, truyền bá ảnh hưởng và triệu hồi Sinh vật Hư Không.",
             },
             {
+              id: "velkoz",
               name: "Vel'Koz",
+              icon: "👁️",
               role: "Pháp Sư",
-              description:
-                "Con Mắt Hư Không, sinh vật Hư Không cổ xưa nhất, tìm kiếm kiến thức bằng cách hủy diệt và phân tích.",
+              region: "void",
+              lore: "Con Mắt Hư Không, sinh vật Hư Không cổ xưa nhất, tìm kiếm kiến thức bằng cách hủy diệt và phân tích.",
             },
             {
+              id: "reksai",
               name: "Rek'Sai",
+              icon: "🐛",
               role: "Đấu Sĩ",
-              description:
-                "Kẻ đào hang Hư Không, kẻ săn mồi không ngừng, đào hầm để phục kích và nuốt chửng con mồi.",
+              region: "void",
+              lore: "Kẻ đào hang Hư Không, kẻ săn mồi không ngừng, đào hầm để phục kích và nuốt chửng con mồi.",
             },
             {
+              id: "kogmaw",
               name: "Kog'Maw",
-              role: "Xạ Thủ/Pháp Sư",
-              description:
-                "Miệng của Vực Thẳm, sinh vật tò mò, nuốt chửng để hiểu thế giới, sự ngây thơ nguy hiểm.",
+              icon: "👄",
+              role: "Xạ Thủ",
+              region: "void",
+              lore: "Miệng của Vực Thẳm, sinh vật tò mò, nuốt chửng để hiểu thế giới, sự ngây thơ nguy hiểm.",
             },
           ],
           newChampions: [
             {
               name: "Xylos, Kẻ Gặm Nhấm Ký Ức",
+              icon: "🧠",
               role: "Hỗ Trợ/Pháp Sư",
-              description:
-                "Ký sinh trùng tâm linh từ Biển Oải Hương, tiêu thụ ký ức và bản sắc, để lại sự trống rỗng cho Bel'Veth tái tạo.",
+              region: "void",
+              lore: "Ký sinh trùng tâm linh từ Biển Oải Hương, tiêu thụ ký ức và bản sắc, để lại sự trống rỗng cho Bel'Veth tái tạo.",
               skills: [
-                "Nội tại: Sương Mù Lãng Quên - Gây sát thương làm giảm tầm nhìn, hồi máu hoặc sát thương của kẻ địch.",
-                "Q: Lời Thì Thầm Hư Vô - Gây sát thương và khiến mục tiêu bị lú lẫn.",
-                "W: Vùng Đất Quên Lãng - Tạo vùng sương mù Hư Không, giảm tốc và tầm nhìn kẻ địch.",
-                "E: Liên Kết Ký Ức - Liên kết với đồng minh hoặc kẻ địch, hút năng lượng hoặc tăng sức mạnh.",
-                "R: Đại Tiệc Ký Ức - Hút ký ức diện rộng, câm lặng và tước đoạt giáp/kháng phép kẻ địch.",
+                "Q: Lời Thì Thầm Hư Vô",
+                "W: Vùng Đất Quên Lãng",
+                "E: Liên Kết Ký Ức",
+                "R: Đại Tiệc Ký Ức",
               ],
             },
             {
               name: "Aethel, Hồn Ma Bị Bóp Méo",
+              icon: "👻",
               role: "Đỡ Đòn/Đấu Sĩ",
-              description:
-                "Sinh vật nguyên thủy bị Hư Không biến dạng, lai giữa sự sống và hư vô.",
+              region: "void",
+              lore: "Sinh vật nguyên thủy bị Hư Không biến dạng, lai giữa sự sống và hư vô.",
               skills: [
-                "Nội tại: Vỏ Bọc Biến Dạng - Giảm sát thương và phản lại sát thương phép.",
-                "Q: Chấn Động Hư Vô - Gây sát thương và làm chậm diện rộng.",
-                "W: Tái Tạo Vô Định - Biến thành vật chất Hư Không, bất khả kháng cự và hồi máu.",
-                "E: Vết Nứt Kéo Lê - Kéo kẻ địch về phía mình.",
-                "R: Tiếng Vọng Của Sự Hủy Diệt - Gây hoảng sợ và tạo vùng đất biến dạng.",
+                "Q: Chấn Động Hư Vô",
+                "W: Tái Tạo Vô Định",
+                "E: Vết Nứt Kéo Lê",
+                "R: Tiếng Vọng Của Sự Hủy Diệt",
               ],
             },
             {
               name: "Umbra, Kẻ Thao Túng Bóng Tối",
+              icon: "🌑",
               role: "Sát Thủ/Đấu Sĩ",
-              description:
-                "Thực thể ý thức từ bóng tối còn sót lại sau khi Bel'Veth tiêu thụ, thao túng bóng tối và nỗi sợ hãi.",
+              region: "void",
+              lore: "Thực thể ý thức từ bóng tối còn sót lại sau khi Bel'Veth tiêu thụ, thao túng bóng tối và nỗi sợ hãi.",
               skills: [
-                "Nội tại: Lẩn Khuất Hư Vô - Tăng tốc và xuyên giáp khi tàng hình.",
-                "Q: Lưỡi Hái Bóng Đêm - Gây sát thương và lướt tới mục tiêu.",
-                "W: Vực Thẳm Nỗi Sợ - Gây sợ hãi và giảm tầm nhìn.",
-                "E: Lướt Bóng - Lướt qua kẻ địch, tái kích hoạt.",
-                "R: Đêm Tận Thế - Bao phủ khu vực trong bóng tối Hư Không, tăng sức mạnh bản thân.",
+                "Q: Lưỡi Hái Bóng Đêm",
+                "W: Vực Thẳm Nỗi Sợ",
+                "E: Lướt Bóng",
+                "R: Đêm Tận Thế",
               ],
             },
             {
               name: "Chronos, Kẻ Ăn Mòn Thời Gian",
+              icon: "⏰",
               role: "Pháp Sư/Kiểm Soát",
-              description:
-                "Thực thể Hư Không biến dạng từ dòng chảy thời gian, làm suy yếu thời gian của kẻ thù.",
+              region: "void",
+              lore: "Thực thể Hư Không biến dạng từ dòng chảy thời gian, làm suy yếu thời gian của kẻ thù.",
               skills: [
-                "Nội tại: Dòng Chảy Bất Ổn - Lão hóa kẻ địch khi tích đủ dấu vết.",
-                "Q: Vết Nứt Thời Gian - Làm chậm, gây sát thương và stun ngắn.",
-                "W: Vòng Lặp Vô Tận - Giảm hồi chiêu kẻ địch, tăng hồi chiêu đồng minh.",
-                "E: Phân Rã Nhanh - Gây sát thương theo thời gian, hạ gục giảm hồi chiêu.",
-                "R: Thời Khắc Hư Vô - Kéo, gây sát thương và đóng băng thời gian kẻ địch.",
+                "Q: Vết Nứt Thời Gian",
+                "W: Vòng Lặp Vô Tận",
+                "E: Phân Rã Nhanh",
+                "R: Thời Khắc Hư Vô",
               ],
             },
             {
               name: "Lithos, Kẻ Biến Dạng Địa Hình",
+              icon: "🗿",
               role: "Đấu Sĩ/Đỡ Đòn",
-              description:
-                "Sinh vật khổng lồ từ sự tiêu thụ và biến dạng của vỏ Runeterra, bóp méo và tái tạo địa hình.",
+              region: "void",
+              lore: "Sinh vật khổng lồ từ sự tiêu thụ và biến dạng của vỏ Runeterra, bóp méo và tái tạo địa hình.",
               skills: [
-                "Nội tại: Lớp Vỏ Hư Không - Tăng giáp/kháng phép khi mất máu, để lại dấu vết làm chậm.",
-                "Q: Nắm Đấm Địa Hình - Tạo cột đá hất tung và chặn đường.",
-                "W: Hố Sâu Nuốt Chửng - Gây sát thương liên tục, kéo kẻ địch vào trung tâm.",
-                "E: Lướt Địa Hình - Lướt, để lại đường ăn mòn làm chậm.",
-                "R: Biến Đổi Cảnh Quan - Biến đổi khu vực lớn thành địa hình Hư Không, tăng tốc đồng minh, làm chậm kẻ địch.",
+                "Q: Nắm Đấm Địa Hình",
+                "W: Hố Sâu Nuốt Chửng",
+                "E: Lướt Địa Hình",
+                "R: Biến Đổi Cảnh Quan",
               ],
             },
           ],
@@ -261,320 +481,89 @@
           id: "shadowisles",
           name: "Quần Đảo Bóng Đêm",
           icon: "👻",
-          description:
-            "Quần đảo bị nguyền rủa, nơi cái chết và sự dày vò ngự trị. Từng là Quần Đảo Phước Lành, nó đã bị biến chất bởi Đại Suy Vong, trở thành một vùng đất của những linh hồn bị tra tấn và Màn Sương Đen.",
           existingChampions: [
             {
               id: "thresh",
               name: "Thresh",
               icon: "⛓️",
-              weapon: "Lồng đèn ma quái, Xích",
-              species: "Nam, Linh hồn/Ma",
-              playstyle: "Hỗ trợ (Tiện ích, Khống chế, Giao tranh/Bảo vệ)",
-              lore: "Một linh hồn tàn bạo và xảo quyệt, Thresh từng là một cai ngục độc ác khi còn sống. Giờ đây, hắn lang thang khắp Quần Đảo với chiếc lồng đèn ma quái và xiềng xích, giam cầm linh hồn các nạn nhân và nuôi dưỡng bản thân bằng sự đau khổ của họ vĩnh viễn.",
-            },
-            {
-              id: "karthus",
-              name: "Karthus",
-              icon: "💀",
-              weapon: "Những bài thánh ca ma quái, Ma thuật linh hồn",
-              species: "Nam, Kẻ báo hiệu linh hồn/Linh hồn",
-              playstyle:
-                "Pháp sư AP (Áp lực toàn bản đồ, Sát thương duy trì, Đi rừng/Đường giữa)",
-              lore: "Một kẻ báo hiệu linh hồn, Karthus coi cái chết không phải là kết thúc mà là một dạng siêu thoát. Từng là một phàm nhân bị ám ảnh bởi thế giới bên kia, hắn đã chấp nhận lời nguyền của Quần Đảo, trở thành dàn hợp xướng của sự diệt vong.",
+              role: "Hỗ Trợ",
+              region: "shadowisles",
+              lore: "Một linh hồn tàn bạo và xảo quyệt, Thresh từng là một cai ngục độc ác khi còn sống.",
             },
             {
               id: "viego",
               name: "Viego",
               icon: "👑",
-              weapon: "Gươm Vua Suy Vong",
-              species: "Nam, Ma/Vua Suy Vong",
-              playstyle: "Đấu sĩ/Đánh nhau (Chiếm hữu, Chuỗi hạ gục, Đi rừng)",
-              lore: "Một vị vua bi thảm và đầy thù hận, Viego đã giải phóng Đại Suy Vong trong hành trình tuyệt vọng để hồi sinh hoàng hậu Isolde đã mất của mình. Bị nỗi điên loạn ngự trị, ông đã biến vương quốc từng thịnh vượng của mình thành một vùng đất chết chóc.",
+              role: "Đấu Sĩ",
+              region: "shadowisles",
+              lore: "Một vị vua bi thảm và đầy thù hận, Viego đã giải phóng Đại Suy Vong.",
+            },
+            {
+              id: "karthus",
+              name: "Karthus",
+              icon: "💀",
+              role: "Pháp Sư",
+              region: "shadowisles",
+              lore: "Một kẻ báo hiệu linh hồn, Karthus coi cái chết không phải là kết thúc mà là một dạng siêu thoát.",
             },
             {
               id: "kalista",
               name: "Kalista",
               icon: "🏹",
-              weapon: "Mũi giáo linh hồn",
-              species: "Nữ, Ma bất tử",
-              playstyle: "Xạ thủ (Tập trung vào tấn công, Lướt, Báo thù)",
-              lore: "Một linh hồn bất tử của sự phẫn nộ và báo thù, Kalista săn lùng những kẻ lừa dối và phản bội. Cô được triệu hồi bởi những người bị phản bội tìm kiếm sự báo thù, nhưng chỉ đáp lại những ai sẵn sàng trả giá bằng chính linh hồn của mình.",
+              role: "Xạ Thủ",
+              region: "shadowisles",
+              lore: "Tinh thần báo thù, Kalista bị phản bội và chết, giờ săn lùng những kẻ bội bạc.",
+            },
+            {
+              id: "hecarim",
+              name: "Hecarim",
+              icon: "🐴",
+              role: "Đấu Sĩ",
+              region: "shadowisles",
+              lore: "Kỵ sĩ chiến tranh ma quái, dẫn đầu đoàn kỵ binh ma trong trận chiến vĩnh cửu.",
+            },
+            {
+              id: "yorick",
+              name: "Yorick",
+              icon: "⚰️",
+              role: "Đấu Sĩ",
+              region: "shadowisles",
+              lore: "Người đào mộ cuối cùng, cứu rỗi linh hồn bị mắc kẹt trong Màn Sương Đen.",
             },
             {
               id: "maokai",
               name: "Maokai",
               icon: "🌳",
-              weapon: "Rễ xoắn, Gai, Ma thuật tự nhiên",
-              species: "Nam, Cây cổ thụ bị biến chất/Linh hồn tự nhiên",
-              playstyle: "Đỡ đòn (Duy trì, Khống chế, Mở giao tranh, Đi rừng)",
-              lore: "Từng là một linh hồn tự nhiên cao quý, Maokai đã bị Màn Sương Đen biến chất. Ông là hiện thân của cuộc đấu tranh chống lại sự biến chất, chiến đấu dữ dội để xua đuổi tai họa bất tử.",
-            },
-            {
-              id: "hecarim",
-              name: "Hecarim",
-              icon: "🐎",
-              weapon: "Chùy, Móng guốc bọc thép, Kỵ binh ma quái",
-              species: "Nam, Kết hợp giữa người và quái vật ma quái",
-              playstyle:
-                "Đấu sĩ/Đỡ đòn (Mở giao tranh, Sát thương bùng nổ, Giao tranh tổng, Đi rừng)",
-              lore: "Một linh hồn đáng sợ, Hecarim dẫn đầu một đội kỵ binh ma quái. Từng là một hiệp sĩ kiêu hãnh, hắn đã bị nguyền rủa trong Đại Suy Vong, biến thành một sự kết hợp quái dị giữa người và thú.",
-            },
-            {
-              id: "elise",
-              name: "Elise",
-              icon: "🕷️",
-              weapon: "Nọc độc nhện, Nhện con, Mạng nhện",
-              species: "Nữ, Sinh vật hình nhện/Nữ hoàng nhện",
-              playstyle:
-                "Pháp sư AP/Sát thủ (Gank, Sát thương bùng nổ, Dạng người/nhện, Đi rừng/Đường giữa)",
-              lore: "Một kẻ săn mồi quyến rũ, Elise dụ dỗ nạn nhân vào mạng nhện. Từng là quý tộc, cô bị một vị thần nhện cổ đại nguyền rủa, biến cô thành sinh vật hình nhện, hiến tế con người để duy trì tuổi trẻ.",
-            },
-            {
-              id: "yorick",
-              name: "Yorick",
-              icon: "⛏️",
-              weapon:
-                'Xẻng/Chùy ("Tiếng gọi của Mục Đồng"), Lọ nước thánh, Ma Sương, Thiếu Nữ Sương Mù',
-              species: "Nam, Con người bị nguyền rủa/Tu sĩ",
-              playstyle: "Đấu sĩ/Đỡ đòn (Đẩy lẻ, Điều khiển lính, Đường trên)",
-              lore: "Một tướng u ám, Yorick từng là người thánh thiện. Bị nguyền rủa trong Đại Suy Vong, ông trở thành sinh vật sống cuối cùng ở Quần Đảo Bóng Đêm, mang gánh nặng vĩnh cửu.",
-            },
-            {
-              id: "gwen",
-              name: "Gwen",
-              icon: "✂️",
-              weapon: "Kéo bị bao phủ bởi sương mù",
-              species: "Nữ, Búp bê được ban sự sống",
-              playstyle:
-                "Đấu sĩ AP (Sát thương duy trì, Chống đỡ đòn, Giao tranh kéo dài, Đường trên)",
-              lore: "Một búp bê được ban sự sống bởi ma thuật và tình yêu của Isolde. Gwen sử dụng Màn Sương Đen, nhưng biến nó thành một sức mạnh tốt đẹp bằng chiếc kéo của mình.",
-            },
-            {
-              id: "vex",
-              name: "Vex",
-              icon: "😒",
-              weapon: "Ma thuật bóng tối, Bóng tối đồng hành",
-              species: "Nữ, Yordle",
-              playstyle:
-                "Pháp sư AP (Sát thương bùng nổ, Chống lại tướng lướt, Đường giữa)",
-              lore: "Một Yordle ủ rũ, Vex gắn liền với Quần Đảo Bóng Đêm, là hiện thân của sự tuyệt vọng. Cô bị thu hút bởi Màn Sương Đen, thứ khuếch đại bản chất u sầu của cô.",
-            },
-            {
-              id: "senna",
-              name: "Senna",
-              icon: "🌟",
-              weapon: "Đại bác di vật khổng lồ",
-              species: "Nữ, Con người bị nguyền rủa",
-              playstyle:
-                "Hỗ trợ Xạ thủ (Thu thập linh hồn, Sát thương Ánh sáng/Bóng tối)",
-              lore: "Bị nguyền rủa từ thời thơ ấu, Senna là Vệ Binh Ánh Sáng bị giam cầm trong lồng đèn Thresh. Cô học cách sử dụng Sương Mù và tái sinh, sử dụng cả bóng tối và ánh sáng.",
-            },
-            {
-              id: "mordekaiser",
-              name: "Mordekaiser",
-              icon: "🛡️",
-              weapon: "Vũ khí nặng (ngụ ý)",
-              species: "Nam, Kẻ phản diện",
-              playstyle: "Đấu sĩ/Đấu sĩ hạng nặng (Bền bỉ, Vương quốc Tử Thần)",
-              lore: "Mặc dù chủ yếu liên quan đến Noxus, Mordekaiser được liệt kê là tướng Quần Đảo Bóng Đêm trong một số ngữ cảnh. Ông là một kẻ phản diện đáng gờm, hiện thân của sự chinh phục ngay cả trong cái chết.",
-            },
-            {
-              id: "evelynn",
-              name: "Evelynn",
-              icon: "💋",
-              weapon: "Móng vuốt, Quyến rũ, Khả năng hút sinh lực",
-              species: "Nữ, Ác quỷ (ngụ ý)",
-              playstyle:
-                "Sát thủ AP (Tàng hình, Di chuyển nhanh, Sát thương bùng nổ)",
-              lore: "Mặc dù nguồn gốc bí ẩn, Evelynn từng được liên kết với Quần Đảo Bóng Đêm. Được mô tả là Ma Nữ Sát Nhân, cô hút sinh lực của nạn nhân.",
+              role: "Đỡ Đòn",
+              region: "shadowisles",
+              lore: "Cây cổ thụ sống, bảo vệ tàn tích cuối cùng của Quần Đảo Phước Lành.",
             },
           ],
           newChampions: [
             {
               name: "Lyra, Người Dệt Tiếng Vọng",
               icon: "🎶",
-              weapon:
-                "Một cây đàn lia ma quái, thao túng *sự cộng hưởng* của Màn Sương Đen và *những tiếng vọng* của các sự kiện trong quá khứ.",
-              species: "Nữ, một nữ thi sĩ/linh hồn siêu nhiên.",
-              playstyle:
-                "Pháp sư Kiểm soát AP/Hỗ trợ tập trung vào thao túng âm thanh/ký ức và từ chối khu vực.",
-              lore: "Trước Đại Suy Vong, Lyra là nữ thi sĩ được ca ngợi nhất của Quần Đảo Phước Lành, những giai điệu của cô có thể xoa dịu tâm hồn và truyền cảm hứng vĩ đại. Khi Màn Sương Đen bao trùm, âm nhạc của cô bị dập tắt, và linh hồn cô trở nên gắn bó không thể tách rời với những âm thanh và ký ức rời rạc của vùng đất đang chết. Giờ đây, cô trôi dạt khắp Quần Đảo Bóng Đêm, cây đàn lia ma quái của cô vô thức dệt nên những tiếng vọng méo mó thành những giai điệu ma quái, vô hình, biểu hiện thành những thực tại bị bóp méo. Cô khao khát khôi phục 'sự hài hòa' của quê hương đã mất, nhưng những nỗ lực của cô thường khuếch đại sự tuyệt vọng và hỗn loạn tiềm ẩn, tạo ra những vùng đẹp đẽ và đau khổ gây mất phương hướng. Cô là một nhân vật bi kịch, một nhạc trưởng của một bản giao hưởng đau khổ.",
+              role: "Pháp Sư",
+              region: "shadowisles",
+              lore: "Nữ thi sĩ bị biến chất bởi Màn Sương Đen, dệt nên những giai điệu ma quái.",
               skills: [
-                {
-                  name: "Nội tại - Cộng Hưởng Kéo Dài",
-                  description:
-                    "Các kỹ năng của Lyra để lại những 'Tiếng Vọng' mờ nhạt trên mặt đất trong thời gian ngắn. Đồng minh đi qua Tiếng Vọng nhận được một lượng tốc độ di chuyển tăng dần rồi giảm dần. Kẻ địch đi qua Tiếng Vọng bị làm chậm và tầm nhìn bị bóp méo trong thời gian ngắn.",
-                },
-                {
-                  name: "Q - Hợp Âm Bất Hòa",
-                  description:
-                    "Lyra gảy đàn lia, gửi một làn sóng âm thanh méo mó, vô hình theo một đường thẳng. Nó gây sát thương phép nhỏ cho kẻ địch đầu tiên trúng phải và áp dụng hiệu ứng 'Bất Hòa'. Kẻ địch bị Bất Hòa nhận thêm sát thương từ các kỹ năng khác của Lyra và tốc độ đánh bị giảm nhẹ.",
-                },
-                {
-                  name: "W - Mạng Lưới Ký Ức",
-                  description:
-                    "Lyra tạo ra một vùng tròn nhỏ 'Hòa Âm Ký Ức' tại một vị trí mục tiêu. Đồng minh bên trong nhận được một lá chắn tạm thời và một lượng hồi máu nhỏ theo thời gian. Kẻ địch bên trong bị câm lặng trong thời gian ngắn (không thể sử dụng các kỹ năng không phải di chuyển) và thời gian hồi chiêu của họ bị tăng nhẹ. Kỹ năng này có thời gian hồi chiêu đáng kể, nhấn mạnh tầm quan trọng chiến lược của nó.",
-                },
-                {
-                  name: "E - Giai Điệu Vỡ Tan",
-                  description:
-                    "Lyra lướt một quãng ngắn, để lại một vệt 'Nốt Nhạc Vỡ Tan'. Kẻ địch trúng Nốt Nhạc Vỡ Tan nhận sát thương phép và bị trói chân trong thời gian ngắn. Nếu Lyra lướt qua một 'Tiếng Vọng', thời gian trói chân được tăng lên, và cô nhận được kháng phép trong vài giây.",
-                },
-                {
-                  name: "R - Khúc Bi Tráng của Vua Suy Vong",
-                  description:
-                    "Lyra tung ra một giai điệu hùng vĩ, u sầu tạo ra một làn sóng 'Đau Khổ Áp Đảo' lớn, lan rộng. Kẻ địch bị cuốn vào làn sóng bị làm chậm đáng kể, nhận sát thương phép liên tục và bị 'trói buộc' (không thể sử dụng kỹ năng di chuyển/lướt) trong thời gian ngắn. Đồng minh bên trong làn sóng nhận thêm kháng hiệu ứng. Chiêu cuối này là một công cụ kiểm soát khu vực và phá vỡ giao tranh tổng mạnh mẽ, biến chiến trường thành một bản giao hưởng đau khổ.",
-                },
+                "Q: Hợp Âm Bất Hòa",
+                "W: Mạng Lưới Ký Ức",
+                "E: Giai Điệu Vỡ Tan",
+                "R: Khúc Bi Tráng",
               ],
             },
             {
-              name: "Morwen, Kẻ Hút Hồn",
-              icon: "🐙",
-              weapon:
-                "Một bộ xúc tu ma quái, dài, có gai nhọn vươn ra từ lưng, hút sinh lực và cảm xúc.",
-              species: "Nữ, một thực thể siêu nhiên, quái dị.",
-              playstyle:
-                "Sát thủ AP/Đấu sĩ tập trung vào hút sinh lực/tài nguyên duy trì và thao túng cảm xúc.",
-              lore: "Một người sống sót của Đại Suy Vong, Morwen thực hiện nghi lễ cấm kỵ, gắn kết bản chất với Sương Mù. Điều này cứu cơ thể nhưng làm méo mó linh hồn cô, biến cô thành sinh vật ký sinh phải liên tục nuôi dưỡng mình bằng tàn dư cảm xúc và tinh thần của người khác. Cô rình rập, bị thu hút bởi sự tuyệt vọng, sợ hãi, hy vọng, tiêu thụ chúng để mạnh hơn.",
+              name: "Mortis, Kẻ Thu Hoạch Linh Hồn",
+              icon: "💀",
+              role: "Sát Thủ",
+              region: "shadowisles",
+              lore: "Thợ săn linh hồn, thu hoạch nỗi đau khổ để nuôi dưỡng sức mạnh bóng tối.",
               skills: [
-                {
-                  name: "Nội tại - Bữa Tiệc Sầu Muộn",
-                  description:
-                    "Khi Morwen gây sát thương lên tướng địch bằng một kỹ năng, cô hút một phần nhỏ máu và mana hiện tại của họ. Nếu một tướng địch chết trong một bán kính nhất định quanh Morwen, cô nhận được một lượng tốc độ di chuyển tạm thời và một lượng sức mạnh phép thuật tăng dần rồi giảm dần.",
-                },
-                {
-                  name: "Q - Roi Xúc Tu",
-                  description:
-                    "Morwen vung một xúc tu ma quái theo hướng chỉ định, gây sát thương phép cho kẻ địch đầu tiên trúng phải và áp dụng 'Dấu Ấn Hút' trong vài giây.",
-                },
-                {
-                  name: "W - Ôm Ấp Hút Cạn",
-                  description:
-                    "Morwen vận sức trong thời gian ngắn, vươn nhiều xúc tu tới tất cả kẻ địch có Dấu Ấn Hút trong một khu vực nhỏ xung quanh cô. Cô gây sát thương phép liên tục và hút máu nhanh chóng cùng một lượng nhỏ thời gian hồi chiêu từ chúng trong suốt thời gian vận sức. Morwen bị làm chậm khi vận sức, nhưng nhận được giảm sát thương.",
-                },
-                {
-                  name: "E - Bước Chân Ma Quái",
-                  description:
-                    "Morwen tạm thời không thể bị chọn làm mục tiêu và lướt qua một tướng địch hoặc đồng minh. Nếu cô lướt qua một kẻ địch có Dấu Ấn Hút, dấu ấn sẽ bị tiêu thụ, gây thêm sát thương phép và giảm đáng kể thời gian hồi chiêu của Ôm Ấp Hút Cạn. Điều này cho phép định vị lại nhanh chóng và theo sau.",
-                },
-                {
-                  name: "R - Thu Hoạch Linh Hồn",
-                  description:
-                    "Morwen tung ra một làn sóng xúc tu ma quái trong một hình nón rộng, gây sát thương phép và áp dụng hiệu ứng 'Tuyệt Vọng' nặng nề lên tất cả kẻ địch trúng phải. Kẻ địch bị ảnh hưởng bởi Tuyệt Vọng bị giảm đáng kể sát thương gây ra và không thể kích hoạt hiệu ứng hồi máu hoặc lá chắn trong thời gian ngắn. Morwen nhận được một lượng lớn hồi máu dựa trên số lượng kẻ địch trúng phải, khiến cô cực kỳ bền bỉ trong giao tranh tổng.",
-                },
-              ],
-            },
-            {
-              name: "Kaelen, Người Gác Đền Hắc Ám",
-              icon: "🗿",
-              weapon:
-                "Một khối đá nguyên khối khổng lồ, lơ lửng, dùng để tạo rào cản, hấp thụ năng lượng, hoặc phóng lực xung kích.",
-              species:
-                "Nam, một cấu trúc cổ đại, được ban sự sống hoặc Người Đá.",
-              playstyle:
-                "Đỡ đòn/Tiên phong tập trung vào thao túng địa hình và hấp thụ/chuyển hướng năng lượng.",
-              lore: "Một người đá khổng lồ canh giữ kho lưu trữ linh thiêng. Đại Suy Vong áp đảo chương trình cổ xưa, biến chất lõi hắn bằng năng lượng Màn Sương Đen. Giờ đây, hắn lang thang, mục đích bị bóp méo: áp đặt 'trật tự' méo mó lên Sương Mù hỗn loạn, nghiền nát bất cứ thứ gì đi chệch khỏi sự 'ổn định' bị biến chất của hắn.",
-              skills: [
-                {
-                  name: "Nội tại - Hấp Thụ Cổ Ngữ",
-                  description:
-                    "Khối đá hấp thụ sát thương phép xung quanh. Dùng kỹ năng, tiêu hao năng lượng hấp thụ để nhận lá chắn hoặc gây thêm sát sát thương phép đòn đánh cơ bản.",
-                },
-                {
-                  name: "Q - Trụ Đá Dịch Chuyển",
-                  description:
-                    "Khối đá dịch chuyển, gây sát thương phép và làm chậm. Nếu dừng trên kẻ địch, gây thêm sát thương và làm choáng.",
-                },
-                {
-                  name: "W - Rào Chắn Linh Hồn",
-                  description:
-                    "Khối đá phóng ra bức tường linh hồn tạm thời, không thể vượt qua, chặn vật thể bay và chuyển động. Hấp thụ sát thương, tăng sức mạnh nội tại.",
-                },
-                {
-                  name: "E - Trọng Lực Đè Ép",
-                  description:
-                    "Khối đá đập mạnh xuống, gây sát thương phép diện rộng và hất tung.",
-                },
-                {
-                  name: "R - Màn Che Giam Cầm",
-                  description:
-                    "Vận sức, khối đá tạo vùng 'Bất Động Tuyệt Đối'. Kẻ địch bị làm chậm, trói buộc. Sau đó, vùng sụp đổ, gây sát thương phép lớn. Kaelen nhận giảm sát thương khi vận sức.",
-                },
-              ],
-            },
-            {
-              name: "Ignis, Ngọn Lửa Tuyệt Vọng",
-              icon: "🔥",
-              weapon:
-                "Một lư hương/chậu than quang phổ cháy với ngọn lửa lạnh lẽo, gây tuyệt vọng.",
-              species: "Nam, một Linh mục Linh hồn bị tra tấn/Pháp sư lửa.",
-              playstyle:
-                "Pháp sư AP/Hỗ trợ, tập trung vào từ chối khu vực, suy yếu và gây tuyệt vọng.",
-              lore: "Từng là một linh mục cố gắng thanh tẩy Quần Đảo trong Đại Suy Vong, ngọn lửa thánh của ông đã bị biến chất thành ngọn lửa lạnh lẽo của sự tuyệt vọng. Giờ đây, ông lang thang, đốt cháy hy vọng và chỉ để lại sự hoang tàn.",
-              skills: [
-                {
-                  name: "Nội tại - Lửa Lạnh Tuyệt Vọng",
-                  description:
-                    "Kỹ năng của Ignis áp dụng 'Tuyệt Vọng' lên kẻ địch, giảm sát thương gây ra và khả năng hồi phục của chúng. Tuyệt Vọng cộng dồn.",
-                },
-                {
-                  name: "Q - Lư Hương Thống Khổ",
-                  description:
-                    "Ignis ném lư hương của mình, gây sát thương phép và tạo ra một vùng lửa lạnh lẽo gây sát thương theo thời gian và làm chậm kẻ địch.",
-                },
-                {
-                  name: "W - Màn Sương U Sầu",
-                  description:
-                    "Ignis tạo ra một đám mây ma quái làm câm lặng và làm chậm kẻ địch đi vào. Kẻ địch bên trong nhận thêm sát thương từ các kỹ năng khác của Ignis.",
-                },
-                {
-                  name: "E - Lời Nguyền Bất Tận",
-                  description:
-                    "Ignis trói buộc một kẻ địch bằng năng lượng tuyệt vọng, gây sát thương phép và làm choáng ngắn. Nếu mục tiêu đã bị Tuyệt Vọng, thời gian làm choáng tăng lên.",
-                },
-                {
-                  name: "R - Nghi Lễ Hủy Diệt",
-                  description:
-                    "Ignis bắt đầu vận sức, tạo ra một vòng tròn lớn của lửa lạnh lẽo lan rộng từ vị trí của mình. Kẻ địch bên trong nhận sát thương phép liên tục và bị áp dụng Tuyệt Vọng nặng nề. Ignis có thể di chuyển chậm trong khi vận sức.",
-                },
-              ],
-            },
-            {
-              name: "Riven, Lưỡi Dao Thì Thầm",
-              icon: "🔪",
-              weapon:
-                "Một cặp dao găm quang phổ cộng hưởng với những lời thì thầm của ký ức bị lãng quên.",
-              species: "Nữ, một Sát thủ/Điệp viên ma.",
-              playstyle:
-                "Sát thủ AD, tập trung vào tàng hình, sát thương bùng nổ nhanh và khai thác nỗi sợ/sự bối rối của kẻ địch.",
-              lore: "Từng là một điệp viên khét tiếng, cô bị mắc kẹt trong Đại Suy Vong, tâm trí tan vỡ bởi những lời thì thầm của người chết. Giờ đây, cô sử dụng những lời thì thầm này để gây mất phương hướng và loại bỏ mục tiêu của mình.",
-              skills: [
-                {
-                  name: "Nội tại - Ám Ảnh Vô Hình",
-                  description:
-                    "Khi Riven đứng yên trong thời gian ngắn hoặc sau khi sử dụng một kỹ năng di chuyển, cô trở nên tàng hình trong vài giây. Đòn đánh hoặc kỹ năng đầu tiên khi thoát tàng hình gây thêm sát thương.",
-                },
-                {
-                  name: "Q - Cú Đâm Ký Ức",
-                  description:
-                    "Riven lướt nhanh về phía trước, đâm xuyên qua kẻ địch, gây sát thương vật lý. Nếu cô đâm xuyên qua một kẻ địch đang bị 'Bối Rối', cô gây thêm sát thương và giảm thời gian hồi chiêu của kỹ năng này.",
-                },
-                {
-                  name: "W - Tiếng Thì Thầm Điên Loạn",
-                  description:
-                    "Riven giải phóng một làn sóng âm thanh ma quái, gây sát thương phép và áp dụng 'Bối Rối' lên kẻ địch trúng phải. Kẻ địch bị Bối Rối có một cơ hội nhỏ để tấn công ngẫu nhiên hoặc di chuyển thất thường trong thời gian ngắn.",
-                },
-                {
-                  name: "E - Thoát Ly Linh Hồn",
-                  description:
-                    "Riven lướt một quãng ngắn, để lại một bản sao ma quái tại vị trí cũ. Cô có thể tái kích hoạt kỹ năng này để quay lại vị trí của bản sao trong vài giây. Bản sao tồn tại trong thời gian ngắn và có thể bị phá hủy.",
-                },
-                {
-                  name: "R - Vũ Điệu Bóng Đêm",
-                  description:
-                    "Riven biến mất trong làn khói đen, trở nên không thể bị chọn làm mục tiêu và tăng tốc độ di chuyển. Cô có thể tái kích hoạt để xuất hiện phía sau một kẻ địch gần đó, gây sát thương vật lý lớn và làm câm lặng chúng trong thời gian ngắn. Nếu mục tiêu bị hạ gục trong vòng vài giây sau khi bị trúng Vũ Điệu Bóng Đêm, Riven nhận được một lượng lớn vàng thưởng và giảm đáng kể thời gian hồi chiêu của kỹ năng này.",
-                },
+                "Q: Lưỡi Hái Linh Hồn",
+                "W: Bẫy Ma Quái",
+                "E: Bước Nhảy Bóng Tối",
+                "R: Thu Hoạch Tuyệt Vọng",
               ],
             },
           ],
@@ -583,240 +572,60 @@
           id: "demacia",
           name: "Demacia",
           icon: "⚜️",
-          description:
-            "Vương quốc của công lý và trật tự, nơi ma thuật bị cấm đoán và bị nghi ngờ. Demacia được xây dựng trên nền tảng của sự đoàn kết và nghĩa vụ, với một quân đội hùng mạnh bảo vệ các giá trị của nó.",
           existingChampions: [
             {
               id: "garen",
               name: "Garen",
               icon: "🛡️",
-              weapon: "Đại kiếm",
-              species: "Nam, Con người",
-              playstyle:
-                "Đấu sĩ/Đỡ đòn (Bền bỉ, Sát thương duy trì, Đường trên)",
-              lore: "Một chiến binh cao quý và là biểu tượng của Demacia, Garen chiến đấu để bảo vệ vương quốc của mình khỏi mọi mối đe dọa, sử dụng thanh kiếm khổng lồ của mình để mang lại công lý.",
+              role: "Đấu Sĩ",
+              region: "demacia",
+              lore: "Một chiến binh cao quý và là biểu tượng của Demacia.",
             },
             {
               id: "lux",
               name: "Lux",
               icon: "✨",
-              weapon: "Quyền trượng ánh sáng",
-              species: "Nữ, Con người (Pháp sư)",
-              playstyle: "Pháp sư AP (Sát thương bùng nổ, Khống chế, Hỗ trợ)",
-              lore: "Một pháp sư ánh sáng mạnh mẽ, Lux phải che giấu khả năng của mình trong một vương quốc nghi ngờ ma thuật. Cô sử dụng ánh sáng để bảo vệ những người vô tội và chiến đấu cho một Demacia tốt đẹp hơn.",
+              role: "Pháp Sư",
+              region: "demacia",
+              lore: "Một pháp sư ánh sáng mạnh mẽ, phải che giấu khả năng của mình.",
             },
             {
-              id: "jarvaniv",
+              id: "jarvan",
               name: "Jarvan IV",
               icon: "👑",
-              weapon: "Thương",
-              species: "Nam, Con người",
-              playstyle:
-                "Đấu sĩ/Tiên phong (Mở giao tranh, Khống chế, Đi rừng/Đường trên)",
-              lore: "Hoàng tử kế vị ngai vàng Demacia, Jarvan IV là một chiến binh dũng cảm, dẫn dắt quân đội của mình bằng ngọn giáo và quyết tâm không lay chuyển.",
+              role: "Đỡ Đòn",
+              region: "demacia",
+              lore: "Hoàng tử của Demacia, dẫn đầu quân đội bảo vệ đất nước.",
             },
             {
               id: "shyvana",
               name: "Shyvana",
               icon: "🐉",
-              weapon: "Vuốt rồng, Năng lượng rồng",
-              species: "Nữ, Ác long/Người",
-              playstyle: "Đấu sĩ (Sát thương bùng nổ, Biến hình, Đi rừng)",
-              lore: "Một á long bị ruồng bỏ, Shyvana chiến đấu cho Demacia, tìm kiếm sự chấp nhận và kiểm soát bản chất rồng của mình. Cô có thể biến hình thành một con rồng khổng lồ trong trận chiến.",
+              role: "Đấu Sĩ",
+              region: "demacia",
+              lore: "Nữ rồng nửa người, chiến đấu để chứng minh lòng trung thành với Demacia.",
             },
             {
               id: "fiora",
               name: "Fiora",
-              icon: "🤺",
-              weapon: "Kiếm lưỡi mỏng",
-              species: "Nữ, Con người",
-              playstyle:
-                "Đấu sĩ/Đấu tay đôi (Sát thương chuẩn, Đấu tay đôi, Đường trên)",
-              lore: "Nữ kiếm sĩ đáng gờm nhất Demacia, Fiora là bậc thầy về kiếm thuật, chiến đấu để khôi phục danh dự cho gia tộc Laurent.",
+              icon: "⚔️",
+              role: "Đấu Sĩ",
+              region: "demacia",
+              lore: "Đấu kiếm gia kiêu hãnh nhất Demacia, tìm kiếm những thử thách xứng đáng.",
             },
           ],
           newChampions: [
             {
               name: "Seraphina, Người Canh Gác Lumina",
               icon: "✨",
-              weapon:
-                "Một quyền trượng pha lê rực rỡ truyền dẫn ánh sáng tinh khiết.",
-              species: "Nữ, Con người (Pháp sư Lumina).",
-              playstyle:
-                "Hỗ trợ AP/Phù phép, tập trung vào lá chắn, hồi máu và khống chế đám đông dựa trên ánh sáng.",
-              lore: "Một pháp sư đã tìm ra cách thanh lọc ma thuật, sử dụng ánh sáng để bảo vệ Demacia khỏi các mối đe dọa bên trong và bên ngoài, mang lại hy vọng cho những người bị áp bức.",
+              role: "Hỗ Trợ",
+              region: "demacia",
+              lore: "Pháp sư đã tìm ra cách thanh lọc ma thuật bằng ánh sáng tinh khiết.",
               skills: [
-                {
-                  name: "Nội tại - Ánh Sáng Tinh Khiết",
-                  description:
-                    "Kỹ năng của Seraphina để lại dấu vết ánh sáng. Đồng minh đi qua nhận được lá chắn nhỏ. Kẻ địch đi qua bị làm chậm.",
-                },
-                {
-                  name: "Q - Tia Sáng Trói Buộc",
-                  description:
-                    "Phóng ra một tia sáng trói buộc kẻ địch đầu tiên trúng phải, gây sát thương phép và trói chân.",
-                },
-                {
-                  name: "W - Hào Quang Bảo Vệ",
-                  description:
-                    "Tạo ra một hào quang ánh sáng xung quanh đồng minh, cấp lá chắn và tăng kháng phép. Lá chắn sẽ nổ gây sát thương phép khi hết hạn hoặc bị phá vỡ.",
-                },
-                {
-                  name: "E - Cột Sáng Phục Hồi",
-                  description:
-                    "Triệu hồi một cột sáng tại vị trí mục tiêu, hồi máu cho đồng minh và gây sát thương phép cho kẻ địch trong vùng ảnh hưởng. Cột sáng tồn tại trong thời gian ngắn.",
-                },
-                {
-                  name: "R - Bình Minh Rạng Rỡ",
-                  description:
-                    "Seraphina giải phóng một làn sóng ánh sáng mạnh mẽ, gây sát thương phép lớn cho kẻ địch và làm mù chúng trong thời gian ngắn. Đồng minh trong vùng ảnh hưởng nhận được tốc độ di chuyển và giảm sát thương.",
-                },
-              ],
-            },
-            {
-              name: "Gareth, Lá Chắn Kiên Định",
-              icon: "🛡️",
-              weapon: "Một chiếc khiên khổng lồ, không thể lay chuyển.",
-              species: "Nam, Con người (Tiên phong Demacia).",
-              playstyle:
-                "Đỡ đòn/Tiên phong, tập trung vào hấp thụ sát thương, bảo vệ đồng minh và mở giao tranh bằng những cú lao khiên.",
-              lore: "Một cựu chiến binh Demacia có quyết tâm không lay chuyển khiến anh trở thành một bức tường bất khả xâm phạm cho Demacia, luôn đứng vững trước mọi kẻ thù.",
-              skills: [
-                {
-                  name: "Nội tại - Ý Chí Bất Khuất",
-                  description:
-                    "Gareth nhận giảm sát thương dựa trên số lượng kẻ địch xung quanh. Khi bị tấn công, anh ta có cơ hội nhỏ để phản lại sát thương.",
-                },
-                {
-                  name: "Q - Cú Đấm Khiên",
-                  description:
-                    "Gareth lao về phía trước với khiên, gây sát thương vật lý và làm choáng kẻ địch đầu tiên trúng phải.",
-                },
-                {
-                  name: "W - Bức Tường Kiên Cố",
-                  description:
-                    "Gareth nâng khiên, tạo ra một bức tường phòng thủ chặn tất cả sát thương từ phía trước trong thời gian ngắn. Sau đó, anh ta có thể tái kích hoạt để đẩy lùi kẻ địch xung quanh.",
-                },
-                {
-                  name: "E - Xung Phong Chính Nghĩa",
-                  description:
-                    "Gareth bắt đầu vận sức, sau đó lao về phía trước với tốc độ tăng dần, gây sát thương vật lý cho kẻ địch trên đường đi. Nếu anh ta va vào tướng địch, cả hai bị làm choáng. Có thể hủy bỏ sớm để gây sát thương nhỏ.",
-                },
-                {
-                  name: "R - Pháo Đài Vĩnh Cửu",
-                  description:
-                    "Gareth cắm khiên xuống đất, tạo ra một pháo đài tạm thời không thể vượt qua. Anh ta và đồng minh bên trong nhận được giảm sát thương và tăng khả năng hồi phục. Kẻ địch cố gắng đi vào bị làm chậm và nhận sát thương.",
-                },
-              ],
-            },
-            {
-              name: "Lyra, Người Nuôi Chim Bạc",
-              icon: "🦅",
-              weapon:
-                "Một cây nỏ chuyên dụng và chim ưng Bạc đã được huấn luyện của cô.",
-              species: "Nữ, Con người (Kiểm lâm).",
-              playstyle:
-                "Xạ thủ AD/Đấu tay đôi, tập trung vào tấn công tầm xa, trinh sát trên không và định vị lại chiến thuật với chim ưng của cô.",
-              lore: "Một thợ săn lành nghề tuần tra biên giới Demacia với chim ưng Bạc trung thành của mình, tiêu diệt các mối đe dọa từ trên cao và bảo vệ vùng đất.",
-              skills: [
-                {
-                  name: "Nội tại - Tầm Nhìn Chim Ưng",
-                  description:
-                    "Chim ưng Bạc của Lyra bay lượn xung quanh, thỉnh thoảng tiết lộ tầm nhìn của các khu vực gần đó. Đòn đánh cơ bản của Lyra có thể đánh dấu kẻ địch, cho phép chim ưng của cô lao vào gây thêm sát thương.",
-                },
-                {
-                  name: "Q - Mũi Tên Xuyên Phá",
-                  description:
-                    "Lyra bắn một mũi tên xuyên qua kẻ địch, gây sát thương vật lý và giảm giáp của chúng. Mũi tên có thể xuyên qua nhiều mục tiêu.",
-                },
-                {
-                  name: "W - Triệu Hồi Chim Ưng",
-                  description:
-                    "Lyra ra lệnh cho chim ưng của mình lao vào một vị trí mục tiêu, gây sát thương vật lý và làm chậm kẻ địch. Chim ưng có thể được sử dụng để trinh sát hoặc thu thập thông tin.",
-                },
-                {
-                  name: "E - Lướt Gió",
-                  description:
-                    "Lyra lướt một quãng ngắn theo hướng chỉ định. Nếu cô lướt qua một kẻ địch bị đánh dấu bởi chim ưng, cô gây thêm sát thương và nhận được tốc độ di chuyển tạm thời.",
-                },
-                {
-                  name: "R - Tấn Công Từ Trên Cao",
-                  description:
-                    "Lyra và chim ưng của cô bay lên không trung, trở nên không thể bị chọn làm mục tiêu trong thời gian ngắn. Trong thời gian này, Lyra có thể bắn liên tục các mũi tên gây sát thương vật lý diện rộng xuống mặt đất. Sau khi hạ cánh, cô gây thêm sát thương và làm chậm kẻ địch xung quanh.",
-                },
-              ],
-            },
-            {
-              name: "Kael, Người Gác Rừng Đá",
-              icon: "🌳",
-              weapon: "Găng tay được chế tác từ gỗ hóa đá và ma thuật đất.",
-              species: "Nam, Con người (Pháp sư đất/Người gác rừng).",
-              playstyle:
-                "Đấu sĩ AP/Kiểm soát, tập trung vào thao túng địa hình, tạo ra các rào cản và trói chân kẻ địch.",
-              lore: "Một pháp sư ẩn dật sống trong rừng Demacia, sử dụng ma thuật đất cổ xưa để bảo vệ sự cân bằng tự nhiên, chống lại mọi sự xâm phạm.",
-              skills: [
-                {
-                  name: "Nội tại - Lớp Vỏ Đá",
-                  description:
-                    "Kael nhận giáp và kháng phép dựa trên số lượng kẻ địch xung quanh. Khi anh ta sử dụng một kỹ năng, anh ta nhận được một lớp vỏ đá tạm thời hấp thụ sát thương.",
-                },
-                {
-                  name: "Q - Nắm Đấm Đất",
-                  description:
-                    "Kael đập nắm đấm xuống đất, tạo ra một cột đá nhọn gây sát thương phép và hất tung kẻ địch trong một đường thẳng ngắn.",
-                },
-                {
-                  name: "W - Rào Chắn Rễ",
-                  description:
-                    "Kael triệu hồi một hàng rễ cây trồi lên từ mặt đất, tạo ra một rào cản không thể vượt qua trong thời gian ngắn. Rào cản này chặn di chuyển và vật thể bay.",
-                },
-                {
-                  name: "E - Trói Buộc Đất",
-                  description:
-                    "Kael phóng ra một luồng năng lượng đất, gây sát thương phép và trói chân kẻ địch đầu tiên trúng phải. Nếu mục tiêu đã bị trói chân, thời gian trói chân tăng lên.",
-                },
-                {
-                  name: "R - Biến Đổi Địa Hình",
-                  description:
-                    "Kael bắt đầu vận sức, biến đổi một khu vực lớn thành địa hình gồ ghề. Kẻ địch bên trong bị làm chậm đáng kể và nhận sát thương phép theo thời gian. Kael có thể di chuyển chậm trong khi vận sức, và vùng ảnh hưởng di chuyển theo anh ta.",
-                },
-              ],
-            },
-            {
-              name: "Elara, Lưỡi Dao Vang Vọng",
-              icon: "🎵",
-              weapon:
-                "Một thanh đại kiếm khuếch đại âm thanh cộng hưởng với sóng âm thuần khiết.",
-              species: "Nữ, Con người (Chiến binh/Người dệt âm thanh).",
-              playstyle:
-                "Đấu sĩ AD/Phá vỡ, tập trung vào sát thương diện rộng, làm câm lặng kẻ địch và đẩy lùi chúng bằng sóng âm.",
-              lore: "Một chiến binh Demacia đã khám phá ra một dạng ma thuật âm thanh hiếm có, sử dụng lưỡi kiếm của mình để phá vỡ đội hình địch và truyền cảm hứng cho đồng minh.",
-              skills: [
-                {
-                  name: "Nội tại - Hợp Âm Chiến Đấu",
-                  description:
-                    "Đòn đánh cơ bản của Elara tạo ra một 'Hợp Âm Chiến Đấu'. Khi đạt đủ số lượng Hợp Âm, đòn đánh tiếp theo của cô gây thêm sát thương diện rộng và làm câm lặng kẻ địch.",
-                },
-                {
-                  name: "Q - Sóng Âm Xuyên Phá",
-                  description:
-                    "Elara vung kiếm, phóng ra một làn sóng âm thanh gây sát thương vật lý và đẩy lùi kẻ địch theo một đường thẳng.",
-                },
-                {
-                  name: "W - Tiếng Vang Bảo Vệ",
-                  description:
-                    "Elara tạo ra một vùng âm thanh bảo vệ xung quanh mình, giảm sát thương nhận vào và tăng tốc độ di chuyển cho bản thân và đồng minh trong vùng. Kẻ địch cố gắng đi vào bị làm chậm.",
-                },
-                {
-                  name: "E - Vũ Điệu Âm Thanh",
-                  description:
-                    "Elara lướt một quãng ngắn, để lại một vệt âm thanh. Kẻ địch đi qua vệt âm thanh nhận sát thương vật lý và bị làm chậm. Nếu cô lướt qua một kẻ địch đang bị câm lặng, cô gây thêm sát thương.",
-                },
-                {
-                  name: "R - Bản Giao Hưởng Công Lý",
-                  description:
-                    "Elara bắt đầu vận sức, sau đó giải phóng một bản giao hưởng âm thanh khổng lồ, gây sát thương vật lý lớn cho tất cả kẻ địch trong một khu vực rộng lớn. Kẻ địch bị trúng phải bị làm choáng và bị giảm đáng kể giáp. Đồng minh trong vùng ảnh hưởng nhận được tăng tốc độ tấn công và sát thương.",
-                },
+                "Q: Tia Sáng Trói Buộc",
+                "W: Hào Quang Bảo Vệ",
+                "E: Cột Sáng Phục Hồi",
+                "R: Bình Minh Rạng Rỡ",
               ],
             },
           ],
@@ -824,243 +633,45 @@
         {
           id: "noxus",
           name: "Noxus",
-          icon: "⚔️",
-          description:
-            "Đế chế quân sự tàn bạo, nơi sức mạnh là tất cả. Noxus tôn vinh sự tàn nhẫn, tham vọng và khả năng sống sót, chào đón bất kỳ ai có thể chứng tỏ giá trị của mình, bất kể nguồn gốc.",
+          icon: "🗡️",
           existingChampions: [
             {
               id: "darius",
               name: "Darius",
               icon: "🪓",
-              weapon: "Rìu khổng lồ",
-              species: "Nam, Con người",
-              playstyle:
-                "Đấu sĩ/Đấu sĩ hạng nặng (Sát thương duy trì, Kết liễu, Đường trên)",
-              lore: "Tổng tư lệnh của Noxus, Darius là một chiến binh không khoan nhượng, nghiền nát kẻ thù bằng chiếc rìu khổng lồ và ý chí sắt đá.",
+              role: "Đấu Sĩ",
+              region: "noxus",
+              lore: "Tướng quân không khoan nhượng của Noxus, biểu tượng của sức mạnh và quyết tâm.",
             },
             {
               id: "katarina",
               name: "Katarina",
               icon: "🗡️",
-              weapon: "Dao găm",
-              species: "Nữ, Con người",
-              playstyle:
-                "Sát thủ AP (Sát thương bùng nổ, Di chuyển nhanh, Hạ gục liên tiếp)",
-              lore: "Một sát thủ khét tiếng của Noxus, Katarina là bậc thầy về dao găm, di chuyển nhanh như chớp để tiêu diệt mục tiêu.",
+              role: "Sát Thủ",
+              region: "noxus",
+              lore: "Sát thủ lưỡng dao nguy hiểm nhất của Noxus, nhanh như chớp và tàn nhẫn.",
             },
             {
               id: "swain",
               name: "Swain",
-              icon: "🐦",
-              weapon: "Ma thuật quỷ, Chim quạ",
-              species: "Nam, Con người (Quỷ)",
-              playstyle:
-                "Pháp sư AP/Đấu sĩ (Khống chế, Sát thương diện rộng, Biến hình)",
-              lore: "Tư lệnh tối cao của Noxus, Swain là một chiến lược gia bậc thầy, sử dụng ma thuật quỷ để kiểm soát chiến trường và nhìn thấu tâm trí kẻ thù.",
-            },
-            {
-              id: "draven",
-              name: "Draven",
-              icon: "🪓",
-              weapon: "Rìu xoay",
-              species: "Nam, Con người",
-              playstyle:
-                "Xạ thủ (Sát thương bùng nổ, Áp lực đường, Gây sát thương lớn)",
-              lore: "Một đấu sĩ kiêu ngạo và tự mãn, Draven là một ngôi sao trong đấu trường Noxus, sử dụng những chiếc rìu xoay của mình để kết liễu đối thủ một cách ngoạn mục.",
-            },
-            {
-              id: "sion",
-              name: "Sion",
-              icon: "�",
-              weapon: "Rìu khổng lồ",
-              species: "Nam, Xác sống",
-              playstyle: "Đỡ đòn/Tiên phong (Bền bỉ, Mở giao tranh, Đẩy lẻ)",
-              lore: "Một chiến binh Noxus bất tử, Sion là một cỗ máy hủy diệt không ngừng nghỉ, được hồi sinh để phục vụ đế chế của mình, nghiền nát mọi thứ trên đường đi.",
+              icon: "🦅",
+              role: "Pháp Sư",
+              region: "noxus",
+              lore: "Thống suất cao cấp của Noxus, sử dụng ma thuật quỷ dữ để thống trị.",
             },
           ],
           newChampions: [
             {
-              name: "Valerius, Bạo Chúa Sắt",
-              icon: "⛓️",
-              weapon:
-                "Một cây chùy nặng, có gai nhọn, được tẩm ma thuật sắt đen.",
-              species: "Nam, Con người (Tướng Noxus).",
-              playstyle:
-                "Đấu sĩ AD/Đấu sĩ hạng nặng, tập trung vào sát thương duy trì, hút máu và làm suy yếu sức mạnh của kẻ địch.",
-              lore: "Một tướng quân tàn nhẫn sử dụng ma thuật sắt bị cấm để tăng cường sức mạnh và nghiền nát tất cả những kẻ chống đối Noxus, biến chiến trường thành lò luyện thép của mình.",
+              name: "Vex'thar, Đại Tướng Máu",
+              icon: "⚔️",
+              role: "Đấu Sĩ",
+              region: "noxus",
+              lore: "Chiến binh tàn bạo từ vùng biên giới, sử dụng máu kẻ thù để tăng sức mạnh.",
               skills: [
-                {
-                  name: "Nội tại - Khát Máu Sắt",
-                  description:
-                    "Đòn đánh cơ bản của Valerius gây thêm sát thương vật lý và hồi máu cho bản thân. Khi máu thấp, anh ta nhận thêm giáp và kháng phép.",
-                },
-                {
-                  name: "Q - Cú Đập Nghiền Nát",
-                  description:
-                    "Valerius đập chùy xuống đất, gây sát thương vật lý diện rộng và làm chậm kẻ địch. Kẻ địch ở trung tâm bị kéo về phía anh ta.",
-                },
-                {
-                  name: "W - Lời Nguyền Sắt",
-                  description:
-                    "Valerius áp dụng một lời nguyền sắt lên kẻ địch, gây sát thương phép theo thời gian và giảm khả năng hồi máu của chúng. Nếu mục tiêu chết khi đang bị lời nguyền, Valerius nhận được một lượng máu vĩnh viễn.",
-                },
-                {
-                  name: "E - Xích Sắt Trói Buộc",
-                  description:
-                    "Valerius phóng ra một sợi xích sắt, trói buộc kẻ địch đầu tiên trúng phải và kéo chúng về phía mình. Kẻ địch bị trói buộc bị làm chậm.",
-                },
-                {
-                  name: "R - Sự Thống Trị Vĩnh Cửu",
-                  description:
-                    "Valerius biến thành một dạng bạo chúa sắt, tăng kích thước, máu, giáp và kháng phép. Trong thời gian này, các đòn đánh cơ bản của anh ta gây thêm sát thương và hồi máu cho bản thân, và anh ta miễn nhiễm với hiệu ứng khống chế.",
-                },
-              ],
-            },
-            {
-              name: "Seraphina, Nhà Giả Kim Đỏ Thẫm",
-              icon: "🧪",
-              weapon:
-                "Một bộ sưu tập các lọ hóa chất dễ bay hơi và một găng tay chuyên dụng để phân phối chúng.",
-              species: "Nữ, Con người (Nhà giả kim/Hóa học).",
-              playstyle:
-                "Pháp sư AP/Kiểm soát, tập trung vào từ chối khu vực bằng các đám mây độc, suy yếu và các hỗn hợp thuốc nổ.",
-              lore: "Một nhà giả kim tài năng nhưng điên rồ từ Zaun, giờ đây cô áp dụng khoa học dễ bay hơi của mình vào chiến tranh Noxus, tạo ra những chất độc chết người và các tác nhân gây nổ.",
-              skills: [
-                {
-                  name: "Nội tại - Phản Ứng Hóa Học",
-                  description:
-                    "Kỹ năng của Seraphina áp dụng 'Chất Độc' lên kẻ địch, gây sát thương phép theo thời gian. Các kỹ năng khác có thể kích hoạt Chất Độc để gây thêm sát thương bùng nổ.",
-                },
-                {
-                  name: "Q - Lọ Axit Phóng Xạ",
-                  description:
-                    "Seraphina ném một lọ axit, gây sát thương phép diện rộng và làm chậm kẻ địch. Để lại một vũng axit gây sát thương theo thời gian.",
-                },
-                {
-                  name: "W - Đám Mây Độc",
-                  description:
-                    "Seraphina tạo ra một đám mây độc tại vị trí mục tiêu, làm câm lặng và gây sát thương phép theo thời gian cho kẻ địch bên trong. Có thể kích hoạt để nổ, gây thêm sát thương.",
-                },
-                {
-                  name: "E - Phản Ứng Dây Chuyền",
-                  description:
-                    "Seraphina phóng ra một tia năng lượng hóa học, gây sát thương phép và lan sang các kẻ địch gần đó. Nếu kẻ địch đã bị Chất Độc, tia sẽ lan nhanh hơn.",
-                },
-                {
-                  name: "R - Hỗn Hợp Hủy Diệt",
-                  description:
-                    "Seraphina trộn một hỗn hợp hóa học mạnh mẽ, sau đó ném nó đến một vị trí mục tiêu. Hỗn hợp sẽ nổ sau một thời gian ngắn, gây sát thương phép lớn và làm choáng kẻ địch ở trung tâm. Để lại một vùng độc lớn gây sát thương theo thời gian.",
-                },
-              ],
-            },
-            {
-              name: "Kael, Kẻ Cướp Bóng Tối",
-              icon: "🌑",
-              weapon:
-                "Một cặp lưỡi dao găm cổ tay có thể thu vào, có thể hấp thụ bóng tối.",
-              species: "Nam, Con người (Sát thủ/Pháp sư bóng tối).",
-              playstyle:
-                "Sát thủ AD, tập trung vào tàng hình, sát thương bùng nổ cao và thao túng bóng tối để thoát hiểm nhanh chóng và phục kích.",
-              lore: "Một bậc thầy gián điệp và sát thủ đã học cách bẻ cong bóng tối theo ý muốn của mình, biến anh ta thành nỗi kinh hoàng vô hình của Noxus.",
-              skills: [
-                {
-                  name: "Nội tại - Lướt Trong Bóng Tối",
-                  description:
-                    "Khi Kael ở trong bóng tối hoặc bụi cây, anh ta nhận được tốc độ di chuyển và có thể tàng hình sau vài giây. Đòn đánh đầu tiên khi thoát tàng hình gây thêm sát thương.",
-                },
-                {
-                  name: "Q - Cú Đâm Bóng Đêm",
-                  description:
-                    "Kael lướt nhanh về phía trước, gây sát thương vật lý cho kẻ địch trên đường đi. Nếu anh ta hạ gục một kẻ địch, thời gian hồi chiêu của kỹ năng này được giảm đáng kể.",
-                },
-                {
-                  name: "W - Màn Che Bóng Tối",
-                  description:
-                    "Kael tạo ra một vùng bóng tối tại vị trí mục tiêu, làm chậm và gây sát thương phép theo thời gian cho kẻ địch bên trong. Kael và đồng minh bên trong nhận được tàng hình.",
-                },
-                {
-                  name: "E - Biến Mất",
-                  description:
-                    "Kael biến mất khỏi tầm nhìn và lướt đến một vị trí mục tiêu, gây sát thương vật lý cho kẻ địch anh ta đi qua. Kỹ năng này có thể được tái kích hoạt để quay lại vị trí ban đầu.",
-                },
-                {
-                  name: "R - Ám Sát Trong Bóng Tối",
-                  description:
-                    "Kael chọn một tướng địch, sau đó lướt đến mục tiêu, gây sát thương vật lý lớn và làm câm lặng chúng. Kael trở nên không thể bị chọn làm mục tiêu trong thời gian ngắn sau khi sử dụng. Nếu mục tiêu bị hạ gục, Kael có thể tái kích hoạt kỹ năng này trong vài giây để nhắm vào mục tiêu khác.",
-                },
-              ],
-            },
-            {
-              name: "Lyra, Pháp Sư Huyết Luyện",
-              icon: "🩸",
-              weapon: "Một con dao găm nghi lễ và một quả cầu thấm máu.",
-              species: "Nữ, Con người (Pháp sư máu).",
-              playstyle:
-                "Pháp sư AP/Sát thương duy trì, tập trung vào tự gây sát thương để khuếch đại phép thuật, hút máu và suy yếu kẻ địch bằng lời nguyền máu.",
-              lore: "Một pháp sư mạnh mẽ khai thác sức mạnh thô sơ của máu, hy sinh sức sống của chính mình để giải phóng ma thuật tàn khốc, làm cho kẻ thù run sợ.",
-              skills: [
-                {
-                  name: "Nội tại - Sức Mạnh Huyết Tế",
-                  description:
-                    "Lyra có thể tiêu hao một phần máu của mình để tăng sức mạnh cho kỹ năng tiếp theo, gây thêm sát thương hoặc tăng hiệu ứng. Cô hồi máu khi gây sát thương bằng kỹ năng.",
-                },
-                {
-                  name: "Q - Tia Máu",
-                  description:
-                    "Lyra bắn một tia máu theo đường thẳng, gây sát thương phép. Nếu cô tiêu hao máu để tăng sức mạnh, tia máu sẽ lan rộng hơn và gây thêm sát thương.",
-                },
-                {
-                  name: "W - Vòng Tròn Huyết Tế",
-                  description:
-                    "Lyra tạo ra một vòng tròn máu tại vị trí mục tiêu. Kẻ địch bên trong nhận sát thương phép theo thời gian và bị làm chậm. Lyra có thể tái kích hoạt để hút máu từ tất cả kẻ địch trong vòng tròn.",
-                },
-                {
-                  name: "E - Lời Nguyền Suy Yếu",
-                  description:
-                    "Lyra áp dụng một lời nguyền máu lên kẻ địch, gây sát thương phép theo thời gian và giảm sát thương gây ra của chúng. Nếu mục tiêu chết khi đang bị lời nguyền, Lyra hồi lại một lượng máu lớn.",
-                },
-                {
-                  name: "R - Bão Máu",
-                  description:
-                    "Lyra giải phóng một cơn bão máu khổng lồ, gây sát thương phép liên tục cho tất cả kẻ địch trong một khu vực rộng lớn. Kẻ địch bị trúng phải bị áp dụng hiệu ứng 'Xuất Huyết' (nhận sát thương phép theo thời gian và giảm hồi máu). Lyra hồi máu dựa trên sát thương gây ra bởi Bão Máu.",
-                },
-              ],
-            },
-            {
-              name: "Theron, Kỹ Sư Đáng Sợ",
-              icon: "💣",
-              weapon:
-                "Một khẩu pháo công thành chạy bằng hơi nước di động và nhiều loại bẫy cơ khí.",
-              species: "Nam, Con người (Kỹ sư/Pháo thủ).",
-              playstyle:
-                "Xạ thủ AD/Công thành, tập trung vào pháo binh tầm xa, thiết lập vị trí phòng thủ và kiểm soát các điểm thắt cổ chai bằng bẫy.",
-              lore: "Một kỹ sư tài năng nhưng lập dị chuyên thiết kế vũ khí công thành đáng sợ cho Noxus, biến chiến trường thành những cái bẫy chết người.",
-              skills: [
-                {
-                  name: "Nội tại - Đạn Dược Chuyên Dụng",
-                  description:
-                    "Theron có thể chuyển đổi giữa các loại đạn dược khác nhau cho pháo của mình, mỗi loại có hiệu ứng phụ khác nhau (ví dụ: làm chậm, xuyên giáp, sát thương diện rộng).",
-                },
-                {
-                  name: "Q - Pháo Kích Tầm Xa",
-                  description:
-                    "Theron bắn một quả đạn pháo tầm xa, gây sát thương vật lý diện rộng tại vị trí mục tiêu. Có thể được tăng sức mạnh bằng các loại đạn dược khác nhau.",
-                },
-                {
-                  name: "W - Bẫy Chông",
-                  description:
-                    "Theron đặt một bẫy chông tàng hình. Khi kẻ địch dẫm phải, bẫy gây sát thương vật lý và trói chân chúng trong thời gian ngắn. Theron có thể mang nhiều bẫy.",
-                },
-                {
-                  name: "E - Đẩy Lùi Cơ Khí",
-                  description:
-                    "Theron kích hoạt một thiết bị đẩy lùi, đẩy lùi kẻ địch xung quanh và tăng tốc độ di chuyển cho bản thân trong thời gian ngắn. Có thể được sử dụng để thoát hiểm hoặc tạo khoảng cách.",
-                },
-                {
-                  name: "R - Vùng Đất Chết",
-                  description:
-                    "Theron triển khai một khẩu pháo công thành khổng lồ tại vị trí hiện tại. Khẩu pháo sẽ tự động bắn vào kẻ địch gần đó, gây sát thương vật lý lớn. Theron có thể điều khiển khẩu pháo từ xa và nó có thể bị phá hủy bởi kẻ địch.",
-                },
+                "Q: Thối Máu",
+                "W: Phẫn Nộ Tàn Bạo",
+                "E: Lướt Sát Thương",
+                "R: Cuồng Máu",
               ],
             },
           ],
@@ -1069,244 +680,44 @@
           id: "ionia",
           name: "Ionia",
           icon: "🌸",
-          description:
-            "Quần đảo cổ xưa của ma thuật và cân bằng, đang hồi phục sau chiến tranh. Ionia là một vùng đất của vẻ đẹp tự nhiên và sức mạnh tâm linh, nơi các tu sĩ và chiến binh tìm kiếm sự giác ngộ.",
           existingChampions: [
             {
               id: "yasuo",
               name: "Yasuo",
-              icon: "🌀",
-              weapon: "Katana",
-              species: "Nam, Con người",
-              playstyle:
-                "Đấu sĩ/Đấu tay đôi (Sát thương bùng nổ, Di chuyển nhanh, Gió)",
-              lore: "Một kiếm sĩ Ionia bị vu oan, Yasuo là bậc thầy về kiếm thuật gió, tìm kiếm sự thật và chuộc lỗi.",
+              icon: "🌪️",
+              role: "Đấu Sĩ",
+              region: "ionia",
+              lore: "Kiếm sĩ bất tài với lời nguyền gió, tìm kiếm sự cứu rỗi và tha thứ.",
             },
             {
               id: "ahri",
               name: "Ahri",
               icon: "🦊",
-              weapon: "Ma thuật hồ ly",
-              species: "Nữ, Vastaya",
-              playstyle:
-                "Pháp sư AP (Sát thương bùng nổ, Quyến rũ, Di chuyển nhanh)",
-              lore: "Một Vastaya có hình dạng hồ ly, Ahri là một pháp sư quyến rũ, hút sinh lực của nạn nhân để tìm kiếm ký ức và bản chất của mình.",
-            },
-            {
-              id: "zed",
-              name: "Zed",
-              icon: "🌑",
-              weapon: "Vũ khí bóng tối",
-              species: "Nam, Con người",
-              playstyle:
-                "Sát thủ AD (Sát thương bùng nổ, Di chuyển nhanh, Bóng tối)",
-              lore: "Bậc thầy về bóng tối, Zed là một sát thủ nguy hiểm, sử dụng ma thuật cấm để tiêu diệt những kẻ mà ông coi là mối đe dọa đối với Ionia.",
+              role: "Pháp Sư",
+              region: "ionia",
+              lore: "Hồ ly chín đuôi, tìm kiếm nguồn gốc thật sự của mình giữa hai thế giới.",
             },
             {
               id: "irelia",
               name: "Irelia",
-              icon: "🗡️",
-              weapon: "Lưỡi kiếm bay",
-              species: "Nữ, Con người",
-              playstyle:
-                "Đấu sĩ/Đấu tay đôi (Sát thương duy trì, Di chuyển nhanh, Khống chế)",
-              lore: "Nữ vũ công kiếm Ionia, Irelia sử dụng những lưỡi kiếm bay của mình để bảo vệ quê hương khỏi những kẻ xâm lược.",
-            },
-            {
-              id: "lee_sin",
-              name: "Lee Sin",
-              icon: "👊",
-              weapon: "Nắm đấm",
-              species: "Nam, Con người",
-              playstyle:
-                "Đấu sĩ/Sát thủ (Sát thương bùng nổ, Di chuyển nhanh, Khống chế)",
-              lore: "Một tu sĩ mù của Ionia, Lee Sin sử dụng võ thuật và năng lượng rồng để bảo vệ quê hương khỏi mọi mối đe dọa.",
+              icon: "💃",
+              role: "Đấu Sĩ",
+              region: "ionia",
+              lore: "Vũ công lưỡi dao, dẫn đầu kháng chiến chống lại sự xâm lược của Noxus.",
             },
           ],
           newChampions: [
             {
-              name: "Aella, Vũ Công Hoa Linh",
-              icon: "🌸",
-              weapon:
-                "Những dải ruy băng bay bổng thấm đẫm năng lượng linh hồn và một chiếc quạt.",
-              species: "Nữ, Con người (Vũ công Linh hồn).",
-              playstyle:
-                "Hỗ trợ AP/Phù phép, tập trung vào hồi máu, lá chắn và mê hoặc/gây mất phương hướng kẻ địch bằng những chuyển động duyên dáng.",
-              lore: "Một vũ công có những chuyển động thuần khiết đến mức có thể giao tiếp với cõi linh hồn, mang lại sự bình yên hoặc hỗn loạn, tùy thuộc vào điệu nhảy của cô.",
-              skills: [
-                {
-                  name: "Nội tại - Vũ Điệu Linh Hồn",
-                  description:
-                    "Kỹ năng của Aella tạo ra những 'Dấu Chân Linh Hồn'. Đồng minh đi qua nhận được hồi máu nhỏ. Kẻ địch đi qua bị làm chậm và nhận sát thương phép.",
-                },
-                {
-                  name: "Q - Vòng Xoáy Hồi Phục",
-                  description:
-                    "Aella tung ra một vòng xoáy linh hồn, hồi máu cho đồng minh và gây sát thương phép cho kẻ địch. Nếu trúng nhiều mục tiêu, hiệu ứng tăng lên.",
-                },
-                {
-                  name: "W - Màn Che Linh Hồn",
-                  description:
-                    "Aella tạo ra một màn che linh hồn tại vị trí mục tiêu, cấp lá chắn cho đồng minh và làm câm lặng kẻ địch đi vào. Màn che tồn tại trong thời gian ngắn.",
-                },
-                {
-                  name: "E - Bước Nhảy Huyễn Hoặc",
-                  description:
-                    "Aella lướt một quãng ngắn, để lại một bản sao linh hồn. Bản sao tồn tại trong thời gian ngắn và có thể được kích hoạt để gây sát thương phép và gây mất phương hướng kẻ địch xung quanh.",
-                },
-                {
-                  name: "R - Bản Giao Hưởng Hài Hòa",
-                  description:
-                    "Aella bắt đầu vũ điệu, tạo ra một vùng ảnh hưởng lớn. Đồng minh bên trong nhận được tăng tốc độ di chuyển và hồi máu liên tục. Kẻ địch bên trong bị mê hoặc và nhận sát thương phép theo thời gian.",
-                },
-              ],
-            },
-            {
-              name: "Ren, Thiền Sư Thì Thầm",
+              name: "Kenshin, Thiền Sư Kiếm Đạo",
               icon: "🧘",
-              weapon:
-                "Một cặp găng tay cổ xưa, được yểm bùa, cộng hưởng với sự bình yên nội tâm.",
-              species: "Nam, Con người (Thiền sư/Võ sĩ).",
-              playstyle:
-                "Đấu sĩ AD/Đấu tay đôi, tập trung vào các đòn tấn công nhanh, phản công và làm câm lặng kẻ địch bằng những cú đánh tập trung.",
-              lore: "Một thiền sư đã đạt được sự bình yên nội tâm sâu sắc, cho phép anh ta truyền dẫn năng lượng tâm linh thuần khiết vào võ thuật của mình, trở thành một chiến binh đáng gờm.",
+              role: "Đấu Sĩ",
+              region: "ionia",
+              lore: "Kiếm sĩ tu tâm, cân bằng giữa tĩnh tâm và chiến đấu quyết liệt.",
               skills: [
-                {
-                  name: "Nội tại - Dòng Chảy Chân Nguyên",
-                  description:
-                    "Ren tích lũy 'Chân Nguyên' khi sử dụng kỹ năng hoặc bị tấn công. Khi đạt đủ Chân Nguyên, đòn đánh cơ bản tiếp theo của anh ta gây thêm sát thương chuẩn và hồi máu cho bản thân.",
-                },
-                {
-                  name: "Q - Cú Đấm Chấn Động",
-                  description:
-                    "Ren tung ra một cú đấm nhanh, gây sát thương vật lý và làm chậm kẻ địch. Nếu mục tiêu đang bị làm chậm, cú đấm sẽ làm choáng chúng.",
-                },
-                {
-                  name: "W - Thiền Định",
-                  description:
-                    "Ren vận sức, trở nên không thể bị chọn làm mục tiêu và giảm sát thương nhận vào. Sau khi vận sức, anh ta giải phóng một làn sóng năng lượng gây sát thương phép và đẩy lùi kẻ địch xung quanh.",
-                },
-                {
-                  name: "E - Phản Công",
-                  description:
-                    "Ren vào thế phản công trong thời gian ngắn. Nếu anh ta bị tấn công trong thời gian này, anh ta sẽ phản lại sát thương và làm câm lặng kẻ tấn công.",
-                },
-                {
-                  name: "R - Vô Ảnh Cước",
-                  description:
-                    "Ren lao vào một kẻ địch, gây sát thương vật lý lớn. Sau đó, anh ta có thể tái kích hoạt để thực hiện một chuỗi các cú đá nhanh, gây sát thương vật lý liên tục và làm choáng kẻ địch. Kỹ năng này có thể được sử dụng để hạ gục mục tiêu hoặc gây sát thương lớn trong giao tranh.",
-                },
-              ],
-            },
-            {
-              name: "Kiko, Vòng Tay Rừng Xanh",
-              icon: "🌿",
-              weapon:
-                "Những sợi dây leo sống và cành cây có gai vươn ra từ cơ thể cô.",
-              species: "Nữ, Vastaya (Người biến hình thực vật).",
-              playstyle:
-                "Đỡ đòn AP/Kiểm soát, tập trung vào trói chân kẻ địch, tạo ra địa hình không thể vượt qua và hồi máu cho đồng minh trong lãnh địa thực vật của cô.",
-              lore: "Một người bảo vệ rừng cổ Ionia, cô thể hiện sự kiên cường và sức mạnh bảo vệ của tự nhiên, có khả năng thay đổi hình dạng để trở thành một rào cản sống.",
-              skills: [
-                {
-                  name: "Nội tại - Sức Sống Rừng Xanh",
-                  description:
-                    "Kiko nhận thêm giáp và kháng phép khi ở gần bụi cây hoặc địa hình. Khi cô sử dụng kỹ năng, cô hồi máu cho bản thân và đồng minh gần đó.",
-                },
-                {
-                  name: "Q - Gai Đâm",
-                  description:
-                    "Kiko phóng ra một gai nhọn, gây sát thương phép và trói chân kẻ địch đầu tiên trúng phải.",
-                },
-                {
-                  name: "W - Rào Chắn Thực Vật",
-                  description:
-                    "Kiko tạo ra một hàng rào thực vật không thể vượt qua tại vị trí mục tiêu, chặn di chuyển và tầm nhìn. Rào cản tồn tại trong thời gian ngắn và có thể bị phá hủy.",
-                },
-                {
-                  name: "E - Vòng Tay Thiên Nhiên",
-                  description:
-                    "Kiko mở rộng dây leo từ cơ thể, kéo kẻ địch về phía mình, gây sát thương phép và làm chậm chúng. Đồng minh trong vùng ảnh hưởng nhận được lá chắn.",
-                },
-                {
-                  name: "R - Rừng Cổ Thức Tỉnh",
-                  description:
-                    "Kiko bắt đầu vận sức, sau đó biến đổi một khu vực lớn thành một khu rừng rậm rạp. Kẻ địch bên trong bị làm chậm đáng kể và nhận sát thương phép theo thời gian. Kiko và đồng minh trong vùng ảnh hưởng nhận được hồi máu liên tục và tăng tốc độ di chuyển khi ở trong bụi cây.",
-                },
-              ],
-            },
-            {
-              name: "Hiro, Lưỡi Dao Phản Chiếu",
-              icon: "⚔️",
-              weapon:
-                "Một thanh katana cân bằng hoàn hảo có thể tạo ra các bản sao phù du của chính nó.",
-              species: "Nam, Con người (Kiếm sĩ/Ảo thuật gia).",
-              playstyle:
-                "Đấu tay đôi AD/Sát thủ, tập trung vào tính cơ động cao, tạo ra ảo ảnh để đánh lừa kẻ địch và những cú đánh chính xác.",
-              lore: "Một bậc thầy kiếm thuật đã luyện tập đến mức những chuyển động của lưỡi kiếm của anh ta có thể tạo ra những phản chiếu thoáng qua, gây mất tập trung, khiến anh ta gần như không thể bị khóa mục tiêu.",
-              skills: [
-                {
-                  name: "Nội tại - Vũ Điệu Ảo Ảnh",
-                  description:
-                    "Khi Hiro sử dụng một kỹ năng, anh ta tạo ra một bản sao phù du của mình. Bản sao sẽ tấn công kẻ địch gần đó và gây sát thương giảm đi. Các bản sao tồn tại trong thời gian ngắn.",
-                },
-                {
-                  name: "Q - Cú Chém Phản Chiếu",
-                  description:
-                    "Hiro chém nhanh về phía trước, gây sát thương vật lý. Nếu anh ta chém xuyên qua một bản sao của mình, bản sao sẽ nổ tung gây thêm sát thương diện rộng.",
-                },
-                {
-                  name: "W - Màn Sương Ảo Ảnh",
-                  description:
-                    "Hiro tạo ra một vùng sương mù ảo ảnh tại vị trí mục tiêu, làm câm lặng kẻ địch đi vào và khiến chúng bị 'Bối Rối' (có cơ hội tấn công ngẫu nhiên).",
-                },
-                {
-                  name: "E - Lướt Ảo Ảnh",
-                  description:
-                    "Hiro lướt một quãng ngắn, để lại một bản sao tại vị trí ban đầu. Anh ta có thể tái kích hoạt để quay lại vị trí của bản sao. Kỹ năng này có thể được sử dụng để né tránh hoặc định vị lại.",
-                },
-                {
-                  name: "R - Vô Ảnh Kiếm Pháp",
-                  description:
-                    "Hiro bắt đầu vận sức, sau đó lao vào một kẻ địch, gây sát thương vật lý lớn và làm choáng chúng. Trong thời gian này, anh ta trở nên không thể bị chọn làm mục tiêu. Sau khi kết thúc, anh ta tạo ra nhiều bản sao xung quanh mục tiêu, chúng sẽ tấn công mục tiêu và gây thêm sát thương.",
-                },
-              ],
-            },
-            {
-              name: "Sora, Người Dệt Gió",
-              icon: "🌬️",
-              weapon:
-                "Một chiếc boomerang nhẹ, hình lưỡi liềm có thể thao túng các dòng gió.",
-              species: "Nữ, Con người (Pháp sư gió/Xạ thủ).",
-              playstyle:
-                "Xạ thủ AP/Tiện ích, tập trung vào tấn công tầm xa, đẩy/kéo kẻ địch bằng gió và tạo ra các nền tảng trên không cho đồng minh.",
-              lore: "Một người Ionia trẻ tuổi có mối quan hệ tự nhiên với ma thuật gió, sử dụng boomerang của mình để kiểm soát chiến trường và bảo vệ quê hương.",
-              skills: [
-                {
-                  name: "Nội tại - Dòng Chảy Gió",
-                  description:
-                    "Các kỹ năng của Sora tạo ra các 'Dòng Chảy Gió'. Đồng minh đi qua Dòng Chảy Gió nhận được tốc độ di chuyển. Kẻ địch đi qua bị làm chậm.",
-                },
-                {
-                  name: "Q - Boomerang Gió",
-                  description:
-                    "Sora ném boomerang theo đường thẳng, gây sát thương phép cho kẻ địch nó đi qua. Boomerang quay trở lại Sora, gây sát thương lần nữa. Có thể được điều khiển hướng quay trở lại.",
-                },
-                {
-                  name: "W - Lốc Xoáy",
-                  description:
-                    "Sora tạo ra một lốc xoáy tại vị trí mục tiêu, kéo kẻ địch vào trung tâm và gây sát thương phép theo thời gian. Lốc xoáy tồn tại trong thời gian ngắn.",
-                },
-                {
-                  name: "E - Đẩy Gió",
-                  description:
-                    "Sora phóng ra một luồng gió mạnh, đẩy lùi kẻ địch theo hướng chỉ định. Có thể được sử dụng để tạo khoảng cách hoặc đẩy kẻ địch vào các kỹ năng khác.",
-                },
-                {
-                  name: "R - Cơn Bão Gió",
-                  description:
-                    "Sora bắt đầu vận sức, sau đó tạo ra một cơn bão gió khổng lồ tại một khu vực rộng lớn. Kẻ địch bên trong bị hất tung liên tục và nhận sát thương phép theo thời gian. Sora có thể di chuyển chậm trong khi vận sức, và cơn bão di chuyển theo cô ta.",
-                },
+                "Q: Thiền Định",
+                "W: Kiếm Khí",
+                "E: Bước Nhảy Linh Hoạt",
+                "R: Thần Kiếm Vô Ngã",
               ],
             },
           ],
@@ -1315,801 +726,453 @@
           id: "piltover",
           name: "Piltover",
           icon: "⚙️",
-          description:
-            "Thành phố của tiến bộ và phát minh, nơi khoa học và ma thuật giao thoa. Piltover là một trung tâm công nghệ và sự giàu có, nơi những ý tưởng mới được tạo ra và thương mại phát triển.",
           existingChampions: [
-            {
-              id: "caitlyn",
-              name: "Caitlyn",
-              icon: "🔫",
-              weapon: "Súng trường bắn tỉa",
-              species: "Nữ, Con người",
-              playstyle: "Xạ thủ (Tầm xa, Sát thương bùng nổ, Khống chế)",
-              lore: "Cảnh sát trưởng Piltover, Caitlyn là một xạ thủ bậc thầy, sử dụng tài năng bắn tỉa của mình để duy trì trật tự và truy lùng tội phạm.",
-            },
             {
               id: "jayce",
               name: "Jayce",
               icon: "🔨",
-              weapon: "Búa biến hình",
-              species: "Nam, Con người",
-              playstyle:
-                "Đấu sĩ/Pháp sư (Sát thương bùng nổ, Đa dạng, Đường trên/Đường giữa)",
-              lore: "Một nhà phát minh lỗi lạc, Jayce sử dụng búa biến hình của mình để bảo vệ Piltover khỏi những mối đe dọa, đại diện cho sự tiến bộ và đổi mới.",
+              role: "Đấu Sĩ",
+              region: "piltover",
+              lore: "Nhà phát minh thiên tài, tạo ra vũ khí biến hình tiên tiến để bảo vệ Piltover.",
             },
             {
-              id: "ezreal",
-              name: "Ezreal",
-              icon: "🔮",
-              weapon: "Găng tay ma thuật",
-              species: "Nam, Con người",
-              playstyle:
-                "Xạ thủ (Di chuyển nhanh, Sát thương bùng nổ, Khám phá)",
-              lore: "Một nhà thám hiểm liều lĩnh, Ezreal sử dụng găng tay ma thuật của mình để khám phá những bí ẩn cổ xưa và đối mặt với những nguy hiểm.",
+              id: "caitlyn",
+              name: "Caitlyn",
+              icon: "🎯",
+              role: "Xạ Thủ",
+              region: "piltover",
+              lore: "Cảnh sát trưởng Piltover, nổi tiếng với khả năng bắn tỉa hoàn hảo.",
             },
             {
-              id: "heimerdinger",
-              name: "Heimerdinger",
-              icon: "🔬",
-              weapon: "Tháp pháo, Bom",
-              species: "Nam, Yordle",
-              playstyle: "Pháp sư AP (Đẩy đường, Kiểm soát khu vực, Đặt bẫy)",
-              lore: "Một nhà khoa học Yordle lỗi lạc, Heimerdinger là một trong những bộ óc vĩ đại nhất của Piltover, tạo ra những phát minh kỳ diệu và đôi khi nguy hiểm.",
-            },
-            {
-              id: "camille",
-              name: "Camille",
-              icon: "🗡️",
-              weapon: "Chân kiếm",
-              species: "Nữ, Con người (Cyborg)",
-              playstyle:
-                "Đấu sĩ/Sát thủ (Đấu tay đôi, Di chuyển nhanh, Sát thương chuẩn)",
-              lore: "Một đặc vụ ưu tú của Piltover, Camille là một cyborg lạnh lùng, sử dụng chân kiếm của mình để duy trì trật tự và bảo vệ lợi ích của gia tộc.",
+              id: "vi",
+              name: "Vi",
+              icon: "👊",
+              role: "Đấu Sĩ",
+              region: "piltover",
+              lore: "Cảnh sát hung hãn với đôi găng tay Hextech, thích giải quyết vấn đề bằng nắm đấm.",
             },
           ],
           newChampions: [
             {
-              name: "Aurelia, Kiến Trúc Sư Ánh Sáng",
-              icon: "💡",
-              weapon:
-                "Một thiết bị chiếu sáng phức tạp có thể tạo ra các cấu trúc ánh sáng cứng rắn.",
-              species: "Nữ, Con người (Kiến trúc sư Hextech).",
-              playstyle:
-                "Hỗ trợ AP/Kiểm soát, tập trung vào tạo địa hình, lá chắn ánh sáng và làm mù kẻ địch.",
-              lore: "Một kiến trúc sư Hextech thiên tài, Aurelia sử dụng ánh sáng cứng rắn để xây dựng các công trình tạm thời, vừa là công cụ phòng thủ vừa là phương tiện tấn công.",
+              name: "Gearwick, Thợ Máy Thiên Tài",
+              icon: "🔧",
+              role: "Hỗ Trợ",
+              region: "piltover",
+              lore: "Nhà phát minh trẻ tuổi, tạo ra các thiết bị Hextech hỗ trợ đồng minh trong chiến đấu.",
               skills: [
-                {
-                  name: "Nội tại - Cấu Trúc Ánh Sáng",
-                  description:
-                    "Các kỹ năng của Aurelia để lại các 'Điểm Neo Ánh Sáng'. Cô có thể tái kích hoạt để tạo ra một cấu trúc ánh sáng kết nối các điểm neo, chặn di chuyển và vật thể bay.",
-                },
-                {
-                  name: "Q - Tia Sáng Tạo Hình",
-                  description:
-                    "Aurelia phóng ra một tia sáng gây sát thương phép. Nếu tia sáng đi qua một Điểm Neo Ánh Sáng, nó sẽ tạo ra một tia sáng phụ theo hướng khác.",
-                },
-                {
-                  name: "W - Màn Che Rực Rỡ",
-                  description:
-                    "Aurelia tạo ra một màn che ánh sáng tại vị trí mục tiêu, cấp lá chắn cho đồng minh và làm mù kẻ địch đi vào. Màn che tồn tại trong thời gian ngắn.",
-                },
-                {
-                  name: "E - Đẩy Lùi Ánh Sáng",
-                  description:
-                    "Aurelia phóng ra một luồng ánh sáng mạnh, đẩy lùi kẻ địch theo hướng chỉ định. Nếu kẻ địch bị đẩy lùi vào một cấu trúc ánh sáng, chúng sẽ bị làm choáng.",
-                },
-                {
-                  name: "R - Pháo Đài Ánh Sáng",
-                  description:
-                    "Aurelia triệu hồi một pháo đài ánh sáng khổng lồ tại vị trí mục tiêu. Pháo đài này chặn di chuyển và tầm nhìn, và liên tục bắn tia sáng gây sát thương phép vào kẻ địch gần đó. Pháo đài tồn tại trong thời gian ngắn và có thể bị phá hủy.",
-                },
-              ],
-            },
-            {
-              name: "Jaxson, Kẻ Phá Hoại Âm Thanh",
-              icon: "🔊",
-              weapon:
-                "Một thiết bị khuếch đại âm thanh gắn trên vai có thể tạo ra sóng xung kích và phá vỡ cấu trúc.",
-              species: "Nam, Con người (Kỹ sư âm thanh).",
-              playstyle:
-                "Đấu sĩ AD/Phá vỡ, tập trung vào sát thương diện rộng, phá hủy giáp và làm choáng kẻ địch bằng sóng âm.",
-              lore: "Một kỹ sư âm thanh từng làm việc ở Zaun, Jaxson đã chuyển đến Piltover, sử dụng công nghệ âm thanh để tạo ra sự hỗn loạn có kiểm soát, phá vỡ mọi thứ trên đường đi của mình.",
-              skills: [
-                {
-                  name: "Nội tại - Cộng Hưởng Hủy Diệt",
-                  description:
-                    "Các kỹ năng của Jaxson áp dụng 'Cộng Hưởng' lên kẻ địch, giảm giáp của chúng. Khi đạt đủ Cộng Hưởng, đòn đánh cơ bản tiếp theo của anh ta gây thêm sát thương diện rộng và làm choáng.",
-                },
-                {
-                  name: "Q - Sóng Xung Kích",
-                  description:
-                    "Jaxson phóng ra một sóng xung kích theo đường thẳng, gây sát thương vật lý và đẩy lùi kẻ địch. Nếu sóng xung kích đi qua địa hình, nó sẽ tạo ra một vụ nổ thứ cấp.",
-                },
-                {
-                  name: "W - Tần Số Phá Hủy",
-                  description:
-                    "Jaxson vận sức, sau đó giải phóng một tần số âm thanh cao, gây sát thương phép theo thời gian cho kẻ địch xung quanh và giảm giáp của chúng. Anh ta nhận được giảm sát thương khi vận sức.",
-                },
-                {
-                  name: "E - Lao Âm Thanh",
-                  description:
-                    "Jaxson lao về phía trước, gây sát thương vật lý cho kẻ địch anh ta đi qua. Nếu anh ta lao vào địa hình, anh ta sẽ phá hủy nó và nhận được tốc độ di chuyển tạm thời.",
-                },
-                {
-                  name: "R - Bão Âm Thanh",
-                  description:
-                    "Jaxson tạo ra một cơn bão âm thanh khổng lồ tại vị trí mục tiêu. Kẻ địch bên trong nhận sát thương vật lý liên tục và bị làm choáng theo thời gian. Cơn bão tồn tại trong thời gian ngắn và có thể được điều khiển bởi Jaxson.",
-                },
-              ],
-            },
-            {
-              name: "Kira, Người Đánh Cắp Năng Lượng",
-              icon: "⚡",
-              weapon:
-                "Một bộ găng tay Hextech có thể hấp thụ và phóng ra năng lượng điện.",
-              species: "Nữ, Con người (Kẻ trộm năng lượng).",
-              playstyle:
-                "Sát thủ AP/Tiện ích, tập trung vào hút năng lượng, làm chậm kẻ địch và sử dụng năng lượng đã đánh cắp để tăng cường kỹ năng của mình.",
-              lore: "Một kẻ trộm khét tiếng ở Piltover, Kira đã phát triển một bộ găng tay Hextech cho phép cô đánh cắp năng lượng từ các thiết bị và thậm chí cả sinh vật, sử dụng nó để tăng cường khả năng của mình.",
-              skills: [
-                {
-                  name: "Nội tại - Hấp Thụ Năng Lượng",
-                  description:
-                    "Đòn đánh cơ bản và kỹ năng của Kira hút một lượng nhỏ năng lượng từ kẻ địch. Năng lượng này có thể được sử dụng để tăng cường các kỹ năng của cô.",
-                },
-                {
-                  name: "Q - Tia Điện Giật",
-                  description:
-                    "Kira bắn một tia điện, gây sát thương phép và làm chậm kẻ địch. Nếu cô tiêu hao năng lượng đã đánh cắp, tia điện sẽ nảy sang các mục tiêu gần đó.",
-                },
-                {
-                  name: "W - Lưới Điện",
-                  description:
-                    "Kira đặt một lưới điện tàng hình. Khi kẻ địch dẫm phải, lưới gây sát thương phép và trói chân chúng trong thời gian ngắn. Kira có thể mang nhiều lưới.",
-                },
-                {
-                  name: "E - Vượt Điện",
-                  description:
-                    "Kira lướt một quãng ngắn, trở nên không thể bị chọn làm mục tiêu trong thời gian ngắn. Nếu cô lướt qua một kẻ địch, cô hút thêm năng lượng từ chúng.",
-                },
-                {
-                  name: "R - Quá Tải Năng Lượng",
-                  description:
-                    "Kira giải phóng tất cả năng lượng đã đánh cắp, tạo ra một vụ nổ điện khổng lồ gây sát thương phép lớn cho tất cả kẻ địch xung quanh. Sát thương tăng lên dựa trên lượng năng lượng đã đánh cắp. Kẻ địch bị trúng phải bị làm choáng.",
-                },
-              ],
-            },
-            {
-              name: "Silas, Người Điều Khiển Cơ Khí",
-              icon: "🤖",
-              weapon:
-                "Một bộ điều khiển từ xa tinh vi điều khiển một đội quân robot nhỏ có thể tháo rời.",
-              species: "Nam, Con người (Nhà phát minh robot).",
-              playstyle:
-                "Pháp sư AP/Đẩy đường, tập trung vào triệu hồi lính, kiểm soát khu vực và gây sát thương theo thời gian bằng các robot của mình.",
-              lore: "Một nhà phát minh bị ám ảnh bởi cơ khí, Silas đã tạo ra một đội quân robot nhỏ có thể tháo rời, chúng tuân theo mọi mệnh lệnh của ông, biến ông thành một mối đe dọa đáng gờm trên chiến trường.",
-              skills: [
-                {
-                  name: "Nội tại - Lắp Ráp Tự Động",
-                  description:
-                    "Silas có thể triệu hồi các robot nhỏ theo thời gian. Các robot này sẽ tấn công kẻ địch gần đó và gây sát thương phép. Silas có thể mang nhiều robot.",
-                },
-                {
-                  name: "Q - Lệnh Tấn Công",
-                  description:
-                    "Silas ra lệnh cho các robot của mình tập trung tấn công một mục tiêu, gây thêm sát thương phép. Nếu không có mục tiêu, chúng sẽ tấn công kẻ địch gần nhất.",
-                },
-                {
-                  name: "W - Phân Tán Robot",
-                  description:
-                    "Silas ra lệnh cho các robot của mình phân tán, tạo ra một vùng ảnh hưởng gây sát thương phép theo thời gian cho kẻ địch đi qua. Các robot sẽ quay trở lại Silas sau đó.",
-                },
-                {
-                  name: "E - Tăng Cường Cơ Khí",
-                  description:
-                    "Silas tăng cường một robot của mình, tăng tốc độ tấn công và sát thương của nó trong thời gian ngắn. Nếu robot bị phá hủy khi đang được tăng cường, nó sẽ nổ gây sát thương phép diện rộng.",
-                },
-                {
-                  name: "R - Đội Quân Cơ Khí",
-                  description:
-                    "Silas triệu hồi một đội quân robot khổng lồ tại vị trí mục tiêu. Các robot này sẽ tấn công kẻ địch gần đó và gây sát thương phép lớn. Silas có thể điều khiển chúng từ xa. Đội quân tồn tại trong thời gian ngắn và có thể bị phá hủy.",
-                },
-              ],
-            },
-            {
-              name: "Vesper, Người Bay Lượn Bằng Khí Động Học",
-              icon: "💨",
-              weapon:
-                "Một bộ cánh Hextech tạo ra luồng khí mạnh và một súng phun khí nén.",
-              species: "Nữ, Con người (Phi công/Đặc vụ).",
-              playstyle:
-                "Xạ thủ AD/Di chuyển nhanh, tập trung vào tấn công từ trên không, đẩy lùi kẻ địch và sử dụng luồng khí để di chuyển nhanh trên bản đồ.",
-              lore: "Một đặc vụ bí mật của Piltover, Vesper sử dụng bộ cánh Hextech và súng phun khí nén của mình để bay lượn trên chiến trường, tấn công từ trên cao và kiểm soát vị trí của kẻ địch.",
-              skills: [
-                {
-                  name: "Nội tại - Lướt Gió",
-                  description:
-                    "Vesper nhận tốc độ di chuyển khi di chuyển. Sau khi di chuyển một quãng nhất định, đòn đánh cơ bản tiếp theo của cô gây thêm sát thương vật lý.",
-                },
-                {
-                  name: "Q - Bắn Nhanh Khí Nén",
-                  description:
-                    "Vesper bắn một loạt đạn khí nén theo đường thẳng, gây sát thương vật lý. Nếu cô đang bay lượn, tốc độ bắn tăng lên.",
-                },
-                {
-                  name: "W - Luồng Khí Đẩy",
-                  description:
-                    "Vesper tạo ra một luồng khí mạnh, đẩy lùi kẻ địch theo hướng chỉ định. Có thể được sử dụng để tạo khoảng cách hoặc đẩy kẻ địch vào địa hình.",
-                },
-                {
-                  name: "E - Bay Lượn",
-                  description:
-                    "Vesper bay lên không trung trong thời gian ngắn, trở nên không thể bị chọn làm mục tiêu và có thể di chuyển tự do. Trong thời gian này, các kỹ năng của cô được tăng cường.",
-                },
-                {
-                  name: "R - Tấn Công Từ Trên Cao",
-                  description:
-                    "Vesper bay lên không trung, sau đó chọn một khu vực mục tiêu. Cô lao xuống khu vực đó, gây sát thương vật lý lớn cho tất cả kẻ địch và hất tung chúng. Kỹ năng này có tầm xa và có thể được sử dụng để mở giao tranh hoặc kết liễu.",
-                },
+                "Q: Rô-bốt Tu Sửa",
+                "W: Tháp Pháo Tự Động",
+                "E: Tăng Tốc Hextech",
+                "R: Máy Móc Đại Chiến",
               ],
             },
           ],
-        },
-        {
-          id: "zaun",
-          name: "Zaun",
-          icon: "🧪",
-          description:
-            "Thành phố ngầm ô nhiễm, nơi công nghệ điên rồ và tội phạm hoành hành. Zaun là một nơi của sự đổi mới liều lĩnh và những thí nghiệm đen tối, nơi những người bị ruồng bỏ tìm thấy một ngôi nhà.",
-          existingChampions: [
-            {
-              id: "jinx",
-              name: "Jinx",
-              icon: "💣",
-              weapon: "Súng phóng lựu, Súng máy",
-              species: "Nữ, Con người",
-              playstyle:
-                "Xạ thủ (Sát thương bùng nổ, Tốc độ tấn công, Đẩy đường)",
-              lore: "Một tội phạm điên loạn từ Zaun, Jinx sống để gây hỗn loạn, sử dụng kho vũ khí của mình để tạo ra sự hủy diệt.",
-            },
-            {
-              id: "ekko",
-              name: "Ekko",
-              icon: "⏳",
-              weapon: "Gậy Z-Drive",
-              species: "Nam, Con người",
-              playstyle:
-                "Sát thủ AP (Di chuyển nhanh, Sát thương bùng nổ, Thao túng thời gian)",
-              lore: "Một thần đồng từ Zaun, Ekko sử dụng thiết bị thao túng thời gian của mình để làm chủ hiện tại và thay đổi quá khứ.",
-            },
-            {
-              id: "urgot",
-              name: "Urgot",
-              icon: "🦀",
-              weapon: "Súng lục, Chân cơ khí",
-              species: "Nam, Con người (Cyborg)",
-              playstyle:
-                "Đấu sĩ/Đấu sĩ hạng nặng (Bền bỉ, Sát thương duy trì, Kết liễu)",
-              lore: "Một chiến binh Noxus bị phản bội và biến thành một quái vật cơ khí ở Zaun, Urgot tìm cách trả thù và thống trị.",
-            },
-            {
-              id: "twitch",
-              name: "Twitch",
-              icon: "🐀",
-              weapon: "Nỏ, Chất độc",
-              species: "Nam, Chuột",
-              playstyle: "Xạ thủ (Tàng hình, Sát thương duy trì, Chất độc)",
-              lore: "Một con chuột đột biến từ Zaun, Twitch là một sát thủ tàng hình, sử dụng nọc độc và nỏ của mình để gây ra sự hỗn loạn.",
-            },
-            {
-              id: "mundo",
-              name: "Dr. Mundo",
-              icon: "👨‍⚕️",
-              weapon: "Dao mổ khổng lồ",
-              species: "Nam, Con người (Đột biến)",
-              playstyle:
-                "Đỡ đòn/Đấu sĩ (Duy trì, Sát thương bùng nổ, Hồi phục)",
-              lore: "Một bác sĩ phẫu thuật điên loạn từ Zaun, Dr. Mundo là một quái vật không thể ngăn cản, gây ra sự hỗn loạn và đau đớn.",
-            },
-          ],
-          newChampions: [], // No new champion suggestions for Zaun to keep size manageable
-        },
-        {
-          id: "freljord",
-          name: "Freljord",
-          icon: "❄️",
-          description:
-            "Vùng đất băng giá khắc nghiệt, nơi các bộ lạc chiến đấu vì sự sống còn và quyền lực. Freljord là một vùng đất hoang dã, nơi các linh hồn cổ đại và những người chiến binh mạnh mẽ định hình số phận.",
-          existingChampions: [
-            {
-              id: "ashe",
-              name: "Ashe",
-              icon: "🏹",
-              weapon: "Cung băng",
-              species: "Nữ, Con người",
-              playstyle: "Xạ thủ (Khống chế, Sát thương duy trì, Tầm nhìn)",
-              lore: "Nữ hoàng của bộ tộc Avarosa, Ashe là một xạ thủ băng giá, chiến đấu để thống nhất Freljord dưới một lá cờ.",
-            },
-            {
-              id: "braum",
-              name: "Braum",
-              icon: "💪",
-              weapon: "Khiên khổng lồ",
-              species: "Nam, Con người",
-              playstyle: "Đỡ đòn/Hỗ trợ (Bảo vệ, Khống chế, Mở giao tranh)",
-              lore: "Một người khổng lồ thân thiện từ Freljord, Braum là người bảo vệ những người vô tội, sử dụng chiếc khiên khổng lồ của mình để che chắn cho đồng đội.",
-            },
-            {
-              id: "lissandra",
-              name: "Lissandra",
-              icon: "🧊",
-              weapon: "Ma thuật băng đen",
-              species: "Nữ, Con người (Băng Phái)",
-              playstyle:
-                "Pháp sư AP (Khống chế, Sát thương bùng nổ, Di chuyển nhanh)",
-              lore: "Nữ hoàng băng giá của Freljord, Lissandra là một pháp sư mạnh mẽ, tìm cách bao phủ thế giới trong kỷ nguyên băng hà vĩnh cửu.",
-            },
-            {
-              id: "sejuani",
-              name: "Sejuani",
-              icon: "🐗",
-              weapon: "Chùy băng, Lợn rừng",
-              species: "Nữ, Con người",
-              playstyle:
-                "Đỡ đòn/Tiên phong (Mở giao tranh, Khống chế, Đi rừng)",
-              lore: "Thủ lĩnh tàn bạo của bộ tộc Winter's Claw, Sejuani cưỡi trên lưng lợn rừng khổng lồ của mình, chiến đấu để chinh phục Freljord.",
-            },
-            {
-              id: "tryndamere",
-              name: "Tryndamere",
-              icon: "⚔️",
-              weapon: "Đại kiếm",
-              species: "Nam, Con người",
-              playstyle: "Đấu sĩ (Sát thương duy trì, Bất tử, Đẩy lẻ)",
-              lore: "Một chiến binh Freljord bất tử, Tryndamere là hiện thân của sự phẫn nộ, tìm cách trả thù cho bộ tộc đã mất của mình.",
-            },
-          ],
-          newChampions: [],
-        },
-        {
-          id: "bilgewater",
-          name: "Bilgewater",
-          icon: "⚓",
-          description:
-            "Cảng biển hỗn loạn của cướp biển, thợ săn quái vật và những bí ẩn dưới biển sâu. Bilgewater là một nơi nguy hiểm nhưng đầy cơ hội, nơi những kẻ liều lĩnh tìm kiếm vận may.",
-          existingChampions: [
-            {
-              id: "gangplank",
-              name: "Gangplank",
-              icon: "🍊",
-              weapon: "Kiếm, Súng lục, Thùng thuốc súng",
-              species: "Nam, Con người",
-              playstyle: "Đấu sĩ (Sát thương bùng nổ, Khống chế, Đẩy lẻ)",
-              lore: "Vua Cướp Biển của Bilgewater, Gangplank là một thuyền trưởng tàn bạo, thống trị các vùng biển bằng sự tàn nhẫn và những khẩu súng của mình.",
-            },
-            {
-              id: "miss_fortune",
-              name: "Miss Fortune",
-              icon: "🔫",
-              weapon: "Súng lục đôi",
-              species: "Nữ, Con người",
-              playstyle:
-                "Xạ thủ (Sát thương bùng nổ, Sát thương diện rộng, Áp lực đường)",
-              lore: "Thợ săn tiền thưởng xinh đẹp và nguy hiểm nhất Bilgewater, Miss Fortune tìm cách trả thù cho cái chết của cha mẹ mình.",
-            },
-            {
-              id: "illaoi",
-              name: "Illaoi",
-              icon: "🦑",
-              weapon: "Tượng thần, Xúc tu",
-              species: "Nữ, Con người",
-              playstyle:
-                "Đấu sĩ/Đỡ đòn (Sát thương duy trì, Hút linh hồn, Kiểm soát khu vực)",
-              lore: "Nữ tư tế của Nagakabouros, Illaoi là một chiến binh mạnh mẽ, sử dụng sức mạnh của xúc tu để thử thách ý chí của những kẻ không xứng đáng.",
-            },
-            {
-              id: "pyke",
-              name: "Pyke",
-              icon: "🔪",
-              weapon: "Dao găm xương, Móc câu",
-              species: "Nam, Xác sống",
-              playstyle:
-                "Sát thủ AD (Sát thương bùng nổ, Di chuyển nhanh, Kết liễu)",
-              lore: "Một kẻ đồ tể bị phản bội và chết đuối, Pyke là một xác sống báo thù, săn lùng những kẻ đã bỏ rơi hắn ở Bilgewater.",
-            },
-            {
-              id: "tahm_kench",
-              name: "Tahm Kench",
-              icon: "👅",
-              weapon: "Lưỡi, Miệng",
-              species: "Nam, Ác quỷ",
-              playstyle: "Đỡ đòn/Hỗ trợ (Bảo vệ, Khống chế, Mở giao tranh)",
-              lore: "Một ác quỷ cổ xưa của sông, Tahm Kench là một kẻ lừa đảo quyến rũ, dụ dỗ nạn nhân bằng những lời hứa hẹn và nuốt chửng linh hồn của họ.",
-            },
-          ],
-          newChampions: [],
-        },
-        {
-          id: "shurima",
-          name: "Shurima",
-          icon: "☀️",
-          description:
-            "Đế chế sa mạc cổ đại đang trỗi dậy từ đống đổ nát. Shurima là một vùng đất của những di tích bị lãng quên và những vị thần cổ đại, nơi sức mạnh của mặt trời có thể ban phước hoặc nguyền rủa.",
-          existingChampions: [
-            {
-              id: "azir",
-              name: "Azir",
-              icon: "🐦",
-              weapon: "Cát, Lính cát",
-              species: "Nam, Thăng Hoa",
-              playstyle:
-                "Pháp sư AP (Đẩy đường, Kiểm soát khu vực, Sát thương duy trì)",
-              lore: "Hoàng đế đã mất của Shurima, Azir đã trở lại như một Thăng Hoa, tìm cách khôi phục đế chế vĩ đại của mình.",
-            },
-            {
-              id: "renekton",
-              name: "Renekton",
-              icon: "🐊",
-              weapon: "Đao",
-              species: "Nam, Thăng Hoa",
-              playstyle: "Đấu sĩ (Sát thương bùng nổ, Hồi phục, Khống chế)",
-              lore: "Một Thăng Hoa bị điên loạn, Renekton là một con cá sấu khổng lồ, săn lùng anh trai mình, Nasus, trong sa mạc.",
-            },
-            {
-              id: "sivir",
-              name: "Sivir",
-              icon: "🪃",
-              weapon: "Chakra",
-              species: "Nữ, Con người",
-              playstyle: "Xạ thủ (Sát thương diện rộng, Đẩy đường, Tiện ích)",
-              lore: "Một lính đánh thuê dũng cảm từ Shurima, Sivir là người thừa kế cuối cùng của dòng máu hoàng gia, chiến đấu để bảo vệ di sản của mình.",
-            },
-            {
-              id: "nasus",
-              name: "Nasus",
-              icon: "🐕",
-              weapon: "Quyền trượng",
-              species: "Nam, Thăng Hoa",
-              playstyle: "Đấu sĩ/Đỡ đòn (Sát thương duy trì, Đẩy lẻ, Hồi phục)",
-              lore: "Một Thăng Hoa khôn ngoan và cao quý, Nasus là người bảo vệ tri thức và là một chiến binh mạnh mẽ, tìm cách chuộc lỗi cho sự điên loạn của anh trai mình.",
-            },
-            {
-              id: "xerath",
-              name: "Xerath",
-              icon: "⚡",
-              weapon: "Năng lượng ma thuật",
-              species: "Nam, Thăng Hoa",
-              playstyle: "Pháp sư AP (Tầm xa, Sát thương bùng nổ, Khống chế)",
-              lore: "Một pháp sư bị biến chất thành một thực thể năng lượng thuần túy, Xerath là một mối đe dọa đối với Shurima, tìm cách phá hủy mọi thứ trên đường đi của mình.",
-            },
-          ],
-          newChampions: [],
-        },
-        {
-          id: "targon",
-          name: "Targon",
-          icon: "⛰️",
-          description:
-            "Ngọn núi thiêng liêng nơi những người phàm có thể đạt được sức mạnh vũ trụ. Targon là một nơi của những thử thách khắc nghiệt và những tầm nhìn siêu nhiên, nơi các khía cạnh của vũ trụ có thể được ban tặng.",
-          existingChampions: [
-            {
-              id: "leona",
-              name: "Leona",
-              icon: "☀️",
-              weapon: "Khiên, Kiếm",
-              species: "Nữ, Con người (Thăng Hoa)",
-              playstyle: "Đỡ đòn/Hỗ trợ (Mở giao tranh, Khống chế, Bảo vệ)",
-              lore: "Chiến binh của mặt trời, Leona là một Thăng Hoa mạnh mẽ, bảo vệ những người vô tội bằng ánh sáng rực rỡ của mình.",
-            },
-            {
-              id: "pantheon",
-              name: "Pantheon",
-              icon: "🌠",
-              weapon: "Thương, Khiên",
-              species: "Nam, Con người (Thăng Hoa)",
-              playstyle:
-                "Đấu sĩ (Sát thương bùng nổ, Đấu tay đôi, Mở giao tranh)",
-              lore: "Một chiến binh phàm trần đã đánh bại Thăng Hoa của chiến tranh, Pantheon là hiện thân của sự kiên cường của con người, chiến đấu cho những người yếu thế.",
-            },
-            {
-              id: "taric",
-              name: "Taric",
-              icon: "💎",
-              weapon: "Búa tinh thể",
-              species: "Nam, Con người (Thăng Hoa)",
-              playstyle: "Hỗ trợ (Bảo vệ, Hồi phục, Khống chế)",
-              lore: "Người bảo vệ tinh thể, Taric là một Thăng Hoa của sự bảo vệ, sử dụng sức mạnh của đá quý để che chắn cho đồng đội.",
-            },
-            {
-              id: "diana",
-              name: "Diana",
-              icon: "🌙",
-              weapon: "Lưỡi liềm",
-              species: "Nữ, Con người (Thăng Hoa)",
-              playstyle:
-                "Đấu sĩ/Sát thủ (Sát thương bùng nổ, Di chuyển nhanh, Khống chế)",
-              lore: "Chiến binh của mặt trăng, Diana là một Thăng Hoa mạnh mẽ, tìm kiếm sự thật về bản chất của mình và chiến đấu cho những người bị ruồng bỏ.",
-            },
-            {
-              id: "aurelion_sol",
-              name: "Aurelion Sol",
-              icon: "🌌",
-              weapon: "Các thiên hà, Sao",
-              species: "Nam, Thực thể vũ trụ",
-              playstyle: "Pháp sư AP (Sát thương duy trì, Khống chế, Tạo sao)",
-              lore: "Một thực thể vũ trụ hùng mạnh, Aurelion Sol là người tạo ra các thiên hà, bị trói buộc bởi vương miện của Targon, tìm cách giải thoát bản thân và trả thù.",
-            },
-          ],
-          newChampions: [],
-        },
-        {
-          id: "bandlecity",
-          name: "Bandle City",
-          icon: "✨",
-          description:
-            "Thành phố huyền bí của Yordle, ẩn mình khỏi thế giới phàm trần. Bandle City là một nơi của sự kỳ diệu và niềm vui, nơi những sinh vật nhỏ bé nhưng mạnh mẽ sống trong sự hài hòa.",
-          existingChampions: [
-            {
-              id: "teemo",
-              name: "Teemo",
-              icon: "🍄",
-              weapon: "Súng, Nấm độc",
-              species: "Nam, Yordle",
-              playstyle: "Xạ thủ (Sát thương duy trì, Đặt bẫy, Tàng hình)",
-              lore: "Một trinh sát Yordle, Teemo là một chiến binh đáng sợ, sử dụng nấm độc và khả năng tàng hình để tiêu diệt kẻ thù.",
-            },
-            {
-              id: "lulu",
-              name: "Lulu",
-              icon: "🧚",
-              weapon: "Quyền trượng",
-              species: "Nữ, Yordle",
-              playstyle: "Hỗ trợ (Phù phép, Khống chế, Bảo vệ)",
-              lore: "Một pháp sư Yordle lập dị, Lulu sử dụng ma thuật của mình để biến đổi thực tại và bảo vệ những người bạn của mình.",
-            },
-            {
-              id: "veigar",
-              name: "Veigar",
-              icon: "😈",
-              weapon: "Quyền trượng",
-              species: "Nam, Yordle",
-              playstyle:
-                "Pháp sư AP (Sát thương bùng nổ, Khống chế, Tăng sức mạnh)",
-              lore: "Một pháp sư Yordle bị giam cầm và biến chất, Veigar là một ác nhân vĩ đại, tìm cách thống trị thế giới bằng ma thuật đen tối của mình.",
-            },
-            {
-              id: "rumble",
-              name: "Rumble",
-              icon: "🤖",
-              weapon: "Bộ giáp cơ khí",
-              species: "Nam, Yordle",
-              playstyle:
-                "Đấu sĩ (Sát thương duy trì, Sát thương diện rộng, Đẩy đường)",
-              lore: "Một nhà phát minh Yordle tài năng, Rumble điều khiển một bộ giáp cơ khí khổng lồ, sử dụng lửa và vũ khí để gây ra sự hỗn loạn.",
-            },
-            {
-              id: "poppy",
-              name: "Poppy",
-              icon: "🔨",
-              weapon: "Búa",
-              species: "Nữ, Yordle",
-              playstyle: "Đỡ đòn (Bền bỉ, Khống chế, Mở giao tranh)",
-              lore: "Một Yordle dũng cảm, Poppy là người bảo vệ Demacia, sử dụng chiếc búa khổng lồ của mình để mang lại công lý và bảo vệ những người yếu thế.",
-            },
-          ],
-          newChampions: [],
-        },
-        {
-          id: "runeterra",
-          name: "Runeterra",
-          icon: "🌌",
-          description:
-            "Chào mừng bạn đến với Runeterra, thế giới của Liên Minh Huyền Thoại. Khám phá các vùng đất, tìm hiểu về các tướng và khám phá những câu chuyện huyền bí.",
-          existingChampions: [],
-          newChampions: [],
         },
       ];
 
-      const regionNav = document.getElementById("region-nav");
-      const regionContent = document.getElementById("region-content");
-      const championModal = document.getElementById("championModal");
-      const modalCloseButton = document.getElementById("modalCloseButton");
-      const modalBody = document.getElementById("modalBody");
+      // Thêm tướng Kỵ Sĩ Khải Huyền đặc biệt
+      const apocalypseKnight = {
+        id: "apocalypse",
+        name: "Kỵ Sĩ Khải Huyền",
+        icon: "🐎",
+        role: "Lai/Đa Dạng",
+        region: "special",
+        lore: "Tướng có khả năng biến đổi thành bốn dạng khác nhau: Chiến Tranh (AD), Nạn Đói (AP), Dịch Bệnh (Thích Ứng), Cái Chết (Tank).",
+        skills: [
+          "Dạng Chiến Tranh - Đấu Sĩ AD",
+          "Dạng Nạn Đói - Pháp Sư AP",
+          "Dạng Dịch Bệnh - Sát Thương Thích Ứng",
+          "Dạng Cái Chết - Tank/Kiểm Soát",
+        ],
+        special: true,
+      };
 
-      let currentRegionId = null;
+      // State management
+      let currentGame = "5vs5";
+      let currentRegion = "all";
+      let currentChampionType = "old";
 
-      function createRegionNavButton(region) {
-        const button = document.createElement("button");
-        button.className = "nav-button";
-        button.textContent = region.name;
-        button.dataset.regionId = region.id;
-        button.addEventListener("click", () => {
-          selectRegion(region.id);
+      // Initialize app
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeEventListeners();
+        loadChampions();
+      });
+
+      function initializeEventListeners() {
+        // Game tabs
+        document
+          .getElementById("game5vs5Tab")
+          .addEventListener("click", () => switchGame("5vs5"));
+        document
+          .getElementById("cardGameTab")
+          .addEventListener("click", () => switchGame("card"));
+
+        // Region filter
+        document
+          .getElementById("regionFilter")
+          .addEventListener("change", (e) => {
+            currentRegion = e.target.value;
+            loadChampions();
+          });
+
+        // Champion type tabs
+        document
+          .getElementById("oldChampionsTab")
+          .addEventListener("click", () => switchChampionType("old"));
+        document
+          .getElementById("newChampionsTab")
+          .addEventListener("click", () => switchChampionType("new"));
+
+        // Add champion button
+        document
+          .getElementById("addChampionBtn")
+          .addEventListener("click", openAddChampionModal);
+
+        // Modal close
+        document
+          .getElementById("modalCloseButton")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("championModal")
+          .addEventListener("click", (e) => {
+            if (e.target.id === "championModal") closeModal();
+          });
+
+        // Add champion modal close
+        document
+          .getElementById("addModalCloseButton")
+          .addEventListener("click", closeAddChampionModal);
+        document
+          .getElementById("addChampionModal")
+          .addEventListener("click", (e) => {
+            if (e.target.id === "addChampionModal") closeAddChampionModal();
+          });
+        document
+          .getElementById("cancelAddBtn")
+          .addEventListener("click", closeAddChampionModal);
+
+        // Add champion form
+        document
+          .getElementById("addChampionForm")
+          .addEventListener("submit", handleAddChampion);
+
+        // Add skill button
+        document
+          .getElementById("addSkillBtn")
+          .addEventListener("click", addSkillField);
+      }
+
+      function switchGame(game) {
+        currentGame = game;
+
+        // Update tab styles
+        document
+          .querySelectorAll(".game-tab")
+          .forEach((tab) => tab.classList.remove("active"));
+        document
+          .getElementById(game === "5vs5" ? "game5vs5Tab" : "cardGameTab")
+          .classList.add("active");
+
+        // Show/hide content
+        document
+          .getElementById("game5vs5Content")
+          .classList.toggle("hidden", game !== "5vs5");
+        document
+          .getElementById("cardGameContent")
+          .classList.toggle("hidden", game !== "card");
+
+        if (game === "5vs5") {
+          loadChampions();
+        }
+      }
+
+      function switchChampionType(type) {
+        currentChampionType = type;
+
+        // Update tab styles
+        document
+          .querySelectorAll(".champion-type-tab")
+          .forEach((tab) => tab.classList.remove("active"));
+        document
+          .getElementById(
+            type === "old" ? "oldChampionsTab" : "newChampionsTab"
+          )
+          .classList.add("active");
+
+        loadChampions();
+      }
+
+      function loadChampions() {
+        const grid = document.getElementById("championsGrid");
+        grid.innerHTML = "";
+
+        let champions = [];
+
+        // Collect champions based on filters
+        regionsData.forEach((region) => {
+          if (currentRegion === "all" || currentRegion === region.id) {
+            const championList =
+              currentChampionType === "old"
+                ? region.existingChampions
+                : region.newChampions;
+            if (championList && championList.length > 0) {
+              champions = champions.concat(
+                championList.map((champ) => ({
+                  ...champ,
+                  regionName: region.name,
+                }))
+              );
+            }
+          }
         });
-        return button;
+
+        // Add special Apocalypse Knight if showing new champions
+        if (
+          currentChampionType === "new" &&
+          (currentRegion === "all" || currentRegion === "special")
+        ) {
+          champions.push({ ...apocalypseKnight, regionName: "Đặc Biệt" });
+        }
+
+        // Render champions
+        champions.forEach((champion, index) => {
+          const card = createChampionCard(champion, index + 1);
+          grid.appendChild(card);
+        });
+
+        if (champions.length === 0) {
+          grid.innerHTML =
+            '<div class="col-span-full text-center text-slate-400 py-8">Không có tướng nào trong khu vực này</div>';
+        }
       }
 
-      function createChampionCard(champion, index) {
+      function createChampionCard(champion, serialNumber) {
         const card = document.createElement("div");
-        card.className = "card cursor-pointer group relative";
+        card.className =
+          "bg-slate-800 p-6 rounded-lg shadow-lg hover:shadow-cyan-500/50 transition-shadow duration-300 cursor-pointer relative";
+
         card.innerHTML = `
-            <span class="serial-number">${index + 1}</span>
-            <div class="flex flex-col items-center text-center">
-                <div class="champion-icon group-hover:scale-110 transition-transform">${
-                  champion.icon
-                }</div>
-                <h3 class="text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors">${
-                  champion.name
-                }</h3>
-                <p class="text-sm text-slate-400">${champion.playstyle
-                  .split("(")[0]
-                  .trim()}</p>
-            </div>
+          <div class="absolute top-2 left-2 bg-slate-700 text-slate-300 text-xs font-bold px-2 py-1 rounded-full">#${serialNumber}</div>
+          <div class="text-4xl mb-2 text-center">${champion.icon || "🎭"}</div>
+          <h3 class="text-xl font-semibold text-cyan-300 mb-2 text-center">${
+            champion.name || "Unknown"
+          }</h3>
+          <p class="text-sm text-slate-400 mb-2 text-center">${
+            champion.role || "Unknown Role"
+          }</p>
+          <p class="text-xs text-slate-500 text-center">${
+            champion.regionName || "Unknown Region"
+          }</p>
+          ${
+            champion.special
+              ? '<div class="mt-2 text-center"><span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full">Đặc Biệt</span></div>'
+              : ""
+          }
         `;
-        card.addEventListener("click", () => openChampionModal(champion));
+
+        card.addEventListener("click", () => openModal(champion));
         return card;
       }
 
-      function createNewChampionCard(champion, index) {
-        const card = document.createElement("div");
-        card.className = "card relative";
-        let skillsHtml =
-          champion.skills && champion.skills.length > 0
-            ? champion.skills
-                .map(
-                  (skill) => `
-                <div class="skill-card">
-                    <h5 class="font-semibold text-cyan-400">${skill.name}</h5>
-                    <p class="text-sm text-slate-300">${skill.description}</p>
-                </div>
-            `
-                )
-                .join("")
-            : '<p class="text-sm text-slate-400">Thông tin kỹ năng đang được phát triển.</p>';
+      function openModal(champion) {
+        const modal = document.getElementById("championModal");
+        const modalBody = document.getElementById("modalBody");
 
-        card.innerHTML = `
-            <span class="serial-number">${index + 1}</span>
-            <div class="flex items-center mb-4">
-                <div class="champion-icon text-5xl mr-4">${champion.icon}</div>
-                <div>
-                    <h3 class="text-2xl font-bold text-cyan-300">${
-                      champion.name
-                    }</h3>
-                    <p class="text-sm text-slate-400">${champion.species}</p>
-                </div>
+        let skillsHtml = "";
+        if (champion.skills && champion.skills.length > 0) {
+          skillsHtml = `
+            <div class="mt-6">
+              <h4 class="text-lg font-semibold text-cyan-300 mb-3">Kỹ Năng:</h4>
+              <div class="space-y-2">
+                ${champion.skills
+                  .map(
+                    (skill) => `
+                  <div class="bg-slate-700 p-3 rounded-md">
+                    <p class="text-sm text-slate-300">${skill}</p>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
             </div>
-            <div class="space-y-2 mb-4">
-                <p><strong class="text-cyan-500">Vũ Khí Độc Đáo:</strong> ${
-                  champion.weapon
-                }</p>
-                <p><strong class="text-cyan-500">Lối Chơi Mới Lạ:</strong> ${
-                  champion.playstyle
-                }</p>
-            </div>
-            <div>
-                <h4 class="text-lg font-semibold text-cyan-400 mb-2">Cốt Truyện Cơ Bản:</h4>
-                <p class="text-slate-300 leading-relaxed mb-4">${
-                  champion.lore
-                }</p>
-            </div>
-            <div>
-                <h4 class="text-lg font-semibold text-cyan-400 mb-2 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">Tổng Quan Kỹ Năng (Nhấp để xem/ẩn) <span class="text-sm">▼</span></h4>
-                <div class="space-y-3 hidden">
-                    ${skillsHtml}
-                </div>
-            </div>
-        `;
-        return card;
-      }
+          `;
+        }
 
-      function openChampionModal(champion) {
         modalBody.innerHTML = `
-            <div class="flex flex-col items-center text-center mb-6">
-                <div class="champion-icon text-6xl">${champion.icon}</div>
-                <h2 class="text-3xl font-bold text-cyan-300">${champion.name}</h2>
-            </div>
-            <div class="space-y-3 text-left">
-                <p><strong class="text-cyan-400">Vũ Khí/Nguồn Sức Mạnh:</strong> ${champion.weapon}</p>
-                <p><strong class="text-cyan-400">Giới Tính/Loài:</strong> ${champion.species}</p>
-                <p><strong class="text-cyan-400">Lối Chơi Chính:</strong> ${champion.playstyle}</p>
-                <h4 class="text-lg font-semibold text-cyan-400 mt-4">Cốt Truyện Cơ Bản:</h4>
-                <p class="text-slate-300 leading-relaxed">${champion.lore}</p>
-            </div>
+          <div class="text-6xl mb-4 text-center">${champion.icon || "🎭"}</div>
+          <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
+            champion.name || "Unknown"
+          }</h2>
+          <p class="text-lg text-slate-400 mb-4 text-center">${
+            champion.role || "Unknown Role"
+          } - ${champion.regionName || "Unknown Region"}</p>
+          <div class="text-slate-300 leading-relaxed">
+            <p>${champion.lore || "Chưa có thông tin lore."}</p>
+          </div>
+          ${skillsHtml}
+          ${
+            champion.special
+              ? '<div class="mt-4 p-4 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg"><p class="text-sm text-white"><strong>Đặc biệt:</strong> Tướng có khả năng biến đổi giữa 4 dạng với cơ chế mua đồ tự động.</p></div>'
+              : ""
+          }
         `;
-        championModal.classList.remove("hidden");
+
+        modal.classList.remove("hidden");
       }
 
-      function closeChampionModal() {
-        championModal.classList.add("hidden");
+      function closeModal() {
+        document.getElementById("championModal").classList.add("hidden");
       }
 
-      modalCloseButton.addEventListener("click", closeChampionModal);
-      championModal.addEventListener("click", (event) => {
-        if (event.target === championModal) {
-          closeChampionModal();
-        }
-      });
+      // Add Champion Modal Functions
+      function openAddChampionModal() {
+        const modal = document.getElementById("addChampionModal");
+        const title = document.getElementById("addModalTitle");
+        const skillsSection = document.getElementById("skillsSection");
 
-      function renderRegionContent(region) {
-        let existingChampionsHtml = "";
-        if (region.existingChampions && region.existingChampions.length > 0) {
-          existingChampionsHtml = `
-                <h3 class="text-2xl font-semibold text-cyan-300 mb-4">Các Tướng Hiện Có</h3>
-                <p class="mb-6 text-slate-400">Khám phá các tướng hiện có của ${
-                  region.name
-                }. Nhấp vào một tướng để xem thông tin chi tiết.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    ${region.existingChampions
-                      .map(
-                        (champ, idx) => createChampionCard(champ, idx).outerHTML
-                      )
-                      .join("")}
-                </div>
-            `;
+        // Update title and show/hide skills section based on current champion type
+        if (currentChampionType === "new") {
+          title.textContent = "Thêm Tướng Mới";
+          skillsSection.classList.remove("hidden");
+          // Add default skill fields for new champions
+          clearSkillFields();
+          addSkillField();
         } else {
-          existingChampionsHtml = `<p class="text-slate-400">Chưa có dữ liệu tướng hiện có cho ${region.name} trong ứng dụng này.</p>`;
+          title.textContent = "Thêm Tướng Cũ";
+          skillsSection.classList.add("hidden");
+          clearSkillFields();
         }
 
-        let newChampionsHtml = "";
-        if (region.newChampions && region.newChampions.length > 0) {
-          newChampionsHtml = `
-                <h3 class="text-2xl font-semibold text-cyan-300 mt-12 mb-4">Gợi Ý Tướng Mới</h3>
-                <p class="mb-8 text-slate-400">Khám phá những khái niệm tướng mới được đề xuất cho ${
-                  region.name
-                }, mỗi tướng mang một vũ khí, lối chơi và cốt truyện độc đáo.</p>
-                <div class="space-y-8">
-                    ${region.newChampions
-                      .map(
-                        (newChamp, idx) =>
-                          createNewChampionCard(newChamp, idx).outerHTML
-                      )
-                      .join("")}
-                </div>
-            `;
+        // Reset form
+        document.getElementById("addChampionForm").reset();
+        modal.classList.remove("hidden");
+      }
+
+      function closeAddChampionModal() {
+        document.getElementById("addChampionModal").classList.add("hidden");
+        document.getElementById("addChampionForm").reset();
+        clearSkillFields();
+      }
+
+      function addSkillField() {
+        const container = document.getElementById("skillsContainer");
+        const skillIndex = container.children.length;
+
+        const skillDiv = document.createElement("div");
+        skillDiv.className =
+          "skill-field grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 bg-slate-700 rounded-lg";
+
+        skillDiv.innerHTML = `
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Tên Kỹ Năng</label>
+            <input type="text" class="skill-name w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" placeholder="Q: Tên kỹ năng" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Mô Tả Kỹ Năng</label>
+            <input type="text" class="skill-desc w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" placeholder="Mô tả hiệu ứng kỹ năng" required>
+          </div>
+          <div class="md:col-span-2 flex justify-end">
+            <button type="button" class="remove-skill px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm">
+              ❌ Xóa
+            </button>
+          </div>
+        `;
+
+        container.appendChild(skillDiv);
+
+        // Add remove event listener
+        skillDiv
+          .querySelector(".remove-skill")
+          .addEventListener("click", () => {
+            skillDiv.remove();
+          });
+      }
+
+      function clearSkillFields() {
+        document.getElementById("skillsContainer").innerHTML = "";
+      }
+
+      function handleAddChampion(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const name = document.getElementById("championName").value;
+        const icon = document.getElementById("championIcon").value;
+        const role = document.getElementById("championRole").value;
+        const region = document.getElementById("championRegion").value;
+        const lore = document.getElementById("championLore").value;
+
+        // Validate required fields
+        if (!name || !icon || !role || !region || !lore) {
+          alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
+          return;
+        }
+
+        // Create champion object
+        const newChampion = {
+          id: name.toLowerCase().replace(/[^a-z0-9]/g, ""),
+          name: name,
+          icon: icon,
+          role: role,
+          region: region,
+          lore: lore,
+        };
+
+        // Add skills if it's a new champion
+        if (currentChampionType === "new") {
+          const skillFields = document.querySelectorAll(".skill-field");
+          const skills = [];
+
+          skillFields.forEach((field) => {
+            const skillName = field.querySelector(".skill-name").value;
+            const skillDesc = field.querySelector(".skill-desc").value;
+
+            if (skillName && skillDesc) {
+              skills.push(`${skillName}: ${skillDesc}`);
+            }
+          });
+
+          if (skills.length === 0) {
+            alert("Tướng mới cần có ít nhất 1 kỹ năng!");
+            return;
+          }
+
+          newChampion.skills = skills;
+        }
+
+        // Find the region in regionsData and add champion
+        const regionData = regionsData.find((r) => r.id === region);
+        if (regionData) {
+          const championList =
+            currentChampionType === "old"
+              ? "existingChampions"
+              : "newChampions";
+
+          // Check if champion already exists
+          const exists = regionData[championList].some(
+            (champ) => champ.name.toLowerCase() === name.toLowerCase()
+          );
+
+          if (exists) {
+            alert("Tướng này đã tồn tại trong vùng đất!");
+            return;
+          }
+
+          regionData[championList].push(newChampion);
+
+          // Close modal and refresh champions
+          closeAddChampionModal();
+          loadChampions();
+
+          alert(
+            `Đã thêm ${
+              currentChampionType === "old" ? "tướng cũ" : "tướng mới"
+            } "${name}" thành công!`
+          );
         } else {
-          newChampionsHtml = `<p class="text-slate-400 mt-12">Chưa có gợi ý tướng mới cho ${region.name} trong ứng dụng này.</p>`;
-        }
-
-        regionContent.innerHTML = `
-            <h2 class="section-title text-center">${region.icon} ${region.name}</h2>
-            <p class="mb-8 text-lg leading-relaxed text-slate-300 text-center max-w-3xl mx-auto">${region.description}</p>
-            <div class="space-y-12">
-                ${existingChampionsHtml}
-                ${newChampionsHtml}
-            </div>
-        ;
-      }
-
-      function selectRegion(regionId) {
-        const selectedRegion = regionsData.find((r) => r.id === regionId);
-        if (selectedRegion) {
-          // Update active state for nav buttons
-          document
-            .querySelectorAll("#region-nav .nav-button")
-            .forEach((btn) => {
-              if (btn.dataset.regionId === regionId) {
-                btn.classList.add("active");
-              } else {
-                btn.classList.remove("active");
-              }
-            });
-          renderRegionContent(selectedRegion);
-          currentRegionId = regionId;
-          window.scrollTo(0, 0); // Scroll to top on region change
+          alert("Không tìm thấy vùng đất!");
         }
       }
-
-      // Initialize region navigation
-      regionsData.forEach((region) => {
-        // "Runeterra" is a general overview, not a specific region to navigate to in the top bar
-        // It's used as the initial welcome content
-        if (region.id !== "runeterra") {
-          regionNav.appendChild(createRegionNavButton(region));
-        }
-      });
-
-      // Initial content (welcome message for Runeterra)
-      // No default region selected, so the initial content is the general Runeterra overview.
     </script>
   </body>
 </html>
