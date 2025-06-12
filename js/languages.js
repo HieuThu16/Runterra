@@ -19,12 +19,26 @@ const languages = {
       demacia: "⚜️ Demacia",
       noxus: "🗡️ Noxus",
       ionia: "🌸 Ionia",
-      piltover: "⚙️ Piltover",
-
-      // Champion Types
+      piltover: "⚙️ Piltover", // Champion Types
       oldChampions: "📚 Tướng Cũ",
       newChampions: "✨ Tướng Mới",
       addChampion: "➕ Thêm Tướng",
+      statistics: "📊 Thống Kê",
+
+      // Statistics
+      statisticsTitle: "📊 Thống Kê Tướng & Vùng Đất",
+      totalChampions: "Tổng Số Tướng",
+      totalRegions: "Tổng Số Vùng Đất",
+      totalWeapons: "Loại Vũ Khí",
+      popularRole: "Vai Trò Phổ Biến",
+      regionStats: "📍 Thống Kê Theo Vùng Đất",
+      roleDistribution: "🎭 Phân Bố Vai Trò",
+      weaponStats: "⚔️ Thống Kê Vũ Khí",
+      championDetails: "🎯 Chi Tiết Tướng",
+      selectChampion: "Chọn Tướng:",
+      basicInfo: "Thông Tin Cơ Bản",
+      skillsInfo: "Kỹ Năng",
+      loreInfo: "Câu Chuyện",
 
       // Database Management
       backup: "📥 Backup",
@@ -141,12 +155,26 @@ const languages = {
       demacia: "⚜️ Demacia",
       noxus: "🗡️ Noxus",
       ionia: "🌸 Ionia",
-      piltover: "⚙️ Piltover",
-
-      // Champion Types
+      piltover: "⚙️ Piltover", // Champion Types
       oldChampions: "📚 Existing Champions",
       newChampions: "✨ New Champions",
       addChampion: "➕ Add Champion",
+      statistics: "📊 Statistics",
+
+      // Statistics
+      statisticsTitle: "📊 Champion & Region Statistics",
+      totalChampions: "Total Champions",
+      totalRegions: "Total Regions",
+      totalWeapons: "Weapon Types",
+      popularRole: "Popular Role",
+      regionStats: "📍 Regional Statistics",
+      roleDistribution: "🎭 Role Distribution",
+      weaponStats: "⚔️ Weapon Statistics",
+      championDetails: "🎯 Champion Details",
+      selectChampion: "Select Champion:",
+      basicInfo: "Basic Information",
+      skillsInfo: "Skills",
+      loreInfo: "Lore",
 
       // Database Management
       backup: "📥 Backup",
@@ -263,12 +291,26 @@ const languages = {
       demacia: "⚜️ 德玛西亚",
       noxus: "🗡️ 诺克萨斯",
       ionia: "🌸 艾欧尼亚",
-      piltover: "⚙️ 皮尔特沃夫",
-
-      // Champion Types
+      piltover: "⚙️ 皮尔特沃夫", // Champion Types
       oldChampions: "📚 现有英雄",
       newChampions: "✨ 新英雄",
       addChampion: "➕ 添加英雄",
+      statistics: "📊 统计",
+
+      // Statistics
+      statisticsTitle: "📊 英雄与地区统计",
+      totalChampions: "英雄总数",
+      totalRegions: "地区总数",
+      totalWeapons: "武器类型",
+      popularRole: "热门职业",
+      regionStats: "📍 地区统计",
+      roleDistribution: "🎭 职业分布",
+      weaponStats: "⚔️ 武器统计",
+      championDetails: "🎯 英雄详情",
+      selectChampion: "选择英雄:",
+      basicInfo: "基本信息",
+      skillsInfo: "技能",
+      loreInfo: "背景故事",
 
       // Database Management
       backup: "📥 备份",

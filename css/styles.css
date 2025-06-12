@@ -143,6 +143,84 @@ body {
   }
 }
 
+/* Statistics page styles */
+.statistics-overview .bg-slate-700 {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  border: 1px solid #6b7280;
+}
+
+.statistics-overview .bg-slate-700:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.region-stats-card {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  border: 1px solid #6b7280;
+  transition: all 0.3s ease;
+}
+
+.region-stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.role-stats-card {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  border: 1px solid #6b7280;
+  transition: all 0.3s ease;
+}
+
+.role-stats-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}
+
+.weapon-stats-card {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  border: 1px solid #fb7185;
+  transition: all 0.3s ease;
+}
+
+.weapon-stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(251, 113, 133, 0.3);
+}
+
+.champion-details-section {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border: 1px solid #475569;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+  transition: width 0.8s ease-in-out;
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.4);
+}
+
+.progress-bar-bg {
+  background: #475569;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+/* Animated counters */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-number {
+  animation: countUp 0.6s ease-out;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .champion-card {
@@ -155,6 +233,24 @@ body {
   }
 
   .skill-field {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .region-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .role-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .statistics-grid {
     grid-template-columns: 1fr;
   }
 }

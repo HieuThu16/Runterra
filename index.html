@@ -134,6 +134,13 @@
           >
             ➕ Thêm Tướng
           </button>
+          <button
+            id="statisticsTab"
+            class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+            data-translate="statistics"
+          >
+            📊 Thống Kê
+          </button>
         </div>
         <!-- Database Management -->
         <div class="flex justify-center space-x-2 mb-6">
@@ -201,13 +208,211 @@
             <!-- Lore content will be loaded here -->
           </div>
         </div>
-
         <!-- Champions Grid -->
         <div
           id="championsGrid"
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           <!-- Champions will be loaded here -->
+        </div>
+
+        <!-- Statistics Section -->
+        <div id="statisticsSection" class="hidden">
+          <div class="bg-slate-800 rounded-lg p-6 shadow-lg">
+            <h2
+              class="text-3xl font-bold text-cyan-400 mb-6 text-center"
+              data-translate="statisticsTitle"
+            >
+              📊 Thống Kê Tướng & Vùng Đất
+            </h2>
+
+            <!-- Statistics Overview -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+            >
+              <!-- Total Champions -->
+              <div class="bg-slate-700 p-4 rounded-lg text-center">
+                <div class="text-3xl mb-2">👥</div>
+                <div
+                  id="totalChampions"
+                  class="text-2xl font-bold text-cyan-400"
+                >
+                  0
+                </div>
+                <div
+                  class="text-sm text-slate-400"
+                  data-translate="totalChampions"
+                >
+                  Tổng Số Tướng
+                </div>
+              </div>
+
+              <!-- Total Regions -->
+              <div class="bg-slate-700 p-4 rounded-lg text-center">
+                <div class="text-3xl mb-2">🗺️</div>
+                <div
+                  id="totalRegions"
+                  class="text-2xl font-bold text-green-400"
+                >
+                  0
+                </div>
+                <div
+                  class="text-sm text-slate-400"
+                  data-translate="totalRegions"
+                >
+                  Tổng Số Vùng Đất
+                </div>
+              </div>
+
+              <!-- Total Weapons -->
+              <div class="bg-slate-700 p-4 rounded-lg text-center">
+                <div class="text-3xl mb-2">⚔️</div>
+                <div
+                  id="totalWeapons"
+                  class="text-2xl font-bold text-orange-400"
+                >
+                  0
+                </div>
+                <div
+                  class="text-sm text-slate-400"
+                  data-translate="totalWeapons"
+                >
+                  Loại Vũ Khí
+                </div>
+              </div>
+
+              <!-- Most Popular Role -->
+              <div class="bg-slate-700 p-4 rounded-lg text-center">
+                <div class="text-3xl mb-2">🏆</div>
+                <div id="popularRole" class="text-lg font-bold text-purple-400">
+                  -
+                </div>
+                <div
+                  class="text-sm text-slate-400"
+                  data-translate="popularRole"
+                >
+                  Vai Trò Phổ Biến
+                </div>
+              </div>
+            </div>
+
+            <!-- Regions Statistics -->
+            <div class="mb-8">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="regionStats"
+              >
+                📍 Thống Kê Theo Vùng Đất
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="regionStatsContainer" class="col-span-full">
+                  <!-- Region statistics will be loaded here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Role Distribution -->
+            <div class="mb-8">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="roleDistribution"
+              >
+                🎭 Phân Bố Vai Trò
+              </h3>
+              <div
+                id="roleStatsContainer"
+                class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+              >
+                <!-- Role statistics will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Weapon Statistics -->
+            <div class="mb-8">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="weaponStats"
+              >
+                ⚔️ Thống Kê Vũ Khí
+              </h3>
+              <div
+                id="weaponStatsContainer"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              >
+                <!-- Weapon statistics will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Champion Details -->
+            <div class="mb-8">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="championDetails"
+              >
+                🎯 Chi Tiết Tướng
+              </h3>
+              <div class="bg-slate-700 rounded-lg p-4">
+                <div class="mb-4">
+                  <label
+                    for="championSelect"
+                    class="block text-sm font-medium text-slate-300 mb-2"
+                    data-translate="selectChampion"
+                  >
+                    Chọn Tướng:
+                  </label>
+                  <select
+                    id="championSelect"
+                    class="bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
+                  >
+                    <option value="">-- Chọn Tướng --</option>
+                  </select>
+                </div>
+
+                <div id="championDetailsContainer" class="hidden">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-4 rounded-lg">
+                      <h4
+                        class="font-semibold text-cyan-300 mb-3"
+                        data-translate="basicInfo"
+                      >
+                        Thông Tin Cơ Bản
+                      </h4>
+                      <div id="championBasicInfo">
+                        <!-- Basic info will be loaded here -->
+                      </div>
+                    </div>
+
+                    <div class="bg-slate-800 p-4 rounded-lg">
+                      <h4
+                        class="font-semibold text-cyan-300 mb-3"
+                        data-translate="skillsInfo"
+                      >
+                        Kỹ Năng
+                      </h4>
+                      <div id="championSkillsInfo">
+                        <!-- Skills info will be loaded here -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 bg-slate-800 p-4 rounded-lg">
+                    <h4
+                      class="font-semibold text-cyan-300 mb-3"
+                      data-translate="loreInfo"
+                    >
+                      Câu Chuyện
+                    </h4>
+                    <div
+                      id="championLoreInfo"
+                      class="text-slate-300 text-sm leading-relaxed"
+                    >
+                      <!-- Lore info will be loaded here -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <!-- Card Game Content -->

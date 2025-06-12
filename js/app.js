@@ -70,15 +70,16 @@ class RuneterraApp {
       .getElementById("regionLoreBoxClose")
       ?.addEventListener("click", () => {
         document.getElementById("regionLoreBox").classList.add("hidden");
-      });
-
-    // Champion type tabs
+      }); // Champion type tabs
     document
       .getElementById("oldChampionsTab")
       ?.addEventListener("click", () => this.switchChampionType("old"));
     document
       .getElementById("newChampionsTab")
       ?.addEventListener("click", () => this.switchChampionType("new"));
+    document
+      .getElementById("statisticsTab")
+      ?.addEventListener("click", () => this.switchChampionType("statistics"));
 
     // Add champion button
     document
@@ -202,7 +203,6 @@ class RuneterraApp {
       this.loadChampions();
     }
   }
-
   switchChampionType(type) {
     this.currentChampionType = type;
 
@@ -210,11 +210,22 @@ class RuneterraApp {
     document
       .querySelectorAll(".champion-type-tab")
       .forEach((tab) => tab.classList.remove("active"));
-    document
-      .getElementById(type === "old" ? "oldChampionsTab" : "newChampionsTab")
-      ?.classList.add("active");
 
-    this.loadChampions();
+    if (type === "statistics") {
+      document.getElementById("statisticsTab")?.classList.add("active");
+      // Hide champions grid and show statistics
+      document.getElementById("championsGrid").classList.add("hidden");
+      document.getElementById("statisticsSection").classList.remove("hidden");
+      this.loadStatistics();
+    } else {
+      document
+        .getElementById(type === "old" ? "oldChampionsTab" : "newChampionsTab")
+        ?.classList.add("active");
+      // Show champions grid and hide statistics
+      document.getElementById("championsGrid").classList.remove("hidden");
+      document.getElementById("statisticsSection").classList.add("hidden");
+      this.loadChampions();
+    }
   }
   loadChampions() {
     const grid = document.getElementById("championsGrid");
@@ -1033,12 +1044,294 @@ class RuneterraApp {
           `Dung lượng: ${Math.round(stats.memoryUsage / 1024)} KB\n\n` +
           `Điều này sẽ làm cho việc dịch chậm hơn lần đầu tiên.`
       );
-
       if (confirmation) {
         this.languageManager.translationService.clearCache();
         alert("✅ Đã xóa cache dịch thuật thành công!");
       }
     }
+  }
+
+  // Statistics functions
+  loadStatistics() {
+    this.updateStatisticsOverview();
+    this.updateRegionStatistics();
+    this.updateRoleDistribution();
+    this.updateWeaponStatistics();
+    this.updateChampionSelect();
+    this.setupChampionDetailsListener();
+  }
+
+  updateStatisticsOverview() {
+    const allChampions = this.getAllChampions();
+    const allRegions = (window.championsDatabase || championsDatabase).regions;
+    const weapons = this.extractWeapons(allChampions);
+    const roles = this.extractRoles(allChampions);
+
+    // Find most popular role
+    const roleCount = {};
+    roles.forEach((role) => {
+      roleCount[role] = (roleCount[role] || 0) + 1;
+    });
+    const mostPopularRole = Object.keys(roleCount).reduce(
+      (a, b) => (roleCount[a] > roleCount[b] ? a : b),
+      ""
+    );
+
+    document.getElementById("totalChampions").textContent = allChampions.length;
+    document.getElementById("totalRegions").textContent = allRegions.length;
+    document.getElementById("totalWeapons").textContent = weapons.length;
+    document.getElementById("popularRole").textContent = mostPopularRole || "-";
+  }
+
+  updateRegionStatistics() {
+    const container = document.getElementById("regionStatsContainer");
+    const allRegions = (window.championsDatabase || championsDatabase).regions;
+
+    container.innerHTML = "";
+
+    // Calculate max champions for percentage calculation
+    const regionCounts = allRegions.map((region) => {
+      const existingCount = region.existingChampions
+        ? region.existingChampions.length
+        : 0;
+      const newCount = region.newChampions ? region.newChampions.length : 0;
+      return existingCount + newCount;
+    });
+    const maxCount = Math.max(...regionCounts, 1); // Avoid division by zero
+
+    allRegions.forEach((region) => {
+      const existingCount = region.existingChampions
+        ? region.existingChampions.length
+        : 0;
+      const newCount = region.newChampions ? region.newChampions.length : 0;
+      const totalCount = existingCount + newCount;
+      const percentage = maxCount > 0 ? (totalCount / maxCount) * 100 : 0;
+
+      const regionDiv = document.createElement("div");
+      regionDiv.className = "bg-slate-700 p-4 rounded-lg";
+      regionDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-semibold text-cyan-300">${region.icon} ${region.name}</h4>
+          <span class="text-xl font-bold text-yellow-400">${totalCount}</span>
+        </div>
+        <div class="text-sm text-slate-400">
+          <div>Tướng Cũ: ${existingCount}</div>
+          <div>Tướng Mới: ${newCount}</div>
+        </div>
+        <div class="mt-2 bg-slate-600 rounded-full h-2">
+          <div class="bg-cyan-400 h-2 rounded-full transition-all duration-300" style="width: ${percentage}%"></div>
+        </div>
+      `;
+      container.appendChild(regionDiv);
+    });
+  }
+
+  updateRoleDistribution() {
+    const container = document.getElementById("roleStatsContainer");
+    const allChampions = this.getAllChampions();
+    const roleCount = {};
+
+    // Count roles
+    allChampions.forEach((champion) => {
+      if (champion.role) {
+        roleCount[champion.role] = (roleCount[champion.role] || 0) + 1;
+      }
+    });
+
+    container.innerHTML = "";
+
+    const roleIcons = {
+      "Đấu Sĩ": "⚔️",
+      "Pháp Sư": "🔮",
+      "Xạ Thủ": "🏹",
+      "Sát Thủ": "🗡️",
+      "Hỗ Trợ": "🛡️",
+      "Đỡ Đòn": "🛡️",
+      "Kiểm Soát": "🎯",
+    };
+
+    Object.entries(roleCount).forEach(([role, count]) => {
+      const roleDiv = document.createElement("div");
+      roleDiv.className = "bg-slate-700 p-3 rounded-lg text-center";
+      roleDiv.innerHTML = `
+        <div class="text-2xl mb-1">${roleIcons[role] || "🎭"}</div>
+        <div class="text-lg font-bold text-cyan-400">${count}</div>
+        <div class="text-xs text-slate-400">${role}</div>
+      `;
+      container.appendChild(roleDiv);
+    });
+  }
+
+  updateWeaponStatistics() {
+    const container = document.getElementById("weaponStatsContainer");
+    const allChampions = this.getAllChampions();
+    const weaponCount = {};
+
+    allChampions.forEach((champion) => {
+      if (champion.weapon) {
+        weaponCount[champion.weapon] = (weaponCount[champion.weapon] || 0) + 1;
+      }
+    });
+
+    container.innerHTML = "";
+
+    if (Object.keys(weaponCount).length === 0) {
+      container.innerHTML =
+        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin vũ khí</div>';
+      return;
+    }
+
+    Object.entries(weaponCount).forEach(([weapon, count]) => {
+      const weaponDiv = document.createElement("div");
+      weaponDiv.className = "bg-slate-700 p-4 rounded-lg";
+      weaponDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-semibold text-orange-300">${weapon}</h4>
+          <span class="text-lg font-bold text-orange-400">${count}</span>
+        </div>
+        <div class="text-sm text-slate-400">Số lượng tướng sử dụng</div>
+      `;
+      container.appendChild(weaponDiv);
+    });
+  }
+
+  updateChampionSelect() {
+    const select = document.getElementById("championSelect");
+    const allChampions = this.getAllChampions();
+
+    select.innerHTML = '<option value="">-- Chọn Tướng --</option>';
+
+    allChampions.forEach((champion) => {
+      const option = document.createElement("option");
+      option.value = JSON.stringify(champion);
+      option.textContent = `${champion.icon || "🎭"} ${champion.name} (${
+        champion.region
+      })`;
+      select.appendChild(option);
+    });
+  }
+  setupChampionDetailsListener() {
+    const select = document.getElementById("championSelect");
+    const container = document.getElementById("championDetailsContainer");
+
+    // Remove existing listener if any
+    if (select.onchange) {
+      select.onchange = null;
+    }
+
+    select.addEventListener("change", (e) => {
+      if (e.target.value) {
+        const champion = JSON.parse(e.target.value);
+        this.showChampionDetails(champion);
+        container.classList.remove("hidden");
+      } else {
+        container.classList.add("hidden");
+      }
+    });
+  }
+
+  showChampionDetails(champion) {
+    const basicInfo = document.getElementById("championBasicInfo");
+    const skillsInfo = document.getElementById("championSkillsInfo");
+    const loreInfo = document.getElementById("championLoreInfo");
+
+    // Basic Info
+    basicInfo.innerHTML = `
+      <div class="space-y-2">
+        <div><span class="font-medium text-slate-300">Tên:</span> ${
+          champion.icon || "🎭"
+        } ${champion.name}</div>
+        <div><span class="font-medium text-slate-300">Vai Trò:</span> ${
+          champion.role || "Không rõ"
+        }</div>
+        <div><span class="font-medium text-slate-300">Vùng Đất:</span> ${
+          champion.region || "Không rõ"
+        }</div>
+        ${
+          champion.weapon
+            ? `<div><span class="font-medium text-slate-300">Vũ Khí:</span> ${champion.weapon}</div>`
+            : ""
+        }
+        ${
+          champion.species
+            ? `<div><span class="font-medium text-slate-300">Chủng Tộc:</span> ${champion.species}</div>`
+            : ""
+        }
+        ${
+          champion.age
+            ? `<div><span class="font-medium text-slate-300">Tuổi:</span> ${champion.age}</div>`
+            : ""
+        }
+      </div>
+    `;
+
+    // Skills Info
+    if (champion.skills && champion.skills.length > 0) {
+      skillsInfo.innerHTML = `
+        <div class="space-y-2">
+          ${champion.skills
+            .map(
+              (skill, index) => `
+            <div class="text-sm">
+              <span class="font-medium text-cyan-300">${
+                typeof skill === "object" ? skill.name : skill
+              }</span>
+              ${
+                typeof skill === "object" && skill.description
+                  ? `<div class="text-slate-400 text-xs mt-1">${skill.description}</div>`
+                  : ""
+              }
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      `;
+    } else {
+      skillsInfo.innerHTML =
+        '<div class="text-slate-400 text-sm">Chưa có thông tin kỹ năng</div>';
+    }
+
+    // Lore Info
+    const loreText = champion.fullLore || champion.lore || "Chưa có câu chuyện";
+    loreInfo.innerHTML = loreText;
+  }
+
+  getAllChampions() {
+    const allChampions = [];
+    const regions = (window.championsDatabase || championsDatabase).regions;
+
+    regions.forEach((region) => {
+      if (region.existingChampions) {
+        allChampions.push(
+          ...region.existingChampions.map((c) => ({
+            ...c,
+            region: region.name,
+          }))
+        );
+      }
+      if (region.newChampions) {
+        allChampions.push(
+          ...region.newChampions.map((c) => ({ ...c, region: region.name }))
+        );
+      }
+    });
+
+    return allChampions;
+  }
+
+  extractWeapons(champions) {
+    const weapons = new Set();
+    champions.forEach((champion) => {
+      if (champion.weapon) {
+        weapons.add(champion.weapon);
+      }
+    });
+    return Array.from(weapons);
+  }
+
+  extractRoles(champions) {
+    return champions.map((champion) => champion.role).filter((role) => role);
   }
 }
 
