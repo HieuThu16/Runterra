@@ -44,13 +44,33 @@ class RuneterraApp {
       ?.addEventListener("click", () => this.switchGame("5vs5"));
     document
       .getElementById("cardGameTab")
-      ?.addEventListener("click", () => this.switchGame("card"));
-
-    // Region filter
+      ?.addEventListener("click", () => this.switchGame("card")); // Region filter
     document.getElementById("regionFilter")?.addEventListener("change", (e) => {
       this.currentRegion = e.target.value;
+      // Nếu chọn Demacia thì hiển thị lore info box
+      if (this.currentRegion === "demacia") {
+        const demaciaRegion = (
+          window.championsDatabase || championsDatabase
+        ).regions.find((r) => r.id === "demacia");
+        if (demaciaRegion && demaciaRegion.lore) {
+          document.getElementById("regionLoreBoxTitle").textContent =
+            "📜 " + demaciaRegion.name + " - Lore";
+          document.getElementById("regionLoreBoxContent").textContent =
+            demaciaRegion.lore;
+          document.getElementById("regionLoreBox").classList.remove("hidden");
+        }
+      } else {
+        // Ẩn lore box khi chọn vùng khác
+        document.getElementById("regionLoreBox").classList.add("hidden");
+      }
+      // Luôn luôn load champions
       this.loadChampions();
-    });
+    }); // Đóng region lore info box
+    document
+      .getElementById("regionLoreBoxClose")
+      ?.addEventListener("click", () => {
+        document.getElementById("regionLoreBox").classList.add("hidden");
+      });
 
     // Champion type tabs
     document
