@@ -74,6 +74,15 @@ const piltoverData = {
       releaseDate: "19/09/2009",
       loreConnections: ["Heimerdinger"],
       weaponSummary: "Súng, bom",
+      gender: "Nam",
+      species: "Yordle",
+      funFacts: [
+        "Corki là một trong những tướng gốc đã có mặt khi Liên Minh Huyền Thoại ra mắt vào năm 2009.",
+        "Thiết kế của Corki lấy cảm hứng từ phi công trong Thế Chiến II, với chiếc mũ bay và kính bảo hộ đặc trưng.",
+        "Tên của chiếc máy bay của Corki là 'ROFL Copter', một trò đùa dựa trên thuật ngữ internet 'ROFL' (Rolling On Floor Laughing).",
+        "Trước khi được làm lại, Corki có thể bắn ra cả một hàng rào dài tên lửa để giết chóc hàng loạt kẻ địch.",
+        "Corki là một trong những Yordle hiếm không đến từ vùng Bandle City mà thuộc về Piltover, nơi anh ta thành lập Đội Bay Thám Hiểm.",
+      ],
     },
     {
       id: "ekko",

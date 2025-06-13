@@ -17,6 +17,13 @@ const ioniaData = {
       weaponSummary: "Kiếm",
       gender: "Nam",
       species: "Người",
+      funFacts: [
+        "Yasuo từng là một trong những tướng phổ biến nhất trong Liên Minh Huyền Thoại mặc dù là một trong những tướng khó chơi nhất.",
+        "Tên 'Yasuo' trong tiếng Nhật có nghĩa là 'Trung thực' hoặc 'Có phẩm giá'.",
+        "Yasuo và Riven từng bị nghi ngờ đều liên quan đến cái chết của sư phụ của anh ta.",
+        "Khi Riot đầu tiên phát hành Yasuo, anh ta gần như được gọi là 'Tempest', ám chỉ khả năng điều khiển gió.",
+        "Yasuo có mối quan hệ đặc biệt với Taliyah, người từng là học trò của anh.",
+      ],
     },
     {
       id: "ahri",
@@ -1122,7 +1129,7 @@ const ioniaData = {
       weaponSummary: "Dao găm",
       lore: "Zed là người bạn thân nhất và đối thủ của Shen trong Hội Kinkou. Bực bội vì sự thiếu hành động của họ, anh ta đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen, sử dụng nó để dàn dựng một cuộc đảo chính, giết chết sư phụ Kusho, và thành lập Hội Bóng Tối. Giờ đây anh ta tàn nhẫn quân sự hóa các truyền thống của Ionia để trục xuất những kẻ xâm lược và đảm bảo sự thống trị của Ionia.",
       fullLore:
-        "Zed được Đại Sư Kusho của Hội Kinkou nhận nuôi, nhanh chóng xuất sắc nhưng cảm thấy bị Shen che khuất. Họ như anh em. Họ đã săn lùng Khada Jhin, người mà Kusho đã chọn giam cầm. Zed oán giận sự thiếu hành động này và, tìm kiếm sức mạnh lớn hơn, đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen trong hầm mộ của ngôi đền.\n\nBóng tối đã nuôi dưỡng sự cay đắng của anh ta, cho anh ta thấy sự khinh thường đối với kẻ yếu. Anh ta trở về ngôi đền, đối mặt với Kusho, và giết ông ta, sau đó chiếm lấy ngôi đền cho Hội Bóng Tối của mình, huấn luyện các tân binh trong bóng tối. Anh ta tin rằng sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia, tàn nhẫn loại bỏ các mối đe dọa và nhận Kayn làm học trò cá nhân của mình.\n\nQuyết định của Zed chấp nhận ma thuật bóng tối bị cấm và giết sư phụ của mình được thúc đẩy bởi niềm tin rằng 'sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia.' Đây là một ví dụ rõ ràng về một nhân vật biện minh cho các phương tiện đen tối vì một lợi ích lớn hơn được nhận thức.",
+        "Zed được Đại Sư Kusho của Hội Kinkou nhận nuôi, nhanh chóng xuất sắc nhưng cảm thấy bị Shen che khuất. Họ như anh em. Họ đã săn lùng Khada Jhin, người mà Kusho đã chọn giam cầm. Zed oán giận sự thiếu hành động này và, tìm kiếm sức mạnh lớn hơn, đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen trong hầm mộ của ngôi đền.\n\nBóng tối đã nuôi dưỡng sự cay đắng của anh ta, cho anh ta thấy sự khinh địch đối với kẻ yếu. Anh ta trở về ngôi đền, đối mặt với Kusho, và giết ông ta, sau đó chiếm lấy ngôi đền cho Hội Bóng Tối của mình, huấn luyện các tân binh trong bóng tối. Anh ta tin rằng sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia, tàn nhẫn loại bỏ các mối đe dọa và nhận Kayn làm học trò cá nhân của mình.\n\nQuyết định của Zed chấp nhận ma thuật bóng tối bị cấm và giết sư phụ của mình được thúc đẩy bởi niềm tin rằng 'sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia.' Đây là một ví dụ rõ ràng về một nhân vật biện minh cho các phương tiện đen tối vì một lợi ích lớn hơn được nhận thức.",
       gameplay:
         "Zed là một sát thủ cận chiến dựa trên năng lượng, nổi tiếng với sát thương dồn dập cao, khả năng thao túng bóng tối và khả năng đánh dấu mục tiêu để kết liễu chậm. Lối chơi của anh ta liên quan đến việc sử dụng bóng tối một cách khéo léo để di chuyển, đánh lừa và tăng sát thương.",
       skills: [

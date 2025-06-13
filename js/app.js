@@ -360,7 +360,7 @@ class RuneterraApp {
           "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
         }" 
              alt="${champion.name}" 
-             class="w-20 h-20 object-cover rounded-lg mx-auto shadow-lg"
+             class="w-50 h-50 object-cover rounded-lg mx-auto shadow-lg"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <div class="text-4xl hidden">🎭</div>
       </div>
@@ -412,6 +412,7 @@ class RuneterraApp {
     console.log("Champion specialFeatures:", champion.specialFeatures);
     console.log("Champion fullLore:", champion.fullLore);
     console.log("Champion fullName:", champion.fullName);
+    console.log("Champion funFacts:", champion.funFacts);
     console.log("Current language:", this.languageManager.getCurrentLanguage());
 
     // Additional debug: Check if this champion exists in window.championsDatabase
@@ -541,11 +542,7 @@ class RuneterraApp {
         label: this.languageManager.getTranslation("age"),
         value: champion.age,
       });
-    if (champion.weapon)
-      additionalFields.push({
-        label: this.languageManager.getTranslation("weapon"),
-        value: champion.weapon,
-      });
+    // Weapon field removed - only show via weaponSummary with detail button
     if (champion.origin)
       additionalFields.push({
         label: this.languageManager.getTranslation("origin"),
@@ -660,32 +657,7 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    }
-
-    // Relationships section if available
-    let relationshipsHtml = "";
-    if (champion.relationships && champion.relationships.length > 0) {
-      relationshipsHtml = `
-        <div class="mt-6">
-          <h4 class="text-lg font-semibold text-pink-300 mb-3">${this.languageManager.getTranslation(
-            "relationships"
-          )}:</h4>
-          <div class="space-y-2">
-            ${champion.relationships
-              .map(
-                (rel) => `
-              <div class="bg-pink-900/30 p-3 rounded-md border border-pink-600/50">
-                <p class="text-sm text-pink-100"><strong>${rel.type}:</strong> ${rel.description}</p>
-              </div>
-            `
-              )
-              .join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    // Abilities/Powers section if different from skills
+    } // Abilities/Powers section if different from skills
     let abilitiesHtml = "";
     if (champion.abilities && champion.abilities.length > 0) {
       abilitiesHtml = `
@@ -739,50 +711,157 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    } // Lore connections panel
+    }
+
+    // Lore connections panel with integrated relationships
     let loreConnectionsPanel = "";
-    if (champion.loreConnections && champion.loreConnections.length > 0) {
+    if (
+      (champion.loreConnections && champion.loreConnections.length > 0) ||
+      (champion.relationships && champion.relationships.length > 0)
+    ) {
+      let connectionsContent = ""; // Add lore connections
+      if (champion.loreConnections && champion.loreConnections.length > 0) {
+        connectionsContent += champion.loreConnections
+          .map(
+            (connectionName) => `
+            <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
+              <h4 class="text-cyan-300 font-medium mb-2">${connectionName}</h4>
+              <p class="text-sm text-slate-300">${this.getLoreConnectionDescription(
+                champion.name,
+                connectionName
+              )}</p>
+            </div>
+          `
+          )
+          .join("");
+      }
+
+      // Add relationships as part of lore connections
+      if (champion.relationships && champion.relationships.length > 0) {
+        connectionsContent += champion.relationships
+          .map(
+            (rel) => `
+            <div class="bg-pink-900/30 p-3 rounded-md border border-pink-600/50">
+              <h4 class="text-pink-300 font-medium mb-2">${rel.type}</h4>
+              <p class="text-sm text-pink-100">${rel.description}</p>
+            </div>
+          `
+          )
+          .join("");
+      }
+
       loreConnectionsPanel = `
-        <div class="bg-slate-700/50 p-4 rounded-lg">
-          <h3 class="text-lg font-semibold text-purple-300 mb-4">🔗 Liên Kết Cốt Truyện</h3>
+        <div class="bg-slate-700/50 p-4 rounded-lg mb-6">
+          <h3 class="text-lg font-semibold text-purple-300 mb-4">🔗 Liên Kết Cốt Truyện & Mối Quan Hệ</h3>
           <div class="space-y-3">
-            ${champion.loreConnections
-              .map(
-                (connectionName) => `
-              <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
-                <h4 class="text-cyan-300 font-medium mb-2">${connectionName}</h4>
-                <p class="text-sm text-slate-300">hello</p>
-              </div>
-            `
-              )
-              .join("")}
+            ${connectionsContent}
           </div>
         </div>
       `;
     }
 
+    // Fun Facts panel for right side
+    let funFactsPanel = "";
+    if (champion.funFacts && champion.funFacts.length > 0) {
+      funFactsPanel = `
+        <div class="bg-slate-700/50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-amber-300 mb-4">✨ Fun Facts</h3>
+          <div class="bg-amber-900/30 p-4 rounded-lg border border-amber-600/50">
+            <ul class="space-y-2 list-disc list-inside">
+              ${champion.funFacts
+                .map(
+                  (fact) => `
+                <li class="text-sm text-amber-100 leading-relaxed">${fact}</li>
+              `
+                )
+                .join("")}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
     modalBody.innerHTML = `
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main content (left side) -->
         <div class="lg:col-span-2">
-          <div class="mb-4 text-center">
-            <img src="${
-              champion.image ||
-              "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
-            }" 
-                 alt="${champion.name}" 
-                 class="w-32 h-32 object-cover rounded-lg mx-auto shadow-lg"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="text-6xl hidden">🎭</div>
-          </div>
-          <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
-            champion.name || "Unknown"
-          }</h2>
-          <p class="text-lg text-slate-400 mb-4 text-center">${
-            champion.role || "Unknown Role"
-          } - ${champion.regionName || "Unknown Region"}</p>
+          <!-- Champion Header with Image and Basic Info -->
+          <div class="flex gap-6 mb-6">
+            <!-- Champion Image -->
+            <div class="flex-shrink-0">
+              <img src="${
+                champion.image ||
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
+              }" 
+                   alt="${champion.name}" 
+                   class="w-120 h-96 object-cover rounded-lg shadow-lg"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="text-6xl hidden">🎭</div>
+            </div>
+              <!-- Champion Basic Info -->
+            <div class="flex-1 flex flex-col justify-center">
+              <h2 class="text-4xl font-bold text-cyan-300 mb-3">${
+                champion.name || "Unknown"
+              }</h2>
+              <p class="text-2xl text-slate-400 mb-6">${
+                champion.role || "Unknown Role"
+              } - ${champion.regionName || "Unknown Region"}</p>
+              
+              <!-- Essential Champion Info -->
+              <div class="space-y-3">
+                ${
+                  champion.species
+                    ? `
+                <div class="flex items-center">
+                  <span class="text-cyan-300 font-semibold text-lg w-20">Loài:</span>
+                  <span class="text-slate-300 text-lg">${champion.species}</span>
+                </div>
+                `
+                    : ""
+                }
+                ${
+                  champion.gender
+                    ? `
+                <div class="flex items-center">
+                  <span class="text-cyan-300 font-semibold text-lg w-20">Giới:</span>
+                  <span class="text-slate-300 text-lg">${this.simplifyGender(
+                    champion.gender
+                  )}</span>
+                </div>
+                `
+                    : ""
+                }
+                ${
+                  champion.weaponSummary
+                    ? `
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="text-cyan-300 font-semibold text-lg w-20">Vũ Khí:</span>
+                    <span class="text-slate-300 text-lg">${
+                      champion.weaponSummary
+                    }</span>
+                  </div>
+                  ${
+                    champion.weapon
+                      ? `
+                    <button 
+                      onclick="showWeaponDetail('${champion.weapon.replace(
+                        /'/g,
+                        "\\'"
+                      )}', this)" 
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded transition-colors"
+                    >
+                      Chi tiết
+                    </button>
+                  `
+                      : ""
+                  }
+                </div>
+                `
+                    : ""
+                }
+              </div>
+            </div></div>
           
-          ${additionalInfoHtml}
           <div class="mt-6">
             <h4 class="text-lg font-semibold text-slate-300 mb-3">${this.languageManager.getTranslation(
               "basicInfo"
@@ -791,13 +870,11 @@ class RuneterraApp {
               <p>${champion.lore || "Chưa có thông tin lore."}</p>
             </div>
           </div>
-          
-          ${gameplayHtml}
+            ${gameplayHtml}
           ${statsHtml}
           ${skillsHtml}
           ${abilitiesHtml}
           ${specialFeaturesHtml}
-          ${relationshipsHtml}
           ${fullLoreHtml}
           ${notesHtml}
           
@@ -807,10 +884,10 @@ class RuneterraApp {
               : ""
           }
         </div>
-        
-        <!-- Right panel for lore connections -->
+          <!-- Right panel for lore connections and fun facts -->
         <div class="lg:col-span-1">
           ${loreConnectionsPanel}
+          ${funFactsPanel}
         </div>
       </div>
     `;
@@ -1808,6 +1885,29 @@ class RuneterraApp {
     }
 
     return "Không xác định";
+  }
+
+  // Function to get detailed lore connection descriptions
+  getLoreConnectionDescription(championName, connectionName) {
+    // Special detailed descriptions for Bel'Veth's connections
+    if (championName === "Bel'Veth") {
+      const connections = {
+        Malzahar:
+          "Đồng minh chiến lược: Malzahar - Nhà tiên tri trung thành, đã chuyển từ phục vụ Kẻ Giám Sát sang phục vụ Bel'Veth. Anh ta 'khá ổn với ý tưởng phục vụ Bel'Veth' và có thể đã hứa thành phố Belveth để giúp cô ta có được hình dạng vật lý.",
+        "Kai'Sa":
+          "Mục tiêu thuyết phục: Kai'Sa - Bel'Veth cố gắng lôi kéo Kai'Sa, nhận thấy giá trị của một con người đã thích nghi với Hư Không. Trong câu chuyện 'Pinwheel', cô ta sử dụng thuyết phục tâm lý thay vì vũ lực.",
+        Lissandra:
+          "Liên minh tiềm năng: Lissandra - Mối quan hệ dựa trên sự đối lập chung với Kẻ Giám Sát. Lissandra đã phản bội và giam cầm Kẻ Giám Sát, trong khi Bel'Veth muốn tiêu diệt chúng - tạo ra động thái 'kẻ thù của kẻ thù là bạn'.",
+        "Vel'Koz":
+          "Đối thủ trí tuệ: Vel'Koz - Sự xuất hiện của Bel'Veth đã 'làm giảm các đặc điểm độc đáo của Vel'Koz' và 'làm anh ta sợ hãi'. Cô ta đại diện cho 'biến số không thể đoán trước' thách thức sự hiểu biết logic của anh ta về Hư Không.",
+        "Kẻ Giám Sát":
+          "Kẻ thù truyền kiếp: Kẻ Giám Sát - Mục tiêu chính của Bel'Veth là 'tiêu diệt cả Runeterra và lãnh địa của những kẻ khai sinh ra cô ấy, Kẻ Giám Sát'. Cô ta đại diện cho sự tiến hóa và phản kháng chống lại trật tự cũ của Hư Không.",
+      };
+      return connections[connectionName] || "Liên kết cốt truyện";
+    }
+
+    // Default description for other champions
+    return "Liên kết cốt truyện";
   }
 }
 

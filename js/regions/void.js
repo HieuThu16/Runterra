@@ -17,8 +17,21 @@ const voidData = {
       weapon:
         "Bản thân cô ta là một sinh vật quái dị có khả năng biến đổi. Có thể chuyển đổi giữa dạng người thích nghi và hình dạng quái vật khổng lồ với đôi cánh lớn. Điều khiển Biển Oải Hương và triệu hồi Remora",
       releaseDate: "09/06/2022",
-      loreConnections: ["Kai'Sa", "Lissandra", "Malzahar", "Vel'Koz"],
+      loreConnections: [
+        "Kai'Sa",
+        "Lissandra",
+        "Malzahar",
+        "Vel'Koz",
+        "Kẻ Giám Sát",
+      ],
       weaponSummary: "Cơ thể",
+      funFacts: [
+        "Trong giai đoạn phát triển ban đầu, Bel'Veth được gọi là 'Empress' và được thiết kế như một cá đuối biển trông giống như con người.",
+        "Bel'Veth là tướng thứ 160 trong Liên Minh Huyền Thoại.",
+        "Tên 'Bel'Veth' là sự kết hợp giữa tên thành phố mà cô ta nuốt chửng (Belveth) và 'Vel' (trong tiếng Hebrew có nghĩa là 'Hư vô').",
+        "Bel'Veth là thực thể Hư Không đầu tiên có hình dạng nữ và trí thông minh cao.",
+        "Trong hình dạng người, cơ thể thật sự của Bel'Veth - phần đầu - nằm ở khu vực 'bụng' của hình dáng người giả.",
+      ],
       lore: "Bel'Veth là Nữ hoàng Hư Không, một thực thể kinh hoàng sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh.",
       fullLore:
         "Bel'Veth là Nữ hoàng Hư Không, một thực thể độc đáo được sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh. Khác với các Kẻ Giám Sát cổ xưa chỉ tìm cách tiêu diệt thực tại, Bel'Veth khao khát 'nuốt chửng tất cả và tái tạo nó thành một phần lãnh địa của mình, Biển Oải Hương'.\n\n**Nguồn Gốc và Tiến Hóa của Hư Không:**\nSự ra đời của Bel'Veth được mô tả là một 'phản ứng dị ứng' giữa Hư Không và thực tại sơ khai, là kết quả của hàng thiên niên kỷ tương tác đã khiến Hư Không mang 'hình dạng mới, ghê tởm' ôm lấy 'mong muốn, khao khát và nhu cầu', trái ngược với 'sự hư vô thanh bình' của Hư Không Cổ Đại. Cô ta đại diện cho 'kỷ nguyên mới' của Hư Không - một mối đe dọa phức tạp và xảo quyệt hơn sự hủy diệt đơn thuần.\n\n**Sức Mạnh Trí Tuệ Vô Song:**\nTâm trí Bel'Veth chứa 'hàng triệu năm kiến thức được bảo tồn hoàn hảo', cho phép cô ta xử lý 'hàng trăm triệu khả năng' và rút ra từ 'ký ức bị đánh cắp của mọi thứ và mọi người đã từng đi qua thành phố cũ' chỉ trong một giây. Điều này biến cô ta thành một mối đe dọa trí tuệ đáng gờm, khác với việc Vel'Koz chỉ quan sát và phá hủy.\n\n**Các Liên Minh Chiến Lược:**\n\n• **Với Kai'Sa:** Bel'Veth nhận thấy giá trị ở Kai'Sa như một con người đã thích nghi với Hư Không. Trong câu chuyện 'Pinwheel', cô ta giam giữ Kai'Sa, tiết lộ hình dạng khổng lồ thực sự và tầm nhìn về Biển Oải Hương, cố gắng thuyết phục thay vì ép buộc bằng vũ lực.\n\n• **Với Malzahar:** Malzahar là đồng minh đã xác nhận, 'khá ổn với ý tưởng phục vụ Bel'Veth'. Anh ta chấp nhận tầm nhìn về sự tái tạo méo mó thay vì hủy diệt thuần túy, có thể đã 'hứa' thành phố Belveth để giúp cô ta có được hình dạng vật lý.\n\n• **Với Lissandra:** Mối quan hệ là liên minh chiến lược dựa trên sự đối lập chung với Kẻ Giám Sát. Lissandra đã phản bội và giam cầm Kẻ Giám Sát, trong khi Bel'Veth muốn tiêu diệt chúng, tạo ra động thái 'kẻ thù của kẻ thù là bạn của tôi'.\n\n• **Với Vel'Koz:** Sự xuất hiện của Bel'Veth với kiến thức rộng lớn đã 'làm giảm các đặc điểm độc đáo của Vel'Koz' và 'làm anh ta sợ hãi' vì cô ta đại diện cho 'biến số không thể đoán trước' thách thức sự hiểu biết logic của anh ta về Hư Không.\n\nBel'Veth không chỉ là một kẻ hủy diệt mà còn là một nhà chiến lược, có khả năng tạo ra những liên minh bất ngờ và thao túng tâm lý để đạt được mục tiêu của mình.",
