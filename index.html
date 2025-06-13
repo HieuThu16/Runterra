@@ -296,6 +296,178 @@
               </div>
             </div>
 
+            <!-- Statistics Navigation Bar -->
+            <div class="mb-8">
+              <div class="bg-slate-800 rounded-lg p-4">
+                <div class="flex flex-wrap gap-2 justify-center">
+                  <button
+                    id="regionStatsTab"
+                    class="stats-tab-btn bg-cyan-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-cyan-700"
+                  >
+                    📍 Vùng Đất
+                  </button>
+                  <button
+                    id="roleStatsTab"
+                    class="stats-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    🎭 Vai Trò
+                  </button>
+                  <button
+                    id="weaponStatsTab"
+                    class="stats-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    ⚔️ Vũ Khí
+                  </button>
+                  <button
+                    id="genderStatsTab"
+                    class="stats-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    � Giới Tính
+                  </button>
+                  <button
+                    id="speciesStatsTab"
+                    class="stats-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    🧬 Loài
+                  </button>
+                  <button
+                    id="releaseYearStatsTab"
+                    class="stats-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    📅 Năm Phát Hành
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Statistics Content Container -->
+            <div id="statisticsContent" class="mb-8">
+              <!-- Region Statistics -->
+              <div id="regionStatsSection" class="stats-section">
+                <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+                  📍 Thống Kê Theo Vùng Đất
+                </h3>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                  <div id="regionStatsContainer" class="col-span-full">
+                    <!-- Region statistics will be loaded here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Role Statistics -->
+              <div id="roleStatsSection" class="stats-section hidden">
+                <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+                  🎭 Phân Bố Vai Trò
+                </h3>
+                <div
+                  id="roleStatsContainer"
+                  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+                >
+                  <!-- Role statistics will be loaded here -->
+                </div>
+              </div>
+
+              <!-- Weapon Statistics -->
+              <div id="weaponStatsSection" class="stats-section hidden">
+                <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+                  ⚔️ Thống Kê Vũ Khí
+                </h3>
+                <div
+                  id="weaponStatsContainer"
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                  <!-- Weapon statistics will be loaded here -->
+                </div>
+              </div>
+              <!-- Gender Statistics -->
+              <div id="genderStatsSection" class="stats-section hidden">
+                <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+                  � Thống Kê Giới Tính
+                </h3>
+                <div
+                  id="genderStatsContainer"
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                  <!-- Gender statistics will be loaded here -->
+                </div>
+              </div>
+
+              <!-- Species Statistics -->
+              <div id="speciesStatsSection" class="stats-section hidden">
+                <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+                  🧬 Thống Kê Loài
+                </h3>
+                <div
+                  id="speciesStatsContainer"
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                  <!-- Species statistics will be loaded here -->
+                </div>
+              </div>
+
+              <!-- Release Year Statistics -->
+              <div id="releaseYearStatsSection" class="stats-section hidden">
+                <h3 class="text-xl font-semibold text-cyan-300 mb-4">
+                  📅 Thống Kê Theo Năm Phát Hành
+                </h3>
+                <div
+                  id="releaseYearStatsContainer"
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                >
+                  <!-- Release year statistics will be loaded here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Regions Statistics -->
+            <div class="mb-8 hidden">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="regionStats"
+              >
+                📍 Thống Kê Theo Vùng Đất
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="regionStatsContainer_old" class="col-span-full">
+                  <!-- Region statistics will be loaded here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Role Distribution -->
+            <div class="mb-8 hidden">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="roleDistribution"
+              >
+                🎭 Phân Bố Vai Trò
+              </h3>
+              <div
+                id="roleStatsContainer_old"
+                class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+              >
+                <!-- Role statistics will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Weapon Statistics -->
+            <div class="mb-8 hidden">
+              <h3
+                class="text-xl font-semibold text-cyan-300 mb-4"
+                data-translate="weaponStats"
+              >
+                ⚔️ Thống Kê Vũ Khí
+              </h3>
+              <div
+                id="weaponStatsContainer_old"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              >
+                <!-- Weapon statistics will be loaded here -->
+              </div>
+            </div>
+
             <!-- Regions Statistics -->
             <div class="mb-8">
               <h3

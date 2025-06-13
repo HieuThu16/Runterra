@@ -14,6 +14,8 @@ const piltoverData = {
       releaseDate: "07/07/2012",
       loreConnections: ["Viktor"],
       weaponSummary: "Búa",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "caitlyn",
@@ -25,6 +27,8 @@ const piltoverData = {
       releaseDate: "04/01/2011",
       loreConnections: ["Vi"],
       weaponSummary: "Súng",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "vi",
@@ -36,6 +40,8 @@ const piltoverData = {
       releaseDate: "19/12/2012",
       loreConnections: ["Caitlyn", "Jinx", "Ekko"],
       weaponSummary: "Găng tay",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "blitzcrank",
@@ -46,6 +52,8 @@ const piltoverData = {
       releaseDate: "02/09/2009",
       loreConnections: ["Orianna", "Viktor"],
       weaponSummary: "Nắm đấm",
+      gender: "Nam",
+      species: "Robot",
     },
     {
       id: "camille",

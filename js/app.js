@@ -29,6 +29,7 @@ class RuneterraApp {
     this.currentGame = "5vs5";
     this.currentRegion = "all";
     this.currentChampionType = "old";
+    this.currentStatisticsTab = "region";
 
     // Initialize language manager
     this.languageManager = new LanguageManager();
@@ -80,6 +81,28 @@ class RuneterraApp {
     document
       .getElementById("statisticsTab")
       ?.addEventListener("click", () => this.switchChampionType("statistics"));
+
+    // Statistics navigation tabs
+    document
+      .getElementById("regionStatsTab")
+      ?.addEventListener("click", () => this.switchStatisticsTab("region"));
+    document
+      .getElementById("roleStatsTab")
+      ?.addEventListener("click", () => this.switchStatisticsTab("role"));
+    document
+      .getElementById("weaponStatsTab")
+      ?.addEventListener("click", () => this.switchStatisticsTab("weapon"));
+    document
+      .getElementById("genderStatsTab")
+      ?.addEventListener("click", () => this.switchStatisticsTab("gender"));
+    document
+      .getElementById("speciesStatsTab")
+      ?.addEventListener("click", () => this.switchStatisticsTab("species"));
+    document
+      .getElementById("releaseYearStatsTab")
+      ?.addEventListener("click", () =>
+        this.switchStatisticsTab("releaseYear")
+      );
 
     // Add champion button
     document
@@ -227,6 +250,59 @@ class RuneterraApp {
       this.loadChampions();
     }
   }
+  switchStatisticsTab(tabType) {
+    this.currentStatisticsTab = tabType;
+
+    // Update tab styles
+    document.querySelectorAll(".stats-tab-btn").forEach((btn) => {
+      btn.classList.remove("bg-cyan-600", "text-white");
+      btn.classList.add("bg-slate-600", "text-slate-300");
+    });
+
+    // Activate current tab
+    const activeTab = document.getElementById(`${tabType}StatsTab`);
+    if (activeTab) {
+      activeTab.classList.remove("bg-slate-600", "text-slate-300");
+      activeTab.classList.add("bg-cyan-600", "text-white");
+    }
+
+    // Hide all statistics sections
+    document.querySelectorAll(".stats-section").forEach((section) => {
+      section.classList.add("hidden");
+    });
+
+    // Show current statistics section
+    const currentSection = document.getElementById(`${tabType}StatsSection`);
+    if (currentSection) {
+      currentSection.classList.remove("hidden");
+    }
+
+    // Load appropriate statistics
+    this.loadStatisticsForTab(tabType);
+  }
+  loadStatisticsForTab(tabType) {
+    switch (tabType) {
+      case "region":
+        this.updateRegionStatistics();
+        break;
+      case "role":
+        this.updateRoleStatistics();
+        break;
+      case "weapon":
+        this.updateWeaponStatistics();
+        break;
+      case "gender":
+        this.updateGenderStatistics();
+        break;
+      case "species":
+        this.updateSpeciesStatistics();
+        break;
+      case "releaseYear":
+        this.updateReleaseYearStatistics();
+        break;
+    }
+  }
+
   loadChampions() {
     const grid = document.getElementById("championsGrid");
     if (!grid) return;
@@ -301,10 +377,20 @@ class RuneterraApp {
         champion.releaseDate
           ? `<p class="text-xs text-blue-400 text-center mt-1">📅 ${champion.releaseDate}</p>`
           : ""
-      }
+      }      ${
+      champion.weaponSummary
+        ? `<p class="text-xs text-orange-400 text-center mt-1">⚔️ ${champion.weaponSummary}</p>`
+        : ""
+    }      ${
+      champion.gender
+        ? `<p class="text-xs text-pink-400 text-center mt-1">👤 ${this.simplifyGender(
+            champion.gender
+          )}</p>`
+        : ""
+    }
       ${
-        champion.weaponSummary
-          ? `<p class="text-xs text-orange-400 text-center mt-1">⚔️ ${champion.weaponSummary}</p>`
+        champion.species
+          ? `<p class="text-xs text-green-400 text-center mt-1">🧬 ${champion.species}</p>`
           : ""
       }
       ${
@@ -434,11 +520,7 @@ class RuneterraApp {
         label: "Ngày Phát Hành",
         value: champion.releaseDate,
       });
-    if (champion.weaponSummary)
-      additionalFields.push({
-        label: "Vũ Khí",
-        value: champion.weaponSummary,
-      });
+    // Weapon field will be handled separately
     if (champion.loreConnections && champion.loreConnections.length > 0)
       additionalFields.push({
         label: "Liên Kết Cốt Truyện",
@@ -448,6 +530,11 @@ class RuneterraApp {
       additionalFields.push({
         label: this.languageManager.getTranslation("species"),
         value: champion.species,
+      });
+    if (champion.gender)
+      additionalFields.push({
+        label: "Giới Tính",
+        value: this.simplifyGender(champion.gender),
       });
     if (champion.age)
       additionalFields.push({
@@ -489,7 +576,6 @@ class RuneterraApp {
         label: this.languageManager.getTranslation("cost"),
         value: champion.cost,
       });
-
     if (additionalFields.length > 0) {
       additionalInfoHtml = `
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -503,6 +589,33 @@ class RuneterraApp {
           `
             )
             .join("")}
+          ${
+            champion.weaponSummary
+              ? `
+            <div class="bg-slate-700/50 p-3 rounded-lg relative">
+              <h5 class="text-cyan-300 font-semibold text-sm mb-1">Vũ Khí:</h5>
+              <div class="flex items-center justify-between">
+                <p class="text-slate-300 text-sm">${champion.weaponSummary}</p>
+                ${
+                  champion.weapon
+                    ? `
+                  <button 
+                    onclick="showWeaponDetail('${champion.weapon.replace(
+                      /'/g,
+                      "\\'"
+                    )}', this)" 
+                    class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded transition-colors"
+                  >
+                    Chi tiết
+                  </button>
+                `
+                    : ""
+                }
+              </div>
+            </div>
+          `
+              : ""
+          }
         </div>
       `;
     }
@@ -626,19 +739,23 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    }    // Lore connections panel
+    } // Lore connections panel
     let loreConnectionsPanel = "";
     if (champion.loreConnections && champion.loreConnections.length > 0) {
       loreConnectionsPanel = `
         <div class="bg-slate-700/50 p-4 rounded-lg">
           <h3 class="text-lg font-semibold text-purple-300 mb-4">🔗 Liên Kết Cốt Truyện</h3>
           <div class="space-y-3">
-            ${champion.loreConnections.map(connectionName => `
+            ${champion.loreConnections
+              .map(
+                (connectionName) => `
               <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
                 <h4 class="text-cyan-300 font-medium mb-2">${connectionName}</h4>
                 <p class="text-sm text-slate-300">hello</p>
               </div>
-            `).join('')}
+            `
+              )
+              .join("")}
           </div>
         </div>
       `;
@@ -1124,6 +1241,9 @@ class RuneterraApp {
     this.updateWeaponStatistics();
     this.updateChampionSelect();
     this.setupChampionDetailsListener();
+
+    // Initialize statistics navigation
+    this.switchStatisticsTab(this.currentStatisticsTab);
   }
 
   updateStatisticsOverview() {
@@ -1191,38 +1311,63 @@ class RuneterraApp {
     });
   }
 
-  updateRoleDistribution() {
+  updateRoleStatistics() {
     const container = document.getElementById("roleStatsContainer");
     const allChampions = this.getAllChampions();
     const roleCount = {};
+    const roleChampions = {};
 
-    // Count roles
     allChampions.forEach((champion) => {
       if (champion.role) {
         roleCount[champion.role] = (roleCount[champion.role] || 0) + 1;
+
+        if (!roleChampions[champion.role]) {
+          roleChampions[champion.role] = [];
+        }
+        roleChampions[champion.role].push(champion);
       }
     });
 
     container.innerHTML = "";
 
+    if (Object.keys(roleCount).length === 0) {
+      container.innerHTML =
+        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin vai trò</div>';
+      return;
+    }
+
     const roleIcons = {
-      "Đấu Sĩ": "⚔️",
-      "Pháp Sư": "🔮",
-      "Xạ Thủ": "🏹",
       "Sát Thủ": "🗡️",
-      "Hỗ Trợ": "🛡️",
+      "Đấu Sĩ": "⚔️",
+      "Pháp Sư": "🧙",
+      "Xạ Thủ": "🏹",
       "Đỡ Đòn": "🛡️",
-      "Kiểm Soát": "🎯",
+      "Hỗ Trợ": "💚",
+      Tank: "🛡️",
+      Lai: "🔄",
+      "Đa Dạng": "🎭",
     };
 
     Object.entries(roleCount).forEach(([role, count]) => {
       const roleDiv = document.createElement("div");
-      roleDiv.className = "bg-slate-700 p-3 rounded-lg text-center";
+      roleDiv.className =
+        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
+
       roleDiv.innerHTML = `
-        <div class="text-2xl mb-1">${roleIcons[role] || "🎭"}</div>
-        <div class="text-lg font-bold text-cyan-400">${count}</div>
-        <div class="text-xs text-slate-400">${role}</div>
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-semibold text-blue-300">${
+            roleIcons[role] || "🎭"
+          } ${role}</h4>
+          <span class="text-lg font-bold text-blue-400">${count}</span>
+        </div>
+        <div class="text-sm text-slate-400">Số tướng theo vai trò (nhấn để xem)</div>
       `;
+
+      // Add click event to show champions with this role
+      roleDiv.addEventListener("click", () => {
+        this.showChampionsForAttribute("Vai trò", role, roleChampions[role]);
+      });
+
       container.appendChild(roleDiv);
     });
   }
@@ -1231,10 +1376,17 @@ class RuneterraApp {
     const container = document.getElementById("weaponStatsContainer");
     const allChampions = this.getAllChampions();
     const weaponCount = {};
+    const weaponChampions = {};
 
     allChampions.forEach((champion) => {
-      if (champion.weapon) {
-        weaponCount[champion.weapon] = (weaponCount[champion.weapon] || 0) + 1;
+      if (champion.weaponSummary) {
+        weaponCount[champion.weaponSummary] =
+          (weaponCount[champion.weaponSummary] || 0) + 1;
+
+        if (!weaponChampions[champion.weaponSummary]) {
+          weaponChampions[champion.weaponSummary] = [];
+        }
+        weaponChampions[champion.weaponSummary].push(champion);
       }
     });
 
@@ -1248,141 +1400,371 @@ class RuneterraApp {
 
     Object.entries(weaponCount).forEach(([weapon, count]) => {
       const weaponDiv = document.createElement("div");
-      weaponDiv.className = "bg-slate-700 p-4 rounded-lg";
+      weaponDiv.className =
+        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
       weaponDiv.innerHTML = `
         <div class="flex items-center justify-between mb-2">
           <h4 class="font-semibold text-orange-300">${weapon}</h4>
           <span class="text-lg font-bold text-orange-400">${count}</span>
         </div>
-        <div class="text-sm text-slate-400">Số lượng tướng sử dụng</div>
+        <div class="text-sm text-slate-400">Số lượng tướng sử dụng (nhấn để xem)</div>
       `;
+
+      // Add click event to show champions using this weapon
+      weaponDiv.addEventListener("click", () => {
+        this.showChampionsForWeapon(weapon, weaponChampions[weapon]);
+      });
+
       container.appendChild(weaponDiv);
     });
   }
-
-  updateChampionSelect() {
-    const select = document.getElementById("championSelect");
+  updateGenderStatistics() {
+    const container = document.getElementById("genderStatsContainer");
     const allChampions = this.getAllChampions();
-
-    select.innerHTML = '<option value="">-- Chọn Tướng --</option>';
+    const genderCount = {};
+    const genderChampions = {};
     allChampions.forEach((champion) => {
-      const option = document.createElement("option");
-      option.value = JSON.stringify(champion);
-      option.textContent = `${champion.name} (${champion.region})`;
-      select.appendChild(option);
-    });
-  }
-  setupChampionDetailsListener() {
-    const select = document.getElementById("championSelect");
-    const container = document.getElementById("championDetailsContainer");
+      if (champion.gender) {
+        const simplifiedGender = this.simplifyGender(champion.gender);
 
-    // Remove existing listener if any
-    if (select.onchange) {
-      select.onchange = null;
-    }
+        genderCount[simplifiedGender] =
+          (genderCount[simplifiedGender] || 0) + 1;
 
-    select.addEventListener("change", (e) => {
-      if (e.target.value) {
-        const champion = JSON.parse(e.target.value);
-        this.showChampionDetails(champion);
-        container.classList.remove("hidden");
-      } else {
-        container.classList.add("hidden");
+        if (!genderChampions[simplifiedGender]) {
+          genderChampions[simplifiedGender] = [];
+        }
+        genderChampions[simplifiedGender].push(champion);
       }
     });
+
+    container.innerHTML = "";
+
+    if (Object.keys(genderCount).length === 0) {
+      container.innerHTML =
+        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin giới tính</div>';
+      return;
+    }
+
+    const genderIcons = {
+      Nam: "♂️",
+      Nữ: "♀️",
+      "Thú/Sinh vật": "🐾",
+      "Không xác định": "❓",
+    };
+
+    Object.entries(genderCount).forEach(([gender, count]) => {
+      const genderDiv = document.createElement("div");
+      genderDiv.className =
+        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
+
+      const genderIcon = genderIcons[gender] || "❓";
+
+      genderDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-semibold text-pink-300">${genderIcon} ${gender}</h4>
+          <span class="text-lg font-bold text-pink-400">${count}</span>
+        </div>
+        <div class="text-sm text-slate-400">Số tướng theo giới tính (nhấn để xem)</div>
+      `;
+
+      // Add click event to show champions with this gender
+      genderDiv.addEventListener("click", () => {
+        this.showChampionsForAttribute(
+          "Giới tính",
+          gender,
+          genderChampions[gender]
+        );
+      });
+
+      container.appendChild(genderDiv);
+    });
   }
 
-  showChampionDetails(champion) {
-    const basicInfo = document.getElementById("championBasicInfo");
-    const skillsInfo = document.getElementById("championSkillsInfo");
-    const loreInfo = document.getElementById("championLoreInfo"); // Basic Info
-    basicInfo.innerHTML = `
-      <div class="space-y-2">
-        <div class="flex items-center space-x-2">
-          <span class="font-medium text-slate-300">Tên:</span> 
-          <img src="${
-            champion.image ||
-            "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
-          }" 
-               alt="${champion.name}" 
-               class="w-8 h-8 object-cover rounded-md"
-               onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-          <span class="text-2xl hidden">🎭</span>
-          <span>${champion.name}</span>
+  updateSpeciesStatistics() {
+    const container = document.getElementById("speciesStatsContainer");
+    const allChampions = this.getAllChampions();
+    const speciesCount = {};
+    const speciesChampions = {};
+
+    allChampions.forEach((champion) => {
+      if (champion.species) {
+        const species = champion.species;
+        speciesCount[species] = (speciesCount[species] || 0) + 1;
+
+        if (!speciesChampions[species]) {
+          speciesChampions[species] = [];
+        }
+        speciesChampions[species].push(champion);
+      }
+    });
+
+    container.innerHTML = "";
+
+    if (Object.keys(speciesCount).length === 0) {
+      container.innerHTML =
+        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin loài</div>';
+      return;
+    }
+
+    const speciesIcons = {
+      "Con người": "👤",
+      Human: "👤",
+      Yordle: "🧚",
+      Vastaya: "🦊",
+      Voidborn: "👾",
+      "Sinh vật Hư Không": "👾",
+      "Thực thể": "👻",
+      "Ma thuật": "✨",
+      Rồng: "🐲",
+      "Tinh linh": "✨",
+      Minotaur: "🐂",
+      Troll: "👹",
+    };
+
+    Object.entries(speciesCount).forEach(([species, count]) => {
+      const speciesDiv = document.createElement("div");
+      speciesDiv.className =
+        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
+
+      // Determine species icon
+      let speciesIcon = "🧬";
+      for (const [key, icon] of Object.entries(speciesIcons)) {
+        if (species.includes(key)) {
+          speciesIcon = icon;
+          break;
+        }
+      }
+
+      speciesDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-semibold text-green-300">${speciesIcon} ${species}</h4>
+          <span class="text-lg font-bold text-green-400">${count}</span>
         </div>
-        <div><span class="font-medium text-slate-300">Vai Trò:</span> ${
-          champion.role || "Không rõ"
-        }</div>
-        <div><span class="font-medium text-slate-300">Vùng Đất:</span> ${
-          champion.region || "Không rõ"
-        }</div>
-        ${
-          champion.weapon
-            ? `<div><span class="font-medium text-slate-300">Vũ Khí:</span> ${champion.weapon}</div>`
-            : ""
+        <div class="text-sm text-slate-400">Số tướng theo loài (nhấn để xem)</div>
+      `;
+
+      // Add click event to show champions with this species
+      speciesDiv.addEventListener("click", () => {
+        this.showChampionsForAttribute(
+          "Loài",
+          species,
+          speciesChampions[species]
+        );
+      });
+
+      container.appendChild(speciesDiv);
+    });
+  }
+  updateReleaseYearStatistics() {
+    const container = document.getElementById("releaseYearStatsContainer");
+    const allChampions = this.getAllChampions();
+    const yearCount = {};
+
+    allChampions.forEach((champion) => {
+      if (champion.releaseDate) {
+        // Extract year from releaseDate (format: dd/mm/yyyy)
+        const year = champion.releaseDate.split("/")[2];
+        if (year) {
+          yearCount[year] = (yearCount[year] || 0) + 1;
         }
-        ${
-          champion.species
-            ? `<div><span class="font-medium text-slate-300">Chủng Tộc:</span> ${champion.species}</div>`
-            : ""
-        }
-        ${
-          champion.age
-            ? `<div><span class="font-medium text-slate-300">Tuổi:</span> ${champion.age}</div>`
-            : ""
-        }
+      }
+    });
+
+    container.innerHTML = "";
+
+    if (Object.keys(yearCount).length === 0) {
+      container.innerHTML =
+        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin năm phát hành</div>';
+      return;
+    }
+
+    // Sort years chronologically
+    const sortedYears = Object.keys(yearCount).sort(
+      (a, b) => parseInt(a) - parseInt(b)
+    );
+
+    sortedYears.forEach((year) => {
+      const count = yearCount[year];
+      const yearDiv = document.createElement("div");
+      yearDiv.className =
+        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
+
+      yearDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-semibold text-yellow-300">📅 ${year}</h4>
+          <span class="text-lg font-bold text-yellow-400">${count}</span>
+        </div>
+        <div class="text-sm text-slate-400">Số tướng phát hành (nhấn để xem)</div>
+      `;
+
+      // Add click event to show champions released in this year
+      yearDiv.addEventListener("click", () => {
+        const championsOfYear = allChampions.filter(
+          (c) => c.releaseDate && c.releaseDate.split("/")[2] === year
+        );
+        this.showChampionsForAttribute("Năm phát hành", year, championsOfYear);
+      });
+
+      container.appendChild(yearDiv);
+    });
+  }
+
+  showChampionsForWeapon(weaponName, champions) {
+    // Create a modal backdrop
+    const backdrop = document.createElement("div");
+    backdrop.className =
+      "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4";
+    backdrop.style.zIndex = "9999";
+
+    // Create modal content
+    const modal = document.createElement("div");
+    modal.className =
+      "bg-slate-800 rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto border border-slate-600 shadow-2xl";
+
+    modal.innerHTML = `
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-orange-300">Tướng sử dụng: ${weaponName}</h3>
+        <button onclick="closeWeaponChampionsModal()" class="text-slate-400 hover:text-white text-xl font-bold">
+          ×
+        </button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="weaponChampionsGrid">
+        ${champions
+          .map(
+            (champion) => `
+          <div class="bg-slate-700 rounded-lg p-3 cursor-pointer hover:bg-slate-600 transition-colors champion-card-mini" 
+               onclick="openChampionModalFromWeapon('${champion.name}', '${
+              champion.region
+            }')">
+            <div class="aspect-square bg-slate-600 rounded-lg mb-2 overflow-hidden">
+              ${
+                champion.image
+                  ? `<img src="${champion.image}" alt="${champion.name}" class="w-full h-full object-cover">`
+                  : `<div class="w-full h-full flex items-center justify-center text-slate-400">
+                  <span class="text-2xl">🛡️</span>
+                </div>`
+              }
+            </div>
+            <h4 class="text-white font-semibold text-sm text-center mb-1">${
+              champion.name
+            }</h4>
+            <p class="text-slate-400 text-xs text-center">${champion.region}</p>
+          </div>
+        `
+          )
+          .join("")}
+      </div>
+      <div class="mt-6 text-right">
+        <button onclick="closeWeaponChampionsModal()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded transition-colors">
+          Đóng
+        </button>
       </div>
     `;
 
-    // Skills Info
-    if (champion.skills && champion.skills.length > 0) {
-      skillsInfo.innerHTML = `
-        <div class="space-y-2">
-          ${champion.skills
-            .map(
-              (skill, index) => `
-            <div class="text-sm">
-              <span class="font-medium text-cyan-300">${
-                typeof skill === "object" ? skill.name : skill
-              }</span>
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+
+    // Close modal when clicking backdrop
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) {
+        closeWeaponChampionsModal();
+      }
+    });
+
+    // Store reference for closing
+    window.currentWeaponChampionsModal = backdrop;
+  }
+
+  showChampionsForAttribute(attributeType, attributeValue, champions) {
+    // Create a modal backdrop
+    const backdrop = document.createElement("div");
+    backdrop.className =
+      "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4";
+    backdrop.style.zIndex = "9999";
+
+    // Create modal content
+    const modal = document.createElement("div");
+    modal.className =
+      "bg-slate-800 rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto border border-slate-600 shadow-2xl";
+
+    modal.innerHTML = `
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-cyan-300">${attributeType}: ${attributeValue}</h3>
+        <button onclick="closeAttributeChampionsModal()" class="text-slate-400 hover:text-white text-xl font-bold">
+          ×
+        </button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="attributeChampionsGrid">
+        ${champions
+          .map(
+            (champion) => `
+          <div class="bg-slate-700 rounded-lg p-3 cursor-pointer hover:bg-slate-600 transition-colors champion-card-mini" 
+               onclick="openChampionModalFromAttribute('${champion.name}', '${
+              champion.region
+            }')">
+            <div class="aspect-square bg-slate-600 rounded-lg mb-2 overflow-hidden">
               ${
-                typeof skill === "object" && skill.description
-                  ? `<div class="text-slate-400 text-xs mt-1">${skill.description}</div>`
-                  : ""
+                champion.image
+                  ? `<img src="${champion.image}" alt="${champion.name}" class="w-full h-full object-cover">`
+                  : `<div class="w-full h-full flex items-center justify-center text-slate-400">
+                  <span class="text-2xl">🛡️</span>
+                </div>`
               }
             </div>
-          `
-            )
-            .join("")}
-        </div>
-      `;
-    } else {
-      skillsInfo.innerHTML =
-        '<div class="text-slate-400 text-sm">Chưa có thông tin kỹ năng</div>';
-    }
+            <h4 class="text-white font-semibold text-sm text-center mb-1">${
+              champion.name
+            }</h4>
+            <p class="text-slate-400 text-xs text-center">${champion.region}</p>
+          </div>
+        `
+          )
+          .join("")}
+      </div>
+      <div class="mt-6 text-right">
+        <button onclick="closeAttributeChampionsModal()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded transition-colors">
+          Đóng
+        </button>
+      </div>
+    `;
 
-    // Lore Info
-    const loreText = champion.fullLore || champion.lore || "Chưa có câu chuyện";
-    loreInfo.innerHTML = loreText;
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+
+    // Close modal when clicking backdrop
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) {
+        closeAttributeChampionsModal();
+      }
+    });
+
+    // Store reference for closing
+    window.currentAttributeChampionsModal = backdrop;
   }
 
   getAllChampions() {
+    // Get all champions from all regions and types
     const allChampions = [];
-    const regions = (window.championsDatabase || championsDatabase).regions;
+    const regions = [
+      "demacia",
+      "ionia",
+      "noxus",
+      "piltover",
+      "shadowisles",
+      "void",
+      "special",
+    ];
 
     regions.forEach((region) => {
-      if (region.existingChampions) {
-        allChampions.push(
-          ...region.existingChampions.map((c) => ({
-            ...c,
-            region: region.name,
-          }))
-        );
+      // Get existing champions
+      const existingChampions = this.db.getChampions(region, "old");
+      if (existingChampions && existingChampions.length > 0) {
+        allChampions.push(...existingChampions);
       }
-      if (region.newChampions) {
-        allChampions.push(
-          ...region.newChampions.map((c) => ({ ...c, region: region.name }))
-        );
+
+      // Get new champions
+      const newChampions = this.db.getChampions(region, "new");
+      if (newChampions && newChampions.length > 0) {
+        allChampions.push(...newChampions);
       }
     });
 
@@ -1392,8 +1774,8 @@ class RuneterraApp {
   extractWeapons(champions) {
     const weapons = new Set();
     champions.forEach((champion) => {
-      if (champion.weapon) {
-        weapons.add(champion.weapon);
+      if (champion.weaponSummary) {
+        weapons.add(champion.weaponSummary);
       }
     });
     return Array.from(weapons);
@@ -1401,6 +1783,133 @@ class RuneterraApp {
 
   extractRoles(champions) {
     return champions.map((champion) => champion.role).filter((role) => role);
+  }
+
+  simplifyGender(genderText) {
+    if (!genderText) return "Không xác định";
+
+    const genderLower = genderText.toLowerCase();
+
+    // Phân loại giới tính đơn giản
+    if (genderLower.includes("nam") || genderLower.includes("he/him")) {
+      return "Nam";
+    } else if (genderLower.includes("nữ") || genderLower.includes("she/her")) {
+      return "Nữ";
+    } else if (
+      genderLower.includes("sinh vật") ||
+      genderLower.includes("quái vật") ||
+      genderLower.includes("thú") ||
+      genderLower.includes("rồng") ||
+      genderLower.includes("alien") ||
+      genderLower.includes("creature") ||
+      genderLower.includes("voidborn")
+    ) {
+      return "Thú/Sinh vật";
+    }
+
+    return "Không xác định";
+  }
+}
+
+// Global function to show weapon detail in a popup
+function showWeaponDetail(weaponText, buttonElement) {
+  // Create a modal backdrop
+  const backdrop = document.createElement("div");
+  backdrop.className =
+    "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4";
+  backdrop.style.zIndex = "9999";
+
+  // Create modal content
+  const modal = document.createElement("div");
+  modal.className =
+    "bg-slate-800 rounded-lg p-6 max-w-md w-full border border-slate-600 shadow-2xl";
+
+  modal.innerHTML = `
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold text-cyan-300">Chi Tiết Vũ Khí</h3>
+      <button onclick="closeWeaponDetail()" class="text-slate-400 hover:text-white text-xl font-bold">
+        ×
+      </button>
+    </div>
+    <div class="bg-slate-700/50 p-4 rounded-lg">
+      <p class="text-slate-300 text-sm leading-relaxed">${weaponText}</p>
+    </div>
+    <div class="mt-4 text-right">
+      <button onclick="closeWeaponDetail()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded transition-colors">
+        Đóng
+      </button>
+    </div>
+  `;
+
+  backdrop.appendChild(modal);
+  document.body.appendChild(backdrop);
+
+  // Close modal when clicking backdrop
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) {
+      closeWeaponDetail();
+    }
+  });
+
+  // Store reference for closing
+  window.currentWeaponModal = backdrop;
+}
+
+// Global function to close weapon detail modal
+function closeWeaponDetail() {
+  if (window.currentWeaponModal) {
+    document.body.removeChild(window.currentWeaponModal);
+    window.currentWeaponModal = null;
+  }
+}
+
+// Global function to close weapon champions modal
+function closeWeaponChampionsModal() {
+  if (window.currentWeaponChampionsModal) {
+    document.body.removeChild(window.currentWeaponChampionsModal);
+    window.currentWeaponChampionsModal = null;
+  }
+}
+
+// Global function to open champion modal from weapon champions list
+function openChampionModalFromWeapon(championName, championRegion) {
+  // Close the weapon champions modal first
+  closeWeaponChampionsModal();
+
+  // Find the champion in the app
+  if (window.runeterra) {
+    const allChampions = window.runeterra.getAllChampions();
+    const champion = allChampions.find(
+      (c) => c.name === championName && c.region === championRegion
+    );
+    if (champion) {
+      window.runeterra.openModal(champion);
+    }
+  }
+}
+
+// Global function to close attribute champions modal
+function closeAttributeChampionsModal() {
+  if (window.currentAttributeChampionsModal) {
+    document.body.removeChild(window.currentAttributeChampionsModal);
+    window.currentAttributeChampionsModal = null;
+  }
+}
+
+// Global function to open champion modal from attribute champions list
+function openChampionModalFromAttribute(championName, championRegion) {
+  // Close the attribute champions modal first
+  closeAttributeChampionsModal();
+
+  // Find the champion in the app
+  if (window.runeterra) {
+    const allChampions = window.runeterra.getAllChampions();
+    const champion = allChampions.find(
+      (c) => c.name === championName && c.region === championRegion
+    );
+    if (champion) {
+      window.runeterra.openModal(champion);
+    }
   }
 }
 

@@ -14,6 +14,8 @@ const noxusData = {
       releaseDate: "23/05/2012",
       loreConnections: ["Samira", "LeBlanc"],
       weaponSummary: "Rìu",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "katarina",
@@ -25,6 +27,8 @@ const noxusData = {
       releaseDate: "19/09/2009",
       loreConnections: ["Talon"],
       weaponSummary: "Dao găm",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "swain",
@@ -36,6 +40,8 @@ const noxusData = {
       releaseDate: "05/10/2010",
       loreConnections: ["LeBlanc", "Darius", "Samira"],
       weaponSummary: "Ma thuật",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "cassiopeia",
@@ -46,6 +52,8 @@ const noxusData = {
       releaseDate: "14/12/2010",
       loreConnections: ["Azir"],
       weaponSummary: "Ma thuật",
+      gender: "Nữ",
+      species: "Nàng Rắn",
     },
     {
       id: "draven",

@@ -15,6 +15,8 @@ const ioniaData = {
       releaseDate: "13/12/2013",
       loreConnections: ["Yone", "Taliyah"],
       weaponSummary: "Kiếm",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "ahri",
@@ -27,6 +29,8 @@ const ioniaData = {
       releaseDate: "14/12/2011",
       loreConnections: ["Không có liên kết trực tiếp được liệt kê"],
       weaponSummary: "Ma thuật",
+      gender: "Nữ",
+      species: "Hồ Ly",
     },
     {
       id: "irelia",
@@ -39,6 +43,8 @@ const ioniaData = {
       releaseDate: "16/11/2010",
       loreConnections: ["Karma", "Syndra"],
       weaponSummary: "Kiếm",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "akali",
@@ -48,9 +54,9 @@ const ioniaData = {
       region: "ionia",
       image:
         "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Akali_0.jpg",
-      species: "Con người",
+      gender: "Nữ",
+      species: "Người",
       age: "Trưởng thành (được đào tạo từ năm 14 tuổi, sau đó rời bỏ hội)",
-      gender: "Nữ (she/her)",
       weapon: "Kama và Kunai (liềm cầm tay và dao găm ném)",
       releaseDate: "11/05/2010",
       loreConnections: ["Shen", "Kennen", "Zed"],

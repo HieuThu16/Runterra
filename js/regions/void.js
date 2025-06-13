@@ -21,7 +21,7 @@ const voidData = {
       weaponSummary: "Cơ thể",
       lore: "Bel'Veth là Nữ hoàng Hư Không, một thực thể kinh hoàng sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh.",
       fullLore:
-        "Bel'Veth là Nữ hoàng Hư Không, một thực thể kinh hoàng sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh. Cô ta được mô tả như một dạng 'ung thư đen' đã di căn vào trung tâm của Hư Không, với khao khát tái tạo toàn bộ Runeterra theo hình ảnh méo mó của riêng mình.\n\nTrí tuệ của cô ta gần như toàn tri, chứa đựng hàng triệu năm kiến thức được bảo tồn hoàn hảo, cho phép cô ta chuẩn bị cho sự hủy diệt cả Runeterra và lãnh địa của những kẻ tạo ra cô ta, các Giám Hộ. Sự xuất hiện của Bel'Veth như một 'ung thư đen' di căn trong Hư Không và khả năng tái sử dụng các thành phố bị nuốt chửng thành 'Biển Oải Hương' cho thấy một hình thức biến chất Hư Không độc đáo, không chỉ là hủy diệt mà còn là đồng hóa và sáng tạo méo mó.\n\nKhả năng kiểm soát Biển Oải Hương như một phần mở rộng của ý chí cô ta càng củng cố điều này, cho thấy một ý thức tập thể và sự kiểm soát mà các sinh vật Hư Không khác không có. Điều này đánh dấu một sự tiến hóa đáng kể của mối đe dọa Hư Không, chuyển từ những quái vật vô tri thành một thực thể chiến lược, thông minh và có khả năng biến đổi.",
+        "Bel'Veth là Nữ hoàng Hư Không, một thực thể độc đáo được sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh. Khác với các Kẻ Giám Sát cổ xưa chỉ tìm cách tiêu diệt thực tại, Bel'Veth khao khát 'nuốt chửng tất cả và tái tạo nó thành một phần lãnh địa của mình, Biển Oải Hương'.\n\n**Nguồn Gốc và Tiến Hóa của Hư Không:**\nSự ra đời của Bel'Veth được mô tả là một 'phản ứng dị ứng' giữa Hư Không và thực tại sơ khai, là kết quả của hàng thiên niên kỷ tương tác đã khiến Hư Không mang 'hình dạng mới, ghê tởm' ôm lấy 'mong muốn, khao khát và nhu cầu', trái ngược với 'sự hư vô thanh bình' của Hư Không Cổ Đại. Cô ta đại diện cho 'kỷ nguyên mới' của Hư Không - một mối đe dọa phức tạp và xảo quyệt hơn sự hủy diệt đơn thuần.\n\n**Sức Mạnh Trí Tuệ Vô Song:**\nTâm trí Bel'Veth chứa 'hàng triệu năm kiến thức được bảo tồn hoàn hảo', cho phép cô ta xử lý 'hàng trăm triệu khả năng' và rút ra từ 'ký ức bị đánh cắp của mọi thứ và mọi người đã từng đi qua thành phố cũ' chỉ trong một giây. Điều này biến cô ta thành một mối đe dọa trí tuệ đáng gờm, khác với việc Vel'Koz chỉ quan sát và phá hủy.\n\n**Các Liên Minh Chiến Lược:**\n\n• **Với Kai'Sa:** Bel'Veth nhận thấy giá trị ở Kai'Sa như một con người đã thích nghi với Hư Không. Trong câu chuyện 'Pinwheel', cô ta giam giữ Kai'Sa, tiết lộ hình dạng khổng lồ thực sự và tầm nhìn về Biển Oải Hương, cố gắng thuyết phục thay vì ép buộc bằng vũ lực.\n\n• **Với Malzahar:** Malzahar là đồng minh đã xác nhận, 'khá ổn với ý tưởng phục vụ Bel'Veth'. Anh ta chấp nhận tầm nhìn về sự tái tạo méo mó thay vì hủy diệt thuần túy, có thể đã 'hứa' thành phố Belveth để giúp cô ta có được hình dạng vật lý.\n\n• **Với Lissandra:** Mối quan hệ là liên minh chiến lược dựa trên sự đối lập chung với Kẻ Giám Sát. Lissandra đã phản bội và giam cầm Kẻ Giám Sát, trong khi Bel'Veth muốn tiêu diệt chúng, tạo ra động thái 'kẻ thù của kẻ thù là bạn của tôi'.\n\n• **Với Vel'Koz:** Sự xuất hiện của Bel'Veth với kiến thức rộng lớn đã 'làm giảm các đặc điểm độc đáo của Vel'Koz' và 'làm anh ta sợ hãi' vì cô ta đại diện cho 'biến số không thể đoán trước' thách thức sự hiểu biết logic của anh ta về Hư Không.\n\nBel'Veth không chỉ là một kẻ hủy diệt mà còn là một nhà chiến lược, có khả năng tạo ra những liên minh bất ngờ và thao túng tâm lý để đạt được mục tiêu của mình.",
       gameplay:
         "Lối chơi của Bel'Veth tập trung vào tốc độ đánh và hiệu ứng đòn đánh. Cô ta có khả năng tăng tốc độ đánh vĩnh viễn khi hạ gục quái vật lớn và tướng, đồng thời nhận tốc độ đánh tạm thời sau khi sử dụng kỹ năng. Khả năng tăng sức mạnh thông qua việc hạ gục mục tiêu và biến hình trực tiếp phản ánh cốt truyện của cô ta về việc tiêu thụ và phát triển, củng cố vai trò của cô ta như một 'Nữ hoàng' chỉ huy các sinh vật cấp thấp hơn.",
       skills: [
@@ -56,15 +56,48 @@ const voidData = {
             "Bel'Veth biến hình thành dạng thật của mình, tăng máu tối đa, tầm đánh, tốc độ đánh và có thể triệu hồi các Remora để tấn công kẻ địch.",
         },
       ],
+      relationships: [
+        {
+          type: "Đồng minh chiến lược",
+          description:
+            "Malzahar - Nhà tiên tri trung thành, đã chuyển từ phục vụ Kẻ Giám Sát sang phục vụ Bel'Veth. Anh ta 'khá ổn với ý tưởng phục vụ Bel'Veth' và có thể đã hứa thành phố Belveth để giúp cô ta có được hình dạng vật lý.",
+        },
+        {
+          type: "Mục tiêu thuyết phục",
+          description:
+            "Kai'Sa - Bel'Veth cố gắng lôi kéo Kai'Sa, nhận thấy giá trị của một con người đã thích nghi với Hư Không. Trong câu chuyện 'Pinwheel', cô ta sử dụng thuyết phục tâm lý thay vì vũ lực.",
+        },
+        {
+          type: "Liên minh tiềm năng",
+          description:
+            "Lissandra - Mối quan hệ dựa trên sự đối lập chung với Kẻ Giám Sát. Lissandra đã phản bội và giam cầm Kẻ Giám Sát, trong khi Bel'Veth muốn tiêu diệt chúng - tạo ra động thái 'kẻ thù của kẻ thù là bạn'.",
+        },
+        {
+          type: "Đối thủ trí tuệ",
+          description:
+            "Vel'Koz - Sự xuất hiện của Bel'Veth đã 'làm giảm các đặc điểm độc đáo của Vel'Koz' và 'làm anh ta sợ hãi'. Cô ta đại diện cho 'biến số không thể đoán trước' thách thức sự hiểu biết logic của anh ta về Hư Không.",
+        },
+        {
+          type: "Kẻ thù truyền kiếp",
+          description:
+            "Kẻ Giám Sát - Mục tiêu chính của Bel'Veth là 'tiêu diệt cả Runeterra và lãnh địa của những kẻ khai sinh ra cô ấy, Kẻ Giám Sát'. Cô ta đại diện cho sự tiến hóa và phản kháng chống lại trật tự cũ của Hư Không.",
+        },
+      ],
       specialFeatures: [
         "Nữ hoàng Hư Không với trí tuệ gần như toàn tri",
         "Khả năng biến đổi giữa dạng người và dạng quái vật khổng lồ",
         "Điều khiển Biển Oải Hương như phần mở rộng của ý chí",
         "Triệu hồi Remora - những sinh vật Hư Không nhỏ",
         "Đại diện cho sự tiến hóa của mối đe dọa Hư Không",
-        "Ung thư đen' di căn vào trung tâm Hư Không",
+        "'Ung thư đen' di căn vào trung tâm Hư Không",
         "Khao khát tái tạo Runeterra theo hình ảnh méo mó",
         "Thể hiện sự đồng hóa và sáng tạo méo mó thay vì chỉ hủy diệt",
+        "Có khả năng thao túng tâm lý và thuyết phục để tạo liên minh",
+        "Thách thức trật tự cũ của Hư Không, tạo ra xung đột nội bộ",
+        "Sử dụng chiến lược 'kẻ thù của kẻ thù là bạn' với Lissandra",
+        "Làm lu mờ sự độc đáo của Vel'Koz về mặt trí tuệ",
+        "Đã chuyển đổi lòng trung thành của Malzahar từ Kẻ Giám Sát",
+        "Cố gắng lôi kéo Kai'Sa thông qua việc tiết lộ sự thật thay vì vũ lực",
       ],
     },
     {

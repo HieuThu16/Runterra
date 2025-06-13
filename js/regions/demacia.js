@@ -29,6 +29,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "27/04/2010",
       loreConnections: ["Lux", "Jarvan IV"],
       weaponSummary: "Kiếm",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "lux",
@@ -40,6 +42,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "19/10/2010",
       loreConnections: ["Garen", "Jarvan IV", "Galio"],
       weaponSummary: "Ma thuật",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "jarvan",
@@ -51,6 +55,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "01/03/2011",
       loreConnections: ["Garen", "Shyvana", "Xin Zhao", "Lux"],
       weaponSummary: "Thương",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "shyvana",
@@ -62,6 +68,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "01/11/2011",
       loreConnections: ["Jarvan IV", "Xin Zhao", "Sona"],
       weaponSummary: "Nanh vuốt",
+      gender: "Nữ",
+      species: "Rồng Nửa Người",
     },
     {
       id: "fiora",
@@ -73,6 +81,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "29/02/2012",
       loreConnections: ["Garen"],
       weaponSummary: "Kiếm",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "galio",
@@ -83,6 +93,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "10/08/2010",
       loreConnections: ["Kayle", "Morgana", "Lux", "Sylas"],
       weaponSummary: "Nắm đấm",
+      gender: "Nam",
+      species: "Golem Petricite",
     },
     {
       id: "kayle",
@@ -93,6 +105,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "21/02/2009",
       loreConnections: ["Galio", "Morgana", "Taric"],
       weaponSummary: "Kiếm",
+      gender: "Nữ",
+      species: "Thiên Thần",
     },
     {
       id: "lucian",
@@ -102,7 +116,9 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       lore: "Sentinel với súng lục thiêng, săn lùng những linh hồn bóng tối.",
       releaseDate: "22/08/2013",
       loreConnections: ["Senna", "Thresh", "Hecarim"],
-      weaponSummary: "Súng",
+      weaponSummary: "Súng đôi",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "poppy",
@@ -113,6 +129,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "13/01/2010",
       loreConnections: ["Không có liên kết trực tiếp được liệt kê"],
       weaponSummary: "Búa",
+      gender: "Nữ",
+      species: "Yordle",
     },
     {
       id: "quinn",
@@ -123,6 +141,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "01/03/2013",
       loreConnections: ["Không có liên kết trực tiếp được liệt kê"],
       weaponSummary: "Nỏ",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "sona",
@@ -133,6 +153,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "21/09/2010",
       loreConnections: ["Taric", "Xin Zhao", "Ryze"],
       weaponSummary: "Ma thuật",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "sylas",
@@ -143,6 +165,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "25/01/2019",
       loreConnections: ["Lux", "Galio"],
       weaponSummary: "Dây xích",
+      gender: "Nam",
+      species: "Người",
     },
     {
       id: "vayne",
@@ -153,6 +177,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "10/05/2011",
       loreConnections: ["Không có liên kết trực tiếp được liệt kê"],
       weaponSummary: "Nỏ",
+      gender: "Nữ",
+      species: "Người",
     },
     {
       id: "xinzhao",
@@ -163,6 +189,8 @@ Demacia nằm ở miền trung Valoran, với thủ đô cùng tên được bao
       releaseDate: "13/07/2010",
       loreConnections: ["Alistar", "Jarvan IV", "Garen", "Shyvana"],
       weaponSummary: "Thương",
+      gender: "Nam",
+      species: "Người",
     },
   ],
   newChampions: [
