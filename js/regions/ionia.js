@@ -969,6 +969,126 @@ const ioniaData = {
         "Có khả năng định hình lại cảnh quan chính trị và xã hội của khu vực",
       ],
     },
+    {
+      id: "yone",
+      name: "Yone",
+      fullName: "Yone, Kẻ Về Từ Cõi Chết (The Unforgotten)",
+      icon: "👻",
+      role: "Đấu Sĩ/Sát Thủ",
+      region: "ionia",
+      species: "Con người (tái sinh/liên kết linh hồn)",
+      age: "Không rõ, nhưng là anh em cùng cha khác mẹ của Yasuo. Đã chết, sau đó được tái sinh",
+      gender: "Nam (he/him)",
+      weapon:
+        "Kiếm của Azakana (linh kiếm) và kiếm thép của chính anh ta (song kiếm)",
+      lore: "Yone, anh em cùng cha khác mẹ của Yasuo và một kiếm sĩ nổi tiếng, đã bị Yasuo giết. Anh ta tỉnh dậy trong thế giới linh hồn, bị một thực thể độc ác tên là azakana săn đuổi, mà anh ta đã đánh bại bằng chính thanh kiếm của nó. Giờ đây bị nguyền rủa phải đeo chiếc mặt nạ quỷ của nó, anh ta không ngừng săn lùng các sinh vật như vậy để hiểu trạng thái mới của mình và tìm ra kẻ mà tiếng cười của nó vẫn ám ảnh anh ta.",
+      fullLore:
+        "Khi còn sống, Yone là anh em cùng cha khác mẹ kiên nhẫn và kỷ luật của Yasuo, một học trò nổi tiếng của trường kiếm thuật làng họ. Anh ta bị Yasuo giết, người bị buộc tội sai về vụ giết sư phụ của họ. Yone tỉnh dậy trong thế giới linh hồn, bị một thực thể độc ác tên là azakana truy đuổi. Anh ta đã đánh bại nó bằng chính thanh kiếm của nó, nhưng giờ đây bị nguyền rủa phải đeo chiếc mặt nạ quỷ của nó, điều này cho phép anh ta nhìn thấy các azakana khác.\n\nAnh ta không ngừng săn lùng các sinh vật này, những kẻ ăn mòn sự tiêu cực, để hiểu mình đã trở thành gì và để tìm ra azakana mà tiếng cười của nó vẫn ám ảnh anh ta, hy vọng tìm được tên của nó để biến nó thành một chiếc mặt nạ không hoạt động.\n\nCốt truyện của Yone mô tả rõ ràng sự thức tỉnh của anh ta trong 'thế giới linh hồn' và khả năng tương tác với 'azakana', những thực thể độc ác ăn mòn sự tiêu cực. Đây là một biểu hiện trực tiếp, hữu hình của ảnh hưởng của thế giới linh hồn đối với thế giới vật chất và đối với các cá nhân.",
+      gameplay:
+        "Yone là một đấu sĩ/sát thủ cận chiến sử dụng song kiếm, kết hợp sát thương vật lý và phép thuật. Anh ta có thể lướt, tạo lá chắn và tạm thời rời khỏi cơ thể để gây sát thương, sau đó quay trở lại, lặp lại một phần sát thương đã gây ra.",
+      skills: [
+        {
+          type: "Passive",
+          name: "Con Đường Thợ Săn (Way of the Hunter)",
+          description:
+            "Yone gây sát thương phép với mỗi đòn đánh thứ hai. Ngoài ra, tỷ lệ chí mạng của anh ta được tăng lên.",
+        },
+        {
+          type: "Q",
+          name: "Tử Kiếm (Mortal Steel)",
+          description:
+            "Đâm về phía trước, gây sát thương vật lý cho tất cả kẻ địch theo một đường thẳng. Khi trúng, nhận một điểm cộng dồn của Bão Tố. Với 2 điểm cộng dồn, Tử Kiếm đẩy Yone về phía trước với một luồng gió hất tung kẻ địch.",
+        },
+        {
+          type: "W",
+          name: "Linh Hồn Chia Cắt (Spirit Cleave)",
+          description:
+            "Chém về phía trước, gây sát thương vật lý và phép thuật theo hình nón. Cấp một lá chắn cho Yone, giá trị được tăng lên theo số lượng tướng bị trúng đòn chém. Thời gian hồi chiêu và thời gian vận sức của Linh Hồn Chia Cắt tăng theo tốc độ tấn công.",
+        },
+        {
+          type: "E",
+          name: "Giải Thoát Linh Hồn (Soul Unbound)",
+          description:
+            "Linh hồn của Yone rời khỏi cơ thể, tăng tốc độ di chuyển. Khi kỹ năng này kết thúc, linh hồn của Yone bị buộc quay trở lại cơ thể và anh ta lặp lại một phần sát thương đã gây ra khi còn là linh hồn.",
+        },
+        {
+          type: "R",
+          name: "Định Mệnh Triệu Hồi (Fate Sealed)",
+          description:
+            "Yone dịch chuyển tức thời phía sau tướng cuối cùng theo một đường thẳng với một cú chém mạnh mẽ đến mức kéo tất cả kẻ địch trúng phải về phía anh ta.",
+        },
+      ],
+      specialFeatures: [
+        "Sự hồi sinh và biến đổi sau cái chết",
+        "Mối liên hệ với thế giới linh hồn và khả năng nhìn/săn azakana",
+        "Mối quan hệ bi thảm với anh em cùng cha khác mẹ Yasuo",
+        "Biểu hiện trực tiếp của ảnh hưởng thế giới linh hồn đối với thế giới vật chất",
+        "Vượt ra ngoài 'sự cân bằng' của Kinkou",
+        "Khía cạnh đen tối, mang tính săn mồi của cõi tâm linh",
+        "Thực thể nguy hiểm, ký sinh săn mồi cảm xúc con người",
+        "Trận chiến thường xuyên, vô hình ảnh hưởng đến hạnh phúc cảm xúc và tinh thần người Ionia",
+      ],
+    },
+    {
+      id: "zed",
+      name: "Zed",
+      fullName: "Zed, Chúa Tể Bóng Tối (The Master of Shadows)",
+      icon: "👤",
+      role: "Sát Thủ",
+      region: "ionia",
+      species: "Con người",
+      age: "Không rõ, nhưng là một 'cậu bé' được Kusho nhận nuôi, lớn lên cùng Shen. Có thể là người trưởng thành",
+      gender: "Nam (he/him)",
+      weapon: "Ma thuật bóng tối, phi tiêu, lưỡi kiếm",
+      lore: "Zed là người bạn thân nhất và đối thủ của Shen trong Hội Kinkou. Bực bội vì sự thiếu hành động của họ, anh ta đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen, sử dụng nó để dàn dựng một cuộc đảo chính, giết chết sư phụ Kusho, và thành lập Hội Bóng Tối. Giờ đây anh ta tàn nhẫn quân sự hóa các truyền thống của Ionia để trục xuất những kẻ xâm lược và đảm bảo sự thống trị của Ionia.",
+      fullLore:
+        "Zed được Đại Sư Kusho của Hội Kinkou nhận nuôi, nhanh chóng xuất sắc nhưng cảm thấy bị Shen che khuất. Họ như anh em. Họ đã săn lùng Khada Jhin, người mà Kusho đã chọn giam cầm. Zed oán giận sự thiếu hành động này và, tìm kiếm sức mạnh lớn hơn, đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen trong hầm mộ của ngôi đền.\n\nBóng tối đã nuôi dưỡng sự cay đắng của anh ta, cho anh ta thấy sự khinh thường đối với kẻ yếu. Anh ta trở về ngôi đền, đối mặt với Kusho, và giết ông ta, sau đó chiếm lấy ngôi đền cho Hội Bóng Tối của mình, huấn luyện các tân binh trong bóng tối. Anh ta tin rằng sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia, tàn nhẫn loại bỏ các mối đe dọa và nhận Kayn làm học trò cá nhân của mình.\n\nQuyết định của Zed chấp nhận ma thuật bóng tối bị cấm và giết sư phụ của mình được thúc đẩy bởi niềm tin rằng 'sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia.' Đây là một ví dụ rõ ràng về một nhân vật biện minh cho các phương tiện đen tối vì một lợi ích lớn hơn được nhận thức.",
+      gameplay:
+        "Zed là một sát thủ cận chiến dựa trên năng lượng, nổi tiếng với sát thương dồn dập cao, khả năng thao túng bóng tối và khả năng đánh dấu mục tiêu để kết liễu chậm. Lối chơi của anh ta liên quan đến việc sử dụng bóng tối một cách khéo léo để di chuyển, đánh lừa và tăng sát thương.",
+      skills: [
+        {
+          type: "Passive",
+          name: "Khinh Thường Kẻ Yếu (Contempt for the Weak)",
+          description:
+            "Các đòn đánh thường của Zed chống lại các mục tiêu yếu máu gây thêm sát thương phép.",
+        },
+        {
+          type: "Q",
+          name: "Phi Tiêu Sắc Lẻm (Razor Shuriken)",
+          description:
+            "Zed và các bóng của anh ta ném phi tiêu, gây sát thương vật lý.",
+        },
+        {
+          type: "W",
+          name: "Phân Thân Bóng Tối (Living Shadow)",
+          description:
+            "Nội tại: Zed nhận năng lượng bất cứ khi nào anh ta và các bóng của anh ta đánh trúng kẻ địch bằng cùng một kỹ năng. Năng lượng chỉ có thể nhận được một lần mỗi kỹ năng sử dụng. Kích hoạt: Bóng của Zed lướt về phía trước, ở lại vị trí trong vài giây. Tái kích hoạt Phân Thân Bóng Tối sẽ khiến Zed đổi vị trí với bóng này.",
+        },
+        {
+          type: "E",
+          name: "Đường Kiếm Bóng Tối (Shadow Slash)",
+          description:
+            "Zed và các bóng của anh ta chém, gây sát thương vật lý cho kẻ địch gần đó. Mỗi tướng địch bị chém bởi Zed giảm thời gian hồi chiêu của Phân Thân Bóng Tối đi 3 giây. Kẻ địch bị trúng nhiều nhát chém không nhận thêm sát thương nhưng hiệu ứng làm chậm được tăng thêm 50%.",
+        },
+        {
+          type: "R",
+          name: "Dấu Ấn Tử Thần (Death Mark)",
+          description:
+            "Zed trở nên không thể bị nhắm mục tiêu và lướt đến một tướng địch, đánh dấu chúng. Sau 3 giây, dấu ấn kích hoạt, lặp lại một phần sát thương vật lý mà Zed đã gây ra cho mục tiêu khi dấu ấn còn hiệu lực.",
+        },
+      ],
+      specialFeatures: [
+        "Người sáng lập và lãnh đạo Hội Bóng Tối",
+        "Thành thạo ma thuật bóng tối bị cấm",
+        "Sự phản bội Hội Kinkou và vụ giết Kusho là sự kiện then chốt",
+        "Phản ứng trực tiếp đối với sự 'thiếu hành động' được nhận thức của Hội Kinkou",
+        "Sự thay đổi tư tưởng nguy hiểm trong Ionia",
+        "Mục đích biện minh cho phương tiện",
+        "Thách thức trực tiếp đối với các giá trị truyền thống của Ionia",
+        "Thành công trong việc thu hút những người theo dõi như Kayn",
+        "Đại diện cho tương lai nơi khu vực mạnh mẽ nhưng bị tổn hại về mặt đạo đức",
+      ],
+    },
   ],
   newChampions: [
     {
