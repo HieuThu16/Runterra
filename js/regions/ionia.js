@@ -7,38 +7,54 @@ const ioniaData = {
     {
       id: "yasuo",
       name: "Yasuo",
-      icon: "🌪️",
       role: "Đấu Sĩ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
       lore: "Kiếm sĩ bất tài với lời nguyền gió, tìm kiếm sự cứu rỗi và tha thứ.",
+      releaseDate: "13/12/2013",
+      loreConnections: ["Yone", "Taliyah"],
+      weaponSummary: "Kiếm",
     },
     {
       id: "ahri",
       name: "Ahri",
-      icon: "🦊",
       role: "Pháp Sư",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
       lore: "Hồ ly chín đuôi, tìm kiếm nguồn gốc thật sự của mình giữa hai thế giới.",
+      releaseDate: "14/12/2011",
+      loreConnections: ["Không có liên kết trực tiếp được liệt kê"],
+      weaponSummary: "Ma thuật",
     },
     {
       id: "irelia",
       name: "Irelia",
-      icon: "💃",
       role: "Đấu Sĩ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg",
       lore: "Vũ công lưỡi dao, dẫn đầu kháng chiến chống lại sự xâm lược của Noxus.",
+      releaseDate: "16/11/2010",
+      loreConnections: ["Karma", "Syndra"],
+      weaponSummary: "Kiếm",
     },
     {
       id: "akali",
       name: "Akali",
       fullName: "Akali, Sát Thủ Đơn Độc (The Rogue Assassin)",
-      icon: "🗡️",
       role: "Sát Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Akali_0.jpg",
       species: "Con người",
       age: "Trưởng thành (được đào tạo từ năm 14 tuổi, sau đó rời bỏ hội)",
       gender: "Nữ (she/her)",
       weapon: "Kama và Kunai (liềm cầm tay và dao găm ném)",
+      releaseDate: "11/05/2010",
+      loreConnections: ["Shen", "Kennen", "Zed"],
+      weaponSummary: "Kama, Kunai",
       lore: "Akali sinh ra trong Hội Kinkou, được đào tạo để duy trì sự cân bằng của Ionia. Bực bội vì sự thiếu hành động của Kinkou trước các mối đe dọa, đặc biệt là sau cuộc xâm lược của Noxus, cô đã rời bỏ hội để chiến đấu trực tiếp với tư cách là một sát thủ đơn độc.",
       fullLore:
         "Akali Jhomen Tethi được nuôi dưỡng trong Hội Kinkou dưới sự lãnh đạo của Đại Sư Kusho và con trai ông, Shen. Cô là một chiến binh tài năng, thành thạo kama và kunai, và được kỳ vọng sẽ kế nhiệm mẹ mình trở thành Nắm Đấm Bóng Tối. Tuy nhiên, cô dần cảm thấy không yên và đặt câu hỏi về cách tiếp cận thụ động của Kinkou trong việc duy trì sự cân bằng, đặc biệt khi Ionia phải chịu đựng cuộc xâm lược của Noxus.\n\nCô công khai chỉ trích sự bất lực của họ và rời bỏ hội, cống hiến mình để loại bỏ các mối đe dọa trực tiếp trong thế giới vật chất, trở thành một sát thủ không có chủ nhân. Sự rời bỏ của Akali khỏi Hội Kinkou do sự 'thiếu hành động' của họ và niềm tin của cô vào 'hành động trực tiếp' là một sự chia rẽ tư tưởng rõ ràng. Điều này phản ánh cuộc nổi dậy trước đó của Zed chống lại Kusho và Shen.",
@@ -94,11 +110,16 @@ const ioniaData = {
       icon: "🌳",
       role: "Hỗ Trợ/Pháp Sư",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ivern_0.jpg",
       species: "Nửa người, nửa cây (người đã biến đổi)",
       age: "Cổ đại (từ 'Vorrijaard cổ đại,' 'nhiều thế kỷ trước')",
       gender: "Nam (he/him)",
       weapon:
         "Mối liên kết với thiên nhiên và người bạn đồng hành được triệu hồi, Daisy",
+      releaseDate: "05/10/2016",
+      loreConnections: ["Lillia"],
+      weaponSummary: "Cây",
       lore: "Từng là chiến binh hung tợn Ivern Tàn Bạo, ông tìm kiếm nguồn gốc của tất cả ma thuật ở Ionia. Khi tấn công Cây Thần-Liễu huyền thoại, ông đã bị hủy diệt và tái sinh thành một sinh vật nửa người, nửa cây kỳ lạ, tràn đầy sự ăn năn và tình yêu sâu sắc với thiên nhiên.",
       fullLore:
         "Ivern Tàn Bạo, một lãnh chúa từ Vorrijaard cổ đại, đã đi thuyền về phía đông đến Ionia để tìm kiếm nguồn gốc của tất cả ma thuật. Ông và lực lượng của mình đã chiến đấu với các sinh vật lai cho đến khi họ đến Cây Thần-Liễu linh thiêng. Khi ông tấn công cây, ông ngay lập tức bị hủy diệt và biến đổi thành một sinh vật bằng vỏ cây và lá, được truyền năng lượng bởi ma thuật của cây.\n\nVượt qua sự ăn năn về bạo lực trong quá khứ, ông trở thành Bramblefoot, Người Cha Xanh. Ông đã phát triển tình bạn sâu sắc với tất cả các sinh vật, bao gồm một golem đá mà ông đặt tên là Daisy, và giờ đây lang thang, làm phong phú thêm các khu rừng và chia sẻ trí tuệ, buồn bã trước sự bất cẩn của con người. Cốt truyện của Ivern là một ví dụ điển hình về ma thuật của Ionia có tác động sâu sắc, biến đổi cá nhân, không chỉ về sức mạnh mà còn về đạo đức.",
@@ -154,10 +175,15 @@ const ioniaData = {
       icon: "🎭",
       role: "Xạ Thủ/Pháp Sư",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jhin_0.jpg",
       species: "Con người",
       age: "Không rõ, nhưng đã hoạt động 'trong nhiều năm' trước khi bị bắt, sau đó 'nhiều năm' trôi qua trong tù. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
       weapon: "Whisper (súng cầm tay/đại bác gắn vai)",
+      releaseDate: "01/02/2016",
+      loreConnections: ["Shen", "Zed", "Akali", "Hwei"],
+      weaponSummary: "Súng",
       lore: "Khada Jhin, được biết đến với cái tên 'Quỷ Vàng,' là một kẻ tâm thần tội phạm tỉ mỉ, coi giết người là nghệ thuật. Hắn bị Hội Kinkou giam cầm nhưng sau đó được giải thoát bởi các yếu tố bí ẩn trong hội đồng cầm quyền của Ionia để phục vụ như một sát thủ của họ.",
       fullLore:
         "Trong nhiều năm, Jhin, khi đó được biết đến với cái tên 'Quỷ Vàng,' đã hoành hành ở các ngọn núi phía nam Ionia, để lại những màn trình diễn xác chết bị vặn vẹo. Hắn bị Đại Sư Kusho, Shen và Zed truy lùng, cuối cùng được tiết lộ là một người dàn cảnh tên là Khada Jhin. Kusho đã chọn giam cầm hắn ở Tuula thay vì hành quyết, tin rằng điều đó sẽ làm suy yếu văn hóa Ionia.\n\nJhin bị giam cầm trong nhiều năm, xuất sắc trong nhiều loại hình nghệ thuật nhưng không bao giờ mất đi sự ám ảnh bệnh hoạn của mình. Hắn sau đó được giải thoát sau cuộc chiến tranh Noxus, có thể bởi các yếu tố cấp tiến của Ionia, và giờ đây hoạt động như một sát thủ của họ, sử dụng khẩu súng Whisper của mình để tạo ra 'sự tàn bạo nghệ thuật'. Việc Jhin được giải thoát bởi 'các yếu tố bí ẩn trong hội đồng cầm quyền của Ionia' cho thấy sự xói mòn đáng kể các giá trị cốt lõi của Ionia.",
@@ -213,10 +239,15 @@ const ioniaData = {
       icon: "🌸",
       role: "Pháp Sư/Hỗ Trợ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Karma_0.jpg",
       species: "Con người (linh hồn Ionia cổ đại tái sinh)",
       age: "Darha (hiện thân hiện tại) 12 tuổi, nhưng linh hồn là 'cổ đại'",
       gender: "Nữ (she/her)",
       weapon: "Năng lượng linh hồn, sức mạnh của linh hồn tổ tiên",
+      releaseDate: "01/02/2011",
+      loreConnections: ["Irelia", "Syndra"],
+      weaponSummary: "Ma thuật",
       lore: "Karma là hiện thân sống của một linh hồn Ionia cổ đại, tái sinh qua nhiều thế hệ để dẫn dắt người dân của mình. Hiện thân hiện tại, Darha, vật lộn với những lời dạy hòa bình truyền thống của các Karma trước đây, đặc biệt là sau cuộc xâm lược của Noxus.",
       fullLore:
         "Darha, một cô bé 12 tuổi, bắt đầu trải qua những hình ảnh kỳ lạ về kiếp trước, mà các nhà sư từ Bàn Thờ Vĩnh Cửu nhận ra là dấu hiệu của Karma tiếp theo. Cô đã đến Bàn Thờ, học cách kết nối với linh hồn cổ đại của mình và giao tiếp với hàng ngàn kiếp trước, những người đã ủng hộ hòa bình và hài hòa.\n\nTuy nhiên, cuộc xâm lược của Noxus đã buộc Darha phải đối mặt với thực tế chiến tranh và đặt câu hỏi về những nguyên tắc này. Bất chấp tiếng nói của quá khứ, cô đã giải phóng cơn thịnh nộ thần thánh của mình lên một tàu chiến Noxus, phá hủy nó. Hành động này, dù được nhiều người Ionia ca ngợi, lại bị các nhà sư coi là một sai lầm.\n\nKarma, được dẫn dắt bởi Tinh Thần Ionia trong trái tim mình, giờ đây tìm cách dẫn dắt người dân của mình đến hòa bình khi có thể và hành động khi cần thiết, thừa nhận rằng trí tuệ thực sự nằm ở việc chấp nhận sự thay đổi.",
@@ -272,10 +303,15 @@ const ioniaData = {
       icon: "🌙",
       role: "Đấu Sĩ/Sát Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kayn_0.jpg",
       species: "Con người (biến đổi bởi Darkin)",
       age: "Lính trẻ con trong cuộc xâm lược Noxus, sau đó được Zed huấn luyện. Có thể là người trưởng thành trẻ tuổi",
       gender: "Nam (he/him)",
       weapon: "Rhaast (lưỡi hái Darkin có tri giác)",
+      releaseDate: "12/07/2017",
+      loreConnections: ["Aatrox", "Varus", "Zed"],
+      weaponSummary: "Lưỡi hái",
       lore: "Shieda Kayn, một cựu lính trẻ con Noxus, được Zed nhận nuôi và huấn luyện, thành thạo ma thuật bóng tối. Anh ta sử dụng lưỡi hái Darkin có tri giác Rhaast, chiến đấu để giành quyền kiểm soát nó.",
       fullLore:
         "Sinh ra ở Noxus, Kayn bị bắt làm lính trẻ con. Trong cuộc xâm lược Ionia của Noxus, anh ta được Zed tìm thấy sau một trận chiến và được đưa vào Hội Bóng Tối. Kayn nhanh chóng thành thạo tất cả các loại vũ khí, coi mình là vũ khí tối thượng. Sự kiêu ngạo của anh ta ngày càng tăng, tin rằng mình sẽ vượt qua Zed.\n\nThử thách cuối cùng của anh ta là lấy một vũ khí Darkin, Rhaast, từ Noxus. Thay vì phá hủy nó, Kayn đã lấy lưỡi hái sống đó cho mình, bắt đầu một cuộc đấu tranh để giành quyền kiểm soát. Rhaast tìm cách nuốt chửng anh ta và tàn phá Runeterra, nhưng Kayn chống lại, nhằm mục đích làm chủ vũ khí và trở về Ionia với tư cách là thủ lĩnh mới của Hội Bóng Tối.\n\nCốt truyện của Kayn là một hệ quả trực tiếp của việc Zed theo đuổi sức mạnh bị cấm, khởi xướng một cuộc chiến tranh giành quyền kiểm soát theo đúng nghĩa đen. Điều này làm nổi bật chủ đề lặp đi lặp lại ở Ionia: sự hấp dẫn và nguy hiểm của sức mạnh to lớn từ các nguồn đen tối hoặc cổ xưa.",
@@ -329,6 +365,8 @@ const ioniaData = {
       icon: "⚡",
       role: "Pháp Sư/Xạ Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kennen_0.jpg",
       species: "Yordle",
       age: "Hàng thiên niên kỷ",
       gender: "Nam (he/him)",
@@ -388,6 +426,8 @@ const ioniaData = {
       icon: "🥋",
       role: "Đấu Sĩ/Sát Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg",
       species: "Con người",
       age: "Không rõ, nhưng là một cậu bé khi đến tu viện Shojin, sau đó 'nhiều năm trôi qua'. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
@@ -447,6 +487,8 @@ const ioniaData = {
       icon: "🦌",
       role: "Đấu Sĩ/Pháp Sư",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lillia_0.jpg",
       species: "Hươu thần (Fae fawn)",
       age: "Không rõ, sinh ra từ một nụ hoa mơ ước",
       gender: "Nữ (she/her)",
@@ -506,6 +548,8 @@ const ioniaData = {
       icon: "⚔️",
       role: "Sát Thủ/Đấu Sĩ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_0.jpg",
       species: "Con người",
       age: "Không rõ, nhưng là một cậu bé, sau đó 'nhiều năm trôi qua'. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
@@ -564,6 +608,8 @@ const ioniaData = {
       icon: "✨",
       role: "Hỗ Trợ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Rakan_0.jpg",
       species: "Vastaya (bộ tộc Lhotlan)",
       age: "Không rõ, nhưng đã biểu diễn 'nhiều năm'. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
@@ -622,6 +668,8 @@ const ioniaData = {
       icon: "🥊",
       role: "Đấu Sĩ/Đỡ Đòn",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Sett_0.jpg",
       species: "Nửa vastaya",
       age: "Không rõ, nhưng là một đứa trẻ khi cha anh ta biến mất, sau đó 'lớn nhanh'. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
@@ -681,6 +729,8 @@ const ioniaData = {
       icon: "👁️",
       role: "Đỡ Đòn",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Shen_0.jpg",
       species: "Con người",
       age: "Không rõ, nhưng lớn lên cùng Zed. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
@@ -740,6 +790,8 @@ const ioniaData = {
       icon: "🔮",
       role: "Pháp Sư",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Syndra_0.jpg",
       species: "Con người",
       age: "Không rõ, nhưng là một 'đứa trẻ,' sau đó 'nhiều năm' trôi qua, sau đó 'vĩnh cửu' trong giấc ngủ. Có thể là cổ đại do giấc ngủ",
       gender: "Nữ (she/her)",
@@ -799,6 +851,8 @@ const ioniaData = {
       icon: "🏹",
       role: "Xạ Thủ/Pháp Sư",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Varus_0.jpg",
       species: "Darkin (hợp nhất với hai con người)",
       age: "Cổ đại (một trong những 'Darkin cổ đại,' bị giam cầm 'hàng thế kỷ')",
       gender: "Nam (he/him) - thực thể hợp nhất",
@@ -858,6 +912,8 @@ const ioniaData = {
       icon: "🐒",
       role: "Đấu Sĩ/Đỡ Đòn",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Wukong_0.jpg",
       species: "Vastaya (bộ tộc Shimon)",
       age: "Không rõ, nhưng là một 'vastaya giống khỉ tò mò' khi gặp Master Yi. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
@@ -917,6 +973,8 @@ const ioniaData = {
       icon: "🦅",
       role: "Xạ Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Xayah_0.jpg",
       species: "Vastaya (bộ tộc Lhotlan)",
       age: "Không rõ, nhưng là một 'đứa trẻ' khi sự xâm lấn của con người bắt đầu. Có thể là người trưởng thành",
       gender: "Nữ (she/her)",
@@ -976,6 +1034,8 @@ const ioniaData = {
       icon: "👻",
       role: "Đấu Sĩ/Sát Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg",
       species: "Con người (tái sinh/liên kết linh hồn)",
       age: "Không rõ, nhưng là anh em cùng cha khác mẹ của Yasuo. Đã chết, sau đó được tái sinh",
       gender: "Nam (he/him)",
@@ -1036,10 +1096,24 @@ const ioniaData = {
       icon: "👤",
       role: "Sát Thủ",
       region: "ionia",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg",
       species: "Con người",
       age: "Không rõ, nhưng là một 'cậu bé' được Kusho nhận nuôi, lớn lên cùng Shen. Có thể là người trưởng thành",
       gender: "Nam (he/him)",
       weapon: "Ma thuật bóng tối, phi tiêu, lưỡi kiếm",
+      releaseDate: "13/11/2012",
+      loreConnections: [
+        "Akali",
+        "Shen",
+        "Kennen",
+        "Jhin",
+        "Kayn",
+        "Nocturne",
+        "Gangplank",
+        "Hwei",
+      ],
+      weaponSummary: "Dao găm",
       lore: "Zed là người bạn thân nhất và đối thủ của Shen trong Hội Kinkou. Bực bội vì sự thiếu hành động của họ, anh ta đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen, sử dụng nó để dàn dựng một cuộc đảo chính, giết chết sư phụ Kusho, và thành lập Hội Bóng Tối. Giờ đây anh ta tàn nhẫn quân sự hóa các truyền thống của Ionia để trục xuất những kẻ xâm lược và đảm bảo sự thống trị của Ionia.",
       fullLore:
         "Zed được Đại Sư Kusho của Hội Kinkou nhận nuôi, nhanh chóng xuất sắc nhưng cảm thấy bị Shen che khuất. Họ như anh em. Họ đã săn lùng Khada Jhin, người mà Kusho đã chọn giam cầm. Zed oán giận sự thiếu hành động này và, tìm kiếm sức mạnh lớn hơn, đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen trong hầm mộ của ngôi đền.\n\nBóng tối đã nuôi dưỡng sự cay đắng của anh ta, cho anh ta thấy sự khinh thường đối với kẻ yếu. Anh ta trở về ngôi đền, đối mặt với Kusho, và giết ông ta, sau đó chiếm lấy ngôi đền cho Hội Bóng Tối của mình, huấn luyện các tân binh trong bóng tối. Anh ta tin rằng sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia, tàn nhẫn loại bỏ các mối đe dọa và nhận Kayn làm học trò cá nhân của mình.\n\nQuyết định của Zed chấp nhận ma thuật bóng tối bị cấm và giết sư phụ của mình được thúc đẩy bởi niềm tin rằng 'sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia.' Đây là một ví dụ rõ ràng về một nhân vật biện minh cho các phương tiện đen tối vì một lợi ích lớn hơn được nhận thức.",

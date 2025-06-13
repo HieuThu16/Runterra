@@ -272,15 +272,22 @@ class RuneterraApp {
         '<div class="col-span-full text-center text-red-400 py-8">Lỗi khi tải dữ liệu tướng</div>';
     }
   }
-
   createChampionCard(champion, serialNumber) {
     const card = document.createElement("div");
     card.className =
       "bg-slate-800 p-6 rounded-lg shadow-lg hover:shadow-cyan-500/50 transition-shadow duration-300 cursor-pointer relative";
-
     card.innerHTML = `
       <div class="absolute top-2 left-2 bg-slate-700 text-slate-300 text-xs font-bold px-2 py-1 rounded-full">#${serialNumber}</div>
-      <div class="text-4xl mb-2 text-center">${champion.icon || "🎭"}</div>
+      <div class="mb-2 text-center">
+        <img src="${
+          champion.image ||
+          "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
+        }" 
+             alt="${champion.name}" 
+             class="w-20 h-20 object-cover rounded-lg mx-auto shadow-lg"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="text-4xl hidden">🎭</div>
+      </div>
       <h3 class="text-xl font-semibold text-cyan-300 mb-2 text-center">${
         champion.name || "Unknown"
       }</h3>
@@ -290,6 +297,16 @@ class RuneterraApp {
       <p class="text-xs text-slate-500 text-center">${
         champion.regionName || "Unknown Region"
       }</p>
+      ${
+        champion.releaseDate
+          ? `<p class="text-xs text-blue-400 text-center mt-1">📅 ${champion.releaseDate}</p>`
+          : ""
+      }
+      ${
+        champion.weaponSummary
+          ? `<p class="text-xs text-orange-400 text-center mt-1">⚔️ ${champion.weaponSummary}</p>`
+          : ""
+      }
       ${
         champion.special
           ? '<div class="mt-2 text-center"><span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full">Đặc Biệt</span></div>'
@@ -404,15 +421,28 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    }
-
-    // Additional info section - Enhanced with more attributes
+    } // Additional info section - Enhanced with more attributes
     let additionalInfoHtml = "";
     const additionalFields = [];
     if (champion.fullName)
       additionalFields.push({
         label: this.languageManager.getTranslation("fullName"),
         value: champion.fullName,
+      });
+    if (champion.releaseDate)
+      additionalFields.push({
+        label: "Ngày Phát Hành",
+        value: champion.releaseDate,
+      });
+    if (champion.weaponSummary)
+      additionalFields.push({
+        label: "Vũ Khí",
+        value: champion.weaponSummary,
+      });
+    if (champion.loreConnections && champion.loreConnections.length > 0)
+      additionalFields.push({
+        label: "Liên Kết Cốt Truyện",
+        value: champion.loreConnections.join(", "),
       });
     if (champion.species)
       additionalFields.push({
@@ -596,41 +626,76 @@ class RuneterraApp {
           </div>
         </div>
       `;
+    }    // Lore connections panel
+    let loreConnectionsPanel = "";
+    if (champion.loreConnections && champion.loreConnections.length > 0) {
+      loreConnectionsPanel = `
+        <div class="bg-slate-700/50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-purple-300 mb-4">🔗 Liên Kết Cốt Truyện</h3>
+          <div class="space-y-3">
+            ${champion.loreConnections.map(connectionName => `
+              <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
+                <h4 class="text-cyan-300 font-medium mb-2">${connectionName}</h4>
+                <p class="text-sm text-slate-300">hello</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
     }
 
     modalBody.innerHTML = `
-      <div class="text-6xl mb-4 text-center">${champion.icon || "🎭"}</div>
-      <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
-        champion.name || "Unknown"
-      }</h2>
-      <p class="text-lg text-slate-400 mb-4 text-center">${
-        champion.role || "Unknown Role"
-      } - ${champion.regionName || "Unknown Region"}</p>
-      
-      ${additionalInfoHtml}      
-      <div class="mt-6">
-        <h4 class="text-lg font-semibold text-slate-300 mb-3">${this.languageManager.getTranslation(
-          "basicInfo"
-        )}:</h4>
-        <div class="text-slate-300 leading-relaxed bg-slate-700/50 p-4 rounded-lg">
-          <p>${champion.lore || "Chưa có thông tin lore."}</p>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main content (left side) -->
+        <div class="lg:col-span-2">
+          <div class="mb-4 text-center">
+            <img src="${
+              champion.image ||
+              "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
+            }" 
+                 alt="${champion.name}" 
+                 class="w-32 h-32 object-cover rounded-lg mx-auto shadow-lg"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="text-6xl hidden">🎭</div>
+          </div>
+          <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
+            champion.name || "Unknown"
+          }</h2>
+          <p class="text-lg text-slate-400 mb-4 text-center">${
+            champion.role || "Unknown Role"
+          } - ${champion.regionName || "Unknown Region"}</p>
+          
+          ${additionalInfoHtml}
+          <div class="mt-6">
+            <h4 class="text-lg font-semibold text-slate-300 mb-3">${this.languageManager.getTranslation(
+              "basicInfo"
+            )}:</h4>
+            <div class="text-slate-300 leading-relaxed bg-slate-700/50 p-4 rounded-lg">
+              <p>${champion.lore || "Chưa có thông tin lore."}</p>
+            </div>
+          </div>
+          
+          ${gameplayHtml}
+          ${statsHtml}
+          ${skillsHtml}
+          ${abilitiesHtml}
+          ${specialFeaturesHtml}
+          ${relationshipsHtml}
+          ${fullLoreHtml}
+          ${notesHtml}
+          
+          ${
+            champion.special
+              ? '<div class="mt-6 p-4 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg"><p class="text-sm text-white"><strong>🌟 Đặc biệt:</strong> Tướng có khả năng biến đổi giữa 4 dạng với cơ chế mua đồ tự động.</p></div>'
+              : ""
+          }
+        </div>
+        
+        <!-- Right panel for lore connections -->
+        <div class="lg:col-span-1">
+          ${loreConnectionsPanel}
         </div>
       </div>
-      
-      ${gameplayHtml}
-      ${statsHtml}
-      ${skillsHtml}
-      ${abilitiesHtml}
-      ${specialFeaturesHtml}
-      ${relationshipsHtml}
-      ${fullLoreHtml}
-      ${notesHtml}
-      
-      ${
-        champion.special
-          ? '<div class="mt-6 p-4 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg"><p class="text-sm text-white"><strong>🌟 Đặc biệt:</strong> Tướng có khả năng biến đổi giữa 4 dạng với cơ chế mua đồ tự động.</p></div>'
-          : ""
-      }
     `;
 
     console.log("Modal HTML generated:", modalBody.innerHTML);
@@ -1200,13 +1265,10 @@ class RuneterraApp {
     const allChampions = this.getAllChampions();
 
     select.innerHTML = '<option value="">-- Chọn Tướng --</option>';
-
     allChampions.forEach((champion) => {
       const option = document.createElement("option");
       option.value = JSON.stringify(champion);
-      option.textContent = `${champion.icon || "🎭"} ${champion.name} (${
-        champion.region
-      })`;
+      option.textContent = `${champion.name} (${champion.region})`;
       select.appendChild(option);
     });
   }
@@ -1233,14 +1295,21 @@ class RuneterraApp {
   showChampionDetails(champion) {
     const basicInfo = document.getElementById("championBasicInfo");
     const skillsInfo = document.getElementById("championSkillsInfo");
-    const loreInfo = document.getElementById("championLoreInfo");
-
-    // Basic Info
+    const loreInfo = document.getElementById("championLoreInfo"); // Basic Info
     basicInfo.innerHTML = `
       <div class="space-y-2">
-        <div><span class="font-medium text-slate-300">Tên:</span> ${
-          champion.icon || "🎭"
-        } ${champion.name}</div>
+        <div class="flex items-center space-x-2">
+          <span class="font-medium text-slate-300">Tên:</span> 
+          <img src="${
+            champion.image ||
+            "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
+          }" 
+               alt="${champion.name}" 
+               class="w-8 h-8 object-cover rounded-md"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+          <span class="text-2xl hidden">🎭</span>
+          <span>${champion.name}</span>
+        </div>
         <div><span class="font-medium text-slate-300">Vai Trò:</span> ${
           champion.role || "Không rõ"
         }</div>

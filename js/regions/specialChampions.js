@@ -7,6 +7,9 @@ const specialChampionsData = {
     role: "Lai/Đa Dạng",
     region: "special",
     lore: "Tướng có khả năng biến đổi thành bốn dạng khác nhau: Chiến Tranh (AD), Nạn Đói (AP), Dịch Bệnh (Thích Ứng), Cái Chết (Tank).",
+    releaseDate: "Đặc Biệt",
+    loreConnections: ["Không có"],
+    weaponSummary: "Đa dạng",
     skills: [
       "Dạng Chiến Tranh - Đấu Sĩ AD",
       "Dạng Nạn Đói - Pháp Sư AP",
