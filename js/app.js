@@ -29,7 +29,11 @@ class RuneterraApp {
     this.currentGame = "5vs5";
     this.currentRegion = "all";
     this.currentChampionType = "old";
-    this.currentStatisticsTab = "region";
+    this.currentStatisticsTab = "region"; // Champion navigation state
+    this.currentChampionsList = [];
+    this.currentChampionIndex = -1;
+    this.devModeActive = false;
+    this.currentEditingChampion = null;
 
     // Initialize language manager
     this.languageManager = new LanguageManager();
@@ -110,15 +114,22 @@ class RuneterraApp {
     // Add champion button
     document
       .getElementById("addChampionBtn")
-      ?.addEventListener("click", () => this.openAddChampionModal());
-
-    // Modal close events
+      ?.addEventListener("click", () => this.openAddChampionModal()); // Modal close events
     document
       .getElementById("modalCloseButton")
       ?.addEventListener("click", () => this.closeModal());
     document.getElementById("championModal")?.addEventListener("click", (e) => {
       if (e.target.id === "championModal") this.closeModal();
-    });
+    }); // Champion navigation events
+    document
+      .getElementById("prevChampionBtn")
+      ?.addEventListener("click", () => this.navigateToChampion(-1));
+    document
+      .getElementById("nextChampionBtn")
+      ?.addEventListener("click", () => this.navigateToChampion(1));    // Modal edit button
+    document
+      .getElementById("modalEditButton")
+      ?.addEventListener("click", () => this.openFloatingEditWindow());
 
     // Add champion modal events
     document
@@ -160,7 +171,105 @@ class RuneterraApp {
       ?.addEventListener("click", () => this.showStats());
     document
       .getElementById("clearTranslationCacheBtn")
-      ?.addEventListener("click", () => this.clearTranslationCache()); // Code modal events
+      ?.addEventListener("click", () => this.clearTranslationCache());
+
+    // Refresh skins data
+    document
+      .getElementById("refreshSkinsBtn")
+      ?.addEventListener("click", () => this.refreshSkinsData());
+
+    // Dev Mode events
+    document
+      .getElementById("editModeBtn")
+      ?.addEventListener("click", () => this.toggleDevMode());
+    document
+      .getElementById("editModalCloseButton")
+      ?.addEventListener("click", () => this.closeEditModal());
+    document
+      .getElementById("editChampionModal")
+      ?.addEventListener("click", (e) => {
+        if (e.target.id === "editChampionModal") this.closeEditModal();
+      });
+    document
+      .getElementById("cancelEditBtn")
+      ?.addEventListener("click", () => this.closeEditModal());
+    document
+      .getElementById("editChampionForm")
+      ?.addEventListener("submit", (e) => this.handleEditChampion(e));
+    document
+      .getElementById("addEditSkillBtn")
+      ?.addEventListener("click", () => this.addEditSkillField());
+    document
+      .getElementById("addEditFeatureBtn")
+      ?.addEventListener("click", () => this.addEditFeatureField());
+    document
+      .getElementById("addEditConnectionBtn")
+      ?.addEventListener("click", () => this.addEditConnectionField()); // Code modal events
+    document
+      .getElementById("codeModalCloseButton")
+      ?.addEventListener("click", () => this.closeCodeModal());
+    document.getElementById("codeModal")?.addEventListener("click", (e) => {
+      if (e.target.id === "codeModal") this.closeCodeModal();
+    });
+    document
+      .getElementById("copyCodeBtn")
+      ?.addEventListener("click", () => this.copyCode());
+
+    // Language selector events
+    document
+      .getElementById("languageSelector")
+      ?.addEventListener("click", () => this.toggleLanguageMenu()); // Language option events
+    document.querySelectorAll(".language-option").forEach((option) => {
+      option.addEventListener("click", async (e) => {
+        const lang = e.currentTarget.getAttribute("data-lang");
+        console.log("Changing language to:", lang);
+
+        try {
+          await this.languageManager.changeLanguage(lang);
+          this.closeLanguageMenu();
+          console.log("Language changed successfully");
+        } catch (error) {
+          console.error("Error changing language:", error);
+          alert("Lỗi khi chuyển ngôn ngữ: " + error.message);
+        }
+      });
+    });
+
+    // Close language menu when clicking outside
+    document.addEventListener("click", (e) => {
+      const languageMenu = document.getElementById("languageMenu");
+      const languageSelector = document.getElementById("languageSelector");
+
+      if (
+        languageMenu &&
+        !languageSelector.contains(e.target) &&
+        !languageMenu.contains(e.target)
+      ) {
+        this.closeLanguageMenu();
+      }
+    });
+
+    // Floating edit window events
+    document
+      .getElementById("floatingWindowClose")
+      ?.addEventListener("click", () => this.closeFloatingEditWindow());
+    document
+      .getElementById("floatingCancelBtn")
+      ?.addEventListener("click", () => this.closeFloatingEditWindow());
+    document
+      .getElementById("floatingSaveBtn")
+      ?.addEventListener("click", () => this.saveFloatingEditForm());
+    document
+      .getElementById("floatingAddSkillBtn")
+      ?.addEventListener("click", () => this.addFloatingSkillField());
+    document
+      .getElementById("floatingAddFeatureBtn")
+      ?.addEventListener("click", () => this.addFloatingFeatureField());
+    document
+      .getElementById("floatingAddConnectionBtn")
+      ?.addEventListener("click", () => this.addFloatingConnectionField());
+      
+    // Code modal events
     document
       .getElementById("codeModalCloseButton")
       ?.addEventListener("click", () => this.closeCodeModal());
@@ -363,6 +472,7 @@ class RuneterraApp {
         '<div class="col-span-full text-center text-red-400 py-8">Lỗi khi tải dữ liệu tướng</div>';
     }
   }
+
   createChampionCard(champion, serialNumber) {
     const card = document.createElement("div");
     card.className =
@@ -370,192 +480,56 @@ class RuneterraApp {
 
     // Lấy ảnh champion từ Data Dragon API hoặc sử dụng ảnh có sẵn
     const championImage = this.getChampionImage(champion);
-    
-    // Thống nhất thuộc tính cho tất cả tướng
-    const unifiedChampion = this.unifyChampionData(champion);
 
     card.innerHTML = `
       <div class="absolute top-2 left-2 bg-slate-700 text-slate-300 text-xs font-bold px-2 py-1 rounded-full">#${serialNumber}</div>
-<<<<<<< HEAD
       <div class="mb-2 text-center">
-        <img src="${
-          champion.image ||
-          "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
-        }" 
-             alt="${champion.name}" 
-             class="w-20 h-20 object-cover rounded-lg mx-auto shadow-lg"
-=======
-      <div class="mb-3 text-center">
         <img src="${championImage}" 
-             alt="${unifiedChampion.name}" 
-             class="w-20 h-20 object-cover rounded-lg mx-auto shadow-lg champion-avatar border-2 border-slate-600"
->>>>>>> 6981fd5 (cào dữ liệu)
+             alt="${champion.name}" 
+             class="w-50 h-50 object-cover rounded-lg mx-auto shadow-lg champion-avatar"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <div class="text-4xl hidden">🎭</div>
       </div>
-      
-      <!-- Champion Name & Title -->
-      <div class="text-center mb-3">
-        <h3 class="text-lg font-bold text-cyan-300 mb-1">${unifiedChampion.name}</h3>
-        <p class="text-xs text-slate-400 italic">${unifiedChampion.title}</p>
-      </div>
-      
-      <!-- Primary Info -->
-      <div class="space-y-1 mb-3">
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-slate-500">Loại:</span>
-          <span class="text-xs text-blue-400 font-medium">${unifiedChampion.role}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-slate-500">Vùng:</span>
-          <span class="text-xs text-yellow-400 font-medium">${unifiedChampion.regionName}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-slate-500">Giới:</span>
-          <span class="text-xs text-pink-400 font-medium">${unifiedChampion.gender}</span>
-        </div>
-      </div>
-      
-      <!-- Secondary Info -->
-      <div class="space-y-1 text-xs">
-        ${unifiedChampion.weapon ? 
-          `<div class="flex items-center justify-center text-orange-400">
-            <span class="mr-1">⚔️</span>
-            <span>${unifiedChampion.weapon}</span>
-           </div>` : ''
-        }
-        ${unifiedChampion.species ? 
-          `<div class="flex items-center justify-center text-green-400">
-            <span class="mr-1">🧬</span>
-            <span>${unifiedChampion.species}</span>
-           </div>` : ''
-        }
-        ${unifiedChampion.releaseDate ? 
-          `<div class="flex items-center justify-center text-gray-400">
-            <span class="mr-1">📅</span>
-            <span>${unifiedChampion.releaseDate}</span>
-           </div>` : ''
-        }
-      </div>
-      
-      <!-- Difficulty & Special Status -->
-      <div class="mt-3 flex justify-between items-center">
-        <div class="flex items-center">
-          <span class="text-xs text-slate-500 mr-1">Độ khó:</span>
-          <div class="flex">
-            ${this.renderDifficultyStars(unifiedChampion.difficulty)}
-          </div>
-        </div>
-        ${unifiedChampion.special ? 
-          '<span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full">Đặc Biệt</span>' : 
-          '<span class="bg-slate-700 text-slate-400 text-xs px-2 py-1 rounded-full">Thường</span>'
-        }
-      </div>
+      <h3 class="text-xl font-semibold text-cyan-300 mb-2 text-center">${
+        champion.name || "Unknown"
+      }</h3>
+      <p class="text-sm text-slate-400 mb-2 text-center">${
+        champion.role || "Unknown Role"
+      }</p>
+      <p class="text-xs text-slate-500 text-center">${
+        champion.regionName || "Unknown Region"
+      }</p>
+      ${
+        champion.releaseDate
+          ? `<p class="text-xs text-blue-400 text-center mt-1">📅 ${champion.releaseDate}</p>`
+          : ""
+      }
+      ${
+        champion.weaponSummary
+          ? `<p class="text-xs text-orange-400 text-center mt-1">⚔️ ${champion.weaponSummary}</p>`
+          : ""
+      }
+      ${
+        champion.gender
+          ? `<p class="text-xs text-pink-400 text-center mt-1">👤 ${this.simplifyGender(
+              champion.gender
+            )}</p>`
+          : ""
+      }
+      ${
+        champion.species
+          ? `<p class="text-xs text-green-400 text-center mt-1">🧬 ${champion.species}</p>`
+          : ""
+      }
+      ${
+        champion.special
+          ? '<div class="mt-2 text-center"><span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full">Đặc Biệt</span></div>'
+          : ""
+      }
     `;
 
-    card.addEventListener("click", () => this.openModal(unifiedChampion));
+    card.addEventListener("click", () => this.openModal(champion));
     return card;
-  }
-
-  // Hàm thống nhất dữ liệu champion
-  unifyChampionData(champion) {
-    return {
-      id: champion.id || this.generateChampionId(champion.name),
-      name: champion.name || "Unknown Champion",
-      title: champion.title || "The Unknown",
-      role: this.standardizeRole(champion.role || champion.tags?.[0] || "Unknown"),
-      regionName: champion.regionName || champion.region || "Unknown Region",
-      gender: this.standardizeGender(champion.gender || "Unknown"),
-      weapon: this.standardizeWeapon(champion.weapon || champion.weaponSummary || "Unknown"),
-      species: this.standardizeSpecies(champion.species || "Human"),
-      releaseDate: champion.releaseDate || "Unknown",
-      difficulty: typeof champion.difficulty === 'number' ? champion.difficulty : 
-                  (champion.info?.difficulty || 5),
-      special: champion.special || false,
-      image: champion.image,
-      splash: champion.splash,
-      lore: champion.lore || champion.description || `${champion.name} is a champion from the world of Runeterra.`,
-      stats: champion.stats || {},
-      spells: champion.spells || [],
-      passive: champion.passive || {},
-      tags: champion.tags || []
-    };
-  }
-
-  // Hàm chuẩn hóa role
-  standardizeRole(role) {
-    const roleMap = {
-      'Fighter': 'Chiến Binh',
-      'Tank': 'Đỡ Đòn', 
-      'Assassin': 'Sát Thủ',
-      'Mage': 'Pháp Sư',
-      'Marksman': 'Xạ Thủ',
-      'Support': 'Hỗ Trợ',
-      'fighter': 'Chiến Binh',
-      'tank': 'Đỡ Đòn',
-      'assassin': 'Sát Thủ', 
-      'mage': 'Pháp Sư',
-      'marksman': 'Xạ Thủ',
-      'support': 'Hỗ Trợ'
-    };
-    return roleMap[role] || role || 'Không xác định';
-  }
-
-  // Hàm chuẩn hóa gender
-  standardizeGender(gender) {
-    const genderMap = {
-      'Male': 'Nam',
-      'Female': 'Nữ', 
-      'Other': 'Khác',
-      'Unknown': 'Không xác định',
-      'male': 'Nam',
-      'female': 'Nữ',
-      'other': 'Khác',
-      'unknown': 'Không xác định'
-    };
-    return genderMap[gender] || gender || 'Không xác định';
-  }
-
-  // Hàm chuẩn hóa weapon
-  standardizeWeapon(weapon) {
-    if (!weapon || weapon === 'Unknown') return 'Không xác định';
-    return weapon.length > 15 ? weapon.substring(0, 15) + '...' : weapon;
-  }
-
-  // Hàm chuẩn hóa species
-  standardizeSpecies(species) {
-    const speciesMap = {
-      'Human': 'Con Người',
-      'Yordle': 'Yordle',
-      'Vastayan': 'Vastayan', 
-      'Spirit': 'Linh Hồn',
-      'Undead': 'Bất Tử',
-      'Demon': 'Ác Quỷ',
-      'Dragon': 'Rồng',
-      'Void': 'Hư Không',
-      'Golem': 'Golem',
-      'Robot': 'Robot'
-    };
-    return speciesMap[species] || species || 'Con Người';
-  }
-
-  // Hàm render difficulty stars
-  renderDifficultyStars(difficulty) {
-    const level = Math.min(Math.max(Math.round(difficulty || 5), 1), 10);
-    let stars = '';
-    for (let i = 1; i <= 5; i++) {
-      if (i <= level / 2) {
-        stars += '<span class="text-yellow-400">★</span>';
-      } else {
-        stars += '<span class="text-gray-600">☆</span>';
-      }
-    }
-    return stars;
-  }
-
-  // Helper method để generate champion ID
-  generateChampionId(name) {
-    return name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
   }
 
   // Helper method để lấy ảnh champion
@@ -756,7 +730,6 @@ class RuneterraApp {
     };
     return keyMap[championName] || championName.replace(/[^a-zA-Z0-9]/g, "");
   }
-
   openModal(champion) {
     console.log("=== CHAMPION MODAL DEBUG ===");
     console.log("Opening modal for champion:", champion);
@@ -766,7 +739,49 @@ class RuneterraApp {
     console.log("Champion specialFeatures:", champion.specialFeatures);
     console.log("Champion fullLore:", champion.fullLore);
     console.log("Champion fullName:", champion.fullName);
+    console.log("Champion funFacts:", champion.funFacts);
     console.log("Current language:", this.languageManager.getCurrentLanguage());
+
+    // FIX: Merge with full data from championsDatabase if available
+    let fullChampion = champion;
+    if (window.championsDatabase && champion.name) {
+      const foundRegion = window.championsDatabase.regions.find(
+        (region) =>
+          region.existingChampions?.some((c) => c.name === champion.name) ||
+          region.newChampions?.some((c) => c.name === champion.name)
+      );
+
+      if (foundRegion) {
+        const fullChampionData =
+          foundRegion.existingChampions?.find(
+            (c) => c.name === champion.name
+          ) || foundRegion.newChampions?.find((c) => c.name === champion.name);
+
+        if (fullChampionData) {
+          console.log(
+            "✅ Found full champion data in database:",
+            fullChampionData.name
+          );
+          console.log("Full data skills:", fullChampionData.skills);
+          console.log(
+            "Full data specialFeatures:",
+            fullChampionData.specialFeatures
+          );
+          console.log("Full data fullLore:", fullChampionData.fullLore);
+
+          // Merge the data - keep some fields from champion (like stats from API) but prioritize database data
+          fullChampion = {
+            ...champion, // Keep API data (stats, etc.)
+            ...fullChampionData, // Override with database data (lore, skills, etc.)
+            regionName: champion.regionName, // Keep the regionName from the passed champion
+          };
+
+          console.log("✅ Merged champion data:", fullChampion.name);
+          console.log("Merged skills:", fullChampion.skills);
+          console.log("Merged specialFeatures:", fullChampion.specialFeatures);
+        }
+      }
+    }
 
     // Additional debug: Check if this champion exists in window.championsDatabase
     if (window.championsDatabase) {
@@ -789,6 +804,9 @@ class RuneterraApp {
       console.error("Modal elements not found!");
       return;
     }
+
+    // Use fullChampion for all modal content
+    champion = fullChampion;
 
     // Enhanced skills display for detailed champion data
     let skillsHtml = "";
@@ -843,6 +861,7 @@ class RuneterraApp {
     // Special features display
     let specialFeaturesHtml = "";
     if (champion.specialFeatures && champion.specialFeatures.length > 0) {
+      console.log("✅ Hiển thị Special Features cho", champion.name);
       specialFeaturesHtml = `
         <div class="mt-6">
           <h4 class="text-lg font-semibold text-yellow-300 mb-3">${this.languageManager.getTranslation(
@@ -861,7 +880,39 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    } // Additional info section - Enhanced with more attributes
+    } else {
+      console.log("❌ Không có Special Features cho", champion.name);
+    }
+
+    // Debug logging for Fun Facts and Special Features
+    console.log("=== DEBUG SPECIAL CONTENT ===");
+    console.log("Champion specialFeatures:", champion.specialFeatures);
+    console.log("Champion funFacts:", champion.funFacts);
+    console.log(
+      "Champion fullLore length:",
+      champion.fullLore ? champion.fullLore.length : "N/A"
+    );
+
+    // Fun Facts display
+    let funFactsHtml = "";
+    if (champion.funFacts && champion.funFacts.length > 0) {
+      funFactsHtml = `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-amber-300 mb-3">✨ Fun Facts:</h4>
+          <ul class="list-disc list-inside space-y-2 text-sm text-slate-300">
+            ${champion.funFacts
+              .map(
+                (fact) => `
+              <li>${fact}</li>
+            `
+              )
+              .join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    // Additional info section - Enhanced with more attributes
     let additionalInfoHtml = "";
     const additionalFields = [];
     if (champion.fullName)
@@ -895,11 +946,7 @@ class RuneterraApp {
         label: this.languageManager.getTranslation("age"),
         value: champion.age,
       });
-    if (champion.weapon)
-      additionalFields.push({
-        label: this.languageManager.getTranslation("weapon"),
-        value: champion.weapon,
-      });
+    // Weapon field removed - only show via weaponSummary with detail button
     if (champion.origin)
       additionalFields.push({
         label: this.languageManager.getTranslation("origin"),
@@ -989,57 +1036,8 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    }
-
-    // Stats section if available
-    let statsHtml = "";
-    if (champion.stats) {
-      statsHtml = `
-        <div class="mt-6">
-          <h4 class="text-lg font-semibold text-orange-300 mb-3">${this.languageManager.getTranslation(
-            "statsTitle"
-          )}:</h4>
-          <div class="bg-orange-900/30 p-4 rounded-lg border border-orange-600/50">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
-              ${Object.entries(champion.stats)
-                .map(
-                  ([key, value]) => `
-                <div class="text-orange-100">
-                  <span class="text-orange-300 font-medium">${key}:</span> ${value}
-                </div>
-              `
-                )
-                .join("")}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // Relationships section if available
-    let relationshipsHtml = "";
-    if (champion.relationships && champion.relationships.length > 0) {
-      relationshipsHtml = `
-        <div class="mt-6">
-          <h4 class="text-lg font-semibold text-pink-300 mb-3">${this.languageManager.getTranslation(
-            "relationships"
-          )}:</h4>
-          <div class="space-y-2">
-            ${champion.relationships
-              .map(
-                (rel) => `
-              <div class="bg-pink-900/30 p-3 rounded-md border border-pink-600/50">
-                <p class="text-sm text-pink-100"><strong>${rel.type}:</strong> ${rel.description}</p>
-              </div>
-            `
-              )
-              .join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    // Abilities/Powers section if different from skills
+    }    // Bỏ phần stats theo yêu cầu
+    let statsHtml = "";// Abilities/Powers section if different from skills
     let abilitiesHtml = "";
     if (champion.abilities && champion.abilities.length > 0) {
       abilitiesHtml = `
@@ -1062,21 +1060,19 @@ class RuneterraApp {
       `;
     }
 
-    // Full lore section
-    let fullLoreHtml = "";
-    if (champion.fullLore && champion.fullLore !== champion.lore) {
-      fullLoreHtml = `
-        <div class="mt-6">
-          <h4 class="text-lg font-semibold text-purple-300 mb-3">${this.languageManager.getTranslation(
-            "fullStory"
-          )}:</h4>
-          <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-600/50 max-h-64 overflow-y-auto">
-            <p class="text-sm text-purple-100 leading-relaxed whitespace-pre-line">${
-              champion.fullLore
-            }</p>
-          </div>
+    // Full lore section    // Always generate full lore HTML for right panel
+    let fullLoreHtml = `
+      <div class="mt-6">
+        <h4 class="text-lg font-semibold text-purple-300 mb-3">${this.languageManager.getTranslation(
+          "fullStory"
+        )}:</h4>
+        <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-600/50 max-h-64 overflow-y-auto">
+          <p class="text-sm text-purple-100 leading-relaxed whitespace-pre-line">${
+            champion.fullLore || champion.lore || "Chưa có thông tin chi tiết về cốt truyện."
+          }</p>
         </div>
-      `;
+      </div>
+    `;
     }
 
     // Additional notes or trivia
@@ -1093,51 +1089,181 @@ class RuneterraApp {
           </div>
         </div>
       `;
-    } // Lore connections panel
+    }    // Lore connections panel with integrated relationships
     let loreConnectionsPanel = "";
+    console.log("=== LORE CONNECTIONS DEBUG ===");
+    console.log("Champion loreConnections:", champion.loreConnections);
+    console.log("Champion relationships:", champion.relationships);
+    
+    // Always create lore connections panel
+    let connectionsContent = "";
+    
+    // Add lore connections
     if (champion.loreConnections && champion.loreConnections.length > 0) {
-      loreConnectionsPanel = `
-        <div class="bg-slate-700/50 p-4 rounded-lg">
-          <h3 class="text-lg font-semibold text-purple-300 mb-4">🔗 Liên Kết Cốt Truyện</h3>
-          <div class="space-y-3">
-            ${champion.loreConnections
-              .map(
-                (connectionName) => `
-              <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
-                <h4 class="text-cyan-300 font-medium mb-2">${connectionName}</h4>
-                <p class="text-sm text-slate-300">hello</p>
-              </div>
-            `
-              )
-              .join("")}
+      console.log("✅ Found loreConnections for", champion.name);
+      connectionsContent += champion.loreConnections
+        .map(
+          (connectionName) => `
+          <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
+            <h4 class="text-cyan-300 font-medium mb-2">${connectionName}</h4>
+            <p class="text-sm text-slate-300">${this.getLoreConnectionDescription(
+              champion.name,
+              connectionName
+            )}</p>
           </div>
+        `
+        )
+        .join("");
+    }
+
+    // Add relationships as part of lore connections
+    if (champion.relationships && champion.relationships.length > 0) {
+      console.log("✅ Found relationships for", champion.name);
+      connectionsContent += champion.relationships
+        .map(
+          (rel) => `
+          <div class="bg-pink-900/30 p-3 rounded-md border border-pink-600/50">
+            <h4 class="text-pink-300 font-medium mb-2">${rel.type}</h4>
+            <p class="text-sm text-pink-100">${rel.description}</p>
+          </div>
+        `
+        )
+        .join("");
+    }
+    
+    // If no connections found, add default message
+    if (!connectionsContent.trim()) {
+      console.log("❌ No connections found for", champion.name);
+      connectionsContent = `
+        <div class="bg-slate-600/50 p-3 rounded-md border border-purple-500/30">
+          <p class="text-sm text-slate-300">Không có liên kết cốt truyện nào được ghi nhận.</p>
         </div>
       `;
     }
+    
+    loreConnectionsPanel = `
+      <div class="bg-slate-700/50 p-4 rounded-lg mb-6">
+        <h3 class="text-lg font-semibold text-purple-300 mb-4">🔗 Liên Kết Cốt Truyện & Mối Quan Hệ</h3>
+        <div class="space-y-3">
+          ${connectionsContent}
+        </div>
+      </div>
+    `;
 
+    // Fun Facts panel for right side - also check specialFeatures as backup
+    let funFactsPanel = "";
+    const factsData = champion.funFacts || champion.specialFeatures || [];
+    console.log("=== FUN FACTS DEBUG ===");
+    console.log("Champion funFacts:", champion.funFacts);
+    console.log("Champion specialFeatures:", champion.specialFeatures);
+    console.log("Final factsData:", factsData);
+    console.log("factsData length:", factsData.length);
+
+    if (factsData && factsData.length > 0) {
+      console.log("✅ Hiển thị Fun Facts panel cho", champion.name);
+      funFactsPanel = `
+        <div class="bg-slate-700/50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-amber-300 mb-4">✨ Fun Facts & Điểm Đặc Biệt</h3>
+          <div class="bg-amber-900/30 p-4 rounded-lg border border-amber-600/50">
+            <ul class="space-y-2 list-disc list-inside">
+              ${factsData
+                .map(
+                  (fact) => `
+                <li class="text-amber-100 text-sm leading-relaxed">${fact}</li>
+              `
+                )
+                .join("")}
+            </ul>
+          </div>
+        </div>
+      `;
+    } else {
+      console.log("❌ Không có Fun Facts để hiển thị cho", champion.name);
+    }
     modalBody.innerHTML = `
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main content (left side) -->
         <div class="lg:col-span-2">
-          <div class="mb-4 text-center">
-            <img src="${
-              champion.image ||
-              "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
-            }" 
-                 alt="${champion.name}" 
-                 class="w-32 h-32 object-cover rounded-lg mx-auto shadow-lg"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="text-6xl hidden">🎭</div>
-          </div>
-          <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${
-            champion.name || "Unknown"
-          }</h2>
-          <p class="text-lg text-slate-400 mb-4 text-center">${
-            champion.role || "Unknown Role"
-          } - ${champion.regionName || "Unknown Region"}</p>
-          
-          ${additionalInfoHtml}
-          <div class="mt-6">
+          <!-- Champion Header with Image and Basic Info -->
+          <div class="flex gap-6 mb-6">
+            <!-- Champion Image -->
+            <div class="flex-shrink-0">
+              <img src="${
+                champion.image ||
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
+              }" 
+                   alt="${champion.name}" 
+                   class="w-120 h-96 object-cover rounded-lg shadow-lg"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="text-6xl hidden">🎭</div>
+            </div>
+              <!-- Champion Basic Info -->
+            <div class="flex-1 flex flex-col justify-center">
+              <h2 class="text-4xl font-bold text-cyan-300 mb-3">${
+                champion.name || "Unknown"
+              }</h2>
+              <p class="text-2xl text-slate-400 mb-6">${
+                champion.role || "Unknown Role"
+              } - ${champion.regionName || "Unknown Region"}</p>
+              
+              <!-- Essential Champion Info -->
+              <div class="space-y-3">
+                ${
+                  champion.species
+                    ? `
+                <div class="flex items-center">
+                  <span class="text-cyan-300 font-semibold text-lg w-20">Loài:</span>
+                  <span class="text-slate-300 text-lg">${champion.species}</span>
+                </div>
+                `
+                    : ""
+                }
+                ${
+                  champion.gender
+                    ? `
+                <div class="flex items-center">
+                  <span class="text-cyan-300 font-semibold text-lg w-20">Giới:</span>
+                  <span class="text-slate-300 text-lg">${this.simplifyGender(
+                    champion.gender
+                  )}</span>
+                </div>
+                `
+                    : ""
+                }                ${
+                  champion.weaponSummary || champion.weapon
+                    ? `
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="text-cyan-300 font-semibold text-lg w-20">Vũ Khí:</span>
+                    <span class="text-slate-300 text-lg">${
+                      champion.weaponSummary || 'Không có thông tin chi tiết'
+                    }</span>
+                  </div>
+                  ${
+                    champion.weapon
+                      ? `
+                    <button 
+                      onclick="showWeaponDetail('${champion.weapon.replace(
+                        /'/g,
+                        "\\'"
+                      )}', this)" 
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded transition-colors"
+                    >
+                      Chi tiết
+                    </button>
+                  `
+                      : ""
+                  }
+                </div>
+                <div class="mt-2 bg-slate-600/30 p-3 rounded-lg border border-blue-500/30 weapon-details ${!champion.weapon ? 'hidden' : ''}">
+                  <p class="text-sm text-blue-100">${champion.weapon || 'Không có thông tin chi tiết về vũ khí.'}</p>
+                </div>
+                `
+                    : ""
+                }
+              </div>
+            </div></div>
+            <div class="mt-6">
             <h4 class="text-lg font-semibold text-slate-300 mb-3">${this.languageManager.getTranslation(
               "basicInfo"
             )}:</h4>
@@ -1146,17 +1272,26 @@ class RuneterraApp {
             </div>
           </div>
           
-          ${gameplayHtml}
+          <!-- Skills Section -->
+          ${champion.skills && champion.skills.length > 0 ? `
+          <div class="mt-6">
+            <h4 class="text-lg font-semibold text-cyan-300 mb-3">🎯 Kỹ Năng</h4>
+            <div class="space-y-2">
+              ${champion.skills.map((skill, index) => `
+                <div class="bg-slate-700 p-3 rounded-md border-l-4 border-cyan-500">
+                  <p class="text-sm text-slate-300">${skill}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+          
+            ${gameplayHtml}
           ${statsHtml}
           ${skillsHtml}
-<<<<<<< HEAD
-          ${abilitiesHtml}
-          ${specialFeaturesHtml}
-          ${relationshipsHtml}
-=======
           ${abilitiesHtml}          ${specialFeaturesHtml}
+          ${funFactsHtml}
           ${this.getSkinSection(champion)}
->>>>>>> 6981fd5 (cào dữ liệu)
           ${fullLoreHtml}
           ${notesHtml}
           
@@ -1165,16 +1300,44 @@ class RuneterraApp {
               ? '<div class="mt-6 p-4 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg"><p class="text-sm text-white"><strong>🌟 Đặc biệt:</strong> Tướng có khả năng biến đổi giữa 4 dạng với cơ chế mua đồ tự động.</p></div>'
               : ""
           }
-        </div>
-        
-        <!-- Right panel for lore connections -->
+        </div>        <!-- Right panel for lore connections and fun facts -->
         <div class="lg:col-span-1">
+          <!-- Full Lore Section -->
+          <div class="bg-slate-700/50 p-4 rounded-lg mb-6">
+            <h3 class="text-lg font-semibold text-purple-300 mb-4">� Cốt Truyện Đầy Đủ</h3>
+            <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-600/50 max-h-64 overflow-y-auto">
+              <p class="text-sm text-purple-100 leading-relaxed whitespace-pre-line">
+                ${champion.fullLore || champion.lore || "Thông tin cốt truyện đang được cập nhật."}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Lore Connections -->
           ${loreConnectionsPanel}
+          
+          <!-- Fun Facts & Special Features -->
+          <div class="bg-slate-700/50 p-4 rounded-lg">
+            ${this.getFunFactsAndSpecialFeaturesHtml(champion)}
+          </div>
         </div>
       </div>
     `;
-
     console.log("Modal HTML generated:", modalBody.innerHTML);
+
+    // Setup navigation state
+    this.setupChampionNavigation(champion); // Store current champion for editing
+    this.currentModalChampion = champion; // Always show edit button regardless of dev mode
+    const editBtn = document.getElementById("modalEditButton");
+    console.log("=== EDIT BUTTON DEBUG ===");
+    console.log("Edit button element:", editBtn);
+    console.log("Dev mode active:", this.devModeActive);
+
+    if (editBtn) {
+      editBtn.classList.remove("hidden");
+      console.log("✅ Edit button shown");
+    } else {
+      console.error("❌ Edit button not found in DOM!");
+    }
 
     modal.classList.remove("hidden");
   }
@@ -1182,7 +1345,99 @@ class RuneterraApp {
   closeModal() {
     document.getElementById("championModal")?.classList.add("hidden");
   }
+  setupChampionNavigation(currentChampion) {
+    console.log("=== SETUP NAVIGATION DEBUG ===");
+    console.log("Current champion:", currentChampion.name);
 
+    // Get current champions list based on current filters
+    this.currentChampionsList = this.getCurrentFilteredChampions();
+    console.log("Champions list length:", this.currentChampionsList.length);
+
+    // Find current champion index
+    this.currentChampionIndex = this.currentChampionsList.findIndex(
+      (champ) => champ.name === currentChampion.name
+    );
+    console.log("Current champion index:", this.currentChampionIndex);
+
+    // Update navigation buttons visibility
+    this.updateNavigationButtons();
+  }
+
+  getCurrentFilteredChampions() {
+    const allChampions = [];
+    const database = window.championsDatabase || championsDatabase;
+
+    // Get champions based on current filters
+    database.regions.forEach((region) => {
+      if (this.currentRegion === "all" || region.id === this.currentRegion) {
+        if (this.currentChampionType === "old" && region.existingChampions) {
+          region.existingChampions.forEach((champion) => {
+            allChampions.push({
+              ...champion,
+              regionName: region.name,
+              regionId: region.id,
+            });
+          });
+        } else if (this.currentChampionType === "new" && region.newChampions) {
+          region.newChampions.forEach((champion) => {
+            allChampions.push({
+              ...champion,
+              regionName: region.name,
+              regionId: region.id,
+            });
+          });
+        }
+      }
+    });
+
+    return allChampions;
+  }
+
+  updateNavigationButtons() {
+    const prevBtn = document.getElementById("prevChampionBtn");
+    const nextBtn = document.getElementById("nextChampionBtn");
+
+    if (prevBtn && nextBtn) {
+      // Show/hide buttons based on position
+      if (this.currentChampionIndex <= 0) {
+        prevBtn.style.opacity = "0.3";
+        prevBtn.style.pointerEvents = "none";
+      } else {
+        prevBtn.style.opacity = "1";
+        prevBtn.style.pointerEvents = "auto";
+      }
+
+      if (this.currentChampionIndex >= this.currentChampionsList.length - 1) {
+        nextBtn.style.opacity = "0.3";
+        nextBtn.style.pointerEvents = "none";
+      } else {
+        nextBtn.style.opacity = "1";
+        nextBtn.style.pointerEvents = "auto";
+      }
+    }
+  }
+  navigateToChampion(direction) {
+    console.log("=== NAVIGATION DEBUG ===");
+    console.log("Current index:", this.currentChampionIndex);
+    console.log("Current list length:", this.currentChampionsList.length);
+    console.log("Direction:", direction);
+
+    const newIndex = this.currentChampionIndex + direction;
+    console.log("New index:", newIndex);
+
+    if (newIndex >= 0 && newIndex < this.currentChampionsList.length) {
+      const newChampion = this.currentChampionsList[newIndex];
+      console.log("New champion:", newChampion.name);
+      this.currentChampionIndex = newIndex;
+
+      // Get full champion data from database
+      this.openModal(newChampion);
+    } else {
+      console.log("❌ Navigation failed - index out of bounds");
+    }
+  }
+
+  // Function to handle adding champions
   openAddChampionModal() {
     const modal = document.getElementById("addChampionModal");
     const title = document.getElementById("addModalTitle");
@@ -1197,1347 +1452,1116 @@ class RuneterraApp {
       this.clearSkillFields();
       this.addSkillField();
     } else {
-      title.textContent = "Thêm Tướng Cũ";
+      title.textContent = "Thêm Tướng Có Sẵn";
       skillsSection.classList.add("hidden");
-      this.clearSkillFields();
     }
 
-    // Reset form
-    document.getElementById("addChampionForm")?.reset();
     modal.classList.remove("hidden");
   }
 
   closeAddChampionModal() {
     document.getElementById("addChampionModal")?.classList.add("hidden");
+    // Clear form
     document.getElementById("addChampionForm")?.reset();
     this.clearSkillFields();
+    this.clearFeatureFields();
   }
+
+  // Helper functions for skills and features
   addSkillField() {
-    const container = document.getElementById("skillsContainer");
-    if (!container) return;
+    const skillsContainer = document.getElementById("skillsContainer");
+    if (!skillsContainer) return;
 
     const skillDiv = document.createElement("div");
-    skillDiv.className =
-      "skill-field grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-slate-700 rounded-lg";
-
+    skillDiv.className = "skill-field flex items-center space-x-2";
     skillDiv.innerHTML = `
-      <div>
-        <label class="block text-sm font-medium text-slate-300 mb-2">Loại Kỹ Năng</label>
-        <select class="skill-type w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" required>
-          <option value="">Chọn loại</option>
-          <option value="Passive">Passive</option>
-          <option value="Q">Q</option>
-          <option value="W">W</option>
-          <option value="E">E</option>
-          <option value="R">R</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-slate-300 mb-2">Tên Kỹ Năng</label>
-        <input type="text" class="skill-name w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" placeholder="Tên kỹ năng" required>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-slate-300 mb-2">Mô Tả Kỹ Năng</label>
-        <textarea class="skill-desc w-full bg-slate-600 border border-slate-500 text-slate-100 rounded-lg p-2.5" rows="2" placeholder="Mô tả hiệu ứng kỹ năng" required></textarea>
-      </div>
-      <div class="md:col-span-3 flex justify-end">
-        <button type="button" class="remove-skill px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm">
-          ❌ Xóa
-        </button>
-      </div>
+      <input type="text" class="skill-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-cyan-500" placeholder="Nhập kỹ năng">
+      <button type="button" onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
     `;
-
-    container.appendChild(skillDiv);
-
-    // Add remove event listener
-    skillDiv.querySelector(".remove-skill")?.addEventListener("click", () => {
-      skillDiv.remove();
-    });
+    skillsContainer.appendChild(skillDiv);
   }
 
   addFeatureField() {
-    const container = document.getElementById("featuresContainer");
-    if (!container) return;
+    const featuresContainer = document.getElementById("featuresContainer");
+    if (!featuresContainer) return;
 
     const featureDiv = document.createElement("div");
-    featureDiv.className = "feature-field flex gap-2 mb-3";
-
+    featureDiv.className = "feature-field flex items-center space-x-2";
     featureDiv.innerHTML = `
-      <input type="text" class="feature-text flex-1 bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5" placeholder="Nhập điểm đặc biệt..." required>
-      <button type="button" class="remove-feature px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm">
-        ❌
-      </button>
+      <input type="text" class="feature-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-cyan-500" placeholder="Nhập điểm đặc biệt">
+      <button type="button" onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
     `;
-
-    container.appendChild(featureDiv);
-
-    // Add remove event listener
-    featureDiv
-      .querySelector(".remove-feature")
-      ?.addEventListener("click", () => {
-        featureDiv.remove();
-      });
+    featuresContainer.appendChild(featureDiv);
   }
+
   clearSkillFields() {
     const skillsContainer = document.getElementById("skillsContainer");
-    const featuresContainer = document.getElementById("featuresContainer");
     if (skillsContainer) {
       skillsContainer.innerHTML = "";
     }
+  }
+
+  clearFeatureFields() {
+    const featuresContainer = document.getElementById("featuresContainer");
     if (featuresContainer) {
       featuresContainer.innerHTML = "";
     }
   }
 
-  handleAddChampion(e) {
-    e.preventDefault();
+  // Additional helper methods that might be referenced
+  simplifyGender(gender) {
+    if (!gender) return "";
 
-    try {
-      const name = document.getElementById("championName")?.value;
-      const icon = document.getElementById("championIcon")?.value;
-      const role = document.getElementById("championRole")?.value;
-      const region = document.getElementById("championRegion")?.value;
-      const lore = document.getElementById("championLore")?.value;
-
-      // Validate required fields
-      if (!name || !icon || !role || !region || !lore) {
-        alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
-        return;
-      }
-
-      // Create champion object
-      const newChampion = {
-        name: name,
-        icon: icon,
-        role: role,
-        region: region,
-        lore: lore,
-      };
-
-      // Add skills if it's a new champion
-      if (this.currentChampionType === "new") {
-        const skillFields = document.querySelectorAll(".skill-field");
-        const skills = [];
-
-        skillFields.forEach((field) => {
-          const skillName = field.querySelector(".skill-name")?.value;
-          const skillDesc = field.querySelector(".skill-desc")?.value;
-
-          if (skillName && skillDesc) {
-            skills.push(`${skillName}: ${skillDesc}`);
-          }
-        });
-
-        if (skills.length === 0) {
-          alert("Tướng mới cần có ít nhất 1 kỹ năng!");
-          return;
-        }
-
-        newChampion.skills = skills;
-      } // Add champion to database
-      this.db.addChampion(
-        region,
-        newChampion,
-        this.currentChampionType === "new"
-      );
-
-      // Generate code for manual addition to data.js
-      const code = this.db.generateChampionCode(
-        region,
-        newChampion,
-        this.currentChampionType === "new"
-      );
-
-      // Close modal and refresh champions
-      this.closeAddChampionModal();
-      this.loadChampions();
-
-      // Show success message and code modal
-      alert(
-        `✅ Đã thêm ${
-          this.currentChampionType === "old" ? "tướng cũ" : "tướng mới"
-        } "${name}" thành công!\n\n⚠️ Lưu ý: Để tướng hiển thị sau khi deploy, hãy copy code và thêm vào file data.js`
-      ); // Show code modal
-      this.showCodeModal(code);
-    } catch (error) {
-      console.error("Lỗi khi thêm tướng:", error);
-      alert(`Lỗi: ${error.message}`);
-    }
-  }
-
-  // Updated handleAddChampion method with extended fields
-  handleAddChampionExtended(e) {
-    e.preventDefault();
-
-    try {
-      const name = document.getElementById("championName")?.value;
-      const icon = document.getElementById("championIcon")?.value;
-      const role = document.getElementById("championRole")?.value;
-      const region = document.getElementById("championRegion")?.value;
-      const lore = document.getElementById("championLore")?.value;
-
-      // Extended fields
-      const fullName = document.getElementById("championFullName")?.value;
-      const species = document.getElementById("championSpecies")?.value;
-      const age = document.getElementById("championAge")?.value;
-      const weapon = document.getElementById("championWeapon")?.value;
-      const fullLore = document.getElementById("championFullLore")?.value;
-      const gameplay = document.getElementById("championGameplay")?.value;
-
-      // Validate required fields
-      if (!name || !icon || !role || !region || !lore) {
-        alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
-        return;
-      }
-
-      // Create champion object
-      const newChampion = {
-        name: name,
-        icon: icon,
-        role: role,
-        region: region,
-        lore: lore,
-      };
-
-      // Add optional fields if provided
-      if (fullName) newChampion.fullName = fullName;
-      if (species) newChampion.species = species;
-      if (age) newChampion.age = age;
-      if (weapon) newChampion.weapon = weapon;
-      if (fullLore) newChampion.fullLore = fullLore;
-      if (gameplay) newChampion.gameplay = gameplay;
-
-      // Add skills if it's a new champion
-      if (this.currentChampionType === "new") {
-        const skillFields = document.querySelectorAll(".skill-field");
-        const skills = [];
-
-        skillFields.forEach((field) => {
-          const skillType = field.querySelector(".skill-type")?.value;
-          const skillName = field.querySelector(".skill-name")?.value;
-          const skillDesc = field.querySelector(".skill-desc")?.value;
-
-          if (skillType && skillName && skillDesc) {
-            skills.push({
-              type: skillType,
-              name: skillName,
-              description: skillDesc,
-            });
-          }
-        });
-
-        if (skills.length === 0) {
-          alert("Tướng mới cần có ít nhất 1 kỹ năng!");
-          return;
-        }
-
-        newChampion.skills = skills;
-      }
-
-      // Add special features
-      const featureFields = document.querySelectorAll(
-        ".feature-field .feature-text"
-      );
-      const specialFeatures = [];
-      featureFields.forEach((field) => {
-        if (field.value.trim()) {
-          specialFeatures.push(field.value.trim());
-        }
-      });
-      if (specialFeatures.length > 0) {
-        newChampion.specialFeatures = specialFeatures;
-      }
-
-      // Add champion to database
-      this.db.addChampion(
-        region,
-        newChampion,
-        this.currentChampionType === "new"
-      );
-
-      // Generate code for manual addition to data.js
-      const code = this.db.generateChampionCode(
-        region,
-        newChampion,
-        this.currentChampionType === "new"
-      );
-
-      // Close modal and refresh champions
-      this.closeAddChampionModal();
-      this.loadChampions();
-
-      // Show success message and code modal
-      alert(
-        `✅ Đã thêm ${
-          this.currentChampionType === "old" ? "tướng cũ" : "tướng mới"
-        } "${name}" thành công!\n\n⚠️ Lưu ý: Để tướng hiển thị sau khi deploy, hãy copy code và thêm vào file data.js`
-      );
-
-      // Show code modal
-      this.showCodeModal(code);
-    } catch (error) {
-      console.error("Lỗi khi thêm tướng:", error);
-      alert(`Lỗi: ${error.message}`);
-    }
-  }
-
-  // Database management methods
-  downloadDatabase() {
-    this.db.downloadDatabase();
-  }
-
-  uploadDatabase() {
-    document.getElementById("uploadDbInput")?.click();
-  }
-
-  async handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    try {
-      await this.db.uploadDatabase(file);
-      this.loadChampions();
-      alert("🎉 Restore dữ liệu thành công!");
-    } catch (error) {
-      console.error("Error uploading database:", error);
-      alert("❌ Lỗi khi restore dữ liệu!");
-    }
-
-    // Reset file input
-    event.target.value = "";
-  }
-  resetDatabase() {
-    if (
-      confirm("🔄 Bạn có chắc muốn reset tất cả dữ liệu về trạng thái ban đầu?")
-    ) {
-      // Clear localStorage and reload from original data
-      localStorage.removeItem("runeterra_champions_db");
-      this.db.resetDatabase();
-      this.loadChampions();
-      alert("🎉 Reset dữ liệu thành công!");
-      console.log("Database reset - checking Thresh again:");
-      const threshCheck = this.db
-        .getChampions("shadowisles", "old")
-        .find((c) => c.name === "Thresh");
-      console.log("Thresh after reset:", threshCheck);
-    }
-  }
-
-  showStats() {
-    const stats = this.db.getStats();
-    let message = `📊 Thống kê Champions:\n\n`;
-    message += `🎯 Tổng: ${stats.total} tướng\n`;
-    message += `📚 Tướng cũ: ${stats.old}\n`;
-    message += `✨ Tướng mới: ${stats.new}\n\n`;
-    message += `📍 Theo vùng đất:\n`;
-
-    Object.entries(stats.regions).forEach(([region, data]) => {
-      message += `• ${region}: ${data.total} (${data.old} cũ, ${data.new} mới)\n`;
-    });
-
-    alert(message);
-  }
-
-  // Code modal methods
-  showCodeModal(code) {
-    document.getElementById("codeDisplay").textContent = code;
-    document.getElementById("codeModal")?.classList.remove("hidden");
-  }
-
-  closeCodeModal() {
-    document.getElementById("codeModal")?.classList.add("hidden");
-  }
-  copyCode() {
-    const codeText = document.getElementById("codeDisplay")?.textContent;
-    if (codeText) {
-      navigator.clipboard.writeText(codeText).then(() => {
-        const btn = document.getElementById("copyCodeBtn");
-        const originalText = btn.textContent;
-        btn.textContent = "✅ Copied!";
-        setTimeout(() => {
-          btn.textContent = originalText;
-        }, 2000);
-      });
-    }
-  }
-  // Language menu control methods
-  toggleLanguageMenu() {
-    const languageMenu = document.getElementById("languageMenu");
-    if (languageMenu) {
-      languageMenu.classList.toggle("hidden");
-    }
-  }
-
-  closeLanguageMenu() {
-    const languageMenu = document.getElementById("languageMenu");
-    if (languageMenu) {
-      languageMenu.classList.add("hidden");
-    }
-  }
-
-  // Translation cache management
-  clearTranslationCache() {
-    if (this.languageManager && this.languageManager.translationService) {
-      const stats = this.languageManager.translationService.getCacheStats();
-      const confirmation = confirm(
-        `⚠️ Bạn có chắc chắn muốn xóa cache dịch thuật?\n\n` +
-          `Cache hiện tại: ${stats.size} mục\n` +
-          `Dung lượng: ${Math.round(stats.memoryUsage / 1024)} KB\n\n` +
-          `Điều này sẽ làm cho việc dịch chậm hơn lần đầu tiên.`
-      );
-      if (confirmation) {
-        this.languageManager.translationService.clearCache();
-        alert("✅ Đã xóa cache dịch thuật thành công!");
-      }
-    }
-  }
-
-  // Statistics functions
-  loadStatistics() {
-    this.updateStatisticsOverview();
-    this.updateRegionStatistics();
-    this.updateRoleDistribution();
-    this.updateWeaponStatistics();
-    this.updateChampionSelect();
-    this.setupChampionDetailsListener();
-
-    // Initialize statistics navigation
-    this.switchStatisticsTab(this.currentStatisticsTab);
-  }
-
-  updateStatisticsOverview() {
-    const allChampions = this.getAllChampions();
-    const allRegions = (window.championsDatabase || championsDatabase).regions;
-    const weapons = this.extractWeapons(allChampions);
-    const roles = this.extractRoles(allChampions);
-
-    // Find most popular role
-    const roleCount = {};
-    roles.forEach((role) => {
-      roleCount[role] = (roleCount[role] || 0) + 1;
-    });
-    const mostPopularRole = Object.keys(roleCount).reduce(
-      (a, b) => (roleCount[a] > roleCount[b] ? a : b),
-      ""
-    );
-
-    document.getElementById("totalChampions").textContent = allChampions.length;
-    document.getElementById("totalRegions").textContent = allRegions.length;
-    document.getElementById("totalWeapons").textContent = weapons.length;
-    document.getElementById("popularRole").textContent = mostPopularRole || "-";
-  }
-
-  updateRegionStatistics() {
-    const container = document.getElementById("regionStatsContainer");
-    const allRegions = (window.championsDatabase || championsDatabase).regions;
-
-    container.innerHTML = "";
-
-    // Calculate max champions for percentage calculation
-    const regionCounts = allRegions.map((region) => {
-      const existingCount = region.existingChampions
-        ? region.existingChampions.length
-        : 0;
-      const newCount = region.newChampions ? region.newChampions.length : 0;
-      return existingCount + newCount;
-    });
-    const maxCount = Math.max(...regionCounts, 1); // Avoid division by zero
-
-    allRegions.forEach((region) => {
-      const existingCount = region.existingChampions
-        ? region.existingChampions.length
-        : 0;
-      const newCount = region.newChampions ? region.newChampions.length : 0;
-      const totalCount = existingCount + newCount;
-      const percentage = maxCount > 0 ? (totalCount / maxCount) * 100 : 0;
-
-      const regionDiv = document.createElement("div");
-      regionDiv.className = "bg-slate-700 p-4 rounded-lg";
-      regionDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-semibold text-cyan-300">${region.icon} ${region.name}</h4>
-          <span class="text-xl font-bold text-yellow-400">${totalCount}</span>
-        </div>
-        <div class="text-sm text-slate-400">
-          <div>Tướng Cũ: ${existingCount}</div>
-          <div>Tướng Mới: ${newCount}</div>
-        </div>
-        <div class="mt-2 bg-slate-600 rounded-full h-2">
-          <div class="bg-cyan-400 h-2 rounded-full transition-all duration-300" style="width: ${percentage}%"></div>
-        </div>
-      `;
-      container.appendChild(regionDiv);
-    });
-  }
-
-  updateRoleStatistics() {
-    const container = document.getElementById("roleStatsContainer");
-    const allChampions = this.getAllChampions();
-    const roleCount = {};
-    const roleChampions = {};
-
-    allChampions.forEach((champion) => {
-      if (champion.role) {
-        roleCount[champion.role] = (roleCount[champion.role] || 0) + 1;
-
-        if (!roleChampions[champion.role]) {
-          roleChampions[champion.role] = [];
-        }
-        roleChampions[champion.role].push(champion);
-      }
-    });
-
-    container.innerHTML = "";
-
-    if (Object.keys(roleCount).length === 0) {
-      container.innerHTML =
-        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin vai trò</div>';
-      return;
-    }
-
-    const roleIcons = {
-      "Sát Thủ": "🗡️",
-      "Đấu Sĩ": "⚔️",
-      "Pháp Sư": "🧙",
-      "Xạ Thủ": "🏹",
-      "Đỡ Đòn": "🛡️",
-      "Hỗ Trợ": "💚",
-      Tank: "🛡️",
-      Lai: "🔄",
-      "Đa Dạng": "🎭",
+    const genderMap = {
+      male: "Nam",
+      female: "Nữ",
+      "non-binary": "Khác",
+      unknown: "Không rõ",
+      other: "Khác",
     };
 
-    Object.entries(roleCount).forEach(([role, count]) => {
-      const roleDiv = document.createElement("div");
-      roleDiv.className =
-        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
-
-      roleDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-semibold text-blue-300">${
-            roleIcons[role] || "🎭"
-          } ${role}</h4>
-          <span class="text-lg font-bold text-blue-400">${count}</span>
-        </div>
-        <div class="text-sm text-slate-400">Số tướng theo vai trò (nhấn để xem)</div>
-      `;
-
-      // Add click event to show champions with this role
-      roleDiv.addEventListener("click", () => {
-        this.showChampionsForAttribute("Vai trò", role, roleChampions[role]);
-      });
-
-      container.appendChild(roleDiv);
-    });
+    return genderMap[gender.toLowerCase()] || gender;
   }
-
-  updateWeaponStatistics() {
-    const container = document.getElementById("weaponStatsContainer");
-    const allChampions = this.getAllChampions();
-    const weaponCount = {};
-    const weaponChampions = {};
-
-    allChampions.forEach((champion) => {
-      if (champion.weaponSummary) {
-        weaponCount[champion.weaponSummary] =
-          (weaponCount[champion.weaponSummary] || 0) + 1;
-
-        if (!weaponChampions[champion.weaponSummary]) {
-          weaponChampions[champion.weaponSummary] = [];
-        }
-        weaponChampions[champion.weaponSummary].push(champion);
-      }
-    });
-
-    container.innerHTML = "";
-
-    if (Object.keys(weaponCount).length === 0) {
-      container.innerHTML =
-        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin vũ khí</div>';
-      return;
-    }
-
-    Object.entries(weaponCount).forEach(([weapon, count]) => {
-      const weaponDiv = document.createElement("div");
-      weaponDiv.className =
-        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
-      weaponDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-semibold text-orange-300">${weapon}</h4>
-          <span class="text-lg font-bold text-orange-400">${count}</span>
-        </div>
-        <div class="text-sm text-slate-400">Số lượng tướng sử dụng (nhấn để xem)</div>
-      `;
-
-      // Add click event to show champions using this weapon
-      weaponDiv.addEventListener("click", () => {
-        this.showChampionsForWeapon(weapon, weaponChampions[weapon]);
-      });
-
-      container.appendChild(weaponDiv);
-    });
-  }
-  updateGenderStatistics() {
-    const container = document.getElementById("genderStatsContainer");
-    const allChampions = this.getAllChampions();
-    const genderCount = {};
-    const genderChampions = {};
-    allChampions.forEach((champion) => {
-      if (champion.gender) {
-        const simplifiedGender = this.simplifyGender(champion.gender);
-
-        genderCount[simplifiedGender] =
-          (genderCount[simplifiedGender] || 0) + 1;
-
-        if (!genderChampions[simplifiedGender]) {
-          genderChampions[simplifiedGender] = [];
-        }
-        genderChampions[simplifiedGender].push(champion);
-      }
-    });
-
-    container.innerHTML = "";
-
-    if (Object.keys(genderCount).length === 0) {
-      container.innerHTML =
-        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin giới tính</div>';
-      return;
-    }
-
-    const genderIcons = {
-      Nam: "♂️",
-      Nữ: "♀️",
-      "Thú/Sinh vật": "🐾",
-      "Không xác định": "❓",
-    };
-
-    Object.entries(genderCount).forEach(([gender, count]) => {
-      const genderDiv = document.createElement("div");
-      genderDiv.className =
-        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
-
-      const genderIcon = genderIcons[gender] || "❓";
-
-      genderDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-semibold text-pink-300">${genderIcon} ${gender}</h4>
-          <span class="text-lg font-bold text-pink-400">${count}</span>
-        </div>
-        <div class="text-sm text-slate-400">Số tướng theo giới tính (nhấn để xem)</div>
-      `;
-
-      // Add click event to show champions with this gender
-      genderDiv.addEventListener("click", () => {
-        this.showChampionsForAttribute(
-          "Giới tính",
-          gender,
-          genderChampions[gender]
-        );
-      });
-
-      container.appendChild(genderDiv);
-    });
-  }
-
-  updateSpeciesStatistics() {
-    const container = document.getElementById("speciesStatsContainer");
-    const allChampions = this.getAllChampions();
-    const speciesCount = {};
-    const speciesChampions = {};
-
-    allChampions.forEach((champion) => {
-      if (champion.species) {
-        const species = champion.species;
-        speciesCount[species] = (speciesCount[species] || 0) + 1;
-
-        if (!speciesChampions[species]) {
-          speciesChampions[species] = [];
-        }
-        speciesChampions[species].push(champion);
-      }
-    });
-
-    container.innerHTML = "";
-
-    if (Object.keys(speciesCount).length === 0) {
-      container.innerHTML =
-        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin loài</div>';
-      return;
-    }
-
-    const speciesIcons = {
-      "Con người": "👤",
-      Human: "👤",
-      Yordle: "🧚",
-      Vastaya: "🦊",
-      Voidborn: "👾",
-      "Sinh vật Hư Không": "👾",
-      "Thực thể": "👻",
-      "Ma thuật": "✨",
-      Rồng: "🐲",
-      "Tinh linh": "✨",
-      Minotaur: "🐂",
-      Troll: "👹",
-    };
-
-    Object.entries(speciesCount).forEach(([species, count]) => {
-      const speciesDiv = document.createElement("div");
-      speciesDiv.className =
-        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
-
-      // Determine species icon
-      let speciesIcon = "🧬";
-      for (const [key, icon] of Object.entries(speciesIcons)) {
-        if (species.includes(key)) {
-          speciesIcon = icon;
-          break;
-        }
-      }
-
-      speciesDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-semibold text-green-300">${speciesIcon} ${species}</h4>
-          <span class="text-lg font-bold text-green-400">${count}</span>
-        </div>
-        <div class="text-sm text-slate-400">Số tướng theo loài (nhấn để xem)</div>
-      `;
-
-      // Add click event to show champions with this species
-      speciesDiv.addEventListener("click", () => {
-        this.showChampionsForAttribute(
-          "Loài",
-          species,
-          speciesChampions[species]
-        );
-      });
-
-      container.appendChild(speciesDiv);
-    });
-  }
-  updateReleaseYearStatistics() {
-    const container = document.getElementById("releaseYearStatsContainer");
-    const allChampions = this.getAllChampions();
-    const yearCount = {};
-
-    allChampions.forEach((champion) => {
-      if (champion.releaseDate) {
-        // Extract year from releaseDate (format: dd/mm/yyyy)
-        const year = champion.releaseDate.split("/")[2];
-        if (year) {
-          yearCount[year] = (yearCount[year] || 0) + 1;
-        }
-      }
-    });
-
-    container.innerHTML = "";
-
-    if (Object.keys(yearCount).length === 0) {
-      container.innerHTML =
-        '<div class="col-span-full text-center text-slate-400">Chưa có thông tin năm phát hành</div>';
-      return;
-    }
-
-    // Sort years chronologically
-    const sortedYears = Object.keys(yearCount).sort(
-      (a, b) => parseInt(a) - parseInt(b)
-    );
-
-    sortedYears.forEach((year) => {
-      const count = yearCount[year];
-      const yearDiv = document.createElement("div");
-      yearDiv.className =
-        "bg-slate-700 p-4 rounded-lg cursor-pointer hover:bg-slate-600 transition-colors";
-
-      yearDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-semibold text-yellow-300">📅 ${year}</h4>
-          <span class="text-lg font-bold text-yellow-400">${count}</span>
-        </div>
-        <div class="text-sm text-slate-400">Số tướng phát hành (nhấn để xem)</div>
-      `;
-
-      // Add click event to show champions released in this year
-      yearDiv.addEventListener("click", () => {
-        const championsOfYear = allChampions.filter(
-          (c) => c.releaseDate && c.releaseDate.split("/")[2] === year
-        );
-        this.showChampionsForAttribute("Năm phát hành", year, championsOfYear);
-      });
-
-      container.appendChild(yearDiv);
-    });
-  }
-
-  showChampionsForWeapon(weaponName, champions) {
-    // Create a modal backdrop
-    const backdrop = document.createElement("div");
-    backdrop.className =
-      "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4";
-    backdrop.style.zIndex = "9999";
-
-    // Create modal content
-    const modal = document.createElement("div");
-    modal.className =
-      "bg-slate-800 rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto border border-slate-600 shadow-2xl";
-
-    modal.innerHTML = `
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-semibold text-orange-300">Tướng sử dụng: ${weaponName}</h3>
-        <button onclick="closeWeaponChampionsModal()" class="text-slate-400 hover:text-white text-xl font-bold">
-          ×
-        </button>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="weaponChampionsGrid">
-        ${champions
-          .map(
-            (champion) => `
-          <div class="bg-slate-700 rounded-lg p-3 cursor-pointer hover:bg-slate-600 transition-colors champion-card-mini" 
-               onclick="openChampionModalFromWeapon('${champion.name}', '${
-              champion.region
-            }')">
-            <div class="aspect-square bg-slate-600 rounded-lg mb-2 overflow-hidden">
-              ${
-                champion.image
-                  ? `<img src="${champion.image}" alt="${champion.name}" class="w-full h-full object-cover">`
-                  : `<div class="w-full h-full flex items-center justify-center text-slate-400">
-                  <span class="text-2xl">🛡️</span>
-                </div>`
-              }
-            </div>
-            <h4 class="text-white font-semibold text-sm text-center mb-1">${
-              champion.name
-            }</h4>
-            <p class="text-slate-400 text-xs text-center">${champion.region}</p>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
-      <div class="mt-6 text-right">
-        <button onclick="closeWeaponChampionsModal()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded transition-colors">
-          Đóng
-        </button>
-      </div>
-    `;
-
-    backdrop.appendChild(modal);
-    document.body.appendChild(backdrop);
-
-    // Close modal when clicking backdrop
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) {
-        closeWeaponChampionsModal();
-      }
-    });
-
-    // Store reference for closing
-    window.currentWeaponChampionsModal = backdrop;
-  }
-
-  showChampionsForAttribute(attributeType, attributeValue, champions) {
-    // Create a modal backdrop
-    const backdrop = document.createElement("div");
-    backdrop.className =
-      "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4";
-    backdrop.style.zIndex = "9999";
-
-    // Create modal content
-    const modal = document.createElement("div");
-    modal.className =
-      "bg-slate-800 rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto border border-slate-600 shadow-2xl";
-
-    modal.innerHTML = `
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-semibold text-cyan-300">${attributeType}: ${attributeValue}</h3>
-        <button onclick="closeAttributeChampionsModal()" class="text-slate-400 hover:text-white text-xl font-bold">
-          ×
-        </button>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="attributeChampionsGrid">
-        ${champions
-          .map(
-            (champion) => `
-          <div class="bg-slate-700 rounded-lg p-3 cursor-pointer hover:bg-slate-600 transition-colors champion-card-mini" 
-               onclick="openChampionModalFromAttribute('${champion.name}', '${
-              champion.region
-            }')">
-            <div class="aspect-square bg-slate-600 rounded-lg mb-2 overflow-hidden">
-              ${
-                champion.image
-                  ? `<img src="${champion.image}" alt="${champion.name}" class="w-full h-full object-cover">`
-                  : `<div class="w-full h-full flex items-center justify-center text-slate-400">
-                  <span class="text-2xl">🛡️</span>
-                </div>`
-              }
-            </div>
-            <h4 class="text-white font-semibold text-sm text-center mb-1">${
-              champion.name
-            }</h4>
-            <p class="text-slate-400 text-xs text-center">${champion.region}</p>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
-      <div class="mt-6 text-right">
-        <button onclick="closeAttributeChampionsModal()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded transition-colors">
-          Đóng
-        </button>
-      </div>
-    `;
-
-    backdrop.appendChild(modal);
-    document.body.appendChild(backdrop);
-
-    // Close modal when clicking backdrop
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) {
-        closeAttributeChampionsModal();
-      }
-    });
-
-    // Store reference for closing
-    window.currentAttributeChampionsModal = backdrop;
-  }
-
-  getAllChampions() {
-    // Get all champions from all regions and types
-    const allChampions = [];
-    const regions = [
-      "demacia",
-      "ionia",
-      "noxus",
-      "piltover",
-      "shadowisles",
-      "void",
-      "special",
-    ];
-
-    regions.forEach((region) => {
-      // Get existing champions
-      const existingChampions = this.db.getChampions(region, "old");
-      if (existingChampions && existingChampions.length > 0) {
-        allChampions.push(...existingChampions);
-      }
-
-      // Get new champions
-      const newChampions = this.db.getChampions(region, "new");
-      if (newChampions && newChampions.length > 0) {
-        allChampions.push(...newChampions);
-      }
-    });
-
-    return allChampions;
-  }
-
-  extractWeapons(champions) {
-    const weapons = new Set();
-    champions.forEach((champion) => {
-      if (champion.weaponSummary) {
-        weapons.add(champion.weaponSummary);
-      }
-    });
-    return Array.from(weapons);
-  }
-
-  extractRoles(champions) {
-    return champions.map((champion) => champion.role).filter((role) => role);
-  }
-
-  simplifyGender(genderText) {
-    if (!genderText) return "Không xác định";
-
-    const genderLower = genderText.toLowerCase();
-
-    // Phân loại giới tính đơn giản
-    if (genderLower.includes("nam") || genderLower.includes("he/him")) {
-      return "Nam";
-    } else if (genderLower.includes("nữ") || genderLower.includes("she/her")) {
-      return "Nữ";
-    } else if (
-      genderLower.includes("sinh vật") ||
-      genderLower.includes("quái vật") ||
-      genderLower.includes("thú") ||
-      genderLower.includes("rồng") ||
-      genderLower.includes("alien") ||
-      genderLower.includes("creature") ||
-      genderLower.includes("voidborn")
-    ) {
-      return "Thú/Sinh vật";
-    }
-
-    return "Không xác định";
-  }
-<<<<<<< HEAD
-=======
-  // Function to get detailed lore connection descriptions
-  getLoreConnectionDescription(championName, connectionName) {
-    // Special detailed descriptions for Bel'Veth's connections
-    if (championName === "Bel'Veth") {
-      const connections = {
-        Malzahar:
-          "Đồng minh chiến lược: Malzahar - Nhà tiên tri trung thành, đã chuyển từ phục vụ Kẻ Giám Sát sang phục vụ Bel'Veth. Anh ta 'khá ổn với ý tưởng phục vụ Bel'Veth' và có thể đã hứa thành phố Belveth để giúp cô ta có được hình dạng vật lý.",
-        "Kai'Sa":
-          "Mục tiêu thuyết phục: Kai'Sa - Bel'Veth cố gắng lôi kéo Kai'Sa, nhận thấy giá trị của một con người đã thích nghi với Hư Không. Trong câu chuyện 'Pinwheel', cô ta sử dụng thuyết phục tâm lý thay vì vũ lực.",
-        Lissandra:
-          "Liên minh tiềm năng: Lissandra - Mối quan hệ dựa trên sự đối lập chung với Kẻ Giám Sát. Lissandra đã phản bội và giam cầm Kẻ Giám Sát, trong khi Bel'Veth muốn tiêu diệt chúng - tạo ra động thái 'kẻ thù của kẻ thù là bạn'.",
-        "Vel'Koz":
-          "Đối thủ trí tuệ: Vel'Koz - Sự xuất hiện của Bel'Veth đã 'làm giảm các đặc điểm độc đáo của Vel'Koz' và 'làm anh ta sợ hãi'. Cô ta đại diện cho 'biến số không thể đoán trước' thách thức sự hiểu biết logic của anh ta về Hư Không.",
-        "Kẻ Giám Sát":
-          "Kẻ thù truyền kiếp: Kẻ Giám Sát - Mục tiêu chính của Bel'Veth là 'tiêu diệt cả Runeterra và lãnh địa của những kẻ khai sinh ra cô ấy, Kẻ Giám Sát'. Cô ta đại diện cho sự tiến hóa và phản kháng chống lại trật tự cũ của Hư Không.",
-      };
-      return connections[connectionName] || "Liên kết cốt truyện";
-    }
-
-    // Default description for other champions
-    return "Liên kết cốt truyện";
-  }
-
-  // Function to get skin themes
-  getSkinThemes() {
-    return {
-      PROJECT: {
-        name: "PROJECT",
-        description: "Futuristic cyberpunk themed skins",
-        color: "#00d4ff",
-        champions: ["Akali", "Ashe", "Yasuo", "Jinx", "Lucian"],
-      },
-      "K/DA": {
-        name: "K/DA",
-        description: "Pop star virtual band themed skins",
-        color: "#ff69b4",
-        champions: ["Ahri", "Akali", "Evelynn", "Kai'Sa"],
-      },
-      "Blood Moon": {
-        name: "Blood Moon",
-        description: "Traditional Japanese demon festival themed skins",
-        color: "#dc143c",
-        champions: ["Aatrox", "Akali", "Diana", "Jhin", "Thresh"],
-      },
-      Cosmic: {
-        name: "Cosmic",
-        description: "Space and cosmic themed skins",
-        color: "#9370db",
-        champions: ["Ashe", "Bel'Veth", "Lulu", "Varus"],
-      },
-      "High Noon": {
-        name: "High Noon",
-        description: "Western cowboy themed skins",
-        color: "#d2691e",
-        champions: ["Ashe", "Jhin", "Lucian", "Thresh", "Yasuo"],
-      },
-      Elderwood: {
-        name: "Elderwood",
-        description: "Nature and forest themed skins",
-        color: "#228b22",
-        champions: ["Ahri", "Azir", "Bard", "Nocturne"],
-      },
-      "Star Guardian": {
-        name: "Star Guardian",
-        description: "Magical girl anime themed skins",
-        color: "#ff1493",
-        champions: ["Ahri", "Akali", "Jinx", "Lux", "Miss Fortune"],
-      },
-    };
-  } // Function to get skin section for champion modal
   getSkinSection(champion) {
-    // Đảm bảo skinService được khởi tạo
-    if (!window.skinService) {
-      window.skinService = new SkinService();
-    }
+    if (!window.skinService) return "";
 
-    const skinService = window.skinService;
+    const championKey = this.getChampionKeyForAPI(champion.name);
+    const skins = window.skinService.getSkinsForChampion(championKey);
 
-    if (!skinService || !skinService.skins || skinService.skins.length === 0) {
-      return `
-        <div class="mt-6">
-          <h4 class="text-lg font-semibold text-rose-300 mb-3">🎨 Skin Trang Phục:</h4>
-          <div class="bg-rose-900/30 p-4 rounded-lg border border-rose-600/50">
-            <p class="text-sm text-rose-100">Đang tải dữ liệu skin...</p>            
-            <button onclick="window.skinService.loadSkinsData().then(() => location.reload())" 
-                    class="mt-3 text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded transition-colors">
-              Tải skin data
-            </button>
-          </div>
-        </div>
-      `;
-    } // Lấy skin của champion và loại bỏ default skin
-    let championSkins = window.skinService.getSkinsByChampion(champion.name);
-
-    // Filter out default/classic skins
-    championSkins = championSkins.filter(
-      (skin) =>
-        !skin.name.toLowerCase().includes("default") &&
-        !skin.name.toLowerCase().includes("classic") &&
-        skin.name !== champion.name
-    );
-
-    if (!championSkins || championSkins.length === 0) {
-      return `
-        <div class="mt-6">
-          <h4 class="text-lg font-semibold text-rose-300 mb-3">🎨 Skin Trang Phục:</h4>
-          <div class="bg-rose-900/30 p-4 rounded-lg border border-rose-600/50">
-            <p class="text-sm text-rose-100">Chưa có thông tin về skin cho tướng này.</p>            
-            <button onclick="window.runeterra.loadMoreSkins('${champion.name}')" 
-                    class="mt-3 text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded transition-colors">
-              Tìm kiếm skin
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Sắp xếp skin theo rarity và tên
-    championSkins.sort((a, b) => {
-      const rarityOrder = {
-        ultimate: 5,
-        legendary: 4,
-        epic: 3,
-        rare: 2,
-        common: 1,
-      };
-      const aRarity = rarityOrder[a.rarity.toLowerCase()] || 0;
-      const bRarity = rarityOrder[b.rarity.toLowerCase()] || 0;
-
-      if (aRarity !== bRarity) return bRarity - aRarity;
-      return a.name.localeCompare(b.name);
-    });
-
-    const skinsHtml = championSkins
-      .map(
-        (skin) => `
-      <div class="skin-card bg-slate-700/50 p-4 rounded-lg border border-rose-600/30 hover:border-rose-500/60 transition-all transform hover:scale-105">
-        <div class="aspect-video bg-slate-600 rounded-lg overflow-hidden mb-3">
-          <img src="${skin.splashArt}" alt="${skin.name}" 
-               class="w-full h-full object-cover"
-               onerror="this.src='https://via.placeholder.com/300x169/444/fff?text=${encodeURIComponent(
-                 skin.name
-               )}'">
-        </div>
-        <div class="space-y-2">
-          <h5 class="text-rose-300 font-medium text-sm truncate" title="${
-            skin.name
-          }">
-            ${skin.name}
-          </h5>
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-slate-400 px-2 py-1 bg-slate-600/50 rounded">${
-              skin.theme
-            }</span>
-            <span class="text-rose-400 font-bold">${skin.price.toLocaleString()} RP</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="rarity-badge ${skin.rarity.toLowerCase()} text-xs px-2 py-1 rounded font-medium">
-              ${skin.rarity.toUpperCase()}
-            </span>
-            <button onclick="skinThemesManager.showSkinPreview(${skin.id})" 
-                    class="text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded transition-colors">
-              Xem chi tiết
-            </button>
-          </div>
-        </div>
-        <p class="text-xs text-slate-400 mt-2 line-clamp-2" title="${
-          skin.description
-        }">
-          ${skin.description}
-        </p>
-      </div>
-    `
-      )
-      .join("");
-
-    const totalValue = championSkins.reduce((sum, skin) => sum + skin.price, 0);
-    const avgPrice = Math.round(totalValue / championSkins.length);
+    if (!skins || skins.length === 0) return "";
 
     return `
       <div class="mt-6">
-        <h4 class="text-lg font-semibold text-rose-300 mb-3 flex items-center gap-2">
-          🎨 Skin Trang Phục 
-          <span class="bg-rose-800/50 px-2 py-1 rounded text-xs">${
-            championSkins.length
-          } skins</span>
-        </h4>
-        <div class="bg-rose-900/20 p-4 rounded-lg border border-rose-600/50">
-          <!-- Skin stats -->
-          <div class="flex flex-wrap gap-4 mb-4 text-sm">
-            <div class="bg-rose-800/50 px-3 py-2 rounded flex items-center gap-2">
-              <span class="text-rose-200">💰 Tổng giá trị:</span>
-              <span class="text-rose-100 font-bold">${totalValue.toLocaleString()} RP</span>
+        <h4 class="text-lg font-semibold text-blue-300 mb-3">🎨 Skins</h4>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          ${skins
+            .slice(0, 6)
+            .map(
+              (skin) => `
+            <div class="bg-slate-700/50 p-3 rounded-lg">
+              <img 
+                src="${
+                  skin.image ||
+                  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE2OSIgdmlld0JveD0iMCAwIDMwMCAxNjkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNjkiIGZpbGw9IiM0NDQiLz48dGV4dCB4PSIxNTAiIHk9Ijg0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZmlsbD0iI2ZmZiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0Ij4ke champion.name}</text></svg>"
+                }" 
+                alt="${skin.name}" 
+                class="w-full h-20 object-cover rounded"
+                loading="lazy"
+                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE2OSIgdmlld0JveD0iMCAwIDMwMCAxNjkiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxNjkiIGZpbGw9IiM0NDQiLz48dGV4dCB4PSIxNTAiIHk9Ijg0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZmlsbD0iI2ZmZiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0Ij4ke champion.name}</text></svg>'"
+              >
+              <p class="text-xs text-slate-300 mt-2 truncate">${skin.name}</p>
+              <p class="text-xs text-blue-400">${skin.rarity || "Standard"}</p>
             </div>
-            <div class="bg-rose-800/50 px-3 py-2 rounded flex items-center gap-2">
-              <span class="text-rose-200">📊 Giá trung bình:</span>
-              <span class="text-rose-100 font-bold">${avgPrice.toLocaleString()} RP</span>
-            </div>
-          </div>
-          
-          <!-- Skins grid với layout mới -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
-            ${skinsHtml}
-          </div>
-          
-          <!-- Action buttons -->
-          <div class="mt-4 flex flex-wrap gap-2 justify-center">
-            <button onclick="window.runeterra.showAllSkinsForChampion('${
-              champion.name
-            }')" 
-                    class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded transition-colors flex items-center gap-2">
-              <span>🔍</span> Xem tất cả skin của ${champion.name}
-            </button>
-            <button onclick="window.runeterra.showSkinThemes()" 
-                    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors flex items-center gap-2">
-              <span>🎭</span> Xem chủ đề skin
-            </button>
-          </div>
+          `
+            .join("")}
         </div>
+        ${
+          skins.length > 6
+            ? `<p class="text-sm text-slate-400 mt-2">và ${
+                skins.length - 6
+              } skins khác...</p>`
+            : ""
+        }
       </div>
     `;
   }
-  // Load skin themes section
-  async loadSkinThemes() {
-    console.log("Loading skin themes...");
-    const container = document.getElementById("skinThemesGrid");
-    if (!container) {
-      console.error("Skin themes container not found!");
+  getFunFactsAndSpecialFeaturesHtml(champion) {
+    // Combine fun facts from multiple possible sources
+    let funFacts = [];
+    
+    // Add from funFacts array if it exists
+    if (champion.funFacts && Array.isArray(champion.funFacts) && champion.funFacts.length > 0) {
+      funFacts = [...funFacts, ...champion.funFacts];
+    }
+    
+    // Add from specialFeatures array if it exists
+    if (champion.specialFeatures && Array.isArray(champion.specialFeatures) && champion.specialFeatures.length > 0) {
+      funFacts = [...funFacts, ...champion.specialFeatures];
+    }
+    
+    // If no fun facts found, add placeholder data
+    if (funFacts.length === 0) {
+      funFacts = ["Thông tin đang được cập nhật.", "Điểm đặc biệt sẽ được bổ sung sau."];
+    }
+
+    return `
+      <h3 class="text-lg font-semibold text-amber-300 mb-4">✨ Fun Facts & Điểm Đặc Biệt</h3>
+      <div class="bg-amber-900/30 p-4 rounded-lg border border-amber-600/50">
+        <ul class="space-y-2 list-disc list-inside">
+          ${funFacts.map(fact => 
+            `<li class="text-amber-100 text-sm leading-relaxed">${fact}</li>`
+          ).join("")}
+        </ul>
+      </div>
+    `;
+  }
+  getLoreConnectionDescription(championName, connectionName) {
+    // Enhanced lore connection descriptions based on common Runeterra relationships
+    const connectionType = this.detectConnectionType(championName, connectionName);
+    
+    switch(connectionType) {
+      case "ally":
+        return `${championName} và ${connectionName} là đồng minh trong nhiều cuộc chiến tại Runeterra.`;
+      case "rival":
+        return `${championName} và ${connectionName} có mối quan hệ đối địch và cạnh tranh.`;
+      case "family":
+        return `${championName} có mối quan hệ họ hàng/gia đình với ${connectionName}.`;
+      case "mentor":
+        return `${championName} từng được hướng dẫn hoặc có mối quan hệ thầy trò với ${connectionName}.`;
+      case "enemy":
+        return `${championName} và ${connectionName} là kẻ thù truyền kiếp.`;
+      default:
+        return `${championName} có mối liên kết cốt truyện với ${connectionName}. Chi tiết đang được cập nhật.`;
+    }
+  }
+  
+  detectConnectionType(champion1, champion2) {
+    // This would ideally come from actual data, but for now we'll randomly assign a type
+    // to demonstrate the feature
+    const connectionTypes = ["ally", "rival", "family", "mentor", "enemy"];
+    const randomIndex = Math.floor(Math.random() * connectionTypes.length);
+    return connectionTypes[randomIndex];
+  }
+
+  // Handle form submissions and other functionality
+  handleAddChampionExtended(e) {
+    e.preventDefault();
+    console.log("Add champion form submitted");
+    // Implement champion addition logic here
+  }
+
+  // Additional placeholder methods that might be called
+  downloadDatabase() {
+    console.log("Download database clicked");
+  }
+  uploadDatabase() {
+    console.log("Upload database clicked");
+  }
+  handleFileUpload(e) {
+    console.log("File upload:", e.target.files);
+  }
+  resetDatabase() {
+    console.log("Reset database clicked");
+  }
+  showStats() {
+    console.log("Show stats clicked");
+  }
+  clearTranslationCache() {
+    console.log("Clear translation cache clicked");
+  }
+
+  // Phương thức để làm mới dữ liệu skin
+  async refreshSkinsData() {
+    if (!window.skinService) {
+      alert("Không thể tìm thấy dịch vụ quản lý skin!");
       return;
     }
 
-    // Initialize skin themes manager if not already done
-    if (!window.skinThemesManager) {
-      window.skinThemesManager = new SkinThemesManager();
+    try {
+      // Gọi phương thức làm mới dữ liệu từ SkinService
+      await window.skinService.refreshSkinData();
+
+      // Cập nhật giao diện nếu đang ở tab skin theme
+      if (this.currentChampionType === "skinThemes") {
+        this.loadChampions();
+      }
+    } catch (error) {
+      console.error("❌ Lỗi khi làm mới dữ liệu skin:", error);
+      alert("Có lỗi xảy ra khi cập nhật dữ liệu skin. Vui lòng thử lại sau.");
+    }
+  }
+
+  // Dev Mode functions
+  toggleDevMode() {
+    if (!this.devModeActive) {
+      this.devModeActive = true;
+      this.addEditButtonsToCards();
+      document.getElementById("editModeBtn").innerHTML =
+        "<span>🔧</span><span>Thoát Dev</span>";
+      document
+        .getElementById("editModeBtn")
+        .classList.remove("bg-yellow-600", "hover:bg-yellow-700");
+      document
+        .getElementById("editModeBtn")
+        .classList.add("bg-red-600", "hover:bg-red-700");
+      console.log("✅ Dev mode activated");
+    } else {
+      this.devModeActive = false;
+      this.removeEditButtonsFromCards();
+      document.getElementById("editModeBtn").innerHTML =
+        "<span>✏️</span><span>Chế độ Dev</span>";
+      document
+        .getElementById("editModeBtn")
+        .classList.remove("bg-red-600", "hover:bg-red-700");
+      document
+        .getElementById("editModeBtn")
+        .classList.add("bg-yellow-600", "hover:bg-yellow-700");
+      console.log("❌ Dev mode deactivated");
+    }
+  }
+
+  addEditButtonsToCards() {
+    document.querySelectorAll(".champion-card").forEach((card) => {
+      if (!card.querySelector(".edit-champion-btn")) {
+        const editBtn = document.createElement("button");
+        editBtn.className =
+          "edit-champion-btn absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 transition-colors z-10";
+        editBtn.innerHTML = "✏️";
+        editBtn.title = "Sửa thông tin tướng";
+        editBtn.onclick = (e) => {
+          e.stopPropagation();
+          const championName = card.querySelector("h3").textContent;
+          this.openEditModalForChampion(championName);
+        };
+        card.style.position = "relative";
+        card.appendChild(editBtn);
+      }
+    });
+  }
+
+  removeEditButtonsFromCards() {
+    document
+      .querySelectorAll(".edit-champion-btn")
+      .forEach((btn) => btn.remove());
+  }
+
+  openEditModalForChampion(championName) {
+    // Find the champion in database
+    const champion = this.findChampionByName(championName);
+    if (champion) {
+      this.openEditModal(champion);
+    } else {
+      alert(`Không tìm thấy tướng: ${championName}`);
+    }
+  }
+
+  findChampionByName(name) {
+    const database = window.championsDatabase || championsDatabase;
+    for (const region of database.regions) {
+      const existingChamp = region.existingChampions?.find(
+        (c) => c.name === name
+      );
+      if (existingChamp)
+        return { ...existingChamp, regionId: region.id, type: "existing" };
+
+      const newChamp = region.newChampions?.find((c) => c.name === name);
+      if (newChamp) return { ...newChamp, regionId: region.id, type: "new" };
+    }
+    return null;
+  }
+  openEditModal(champion) {
+    console.log("=== OPENING EDIT MODAL ===");
+    const modal = document.getElementById("editChampionModal");
+    if (!modal) {
+      console.error("❌ Edit modal not found!");
+      alert("Không tìm thấy form sửa tướng!");
+      return;
     }
 
-    // Load and display skin themes
-    await skinThemesManager.initializeThemes();
-  }
+    try {
+      // Store champion for editing
+      this.currentEditingChampion = champion;
+      console.log("Đang mở modal sửa cho tướng:", champion.name);
+      console.log("Dữ liệu tướng:", champion);
 
-  // Helper functions for skin interactions
-  showAllSkinsForChampion(championName) {
-    // Switch to skin themes tab and filter by champion
-    this.switchChampionType("skinThemes");
-    // You can add more specific filtering logic here
-    console.log("Showing all skins for:", championName);
-  }
+      // Populate form with champion data
+      this.populateEditForm(champion);
 
-  showSkinThemes() {
-    // Switch to skin themes tab
-    this.switchChampionType("skinThemes");
-  }
+      // Hiển thị modal
+      modal.classList.remove("hidden");
+      console.log("✅ Đã mở modal sửa tướng thành công");
 
-  loadMoreSkins(championName) {
-    // Trigger skin loading if not already loaded
-    if (skinService && !skinService.loading && skinService.skins.length === 0) {
-      skinService.loadSkinsData().then(() => {
-        // Refresh the modal if still open
-        console.log("Skins loaded, refreshing modal for:", championName);
+      // Cuộn lên đầu modal
+      setTimeout(() => {
+        const modalContent = modal.querySelector(".modal-content");
+        if (modalContent) {
+          modalContent.scrollTop = 0;
+        }
+      }, 100);
+    } catch (error) {
+      console.error("❌ Lỗi khi mở modal sửa tướng:", error);
+      alert("Đã xảy ra lỗi khi mở form sửa tướng. Vui lòng thử lại.");
+    }
+  }
+  populateEditForm(champion) {
+    console.log("=== POPULATING EDIT FORM ===");
+
+    // Fill basic info - mapping to actual HTML field IDs
+    const fieldMappings = {
+      editChampionName: "name",
+      editChampionFullName: "fullName",
+      editChampionIcon: "icon",
+      editChampionRole: "role",
+      editChampionSpecies: "species",
+      editChampionGender: "gender",
+      editChampionAge: "age",
+      editChampionWeaponSummary: "weaponSummary",
+      editChampionLore: "lore",
+      editChampionFullLore: "fullLore",
+      editChampionGameplay: "gameplay",
+    };
+
+    Object.entries(fieldMappings).forEach(([fieldId, propName]) => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        // Đảm bảo vẫn hiển thị trường ngay cả khi giá trị là null/undefined
+        field.value = champion[propName] || "";
+        console.log(`Đã thiết lập ${fieldId} = ${field.value}`);
+      } else {
+        console.warn(`❌ Không tìm thấy trường ${fieldId}`);
+      }
+    });
+
+    // Populate skills
+    this.clearEditSkills();
+    if (champion.skills && champion.skills.length > 0) {
+      champion.skills.forEach((skill) => {
+        this.addEditSkillField(
+          typeof skill === "string"
+            ? skill
+            : `${skill.name}: ${skill.description}`
+        );
       });
     }
-  }
->>>>>>> 6981fd5 (cào dữ liệu)
-}
 
-// Global function to show weapon detail in a popup
-function showWeaponDetail(weaponText, buttonElement) {
-  // Create a modal backdrop
-  const backdrop = document.createElement("div");
-  backdrop.className =
-    "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4";
-  backdrop.style.zIndex = "9999";
-
-  // Create modal content
-  const modal = document.createElement("div");
-  modal.className =
-    "bg-slate-800 rounded-lg p-6 max-w-md w-full border border-slate-600 shadow-2xl";
-
-  modal.innerHTML = `
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold text-cyan-300">Chi Tiết Vũ Khí</h3>
-      <button onclick="closeWeaponDetail()" class="text-slate-400 hover:text-white text-xl font-bold">
-        ×
-      </button>
-    </div>
-    <div class="bg-slate-700/50 p-4 rounded-lg">
-      <p class="text-slate-300 text-sm leading-relaxed">${weaponText}</p>
-    </div>
-    <div class="mt-4 text-right">
-      <button onclick="closeWeaponDetail()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded transition-colors">
-        Đóng
-      </button>
-    </div>
-  `;
-
-  backdrop.appendChild(modal);
-  document.body.appendChild(backdrop);
-
-  // Close modal when clicking backdrop
-  backdrop.addEventListener("click", (e) => {
-    if (e.target === backdrop) {
-      closeWeaponDetail();
+    // Populate special features
+    this.clearEditFeatures();
+    if (champion.specialFeatures && champion.specialFeatures.length > 0) {
+      champion.specialFeatures.forEach((feature) => {
+        this.addEditFeatureField(feature);
+      });
     }
-  });
 
-  // Store reference for closing
-  window.currentWeaponModal = backdrop;
-}
-
-// Global function to close weapon detail modal
-function closeWeaponDetail() {
-  if (window.currentWeaponModal) {
-    document.body.removeChild(window.currentWeaponModal);
-    window.currentWeaponModal = null;
+    // Store champion data for later use
+    this.currentEditingChampion = champion;
   }
-}
 
-// Global function to close weapon champions modal
-function closeWeaponChampionsModal() {
-  if (window.currentWeaponChampionsModal) {
-    document.body.removeChild(window.currentWeaponChampionsModal);
-    window.currentWeaponChampionsModal = null;
+  addEditSkillField(value = "") {
+    const container = document.getElementById("editSkillsContainer");
+    if (!container) return;
+
+    const skillDiv = document.createElement("div");
+    skillDiv.className = "skill-field flex items-center space-x-2";
+    skillDiv.innerHTML = `
+      <input type="text" class="skill-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-cyan-500" placeholder="Nhập kỹ năng" value="${value}">
+      <button type="button" onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
+    `;
+    container.appendChild(skillDiv);
   }
-}
 
-// Global function to open champion modal from weapon champions list
-function openChampionModalFromWeapon(championName, championRegion) {
-  // Close the weapon champions modal first
-  closeWeaponChampionsModal();
+  addEditFeatureField(value = "") {
+    const container = document.getElementByElementById("editFeaturesContainer");
+    if (!container) return;
 
-  // Find the champion in the app
-  if (window.runeterra) {
-    const allChampions = window.runeterra.getAllChampions();
-    const champion = allChampions.find(
-      (c) => c.name === championName && c.region === championRegion
+    const featureDiv = document.createElement("div");
+    featureDiv.className = "feature-field flex items-center space-x-2";
+    featureDiv.innerHTML = `
+      <input type="text" class="feature-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-amber-500" placeholder="Nhập điểm đặc biệt" value="${value}">
+      <button type="button" onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
+    `;
+    container.appendChild(featureDiv);
+  }
+
+  addEditConnectionField(value = "") {
+    const container = document.getElementById("editConnectionsContainer");
+    if (!container) return;
+
+    const connectionDiv = document.createElement("div");
+    connectionDiv.className = "connection-field flex items-center space-x-2";
+    connectionDiv.innerHTML = `
+      <input type="text" class="connection-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-pink-500" placeholder="Nhập liên kết cốt truyện" value="${value}">
+      <button type="button" onclick="this.parentElement.remove()" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
+    `;
+    container.appendChild(connectionDiv);
+  }
+
+  closeEditModal() {
+    document.getElementById("editChampionModal")?.classList.add("hidden");
+    this.currentEditingChampion = null;
+  }
+  handleEditChampion(e) {
+    e.preventDefault();
+    console.log("=== HANDLING EDIT CHAMPION FORM ===");
+
+    if (!this.currentEditingChampion) {
+      alert("Không có tướng nào được chọn để sửa!");
+      return;
+    }
+
+    try {
+      // Thu thập dữ liệu từ form
+      const formData = {};
+
+      // Thu thập thông tin cơ bản
+      const basicFields = [
+        "name",
+        "fullName",
+        "icon",
+        "role",
+        "species",
+        "gender",
+        "age",
+        "weaponSummary",
+        "lore",
+        "fullLore",
+        "gameplay",
+      ];
+
+      basicFields.forEach((field) => {
+        const inputId =
+          "editChampion" + field.charAt(0).toUpperCase() + field.slice(1);
+        const input = document.getElementById(inputId);
+        if (input && input.value.trim()) {
+          formData[field] = input.value.trim();
+        }
+      });
+
+      // Thu thập kỹ năng
+      formData.skills = [];
+      document
+        .querySelectorAll("#editSkillsContainer .skill-input")
+        .forEach((input) => {
+          if (input.value.trim()) {
+            formData.skills.push(input.value.trim());
+          }
+        });
+
+      // Thu thập điểm đặc biệt
+      formData.specialFeatures = [];
+      document
+        .querySelectorAll("#editFeaturesContainer .feature-input")
+        .forEach((input) => {
+          if (input.value.trim()) {
+            formData.specialFeatures.push(input.value.trim());
+          }
+        });
+
+      // Thu thập liên kết cốt truyện
+      formData.loreConnections = [];
+      document
+        .querySelectorAll("#editConnectionsContainer .connection-input")
+        .forEach((input) => {
+          if (input.value.trim()) {
+            formData.loreConnections.push(input.value.trim());
+          }
+        });
+
+      console.log("Collected form data:", formData);
+
+      // Cập nhật tướng trong cơ sở dữ liệu
+      const success = this.updateChampionInDatabase(
+        this.currentEditingChampion,
+        formData
+      );
+
+      if (success) {
+        // Đóng modal và làm mới hiển thị
+        this.closeEditModal();
+        this.loadChampions();
+        alert("✅ Đã cập nhật thông tin tướng thành công!");
+      } else {
+        alert("❌ Không thể cập nhật thông tin tướng. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("❌ Lỗi khi xử lý form sửa tướng:", error);
+      alert("Đã xảy ra lỗi khi lưu thông tin tướng. Vui lòng thử lại.");
+    }
+  }
+  collectEditFormData() {
+    const data = {};
+
+    // Basic fields - mapping to actual HTML field IDs
+    const fieldMappings = {
+      editChampionName: "name",
+      editChampionFullName: "fullName",
+      editChampionIcon: "icon",
+      editChampionRole: "role",
+      editChampionSpecies: "species",
+      editChampionGender: "gender",
+      editChampionAge: "age",
+      editChampionWeaponSummary: "weaponSummary",
+      editChampionLore: "lore",
+      editChampionFullLore: "fullLore",
+      editChampionGameplay: "gameplay",
+    };
+
+    Object.entries(fieldMappings).forEach(([fieldId, propName]) => {
+      const field = document.getElementById(fieldId);
+      if (field && field.value.trim()) {
+        data[propName] = field.value.trim();
+      }
+    });
+
+    // Skills
+    data.skills = [];
+    document
+      .querySelectorAll("#editSkillsContainer .skill-input")
+      .forEach((input) => {
+        if (input.value.trim()) {
+          data.skills.push(input.value.trim());
+        }
+      });
+
+    // Special features
+    data.specialFeatures = [];
+    document
+      .querySelectorAll("#editFeaturesContainer .feature-input")
+      .forEach((input) => {
+        if (input.value.trim()) {
+          data.specialFeatures.push(input.value.trim());
+        }
+      });
+
+    // Lore connections
+    data.loreConnections = [];
+    document
+      .querySelectorAll("#editConnectionsContainer .connection-input")
+      .forEach((input) => {
+        if (input.value.trim()) {
+          data.loreConnections.push(input.value.trim());
+        }
+      });
+
+    return data;
+  }
+  updateChampionInDatabase(champion, newData) {
+    console.log("=== UPDATING CHAMPION IN DATABASE ===");
+    console.log("Updating champion:", champion.name);
+    console.log("With new data:", newData);
+
+    try {
+      const database = window.championsDatabase || championsDatabase;
+      if (!database || !database.regions) {
+        console.error("❌ Database or database.regions not found!");
+        return false;
+      }
+
+      // Tìm vùng và tướng
+      let found = false;
+
+      for (const region of database.regions) {
+        // Kiểm tra trong danh sách tướng cũ
+        if (region.existingChampions) {
+          const championIndex = region.existingChampions.findIndex(
+            (c) => c.name === champion.name
+          );
+          if (championIndex !== -1) {
+            // Cập nhật dữ liệu tướng
+            Object.assign(region.existingChampions[championIndex], newData);
+            region.existingChampions[championIndex].lastUpdated =
+              new Date().toISOString();
+            console.log(
+              `✅ Đã cập nhật tướng ${champion.name} trong vùng ${region.name} (Tướng cũ)`
+            );
+            found = true;
+            break;
+          }
+        }
+
+        // Kiểm tra trong danh sách tướng mới
+        if (region.newChampions) {
+          const championIndex = region.newChampions.findIndex(
+            (c) => c.name === champion.name
+          );
+          if (championIndex !== -1) {
+            // Cập nhật dữ liệu tướng
+            Object.assign(region.newChampions[championIndex], newData);
+            region.newChampions[championIndex].lastUpdated =
+              new Date().toISOString();
+            console.log(
+              `✅ Đã cập nhật tướng ${champion.name} trong vùng ${region.name} (Tướng mới)`
+            );
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (!found) {
+        console.error(`❌ Không tìm thấy tướng ${champion.name} để cập nhật`);
+      }
+
+      return found;
+    } catch (error) {
+      console.error("❌ Lỗi khi cập nhật tướng trong cơ sở dữ liệu:", error);
+      return false;
+    }
+  }
+  editCurrentChampion() {
+    console.log("=== EDIT CURRENT CHAMPION ===");
+
+    // Kiểm tra xem có tướng hiện tại không
+    if (!this.currentModalChampion) {
+      console.error("No current modal champion to edit!");
+      alert("Không thể sửa tướng - không có dữ liệu tướng hiện tại");
+      return;
+    }
+
+    console.log("Current modal champion:", this.currentModalChampion);
+
+    // Lấy modal và form
+    const modal = document.getElementById("editChampionModal");
+    if (!modal) {
+      console.error("Edit modal not found!");
+      alert("Không tìm thấy form sửa tướng!");
+      return;
+    }
+
+    // Lưu tướng đang chỉnh sửa
+    this.currentEditingChampion = this.currentModalChampion;
+
+    // Điền thông tin tướng vào form
+    this.fillEditForm(this.currentModalChampion);
+
+    // Hiển thị modal
+    modal.classList.remove("hidden");
+    console.log("✅ Đã mở modal sửa tướng thành công");
+  }
+
+  fillEditForm(champion) {
+    console.log("Filling edit form for:", champion.name);
+
+    // Điền thông tin cơ bản
+    const basicFields = {
+      editChampionName: champion.name || "",
+      editChampionFullName: champion.fullName || "",
+      editChampionIcon: champion.icon || "",
+      editChampionRole: champion.role || "",
+      editChampionSpecies: champion.species || "",
+      editChampionGender: champion.gender || "",
+      editChampionAge: champion.age || "",
+      editChampionWeaponSummary: champion.weaponSummary || "",
+      editChampionLore: champion.lore || "",
+      editChampionFullLore: champion.fullLore || "",
+      editChampionGameplay: champion.gameplay || "",
+    };
+
+    // Điền các trường vào form
+    Object.entries(basicFields).forEach(([fieldId, value]) => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.value = value;
+      }
+    });
+
+    // Xóa và thêm lại các kỹ năng
+    const skillsContainer = document.getElementById("editSkillsContainer");
+    if (skillsContainer) {
+      skillsContainer.innerHTML = "";
+      if (champion.skills && champion.skills.length > 0) {
+        champion.skills.forEach((skill) => {
+          this.addEditSkillField(
+            typeof skill === "string"
+              ? skill
+              : `${skill.name}: ${skill.description}`
+          );
+        });
+      }
+    }
+
+    // Xóa và thêm lại các điểm đặc biệt
+    const featuresContainer = document.getElementById("editFeaturesContainer");
+    if (featuresContainer) {
+      featuresContainer.innerHTML = "";
+      if (champion.specialFeatures && champion.specialFeatures.length > 0) {
+        champion.specialFeatures.forEach((feature) => {
+          this.addEditFeatureField(feature);
+        });
+      }
+    }
+
+    // Xóa và thêm lại các liên kết cốt truyện
+    const connectionsContainer = document.getElementById(
+      "editConnectionsContainer"
     );
-    if (champion) {
-      window.runeterra.openModal(champion);
+    if (connectionsContainer) {
+      connectionsContainer.innerHTML = "";
+      if (champion.loreConnections && champion.loreConnections.length > 0) {
+        champion.loreConnections.forEach((connection) => {
+          this.addEditConnectionField(connection);
+        });
+      }
     }
   }
-}
 
-// Global function to close attribute champions modal
-function closeAttributeChampionsModal() {
-  if (window.currentAttributeChampionsModal) {
-    document.body.removeChild(window.currentAttributeChampionsModal);
-    window.currentAttributeChampionsModal = null;
-  }
-}
-
-// Global function to open champion modal from attribute champions list
-function openChampionModalFromAttribute(championName, championRegion) {
-  // Close the attribute champions modal first
-  closeAttributeChampionsModal();
-
-  // Find the champion in the app
-  if (window.runeterra) {
-    const allChampions = window.runeterra.getAllChampions();
-    const champion = allChampions.find(
-      (c) => c.name === championName && c.region === championRegion
-    );
-    if (champion) {
-      window.runeterra.openModal(champion);
+  // Mở cửa sổ chỉnh sửa pop-up
+  openFloatingEditWindow() {
+    console.log("=== OPENING FLOATING EDIT WINDOW ===");
+    
+    // Kiểm tra xem có tướng hiện tại không
+    if (!this.currentModalChampion) {
+      console.error("No current modal champion to edit!");
+      alert("Không thể sửa tướng - không có dữ liệu tướng hiện tại");
+      return;
+    }
+    
+    console.log("Current modal champion:", this.currentModalChampion);
+    
+    // Lấy cửa sổ pop-up
+    const floatingWindow = document.getElementById("floatingEditWindow");
+    if (!floatingWindow) {
+      console.error("❌ Floating edit window not found!");
+      alert("Không tìm thấy cửa sổ sửa tướng!");
+      return;
+    }
+    
+    try {
+      // Lưu tướng đang chỉnh sửa
+      this.currentEditingChampion = this.currentModalChampion;
+      
+      // Điền thông tin tướng vào form
+      this.fillFloatingEditForm(this.currentModalChampion);
+      
+      // Hiển thị cửa sổ pop-up
+      floatingWindow.classList.add("active");
+      console.log("✅ Đã mở cửa sổ chỉnh sửa tướng");
+      
+      // Đóng modal chi tiết tướng
+      this.closeModal();
+      
+    } catch (error) {
+      console.error("❌ Lỗi khi mở cửa sổ chỉnh sửa tướng:", error);
+      alert("Đã xảy ra lỗi khi mở form sửa tướng. Vui lòng thử lại.");
     }
   }
+  
+  // Điền thông tin vào form chỉnh sửa nổi
+  fillFloatingEditForm(champion) {
+    console.log("Filling floating edit form for:", champion.name);
+
+    // Điền thông tin cơ bản
+    const basicFields = {
+      "floatingEditName": champion.name || "",
+      "floatingEditFullName": champion.fullName || "",
+      "floatingEditIcon": champion.icon || "",
+      "floatingEditRole": champion.role || "",
+      "floatingEditSpecies": champion.species || "",
+      "floatingEditGender": champion.gender || "",
+      "floatingEditAge": champion.age || "",
+      "floatingEditWeaponSummary": champion.weaponSummary || "",
+      "floatingEditLore": champion.lore || "",
+      "floatingEditFullLore": champion.fullLore || "",
+      "floatingEditGameplay": champion.gameplay || "",
+    };
+
+    // Điền các trường vào form
+    Object.entries(basicFields).forEach(([fieldId, value]) => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.value = value;
+        console.log(`Đã điền ${fieldId}: ${value}`);
+      } else {
+        console.warn(`⚠️ Không tìm thấy trường ${fieldId}`);
+      }
+    });
+
+    // Xóa và thêm lại các kỹ năng
+    const skillsContainer = document.getElementById("floatingEditSkillsContainer");
+    if (skillsContainer) {
+      skillsContainer.innerHTML = "";
+      if (champion.skills && champion.skills.length > 0) {
+        champion.skills.forEach((skill) => {
+          this.addFloatingSkillField(
+            typeof skill === "string"
+              ? skill
+              : `${skill.name}: ${skill.description}`
+          );
+        });
+      }
+    }
+
+    // Xóa và thêm lại các điểm đặc biệt
+    const featuresContainer = document.getElementById("floatingEditFeaturesContainer");
+    if (featuresContainer) {
+      featuresContainer.innerHTML = "";
+      if (champion.specialFeatures && champion.specialFeatures.length > 0) {
+        champion.specialFeatures.forEach((feature) => {
+          this.addFloatingFeatureField(feature);
+        });
+      }
+    }
+
+    // Xóa và thêm lại các liên kết cốt truyện
+    const connectionsContainer = document.getElementById("floatingEditConnectionsContainer");
+    if (connectionsContainer) {
+      connectionsContainer.innerHTML = "";
+      if (champion.loreConnections && champion.loreConnections.length > 0) {
+        champion.loreConnections.forEach((connection) => {
+          this.addFloatingConnectionField(connection);
+        });
+      }
+    }
+  }
+  
+  // Thêm trường kỹ năng vào form nổi  addFloatingSkillField(value = "") {
+    const container = document.getElementById("floatingEditSkillsContainer");
+    if (!container) {
+      console.error("❌ Container floatingEditSkillsContainer not found!");
+      return;
+    }
+
+    const skillDiv = document.createElement("div");
+    skillDiv.className = "skill-field flex items-center space-x-2 mb-2";
+    
+    // Escape the value to prevent HTML injection
+    const escapedValue = value.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    skillDiv.innerHTML = `
+      <input type="text" class="skill-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-cyan-500" placeholder="Nhập kỹ năng" value="${escapedValue}">
+      <button type="button" class="remove-btn bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
+    `;
+    
+    // Add event listener for remove button
+    const removeBtn = skillDiv.querySelector(".remove-btn");
+    if (removeBtn) {
+      removeBtn.addEventListener("click", () => skillDiv.remove());
+    }
+    
+    container.appendChild(skillDiv);
+  }
+  
+  // Thêm trường đặc điểm vào form nổi  addFloatingFeatureField(value = "") {
+    const container = document.getElementById("floatingEditFeaturesContainer");
+    if (!container) {
+      console.error("❌ Container floatingEditFeaturesContainer not found!");
+      return;
+    }
+
+    const featureDiv = document.createElement("div");
+    featureDiv.className = "feature-field flex items-center space-x-2 mb-2";
+    
+    // Escape the value to prevent HTML injection
+    const escapedValue = value.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    featureDiv.innerHTML = `
+      <input type="text" class="feature-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-amber-500" placeholder="Nhập điểm đặc biệt" value="${escapedValue}">
+      <button type="button" class="remove-btn bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
+    `;
+    
+    // Add event listener for remove button
+    const removeBtn = featureDiv.querySelector(".remove-btn");
+    if (removeBtn) {
+      removeBtn.addEventListener("click", () => featureDiv.remove());
+    }
+    
+    container.appendChild(featureDiv);
+  }
+  
+  // Thêm trường liên kết vào form nổi  addFloatingConnectionField(value = "") {
+    const container = document.getElementById("floatingEditConnectionsContainer");
+    if (!container) {
+      console.error("❌ Container floatingEditConnectionsContainer not found!");
+      return;
+    }
+
+    const connectionDiv = document.createElement("div");
+    connectionDiv.className = "connection-field flex items-center space-x-2 mb-2";
+    
+    // Escape the value to prevent HTML injection
+    const escapedValue = value.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    connectionDiv.innerHTML = `
+      <input type="text" class="connection-input flex-1 p-2 bg-slate-700 text-white rounded border border-slate-600 focus:border-pink-500" placeholder="Nhập liên kết cốt truyện" value="${escapedValue}">
+      <button type="button" class="remove-btn bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700">Xóa</button>
+    `;
+    
+    // Add event listener for remove button
+    const removeBtn = connectionDiv.querySelector(".remove-btn");
+    if (removeBtn) {
+      removeBtn.addEventListener("click", () => connectionDiv.remove());
+    }
+    
+    container.appendChild(connectionDiv);
+  }
+  
+  // Đóng cửa sổ chỉnh sửa nổi  closeFloatingEditWindow() {
+    console.log("=== CLOSING FLOATING EDIT WINDOW ===");
+    
+    const floatingWindow = document.getElementById("floatingEditWindow");
+    if (floatingWindow) {
+      floatingWindow.classList.remove("active");
+      console.log("✅ Đã đóng cửa sổ chỉnh sửa tướng");
+    } else {
+      console.warn("⚠️ Không tìm thấy cửa sổ chỉnh sửa tướng khi đóng");
+    }
+    
+    // Reset current editing champion
+    this.currentEditingChampion = null;
+      // Hiển thị lại modal chi tiết tướng
+    if (this.currentModalChampion) {
+      this.openModal(this.currentModalChampion);
+    }
+  }
+  
+  // Thu thập dữ liệu từ form chỉnh sửa nổi
+  collectFloatingEditFormData() {
+    const formData = {};
+    
+    // Thu thập thông tin cơ bản
+    const basicFields = [
+      { id: "floatingEditName", field: "name" },
+      { id: "floatingEditFullName", field: "fullName" },
+      { id: "floatingEditIcon", field: "icon" },
+      { id: "floatingEditRole", field: "role" },
+      { id: "floatingEditSpecies", field: "species" },
+      { id: "floatingEditGender", field: "gender" },
+      { id: "floatingEditAge", field: "age" },
+      { id: "floatingEditWeaponSummary", field: "weaponSummary" },
+      { id: "floatingEditLore", field: "lore" },
+      { id: "floatingEditFullLore", field: "fullLore" },
+      { id: "floatingEditGameplay", field: "gameplay" }
+    ];
+    
+    basicFields.forEach(({ id, field }) => {
+      const input = document.getElementById(id);
+      if (input && input.value.trim()) {
+        formData[field] = input.value.trim();
+      }
+    });
+    
+    // Thu thập kỹ năng
+    formData.skills = [];
+    document.querySelectorAll("#floatingEditSkillsContainer .skill-input").forEach(input => {
+      if (input.value.trim()) {
+        formData.skills.push(input.value.trim());
+      }
+    });
+    
+    // Thu thập điểm đặc biệt
+    formData.specialFeatures = [];
+    document.querySelectorAll("#floatingEditFeaturesContainer .feature-input").forEach(input => {
+      if (input.value.trim()) {
+        formData.specialFeatures.push(input.value.trim());
+      }
+    });
+    
+    // Thu thập liên kết cốt truyện
+    formData.loreConnections = [];
+    document.querySelectorAll("#floatingEditConnectionsContainer .connection-input").forEach(input => {
+      if (input.value.trim()) {
+        formData.loreConnections.push(input.value.trim());
+      }
+    });
+    
+    return formData;
+  }
+  
+  // Lưu dữ liệu từ form chỉnh sửa nổi
+  saveFloatingEditForm() {
+    console.log("=== SAVING FLOATING EDIT FORM ===");
+    
+    if (!this.currentEditingChampion) {
+      alert("Không có tướng nào được chọn để sửa!");
+      return;
+    }
+    
+    try {
+      // Thu thập dữ liệu form
+      const formData = this.collectFloatingEditFormData();
+      console.log("Collected form data:", formData);
+      
+      // Kiểm tra dữ liệu bắt buộc
+      if (!formData.name || !formData.icon || !formData.role || !formData.lore) {
+        alert("Vui lòng điền đầy đủ các trường bắt buộc: Tên, Icon, Vai Trò, và Cốt Truyện!");
+        return;
+      }
+      
+      // Cập nhật tướng trong cơ sở dữ liệu
+      const success = this.updateChampionInDatabase(this.currentEditingChampion, formData);
+      
+      if (success) {
+        // Đóng cửa sổ và làm mới hiển thị
+        this.closeFloatingEditWindow();
+        this.loadChampions();
+        
+        // Hiển thị thông báo thành công
+        this.showNotification("✅ Đã cập nhật thông tin tướng thành công!");
+      } else {
+        alert("❌ Không thể cập nhật thông tin tướng. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("❌ Lỗi khi lưu form:", error);
+      alert("Đã xảy ra lỗi khi lưu thông tin tướng. Vui lòng thử lại.");
+    }
+  }
+  
+  // Hiển thị thông báo
+  showNotification(message, type = "success", duration = 3000) {
+    let notificationDiv = document.getElementById("appNotification");
+    
+    if (!notificationDiv) {
+      notificationDiv = document.createElement("div");
+      notificationDiv.id = "appNotification";
+      notificationDiv.style.position = "fixed";
+      notificationDiv.style.top = "20px";
+      notificationDiv.style.right = "20px";
+      notificationDiv.style.padding = "15px 25px";
+      notificationDiv.style.borderRadius = "8px";
+      notificationDiv.style.zIndex = "9999";
+      notificationDiv.style.transition = "all 0.3s ease";
+      notificationDiv.style.opacity = "0";
+      notificationDiv.style.transform = "translateY(-20px)";
+      document.body.appendChild(notificationDiv);
+    }
+    
+    // Thiết lập màu sắc theo loại thông báo
+    switch(type) {
+      case "success":
+        notificationDiv.style.backgroundColor = "#10B981";
+        break;
+      case "error":
+        notificationDiv.style.backgroundColor = "#EF4444";
+        break;
+      case "warning":
+        notificationDiv.style.backgroundColor = "#F59E0B";
+        break;
+      default:
+        notificationDiv.style.backgroundColor = "#3B82F6";
+    }
+    
+    notificationDiv.style.color = "white";
+    notificationDiv.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
+    notificationDiv.textContent = message;
+    
+    // Hiện thông báo
+    setTimeout(() => {    notificationDiv.style.opacity = "1";
+    notificationDiv.style.transform = "translateY(0)";
+    notificationDiv.classList.add("show");
+    }, 10);
+    
+    // Tự động ẩn sau thời gian chỉ định    setTimeout(() => {
+      notificationDiv.style.opacity = "0";
+      notificationDiv.style.transform = "translateY(-20px)";
+      notificationDiv.classList.remove("show");
+      
+      setTimeout(() => {
+        if (notificationDiv.parentNode) {
+          notificationDiv.parentNode.removeChild(notificationDiv);
+        }
+      }, 300);
+    }, duration);
+  }
 }
 
-// Export class
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = RuneterraApp;
+// Initialize the app
+window.addEventListener("DOMContentLoaded", () => {
+  window.runeterra = new RuneterraApp();
+});
+
+// Function to show weapon details when clicking the "Chi tiết" button
+function showWeaponDetail(weaponInfo, buttonElement) {
+  // Find the weapon details container (the next element after the parent div of the button)
+  const parentDiv = buttonElement.closest('.flex.items-center.justify-between');
+  const weaponDetailsDiv = parentDiv.nextElementSibling;
+  
+  if (weaponDetailsDiv && weaponDetailsDiv.classList.contains('weapon-details')) {
+    // Toggle visibility of the weapon details
+    if (weaponDetailsDiv.classList.contains('hidden')) {
+      weaponDetailsDiv.classList.remove('hidden');
+      buttonElement.textContent = 'Ẩn chi tiết';
+    } else {
+      weaponDetailsDiv.classList.add('hidden');
+      buttonElement.textContent = 'Chi tiết';
+    }
+  }
 }
