@@ -7,18 +7,123 @@ const voidData = {
     {
       id: "belveth",
       name: "Bel'Veth",
+      fullName: "Bel'Veth, Nữ Hoàng Hư Không (The Empress of the Void)",
       icon: "👑",
       role: "Đấu Sĩ",
       region: "void",
-      lore: "Nữ hoàng Hư Không, sinh ra từ thành phố bị nuốt chửng, muốn tái tạo Runeterra theo hình ảnh méo mó của mình.",
+      species: "Thực thể Hư Không (Voidborn / Alien creature)",
+      age: "Hàng thiên niên kỷ (untold millennia), là một trong những thực thể Hư Không cổ xưa nhất",
+      gender: "Nữ (được gọi là 'Nữ hoàng,' 'she/her')",
+      weapon:
+        "Bản thân cô ta là một sinh vật quái dị có khả năng biến đổi. Có thể chuyển đổi giữa dạng người thích nghi và hình dạng quái vật khổng lồ với đôi cánh lớn. Điều khiển Biển Oải Hương và triệu hồi Remora",
+      lore: "Bel'Veth là Nữ hoàng Hư Không, một thực thể kinh hoàng sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh.",
+      fullLore:
+        "Bel'Veth là Nữ hoàng Hư Không, một thực thể kinh hoàng sinh ra từ ký ức, kinh nghiệm và cảm xúc tổng hợp của toàn bộ một thành phố cảng bị nuốt chửng cùng đại dương xung quanh. Cô ta được mô tả như một dạng 'ung thư đen' đã di căn vào trung tâm của Hư Không, với khao khát tái tạo toàn bộ Runeterra theo hình ảnh méo mó của riêng mình.\n\nTrí tuệ của cô ta gần như toàn tri, chứa đựng hàng triệu năm kiến thức được bảo tồn hoàn hảo, cho phép cô ta chuẩn bị cho sự hủy diệt cả Runeterra và lãnh địa của những kẻ tạo ra cô ta, các Giám Hộ. Sự xuất hiện của Bel'Veth như một 'ung thư đen' di căn trong Hư Không và khả năng tái sử dụng các thành phố bị nuốt chửng thành 'Biển Oải Hương' cho thấy một hình thức biến chất Hư Không độc đáo, không chỉ là hủy diệt mà còn là đồng hóa và sáng tạo méo mó.\n\nKhả năng kiểm soát Biển Oải Hương như một phần mở rộng của ý chí cô ta càng củng cố điều này, cho thấy một ý thức tập thể và sự kiểm soát mà các sinh vật Hư Không khác không có. Điều này đánh dấu một sự tiến hóa đáng kể của mối đe dọa Hư Không, chuyển từ những quái vật vô tri thành một thực thể chiến lược, thông minh và có khả năng biến đổi.",
+      gameplay:
+        "Lối chơi của Bel'Veth tập trung vào tốc độ đánh và hiệu ứng đòn đánh. Cô ta có khả năng tăng tốc độ đánh vĩnh viễn khi hạ gục quái vật lớn và tướng, đồng thời nhận tốc độ đánh tạm thời sau khi sử dụng kỹ năng. Khả năng tăng sức mạnh thông qua việc hạ gục mục tiêu và biến hình trực tiếp phản ánh cốt truyện của cô ta về việc tiêu thụ và phát triển, củng cố vai trò của cô ta như một 'Nữ hoàng' chỉ huy các sinh vật cấp thấp hơn.",
+      skills: [
+        {
+          type: "Passive",
+          name: "Tử Vong trong Biển Oải Hương (Death in Lavender Sea)",
+          description:
+            "Bel'Veth tăng tốc độ đánh vĩnh viễn khi hạ gục tướng địch hoặc quái vật lớn. Sau khi sử dụng kỹ năng, cô ta nhận tốc độ đánh tạm thời.",
+        },
+        {
+          type: "Q",
+          name: "Lướt Vượt (Void Surge)",
+          description:
+            "Bel'Veth lướt nhanh về một hướng, gây sát thương cho kẻ địch trên đường đi. Có thể sử dụng nhiều lần liên tiếp.",
+        },
+        {
+          type: "W",
+          name: "Đòn Đuôi Trên Cao (Above and Below)",
+          description:
+            "Bel'Veth hất tung kẻ địch bằng đòn đánh đuôi, gây sát thương và làm chậm. Kẻ địch bị hất tung sẽ nhận thêm sát thương khi rơi xuống.",
+        },
+        {
+          type: "E",
+          name: "Gió Hoàng Gia (Royal Maelstrom)",
+          description:
+            "Bel'Veth tạo ra một cơn lốc xung quanh mình, giảm sát thương nhận vào, hút máu từ kẻ địch và tăng tốc độ đánh.",
+        },
+        {
+          type: "R",
+          name: "Tiền Thân Vô Hạn (Endless Banquet)",
+          description:
+            "Bel'Veth biến hình thành dạng thật của mình, tăng máu tối đa, tầm đánh, tốc độ đánh và có thể triệu hồi các Remora để tấn công kẻ địch.",
+        },
+      ],
+      specialFeatures: [
+        "Nữ hoàng Hư Không với trí tuệ gần như toàn tri",
+        "Khả năng biến đổi giữa dạng người và dạng quái vật khổng lồ",
+        "Điều khiển Biển Oải Hương như phần mở rộng của ý chí",
+        "Triệu hồi Remora - những sinh vật Hư Không nhỏ",
+        "Đại diện cho sự tiến hóa của mối đe dọa Hư Không",
+        "Ung thư đen' di căn vào trung tâm Hư Không",
+        "Khao khát tái tạo Runeterra theo hình ảnh méo mó",
+        "Thể hiện sự đồng hóa và sáng tạo méo mó thay vì chỉ hủy diệt",
+      ],
     },
     {
       id: "kaisa",
       name: "Kai'Sa",
+      fullName: "Kai'Sa, Con Gái Của Hư Không (Daughter of the Void)",
       icon: "🏹",
       role: "Xạ Thủ",
       region: "void",
-      lore: "Người sống sót là con người, hòa nhập với lớp vỏ Hư Không sống, chiến đấu chống lại Hư Không nhưng bị coi là quái vật.",
+      species:
+        "Con người được tăng cường/biến đổi bởi Hư Không (Enhanced Human / Human-Void symbiosis)",
+      age: "Khoảng 20 tuổi (bị nuốt chửng khi 10 tuổi và sống sót trong Hư Không gần một thập kỷ)",
+      gender: "Nữ (được gọi là 'Cô gái,' 'she/her')",
+      weapon:
+        "Lớp vỏ Hư Không sống (living Void carapace) cho phép tạo ra các vụ nổ năng lượng Hư Không (plasma blasts) từ vai và tay, cũng như tạo ra rào chắn năng lượng",
+      lore: "Kai'Sa là một người sống sót từ Shurima, bị Hư Không nuốt chửng khi còn nhỏ. Cô đã sống sót nhờ sự kiên cường và ý chí mạnh mẽ, hình thành mối quan hệ cộng sinh với một sinh vật Hư Không sống.",
+      fullLore:
+        "Kai'Sa là một người sống sót từ Shurima, bị Hư Không nuốt chửng khi còn nhỏ. Cô đã sống sót nhờ sự kiên cường và ý chí mạnh mẽ, hình thành mối quan hệ cộng sinh với một sinh vật Hư Không sống, biến nó thành một lớp vỏ sinh học bảo vệ. Giờ đây, cô chiến đấu chống lại Hư Không nhưng lại bị chính thế giới mà cô bảo vệ coi là quái vật.\n\nKai'Sa đại diện cho một sự đối lập độc đáo trong các tướng Hư Không: cô là một người sống sót là con người đã thích nghi với Hư Không thay vì bị biến chất hoàn toàn hoặc sinh ra từ nó. Mối quan hệ cộng sinh này cho phép cô giữ lại nhân tính trong khi có được sức mạnh Hư Không, dẫn đến việc cô bị gọi là 'Con gái của Hư Không' nhưng cũng phải vật lộn để được chấp nhận bởi thế giới mà cô cố gắng bảo vệ.\n\nSự tồn tại của cô thể hiện khả năng thích nghi và sự kiên cường của con người trước mối đe dọa vũ trụ, đồng thời cũng cho thấy cái giá phải trả khi phải hy sinh một phần nhân tính để có được sức mạnh cần thiết để chiến đấu với cái ác.",
+      gameplay:
+        "Lối chơi của Kai'Sa tập trung vào việc gây sát thương phép cộng thêm từ đòn đánh thường (Nội tại: Plasma) và nâng cấp kỹ năng cơ bản thông qua mua trang bị. Cô có khả năng thích nghi với nhiều tình huống khác nhau thông qua các bản nâng cấp kỹ năng, từ gây sát thương đến hỗ trợ và cơ động.",
+      skills: [
+        {
+          type: "Passive",
+          name: "Plasma Thứ Hai (Second Skin)",
+          description:
+            "Đòn đánh và kỹ năng của Kai'Sa đánh dấu kẻ địch bằng Plasma. Khi đạt đủ số lượng, Plasma sẽ nổ gây sát thương phép. Kỹ năng của Kai'Sa có thể tiến hóa dựa trên chỉ số trang bị.",
+        },
+        {
+          type: "Q",
+          name: "Mưa Icathia (Icathian Rain)",
+          description:
+            "Kai'Sa bắn một loạt tên lửa tìm mục tiêu gần nhất. Số lượng tên lửa tăng theo cấp độ. Tiến hóa: Tăng số lượng tên lửa.",
+        },
+        {
+          type: "W",
+          name: "Tia Truy Kích Hư Không (Void Seeker)",
+          description:
+            "Kai'Sa bắn một tia năng lượng tầm xa, gây sát thương và đánh dấu Plasma cho kẻ địch đầu tiên trúng đòn. Tiến hóa: Giảm thời gian hồi và tăng sát thương.",
+        },
+        {
+          type: "E",
+          name: "Tích Tụ Năng Lượng (Supercharge)",
+          description:
+            "Kai'Sa tích lũy năng lượng, tăng tốc độ di chuyển và sau một thời gian ngắn sẽ tăng tốc độ đánh. Tiến hóa: Trở nên tàng hình trong thời gian ngắn.",
+        },
+        {
+          type: "R",
+          name: "Bản Năng Sát Thủ (Killer Instinct)",
+          description:
+            "Kai'Sa lướt nhanh đến gần tướng địch bị đánh dấu Plasma, nhận một lá chắn lớn. Chỉ có thể sử dụng khi kẻ địch ở gần và bị đánh dấu Plasma.",
+        },
+      ],
+      specialFeatures: [
+        "Người sống sót duy nhất từ Hư Không vẫn giữ được nhân tính",
+        "Mối quan hệ cộng sinh độc đáo với sinh vật Hư Không",
+        "Khả năng tiến hóa kỹ năng thông qua trang bị",
+        "Đại diện cho sự thích nghi và kiên cường của con người",
+        "Bị thế giới coi là quái vật dù cố gắng bảo vệ",
+        "Cân bằng giữa nhân tính và sức mạnh Hư Không",
+        "Biểu tượng của hy sinh cá nhân vì lợi ích chung",
+        "Thể hiện cái giá phải trả để có được sức mạnh chống lại cái ác",
+      ],
     },
     {
       id: "kassadin",
