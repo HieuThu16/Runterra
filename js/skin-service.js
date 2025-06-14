@@ -4,12 +4,34 @@ class SkinService {
     this.skinsByChampion = new Map();
     this.skinThemes = new Map();
     this.loading = false;
+    this.cacheKey = "runeterra_skins_cache";
+    this.cacheVersion = "1.0";
+    this.cacheMaxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   }
+
+  // Load skins from cache first, then from API if needed
   async loadSkinsData() {
     if (this.loading) return;
     this.loading = true;
 
     try {
+      // Try to load from cache first
+      const cachedData = this.loadFromCache();
+      if (cachedData) {
+        console.log(
+          "✅ Loaded skins from cache:",
+          cachedData.skins.length,
+          "skins"
+        );
+        this.skins = cachedData.skins;
+        this.skinsByChampion = new Map(cachedData.skinsByChampion);
+        this.skinThemes = new Map(cachedData.skinThemes);
+
+        // Still load from API in background to update cache
+        this.loadFromAPIInBackground();
+        return;
+      }
+
       // Load từ nhiều nguồn bao gồm cào dữ liệu API thật
       await this.loadFromLeagueAPI();
       await this.loadFromCommunityAPI();
@@ -26,6 +48,9 @@ class SkinService {
 
       await this.processSkinsData();
 
+      // Save to cache
+      this.saveToCache();
+
       console.log(
         "✅ Đã tải xong dữ liệu skin:",
         this.skins.length,
@@ -41,6 +66,86 @@ class SkinService {
     } finally {
       this.loading = false;
     }
+  }
+
+  // Load from localStorage cache
+  loadFromCache() {
+    try {
+      const cached = localStorage.getItem(this.cacheKey);
+      if (!cached) return null;
+
+      const data = JSON.parse(cached);
+
+      // Check cache version and age
+      if (data.version !== this.cacheVersion) {
+        console.log("Cache version mismatch, invalidating cache");
+        localStorage.removeItem(this.cacheKey);
+        return null;
+      }
+
+      const cacheAge = Date.now() - data.timestamp;
+      if (cacheAge > this.cacheMaxAge) {
+        console.log("Cache expired, invalidating cache");
+        localStorage.removeItem(this.cacheKey);
+        return null;
+      }
+
+      console.log(
+        "✅ Valid cache found, age:",
+        Math.round(cacheAge / (60 * 1000)),
+        "minutes"
+      );
+      return data;
+    } catch (error) {
+      console.error("Error loading from cache:", error);
+      localStorage.removeItem(this.cacheKey);
+      return null;
+    }
+  }
+
+  // Save to localStorage cache
+  saveToCache() {
+    try {
+      const dataToCache = {
+        version: this.cacheVersion,
+        timestamp: Date.now(),
+        skins: this.skins,
+        skinsByChampion: Array.from(this.skinsByChampion.entries()),
+        skinThemes: Array.from(this.skinThemes.entries()),
+      };
+
+      localStorage.setItem(this.cacheKey, JSON.stringify(dataToCache));
+      console.log("✅ Saved skin data to cache");
+    } catch (error) {
+      console.error("Error saving to cache:", error);
+      // If localStorage is full, try to clear old data
+      try {
+        localStorage.removeItem(this.cacheKey);
+        console.log("Cleared cache due to storage limit");
+      } catch (e) {
+        console.error("Could not clear cache:", e);
+      }
+    }
+  }
+
+  // Load from API in background to update cache
+  async loadFromAPIInBackground() {
+    setTimeout(async () => {
+      try {
+        console.log("🔄 Updating skin cache in background...");
+        await this.crawlFromDataDragonAPI();
+        await this.processSkinsData();
+        this.saveToCache();
+        console.log("✅ Cache updated in background");
+      } catch (error) {
+        console.error("Error updating cache in background:", error);
+      }
+    }, 2000); // Wait 2 seconds before background update
+  }
+
+  // Get skins for a specific champion
+  getSkinsForChampion(championKey) {
+    return this.skinsByChampion.get(championKey) || [];
   }
   // Cào dữ liệu champions và skins từ Data Dragon API (Official Riot)
   async crawlFromDataDragonAPI() {
@@ -705,9 +810,9 @@ class SkinService {
       ]
     );
   }
-
   // Get random rarity with weighted distribution
   getRandomRarity() {
+    const rand = Math.random();
     if (rand < 0.05) return "ultimate"; // 5%
     if (rand < 0.15) return "legendary"; // 10%
     if (rand < 0.45) return "epic"; // 30%
@@ -2440,5 +2545,19 @@ class SkinService {
         element.textContent = currentCount;
       }
     });
+  }
+
+  // Helper to create SVG placeholder for skin images
+  createSVGPlaceholder(championName, skinName = "", width = 300, height = 169) {
+    const encodedText = encodeURIComponent(
+      `${championName}${skinName ? ` ${skinName}` : ""}`
+    );
+    const svg = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${width}" height="${height}" fill="#374151"/>
+      <text x="${width / 2}" y="${
+      height / 2
+    }" text-anchor="middle" dominant-baseline="central" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="14">${encodedText}</text>
+    </svg>`;
+    return `data:image/svg+xml;base64,${btoa(svg)}`;
   }
 }
