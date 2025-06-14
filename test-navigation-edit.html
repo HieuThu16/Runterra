@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Navigation & Edit Button - Runeterra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .champion-card {
+        transition: transform 0.3s;
+      }
+      .champion-card:hover {
+        transform: translateY(-4px);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold text-cyan-300 mb-6">
+        🧪 Test Navigation & Edit Button
+      </h1>
+
+      <div class="mb-6 space-x-4">
+        <button
+          id="toggleDevModeBtn"
+          class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded"
+        >
+          🔧 Bật Dev Mode
+        </button>
+        <button
+          id="testNavigationBtn"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          🧭 Test Navigation
+        </button>
+        <button
+          id="testSkinsBtn"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+        >
+          🎨 Test Skins
+        </button>
+      </div>
+
+      <div id="statusPanel" class="bg-slate-800 p-4 rounded-lg mb-6">
+        <h3 class="text-lg font-bold mb-2">📊 Status</h3>
+        <div id="statusContent" class="space-y-2 text-sm">
+          <div>
+            Dev Mode: <span id="devModeStatus" class="text-red-400">OFF</span>
+          </div>
+          <div>
+            Navigation:
+            <span id="navigationStatus" class="text-gray-400">Not tested</span>
+          </div>
+          <div>
+            Edit Button:
+            <span id="editButtonStatus" class="text-gray-400">Not tested</span>
+          </div>
+          <div>
+            Skins Cache:
+            <span id="skinsStatus" class="text-gray-400">Not tested</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Champions Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+        <div
+          class="champion-card bg-slate-800 p-4 rounded-lg cursor-pointer hover:bg-slate-700"
+          onclick="testChampionModal('Aatrox')"
+        >
+          <h3 class="text-cyan-300 font-bold">Aatrox</h3>
+          <p class="text-sm text-slate-400">Noxus</p>
+        </div>
+        <div
+          class="champion-card bg-slate-800 p-4 rounded-lg cursor-pointer hover:bg-slate-700"
+          onclick="testChampionModal('Thresh')"
+        >
+          <h3 class="text-cyan-300 font-bold">Thresh</h3>
+          <p class="text-sm text-slate-400">Shadow Isles</p>
+        </div>
+        <div
+          class="champion-card bg-slate-800 p-4 rounded-lg cursor-pointer hover:bg-slate-700"
+          onclick="testChampionModal('Yasuo')"
+        >
+          <h3 class="text-cyan-300 font-bold">Yasuo</h3>
+          <p class="text-sm text-slate-400">Ionia</p>
+        </div>
+      </div>
+
+      <div id="testResults" class="bg-slate-800 p-4 rounded-lg">
+        <h3 class="text-lg font-bold mb-2">🔍 Test Results</h3>
+        <div id="testLog" class="space-y-1 text-sm"></div>
+      </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div
+      id="testModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto relative"
+      >
+        <!-- Navigation buttons -->
+        <button
+          id="testPrevBtn"
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white text-3xl z-10 bg-slate-700 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+          onclick="testNavigation(-1)"
+        >
+          &#8249;
+        </button>
+        <button
+          id="testNextBtn"
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white text-3xl z-10 bg-slate-700 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+          onclick="testNavigation(1)"
+        >
+          &#8250;
+        </button>
+
+        <!-- Close button -->
+        <button
+          id="testCloseBtn"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
+          onclick="closeTestModal()"
+        >
+          &times;
+        </button>
+
+        <!-- Edit button -->
+        <button
+          id="testEditBtn"
+          class="absolute top-4 right-16 text-slate-400 hover:text-white text-xl z-10 bg-blue-600 hover:bg-blue-700 rounded-full w-8 h-8 flex items-center justify-center transition-colors hidden"
+          onclick="testEditButton()"
+        >
+          ✏️
+        </button>
+
+        <div id="testModalContent">
+          <h2 class="text-2xl font-bold text-cyan-300 mb-4">
+            Test Champion Modal
+          </h2>
+          <p class="text-slate-300">
+            Đây là test modal để kiểm tra navigation và edit button
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let devModeActive = false;
+      let currentTestIndex = 0;
+      const testChampions = ["Aatrox", "Thresh", "Yasuo"];
+
+      // Test functions
+      function log(message, type = "info") {
+        const testLog = document.getElementById("testLog");
+        const timestamp = new Date().toLocaleTimeString();
+        const color =
+          type === "success"
+            ? "text-green-400"
+            : type === "error"
+            ? "text-red-400"
+            : "text-blue-400";
+        testLog.innerHTML += `<div class="${color}">[${timestamp}] ${message}</div>`;
+        testLog.scrollTop = testLog.scrollHeight;
+      }
+
+      // Toggle Dev Mode
+      document
+        .getElementById("toggleDevModeBtn")
+        .addEventListener("click", () => {
+          devModeActive = !devModeActive;
+          const btn = document.getElementById("toggleDevModeBtn");
+          const editBtn = document.getElementById("testEditBtn");
+          const status = document.getElementById("devModeStatus");
+
+          if (devModeActive) {
+            btn.textContent = "🔧 Tắt Dev Mode";
+            btn.className =
+              "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded";
+            editBtn.classList.remove("hidden");
+            status.textContent = "ON";
+            status.className = "text-green-400";
+            log("Dev Mode activated", "success");
+          } else {
+            btn.textContent = "🔧 Bật Dev Mode";
+            btn.className =
+              "bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded";
+            editBtn.classList.add("hidden");
+            status.textContent = "OFF";
+            status.className = "text-red-400";
+            log("Dev Mode deactivated", "info");
+          }
+
+          updateEditButtonStatus();
+        });
+
+      // Test champion modal
+      function testChampionModal(championName) {
+        currentTestIndex = testChampions.indexOf(championName);
+        document.getElementById("testModal").classList.remove("hidden");
+        document.getElementById("testModalContent").innerHTML = `
+                <h2 class="text-2xl font-bold text-cyan-300 mb-4">${championName}</h2>
+                <p class="text-slate-300 mb-4">Champion test modal - Index: ${currentTestIndex}</p>
+                <div class="bg-slate-700 p-4 rounded-lg">
+                    <h3 class="text-lg font-bold text-yellow-300 mb-2">🧪 Test Results:</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li>✅ Modal opened successfully</li>
+                        <li id="navTestResult">⏳ Navigation test pending...</li>
+                        <li id="editTestResult">⏳ Edit button test pending...</li>
+                        <li id="skinTestResult">⏳ Skin test pending...</li>
+                    </ul>
+                </div>
+            `;
+        log(`Opened modal for ${championName}`, "success");
+      }
+
+      function closeTestModal() {
+        document.getElementById("testModal").classList.add("hidden");
+        log("Modal closed", "info");
+      }
+
+      // Test navigation
+      function testNavigation(direction) {
+        const newIndex = currentTestIndex + direction;
+        log(
+          `Testing navigation: current=${currentTestIndex}, direction=${direction}, new=${newIndex}`,
+          "info"
+        );
+
+        if (newIndex >= 0 && newIndex < testChampions.length) {
+          currentTestIndex = newIndex;
+          const newChampion = testChampions[currentTestIndex];
+
+          document.getElementById("testModalContent").innerHTML = `
+                    <h2 class="text-2xl font-bold text-cyan-300 mb-4">${newChampion}</h2>
+                    <p class="text-slate-300 mb-4">Navigated to: ${newChampion} (Index: ${currentTestIndex})</p>
+                    <div class="bg-green-900/30 p-4 rounded-lg border border-green-600/50">
+                        <h3 class="text-lg font-bold text-green-300 mb-2">✅ Navigation Working!</h3>
+                        <p class="text-green-100">Successfully navigated ${
+                          direction > 0 ? "forward" : "backward"
+                        } to ${newChampion}</p>
+                    </div>
+                `;
+
+          document.getElementById("navTestResult").innerHTML =
+            "✅ Navigation working";
+          document.getElementById("navigationStatus").textContent = "Working";
+          document.getElementById("navigationStatus").className =
+            "text-green-400";
+          log(`Navigation successful: ${newChampion}`, "success");
+        } else {
+          log(
+            `Navigation failed: index ${newIndex} out of bounds (0-${
+              testChampions.length - 1
+            })`,
+            "error"
+          );
+          document.getElementById("navTestResult").innerHTML =
+            "❌ Navigation boundary reached";
+        }
+      }
+
+      // Test edit button
+      function testEditButton() {
+        log("Edit button clicked!", "success");
+        document.getElementById("editTestResult").innerHTML =
+          "✅ Edit button working";
+        document.getElementById("editButtonStatus").textContent = "Working";
+        document.getElementById("editButtonStatus").className =
+          "text-green-400";
+
+        alert(
+          "🎉 Edit button working! In real app, this would open edit modal."
+        );
+      }
+
+      // Test navigation button
+      document
+        .getElementById("testNavigationBtn")
+        .addEventListener("click", () => {
+          if (
+            document.getElementById("testModal").classList.contains("hidden")
+          ) {
+            log(
+              "Please open a champion modal first to test navigation",
+              "error"
+            );
+            return;
+          }
+
+          log("Testing navigation automatically...", "info");
+          setTimeout(() => testNavigation(1), 500);
+          setTimeout(() => testNavigation(-1), 1000);
+          setTimeout(() => testNavigation(1), 1500);
+        });
+
+      // Test skins
+      document.getElementById("testSkinsBtn").addEventListener("click", () => {
+        log("Testing skin caching...", "info");
+
+        // Simulate skin loading
+        setTimeout(() => {
+          const hasCache = localStorage.getItem("runeterra_skins_cache");
+          if (hasCache) {
+            log("✅ Skin cache found in localStorage", "success");
+            document.getElementById("skinsStatus").textContent = "Cached";
+            document.getElementById("skinsStatus").className = "text-green-400";
+          } else {
+            log("❌ No skin cache found, would load from API", "error");
+            document.getElementById("skinsStatus").textContent = "No cache";
+            document.getElementById("skinsStatus").className = "text-red-400";
+          }
+
+          document.getElementById("skinTestResult").innerHTML = hasCache
+            ? "✅ Skin cache working"
+            : "❌ No skin cache";
+        }, 1000);
+      });
+
+      function updateEditButtonStatus() {
+        const status = document.getElementById("editButtonStatus");
+        if (devModeActive) {
+          status.textContent = "Visible";
+          status.className = "text-green-400";
+        } else {
+          status.textContent = "Hidden";
+          status.className = "text-gray-400";
+        }
+      }
+
+      // Initialize
+      log("Test page loaded successfully", "success");
+      log("Click champion cards to test modal functionality", "info");
+    </script>
+  </body>
+</html>

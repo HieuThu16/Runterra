@@ -22,14 +22,14 @@
         </h1>
 
         <div class="flex items-center space-x-4">
-          <!-- Crawl Champions Button -->
+          <!-- Edit Champion Button (Dev Mode) -->
           <button
-            id="crawlChampionsBtn"
-            class="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300"
-            onclick="forceCrawlChampions()"
+            id="editModeBtn"
+            class="flex items-center space-x-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-all duration-300"
+            title="Chế độ sửa thông tin tướng (Dev Mode)"
           >
-            <span>🔄</span>
-            <span>Cào tướng mới</span>
+            <span>✏️</span>
+            <span>Chế độ Dev</span>
           </button>
 
           <!-- Language Selector -->
@@ -712,12 +712,37 @@
       <div
         class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-9xl w-full max-h-[95vh] overflow-y-auto modal-content relative"
       >
+        <!-- Navigation buttons -->
+        <button
+          id="prevChampionBtn"
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white text-3xl z-10 bg-slate-700 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+          title="Tướng trước"
+        >
+          &#8249;
+        </button>
+        <button
+          id="nextChampionBtn"
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white text-3xl z-10 bg-slate-700 rounded-full w-12 h-12 flex items-center justify-center transition-colors"
+          title="Tướng sau"
+        >
+          &#8250;
+        </button>
         <button
           id="modalCloseButton"
           class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
         >
           &times;
         </button>
+
+        <!-- Edit button for dev mode -->
+        <button
+          id="modalEditButton"
+          class="absolute top-4 right-16 text-slate-400 hover:text-white text-xl z-10 bg-blue-600 hover:bg-blue-700 rounded-full w-8 h-8 flex items-center justify-center transition-colors hidden"
+          title="Sửa thông tin tướng"
+        >
+          ✏️
+        </button>
+
         <div id="modalBody"></div>
       </div>
     </div>
@@ -949,6 +974,239 @@
               class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
               Thêm Tướng
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Champion Modal -->
+    <div
+      id="editChampionModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          id="editModalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+        >
+          &times;
+        </button>
+        <h2 class="text-2xl font-bold text-yellow-300 mb-6 text-center">
+          ✏️ Sửa Thông Tin Tướng (Dev Mode)
+        </h2>
+        <form id="editChampionForm" class="space-y-6">
+          <!-- Basic Info -->
+          <div class="bg-slate-700/50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-cyan-300 mb-4">
+              📜 Thông Tin Cơ Bản
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Tên Tướng *</label
+                >
+                <input
+                  type="text"
+                  id="editChampionName"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Tên Đầy Đủ</label
+                >
+                <input
+                  type="text"
+                  id="editChampionFullName"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Icon (Emoji) *</label
+                >
+                <input
+                  type="text"
+                  id="editChampionIcon"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Vai Trò *</label
+                >
+                <select
+                  id="editChampionRole"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                  required
+                >
+                  <option value="">-- Chọn Vai Trò --</option>
+                  <option value="Đấu Sĩ">Đấu Sĩ</option>
+                  <option value="Xạ Thủ">Xạ Thủ</option>
+                  <option value="Pháp Sư">Pháp Sư</option>
+                  <option value="Sát Thủ">Sát Thủ</option>
+                  <option value="Hỗ Trợ">Hỗ Trợ</option>
+                  <option value="Đỡ Đòn">Đỡ Đòn</option>
+                  <option value="Hỗ Trợ/Đỡ Đòn">Hỗ Trợ/Đỡ Đòn</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Loài</label
+                >
+                <input
+                  type="text"
+                  id="editChampionSpecies"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Giới Tính</label
+                >
+                <select
+                  id="editChampionGender"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                >
+                  <option value="">-- Chọn Giới Tính --</option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Tuổi</label
+                >
+                <input
+                  type="text"
+                  id="editChampionAge"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Vũ Khí (Tóm Tắt)</label
+                >
+                <input
+                  type="text"
+                  id="editChampionWeaponSummary"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Lore Section -->
+          <div class="bg-slate-700/50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-purple-300 mb-4">
+              📖 Cốt Truyện
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Lore Tóm Tắt *</label
+                >
+                <textarea
+                  id="editChampionLore"
+                  rows="3"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                  required
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Lore Đầy Đủ</label
+                >
+                <textarea
+                  id="editChampionFullLore"
+                  rows="8"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2"
+                  >Gameplay</label
+                >
+                <textarea
+                  id="editChampionGameplay"
+                  rows="4"
+                  class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Section -->
+          <div class="bg-slate-700/50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-cyan-300 mb-4">🎯 Kỹ Năng</h3>
+            <div id="editSkillsContainer" class="space-y-3">
+              <!-- Skills will be dynamically added here -->
+            </div>
+            <button
+              type="button"
+              id="addEditSkillBtn"
+              class="mt-3 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded transition-colors"
+            >
+              ➕ Thêm Kỹ Năng
+            </button>
+          </div>
+
+          <!-- Special Features Section -->
+          <div class="bg-slate-700/50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-amber-300 mb-4">
+              ✨ Điểm Đặc Biệt / Fun Facts
+            </h3>
+            <div id="editFeaturesContainer" class="space-y-3">
+              <!-- Features will be dynamically added here -->
+            </div>
+            <button
+              type="button"
+              id="addEditFeatureBtn"
+              class="mt-3 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors"
+            >
+              ➕ Thêm Điểm Đặc Biệt
+            </button>
+          </div>
+
+          <!-- Lore Connections Section -->
+          <div class="bg-slate-700/50 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold text-pink-300 mb-4">
+              🔗 Liên Kết Cốt Truyện
+            </h3>
+            <div id="editConnectionsContainer" class="space-y-3">
+              <!-- Connections will be dynamically added here -->
+            </div>
+            <button
+              type="button"
+              id="addEditConnectionBtn"
+              class="mt-3 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded transition-colors"
+            >
+              ➕ Thêm Liên Kết
+            </button>
+          </div>
+
+          <!-- Form Actions -->
+          <div
+            class="flex justify-end space-x-4 pt-6 border-t border-slate-600"
+          >
+            <button
+              type="button"
+              id="cancelEditBtn"
+              class="px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded transition-colors"
+            >
+              Hủy
+            </button>
+            <button
+              type="submit"
+              class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
+            >
+              💾 Lưu Thay Đổi
             </button>
           </div>
         </form>
