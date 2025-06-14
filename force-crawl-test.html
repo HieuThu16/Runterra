@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Force Crawl Champions Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .status-box {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border: 1px solid #475569;
+      }
+      .progress-bar {
+        background: linear-gradient(90deg, #06b6d4, #3b82f6);
+        transition: width 0.3s ease;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-900 text-white min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1
+        class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+      >
+        🔄 Force Crawl Champions Test
+      </h1>
+
+      <!-- Status Display -->
+      <div class="status-box rounded-lg p-6 mb-6">
+        <h2 class="text-xl font-bold mb-4 text-cyan-300">
+          📊 Champion Count Status
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-400" id="currentCount">
+              -
+            </div>
+            <div class="text-sm text-slate-400">Current Champions</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-green-400" id="apiCount">-</div>
+            <div class="text-sm text-slate-400">API Champions</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-orange-400" id="missingCount">
+              -
+            </div>
+            <div class="text-sm text-slate-400">Missing Champions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="status-box rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-bold mb-2 text-cyan-300">Progress</h3>
+        <div class="w-full bg-slate-700 rounded-full h-4">
+          <div
+            class="progress-bar h-4 rounded-full"
+            id="progressBar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <div class="text-sm text-slate-400 mt-2" id="progressText">
+          Ready to start...
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <button
+          id="checkStatusBtn"
+          class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-all duration-300"
+        >
+          📊 Check Status
+        </button>
+        <button
+          id="forceCrawlBtn"
+          class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-bold transition-all duration-300"
+        >
+          🔄 Force Crawl Missing
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="status-box rounded-lg p-6">
+        <h3 class="text-lg font-bold mb-4 text-cyan-300">📋 Results Log</h3>
+        <div id="resultsLog" class="space-y-2 max-h-96 overflow-y-auto">
+          <div class="text-slate-400">Ready to start crawling...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/database.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/skin-service.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+      console.log("🚀 Force Crawl Test Page Loaded");
+
+      // Initialize services
+      if (!window.skinService) {
+        window.skinService = new SkinService();
+      }
+      if (!window.runeterra) {
+        window.runeterra = new RuneterraApp();
+      }
+
+      // UI Elements
+      const currentCountEl = document.getElementById("currentCount");
+      const apiCountEl = document.getElementById("apiCount");
+      const missingCountEl = document.getElementById("missingCount");
+      const progressBar = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      const resultsLog = document.getElementById("resultsLog");
+      const checkStatusBtn = document.getElementById("checkStatusBtn");
+      const forceCrawlBtn = document.getElementById("forceCrawlBtn");
+
+      // Log function
+      function addLog(message, type = "info") {
+        const logDiv = document.createElement("div");
+        logDiv.className = `text-sm p-2 rounded ${
+          type === "error"
+            ? "bg-red-900 text-red-200"
+            : type === "success"
+            ? "bg-green-900 text-green-200"
+            : type === "warning"
+            ? "bg-yellow-900 text-yellow-200"
+            : "bg-slate-700 text-slate-200"
+        }`;
+        logDiv.innerHTML = `<span class="text-slate-400">[${new Date().toLocaleTimeString()}]</span> ${message}`;
+        resultsLog.appendChild(logDiv);
+        resultsLog.scrollTop = resultsLog.scrollHeight;
+      }
+
+      // Update progress
+      function updateProgress(current, total, text) {
+        const percentage = total > 0 ? Math.round((current / total) * 100) : 0;
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent =
+          text || `${current}/${total} (${percentage}%)`;
+      }
+
+      // Check status function
+      async function checkStatus() {
+        try {
+          addLog("🔍 Checking champion count status...");
+          checkStatusBtn.disabled = true;
+          checkStatusBtn.textContent = "⏳ Checking...";
+
+          const currentCount = window.skinService.getCurrentChampionCount();
+          const apiCount = await window.skinService.getAPIChampionCount();
+          const missingCount = Math.max(0, apiCount - currentCount);
+
+          currentCountEl.textContent = currentCount;
+          apiCountEl.textContent = apiCount;
+          missingCountEl.textContent = missingCount;
+
+          updateProgress(
+            currentCount,
+            apiCount,
+            `${currentCount}/${apiCount} champions loaded`
+          );
+
+          addLog(
+            `📊 Current: ${currentCount}, API: ${apiCount}, Missing: ${missingCount}`,
+            "info"
+          );
+
+          if (missingCount > 0) {
+            addLog(
+              `⚠️ Found ${missingCount} missing champions that need to be crawled`,
+              "warning"
+            );
+          } else {
+            addLog(`✅ All champions are up to date!`, "success");
+          }
+        } catch (error) {
+          addLog(`❌ Error checking status: ${error.message}`, "error");
+          console.error("Error checking status:", error);
+        } finally {
+          checkStatusBtn.disabled = false;
+          checkStatusBtn.textContent = "📊 Check Status";
+        }
+      }
+
+      // Force crawl function
+      async function forceCrawl() {
+        try {
+          addLog("🔄 Starting force crawl of missing champions...");
+          forceCrawlBtn.disabled = true;
+          forceCrawlBtn.textContent = "⏳ Crawling...";
+
+          // Check current status first
+          const beforeCount = window.skinService.getCurrentChampionCount();
+          const apiCount = await window.skinService.getAPIChampionCount();
+          const missingCount = Math.max(0, apiCount - beforeCount);
+
+          addLog(
+            `📊 Before crawl: ${beforeCount}/${apiCount} champions (${missingCount} missing)`
+          );
+
+          if (missingCount === 0) {
+            addLog(
+              "ℹ️ No missing champions found, crawling anyway to ensure data is fresh...",
+              "warning"
+            );
+          }
+
+          // Perform crawl
+          updateProgress(0, 100, "Initializing crawl...");
+          const newChampions = await window.skinService.crawlMissingChampions();
+
+          // Check after crawl
+          const afterCount = window.skinService.getCurrentChampionCount();
+          const actuallyAdded = afterCount - beforeCount;
+
+          updateProgress(
+            afterCount,
+            apiCount,
+            `${afterCount}/${apiCount} champions loaded`
+          );
+
+          // Update display
+          currentCountEl.textContent = afterCount;
+          missingCountEl.textContent = Math.max(0, apiCount - afterCount);
+
+          addLog(
+            `✅ Crawl completed! Added ${actuallyAdded} new champions.`,
+            "success"
+          );
+          addLog(
+            `📊 After crawl: ${afterCount}/${apiCount} champions`,
+            "success"
+          );
+
+          if (actuallyAdded > 0) {
+            addLog(`🔄 Refreshing main page display...`);
+            window.runeterra.loadChampions();
+            addLog(`✅ Main page refreshed with new champions!`, "success");
+          } else {
+            addLog(
+              `ℹ️ No new champions were added (database may already be up to date)`,
+              "warning"
+            );
+          }
+        } catch (error) {
+          addLog(`❌ Error during crawl: ${error.message}`, "error");
+          console.error("Error during crawl:", error);
+        } finally {
+          forceCrawlBtn.disabled = false;
+          forceCrawlBtn.textContent = "🔄 Force Crawl Missing";
+        }
+      }
+
+      // Event listeners
+      checkStatusBtn.addEventListener("click", checkStatus);
+      forceCrawlBtn.addEventListener("click", forceCrawl);
+
+      // Auto-check status on load
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(checkStatus, 1000);
+      });
+
+      addLog(
+        "🚀 Force Crawl Test page initialized. Click 'Check Status' to begin."
+      );
+    </script>
+  </body>
+</html>

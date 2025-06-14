@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Skin Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .skin-image {
+        width: 100px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .theme-card {
+        background: #334155;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-900 text-white p-4">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-2xl font-bold mb-6 text-center">
+        🎨 Quick Skin Image Test
+      </h1>
+
+      <!-- Test Button -->
+      <div class="text-center mb-6">
+        <button
+          onclick="testSkinImages()"
+          class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg"
+        >
+          Test Skin Images
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div
+        id="results"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <!-- Results will appear here -->
+      </div>
+    </div>
+
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      async function testSkinImages() {
+        const results = document.getElementById("results");
+        results.innerHTML =
+          '<p class="text-yellow-300 text-center col-span-full">Loading skins...</p>';
+
+        try {
+          // Test skin service
+          await skinService.loadSkinsData();
+          console.log("Skins loaded:", skinService.skins);
+
+          if (skinService.skins.length === 0) {
+            results.innerHTML =
+              '<p class="text-red-300 text-center col-span-full">No skins found!</p>';
+            return;
+          }
+
+          // Display skins
+          let html = "";
+          skinService.skins.forEach((skin) => {
+            html += `
+                        <div class="theme-card">
+                            <h3 class="text-lg font-bold mb-2">${skin.name}</h3>
+                            <img src="${skin.splashArt}" alt="${skin.name}" 
+                                 class="skin-image mb-2"
+                                 onload="console.log('✓ Image loaded:', '${skin.name}')"
+                                 onerror="console.log('✗ Image failed:', '${skin.name}', this.src); this.src='https://via.placeholder.com/100x60/666/fff?text=FAIL'">
+                            <p class="text-sm text-gray-300">${skin.champion} - ${skin.theme}</p>
+                            <p class="text-sm text-blue-300">${skin.price} RP</p>
+                        </div>
+                    `;
+          });
+
+          results.innerHTML = html;
+          console.log(
+            "Images should be visible now. Check console for load/error messages."
+          );
+        } catch (error) {
+          console.error("Test failed:", error);
+          results.innerHTML = `<p class="text-red-300 text-center col-span-full">Error: ${error.message}</p>`;
+        }
+      }
+
+      // Auto test on load
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("=== QUICK SKIN TEST LOADED ===");
+        console.log(
+          "SkinService available:",
+          typeof skinService !== "undefined"
+        );
+
+        // Auto run test after 1 second
+        setTimeout(testSkinImages, 1000);
+      });
+    </script>
+  </body>
+</html>
