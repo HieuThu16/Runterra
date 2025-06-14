@@ -79,6 +79,9 @@ class RuneterraApp {
       .getElementById("newChampionsTab")
       ?.addEventListener("click", () => this.switchChampionType("new"));
     document
+      .getElementById("skinThemesTab")
+      ?.addEventListener("click", () => this.switchChampionType("skinThemes"));
+    document
       .getElementById("statisticsTab")
       ?.addEventListener("click", () => this.switchChampionType("statistics"));
 
@@ -233,20 +236,28 @@ class RuneterraApp {
     document
       .querySelectorAll(".champion-type-tab")
       .forEach((tab) => tab.classList.remove("active"));
-
     if (type === "statistics") {
       document.getElementById("statisticsTab")?.classList.add("active");
-      // Hide champions grid and show statistics
+      // Hide champions grid and skin themes, show statistics
       document.getElementById("championsGrid").classList.add("hidden");
+      document.getElementById("skinThemesSection").classList.add("hidden");
       document.getElementById("statisticsSection").classList.remove("hidden");
       this.loadStatistics();
+    } else if (type === "skinThemes") {
+      document.getElementById("skinThemesTab")?.classList.add("active");
+      // Hide other sections and show skin themes
+      document.getElementById("championsGrid").classList.add("hidden");
+      document.getElementById("statisticsSection").classList.add("hidden");
+      document.getElementById("skinThemesSection").classList.remove("hidden");
+      this.loadSkinThemes();
     } else {
       document
         .getElementById(type === "old" ? "oldChampionsTab" : "newChampionsTab")
         ?.classList.add("active");
-      // Show champions grid and hide statistics
+      // Show champions grid and hide other sections
       document.getElementById("championsGrid").classList.remove("hidden");
       document.getElementById("statisticsSection").classList.add("hidden");
+      document.getElementById("skinThemesSection").classList.add("hidden");
       this.loadChampions();
     }
   }
@@ -302,7 +313,6 @@ class RuneterraApp {
         break;
     }
   }
-
   loadChampions() {
     const grid = document.getElementById("championsGrid");
     if (!grid) return;
@@ -310,9 +320,14 @@ class RuneterraApp {
     grid.innerHTML = "";
 
     try {
-      const champions = this.db.getChampions(
+      let champions = this.db.getChampions(
         this.currentRegion,
         this.currentChampionType
+      );
+
+      // Sắp xếp champions theo ABC
+      champions.sort((a, b) =>
+        a.name.localeCompare(b.name, "vi", { sensitivity: "base" })
       );
 
       // Debug: Check if we can find Thresh directly in raw data
@@ -330,7 +345,7 @@ class RuneterraApp {
         console.log("Raw Thresh data:", threshRaw);
       }
 
-      console.log("Loaded champions:", champions);
+      console.log("Loaded and sorted champions:", champions);
 
       if (champions.length === 0) {
         grid.innerHTML =
@@ -351,58 +366,387 @@ class RuneterraApp {
   createChampionCard(champion, serialNumber) {
     const card = document.createElement("div");
     card.className =
-      "bg-slate-800 p-6 rounded-lg shadow-lg hover:shadow-cyan-500/50 transition-shadow duration-300 cursor-pointer relative";
+      "bg-slate-800 p-6 rounded-lg shadow-lg hover:shadow-cyan-500/50 transition-shadow duration-300 cursor-pointer relative champion-card";
+
+    // Lấy ảnh champion từ Data Dragon API hoặc sử dụng ảnh có sẵn
+    const championImage = this.getChampionImage(champion);
+    
+    // Thống nhất thuộc tính cho tất cả tướng
+    const unifiedChampion = this.unifyChampionData(champion);
+
     card.innerHTML = `
       <div class="absolute top-2 left-2 bg-slate-700 text-slate-300 text-xs font-bold px-2 py-1 rounded-full">#${serialNumber}</div>
-      <div class="mb-2 text-center">
-        <img src="${
-          champion.image ||
-          "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
-        }" 
-             alt="${champion.name}" 
-             class="w-50 h-50 object-cover rounded-lg mx-auto shadow-lg"
+      <div class="mb-3 text-center">
+        <img src="${championImage}" 
+             alt="${unifiedChampion.name}" 
+             class="w-20 h-20 object-cover rounded-lg mx-auto shadow-lg champion-avatar border-2 border-slate-600"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <div class="text-4xl hidden">🎭</div>
       </div>
-      <h3 class="text-xl font-semibold text-cyan-300 mb-2 text-center">${
-        champion.name || "Unknown"
-      }</h3>
-      <p class="text-sm text-slate-400 mb-2 text-center">${
-        champion.role || "Unknown Role"
-      }</p>
-      <p class="text-xs text-slate-500 text-center">${
-        champion.regionName || "Unknown Region"
-      }</p>
-      ${
-        champion.releaseDate
-          ? `<p class="text-xs text-blue-400 text-center mt-1">📅 ${champion.releaseDate}</p>`
-          : ""
-      }      ${
-      champion.weaponSummary
-        ? `<p class="text-xs text-orange-400 text-center mt-1">⚔️ ${champion.weaponSummary}</p>`
-        : ""
-    }      ${
-      champion.gender
-        ? `<p class="text-xs text-pink-400 text-center mt-1">👤 ${this.simplifyGender(
-            champion.gender
-          )}</p>`
-        : ""
-    }
-      ${
-        champion.species
-          ? `<p class="text-xs text-green-400 text-center mt-1">🧬 ${champion.species}</p>`
-          : ""
-      }
-      ${
-        champion.special
-          ? '<div class="mt-2 text-center"><span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full">Đặc Biệt</span></div>'
-          : ""
-      }
+      
+      <!-- Champion Name & Title -->
+      <div class="text-center mb-3">
+        <h3 class="text-lg font-bold text-cyan-300 mb-1">${unifiedChampion.name}</h3>
+        <p class="text-xs text-slate-400 italic">${unifiedChampion.title}</p>
+      </div>
+      
+      <!-- Primary Info -->
+      <div class="space-y-1 mb-3">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-slate-500">Loại:</span>
+          <span class="text-xs text-blue-400 font-medium">${unifiedChampion.role}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-slate-500">Vùng:</span>
+          <span class="text-xs text-yellow-400 font-medium">${unifiedChampion.regionName}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-slate-500">Giới:</span>
+          <span class="text-xs text-pink-400 font-medium">${unifiedChampion.gender}</span>
+        </div>
+      </div>
+      
+      <!-- Secondary Info -->
+      <div class="space-y-1 text-xs">
+        ${unifiedChampion.weapon ? 
+          `<div class="flex items-center justify-center text-orange-400">
+            <span class="mr-1">⚔️</span>
+            <span>${unifiedChampion.weapon}</span>
+           </div>` : ''
+        }
+        ${unifiedChampion.species ? 
+          `<div class="flex items-center justify-center text-green-400">
+            <span class="mr-1">🧬</span>
+            <span>${unifiedChampion.species}</span>
+           </div>` : ''
+        }
+        ${unifiedChampion.releaseDate ? 
+          `<div class="flex items-center justify-center text-gray-400">
+            <span class="mr-1">📅</span>
+            <span>${unifiedChampion.releaseDate}</span>
+           </div>` : ''
+        }
+      </div>
+      
+      <!-- Difficulty & Special Status -->
+      <div class="mt-3 flex justify-between items-center">
+        <div class="flex items-center">
+          <span class="text-xs text-slate-500 mr-1">Độ khó:</span>
+          <div class="flex">
+            ${this.renderDifficultyStars(unifiedChampion.difficulty)}
+          </div>
+        </div>
+        ${unifiedChampion.special ? 
+          '<span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full">Đặc Biệt</span>' : 
+          '<span class="bg-slate-700 text-slate-400 text-xs px-2 py-1 rounded-full">Thường</span>'
+        }
+      </div>
     `;
 
-    card.addEventListener("click", () => this.openModal(champion));
+    card.addEventListener("click", () => this.openModal(unifiedChampion));
     return card;
   }
+
+  // Hàm thống nhất dữ liệu champion
+  unifyChampionData(champion) {
+    return {
+      id: champion.id || this.generateChampionId(champion.name),
+      name: champion.name || "Unknown Champion",
+      title: champion.title || "The Unknown",
+      role: this.standardizeRole(champion.role || champion.tags?.[0] || "Unknown"),
+      regionName: champion.regionName || champion.region || "Unknown Region",
+      gender: this.standardizeGender(champion.gender || "Unknown"),
+      weapon: this.standardizeWeapon(champion.weapon || champion.weaponSummary || "Unknown"),
+      species: this.standardizeSpecies(champion.species || "Human"),
+      releaseDate: champion.releaseDate || "Unknown",
+      difficulty: typeof champion.difficulty === 'number' ? champion.difficulty : 
+                  (champion.info?.difficulty || 5),
+      special: champion.special || false,
+      image: champion.image,
+      splash: champion.splash,
+      lore: champion.lore || champion.description || `${champion.name} is a champion from the world of Runeterra.`,
+      stats: champion.stats || {},
+      spells: champion.spells || [],
+      passive: champion.passive || {},
+      tags: champion.tags || []
+    };
+  }
+
+  // Hàm chuẩn hóa role
+  standardizeRole(role) {
+    const roleMap = {
+      'Fighter': 'Chiến Binh',
+      'Tank': 'Đỡ Đòn', 
+      'Assassin': 'Sát Thủ',
+      'Mage': 'Pháp Sư',
+      'Marksman': 'Xạ Thủ',
+      'Support': 'Hỗ Trợ',
+      'fighter': 'Chiến Binh',
+      'tank': 'Đỡ Đòn',
+      'assassin': 'Sát Thủ', 
+      'mage': 'Pháp Sư',
+      'marksman': 'Xạ Thủ',
+      'support': 'Hỗ Trợ'
+    };
+    return roleMap[role] || role || 'Không xác định';
+  }
+
+  // Hàm chuẩn hóa gender
+  standardizeGender(gender) {
+    const genderMap = {
+      'Male': 'Nam',
+      'Female': 'Nữ', 
+      'Other': 'Khác',
+      'Unknown': 'Không xác định',
+      'male': 'Nam',
+      'female': 'Nữ',
+      'other': 'Khác',
+      'unknown': 'Không xác định'
+    };
+    return genderMap[gender] || gender || 'Không xác định';
+  }
+
+  // Hàm chuẩn hóa weapon
+  standardizeWeapon(weapon) {
+    if (!weapon || weapon === 'Unknown') return 'Không xác định';
+    return weapon.length > 15 ? weapon.substring(0, 15) + '...' : weapon;
+  }
+
+  // Hàm chuẩn hóa species
+  standardizeSpecies(species) {
+    const speciesMap = {
+      'Human': 'Con Người',
+      'Yordle': 'Yordle',
+      'Vastayan': 'Vastayan', 
+      'Spirit': 'Linh Hồn',
+      'Undead': 'Bất Tử',
+      'Demon': 'Ác Quỷ',
+      'Dragon': 'Rồng',
+      'Void': 'Hư Không',
+      'Golem': 'Golem',
+      'Robot': 'Robot'
+    };
+    return speciesMap[species] || species || 'Con Người';
+  }
+
+  // Hàm render difficulty stars
+  renderDifficultyStars(difficulty) {
+    const level = Math.min(Math.max(Math.round(difficulty || 5), 1), 10);
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= level / 2) {
+        stars += '<span class="text-yellow-400">★</span>';
+      } else {
+        stars += '<span class="text-gray-600">☆</span>';
+      }
+    }
+    return stars;
+  }
+
+  // Helper method để generate champion ID
+  generateChampionId(name) {
+    return name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  }
+
+  // Helper method để lấy ảnh champion
+  getChampionImage(champion) {
+    // Nếu có crawled champions data, sử dụng ảnh từ đó
+    if (window.crawledChampions) {
+      const crawledChampion = window.crawledChampions.find(
+        (c) => c.name === champion.name
+      );
+      if (crawledChampion && crawledChampion.image) {
+        return crawledChampion.image;
+      }
+    }
+
+    // Nếu champion có image field, sử dụng nó
+    if (champion.image) {
+      return champion.image;
+    }
+
+    // Tạo URL từ Data Dragon API dựa trên tên champion
+    const championKey = this.getChampionKey(champion.name);
+    if (championKey) {
+      return `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${championKey}.png`;
+    }
+
+    // Fallback image
+    return "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg";
+  }
+
+  // Helper method để convert tên champion thành key cho API
+  getChampionKey(championName) {
+    const keyMap = {
+      Aatrox: "Aatrox",
+      Ahri: "Ahri",
+      Akali: "Akali",
+      Akshan: "Akshan",
+      Alistar: "Alistar",
+      Amumu: "Amumu",
+      Anivia: "Anivia",
+      Annie: "Annie",
+      Aphelios: "Aphelios",
+      Ashe: "Ashe",
+      "Aurelion Sol": "AurelionSol",
+      Azir: "Azir",
+      Bard: "Bard",
+      "Bel'Veth": "Belveth",
+      Blitzcrank: "Blitzcrank",
+      Brand: "Brand",
+      Braum: "Braum",
+      Briar: "Briar",
+      Caitlyn: "Caitlyn",
+      Camille: "Camille",
+      Cassiopeia: "Cassiopeia",
+      "Cho'Gath": "Chogath",
+      Corki: "Corki",
+      Darius: "Darius",
+      Diana: "Diana",
+      "Dr. Mundo": "DrMundo",
+      Draven: "Draven",
+      Ekko: "Ekko",
+      Elise: "Elise",
+      Evelynn: "Evelynn",
+      Ezreal: "Ezreal",
+      Fiddlesticks: "Fiddlesticks",
+      Fiora: "Fiora",
+      Fizz: "Fizz",
+      Galio: "Galio",
+      Gangplank: "Gangplank",
+      Garen: "Garen",
+      Gnar: "Gnar",
+      Gragas: "Gragas",
+      Graves: "Graves",
+      Gwen: "Gwen",
+      Hecarim: "Hecarim",
+      Heimerdinger: "Heimerdinger",
+      Hwei: "Hwei",
+      Illaoi: "Illaoi",
+      Irelia: "Irelia",
+      Ivern: "Ivern",
+      Janna: "Janna",
+      "Jarvan IV": "JarvanIV",
+      Jax: "Jax",
+      Jayce: "Jayce",
+      Jhin: "Jhin",
+      Jinx: "Jinx",
+      "K'Sante": "KSante",
+      "Kai'Sa": "Kaisa",
+      Kalista: "Kalista",
+      Karma: "Karma",
+      Karthus: "Karthus",
+      Kassadin: "Kassadin",
+      Katarina: "Katarina",
+      Kayle: "Kayle",
+      Kayn: "Kayn",
+      Kennen: "Kennen",
+      "Kha'Zix": "Khazix",
+      Kindred: "Kindred",
+      Kled: "Kled",
+      "Kog'Maw": "KogMaw",
+      LeBlanc: "Leblanc",
+      "Lee Sin": "LeeSin",
+      Leona: "Leona",
+      Lillia: "Lillia",
+      Lissandra: "Lissandra",
+      Lucian: "Lucian",
+      Lulu: "Lulu",
+      Lux: "Lux",
+      Malphite: "Malphite",
+      Malzahar: "Malzahar",
+      Maokai: "Maokai",
+      "Master Yi": "MasterYi",
+      Milio: "Milio",
+      "Miss Fortune": "MissFortune",
+      Mordekaiser: "Mordekaiser",
+      Morgana: "Morgana",
+      Naafiri: "Naafiri",
+      Nami: "Nami",
+      Nasus: "Nasus",
+      Nautilus: "Nautilus",
+      Neeko: "Neeko",
+      Nidalee: "Nidalee",
+      Nilah: "Nilah",
+      Nocturne: "Nocturne",
+      "Nunu & Willump": "Nunu",
+      Olaf: "Olaf",
+      Orianna: "Orianna",
+      Ornn: "Ornn",
+      Pantheon: "Pantheon",
+      Poppy: "Poppy",
+      Pyke: "Pyke",
+      Qiyana: "Qiyana",
+      Quinn: "Quinn",
+      Rakan: "Rakan",
+      Rammus: "Rammus",
+      "Rek'Sai": "RekSai",
+      Rell: "Rell",
+      "Renata Glasc": "Renata",
+      Renekton: "Renekton",
+      Rengar: "Rengar",
+      Riven: "Riven",
+      Rumble: "Rumble",
+      Ryze: "Ryze",
+      Samira: "Samira",
+      Sejuani: "Sejuani",
+      Senna: "Senna",
+      Seraphine: "Seraphine",
+      Sett: "Sett",
+      Shen: "Shen",
+      Shyvana: "Shyvana",
+      Singed: "Singed",
+      Sion: "Sion",
+      Sivir: "Sivir",
+      Skarner: "Skarner",
+      Sona: "Sona",
+      Soraka: "Soraka",
+      Swain: "Swain",
+      Sylas: "Sylas",
+      Syndra: "Syndra",
+      "Tahm Kench": "TahmKench",
+      Taliyah: "Taliyah",
+      Talon: "Talon",
+      Taric: "Taric",
+      Teemo: "Teemo",
+      Thresh: "Thresh",
+      Tristana: "Tristana",
+      Trundle: "Trundle",
+      Tryndamere: "Tryndamere",
+      "Twisted Fate": "TwistedFate",
+      Twitch: "Twitch",
+      Udyr: "Udyr",
+      Urgot: "Urgot",
+      Varus: "Varus",
+      Vayne: "Vayne",
+      Veigar: "Veigar",
+      "Vel'Koz": "Velkoz",
+      Vex: "Vex",
+      Vi: "Vi",
+      Viego: "Viego",
+      Viktor: "Viktor",
+      Vladimir: "Vladimir",
+      Volibear: "Volibear",
+      Warwick: "Warwick",
+      Wukong: "MonkeyKing",
+      Xayah: "Xayah",
+      Xerath: "Xerath",
+      "Xin Zhao": "XinZhao",
+      Yasuo: "Yasuo",
+      Yone: "Yone",
+      Yorick: "Yorick",
+      Yuumi: "Yuumi",
+      Zac: "Zac",
+      Zed: "Zed",
+      Zeri: "Zeri",
+      Ziggs: "Ziggs",
+      Zilean: "Zilean",
+      Zoe: "Zoe",
+      Zyra: "Zyra",
+    };
+    return keyMap[championName] || championName.replace(/[^a-zA-Z0-9]/g, "");
+  }
+
   openModal(champion) {
     console.log("=== CHAMPION MODAL DEBUG ===");
     console.log("Opening modal for champion:", champion);
@@ -873,8 +1217,8 @@ class RuneterraApp {
             ${gameplayHtml}
           ${statsHtml}
           ${skillsHtml}
-          ${abilitiesHtml}
-          ${specialFeaturesHtml}
+          ${abilitiesHtml}          ${specialFeaturesHtml}
+          ${this.getSkinSection(champion)}
           ${fullLoreHtml}
           ${notesHtml}
           
@@ -1886,7 +2230,6 @@ class RuneterraApp {
 
     return "Không xác định";
   }
-
   // Function to get detailed lore connection descriptions
   getLoreConnectionDescription(championName, connectionName) {
     // Special detailed descriptions for Bel'Veth's connections
@@ -1908,6 +2251,246 @@ class RuneterraApp {
 
     // Default description for other champions
     return "Liên kết cốt truyện";
+  }
+
+  // Function to get skin themes
+  getSkinThemes() {
+    return {
+      PROJECT: {
+        name: "PROJECT",
+        description: "Futuristic cyberpunk themed skins",
+        color: "#00d4ff",
+        champions: ["Akali", "Ashe", "Yasuo", "Jinx", "Lucian"],
+      },
+      "K/DA": {
+        name: "K/DA",
+        description: "Pop star virtual band themed skins",
+        color: "#ff69b4",
+        champions: ["Ahri", "Akali", "Evelynn", "Kai'Sa"],
+      },
+      "Blood Moon": {
+        name: "Blood Moon",
+        description: "Traditional Japanese demon festival themed skins",
+        color: "#dc143c",
+        champions: ["Aatrox", "Akali", "Diana", "Jhin", "Thresh"],
+      },
+      Cosmic: {
+        name: "Cosmic",
+        description: "Space and cosmic themed skins",
+        color: "#9370db",
+        champions: ["Ashe", "Bel'Veth", "Lulu", "Varus"],
+      },
+      "High Noon": {
+        name: "High Noon",
+        description: "Western cowboy themed skins",
+        color: "#d2691e",
+        champions: ["Ashe", "Jhin", "Lucian", "Thresh", "Yasuo"],
+      },
+      Elderwood: {
+        name: "Elderwood",
+        description: "Nature and forest themed skins",
+        color: "#228b22",
+        champions: ["Ahri", "Azir", "Bard", "Nocturne"],
+      },
+      "Star Guardian": {
+        name: "Star Guardian",
+        description: "Magical girl anime themed skins",
+        color: "#ff1493",
+        champions: ["Ahri", "Akali", "Jinx", "Lux", "Miss Fortune"],
+      },
+    };
+  } // Function to get skin section for champion modal
+  getSkinSection(champion) {
+    // Đảm bảo skinService được khởi tạo
+    if (!window.skinService) {
+      window.skinService = new SkinService();
+    }
+
+    const skinService = window.skinService;
+
+    if (!skinService || !skinService.skins || skinService.skins.length === 0) {
+      return `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-rose-300 mb-3">🎨 Skin Trang Phục:</h4>
+          <div class="bg-rose-900/30 p-4 rounded-lg border border-rose-600/50">
+            <p class="text-sm text-rose-100">Đang tải dữ liệu skin...</p>            
+            <button onclick="window.skinService.loadSkinsData().then(() => location.reload())" 
+                    class="mt-3 text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded transition-colors">
+              Tải skin data
+            </button>
+          </div>
+        </div>
+      `;
+    } // Lấy skin của champion và loại bỏ default skin
+    let championSkins = window.skinService.getSkinsByChampion(champion.name);
+
+    // Filter out default/classic skins
+    championSkins = championSkins.filter(
+      (skin) =>
+        !skin.name.toLowerCase().includes("default") &&
+        !skin.name.toLowerCase().includes("classic") &&
+        skin.name !== champion.name
+    );
+
+    if (!championSkins || championSkins.length === 0) {
+      return `
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold text-rose-300 mb-3">🎨 Skin Trang Phục:</h4>
+          <div class="bg-rose-900/30 p-4 rounded-lg border border-rose-600/50">
+            <p class="text-sm text-rose-100">Chưa có thông tin về skin cho tướng này.</p>            
+            <button onclick="window.runeterra.loadMoreSkins('${champion.name}')" 
+                    class="mt-3 text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded transition-colors">
+              Tìm kiếm skin
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Sắp xếp skin theo rarity và tên
+    championSkins.sort((a, b) => {
+      const rarityOrder = {
+        ultimate: 5,
+        legendary: 4,
+        epic: 3,
+        rare: 2,
+        common: 1,
+      };
+      const aRarity = rarityOrder[a.rarity.toLowerCase()] || 0;
+      const bRarity = rarityOrder[b.rarity.toLowerCase()] || 0;
+
+      if (aRarity !== bRarity) return bRarity - aRarity;
+      return a.name.localeCompare(b.name);
+    });
+
+    const skinsHtml = championSkins
+      .map(
+        (skin) => `
+      <div class="skin-card bg-slate-700/50 p-4 rounded-lg border border-rose-600/30 hover:border-rose-500/60 transition-all transform hover:scale-105">
+        <div class="aspect-video bg-slate-600 rounded-lg overflow-hidden mb-3">
+          <img src="${skin.splashArt}" alt="${skin.name}" 
+               class="w-full h-full object-cover"
+               onerror="this.src='https://via.placeholder.com/300x169/444/fff?text=${encodeURIComponent(
+                 skin.name
+               )}'">
+        </div>
+        <div class="space-y-2">
+          <h5 class="text-rose-300 font-medium text-sm truncate" title="${
+            skin.name
+          }">
+            ${skin.name}
+          </h5>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 px-2 py-1 bg-slate-600/50 rounded">${
+              skin.theme
+            }</span>
+            <span class="text-rose-400 font-bold">${skin.price.toLocaleString()} RP</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="rarity-badge ${skin.rarity.toLowerCase()} text-xs px-2 py-1 rounded font-medium">
+              ${skin.rarity.toUpperCase()}
+            </span>
+            <button onclick="skinThemesManager.showSkinPreview(${skin.id})" 
+                    class="text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded transition-colors">
+              Xem chi tiết
+            </button>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 mt-2 line-clamp-2" title="${
+          skin.description
+        }">
+          ${skin.description}
+        </p>
+      </div>
+    `
+      )
+      .join("");
+
+    const totalValue = championSkins.reduce((sum, skin) => sum + skin.price, 0);
+    const avgPrice = Math.round(totalValue / championSkins.length);
+
+    return `
+      <div class="mt-6">
+        <h4 class="text-lg font-semibold text-rose-300 mb-3 flex items-center gap-2">
+          🎨 Skin Trang Phục 
+          <span class="bg-rose-800/50 px-2 py-1 rounded text-xs">${
+            championSkins.length
+          } skins</span>
+        </h4>
+        <div class="bg-rose-900/20 p-4 rounded-lg border border-rose-600/50">
+          <!-- Skin stats -->
+          <div class="flex flex-wrap gap-4 mb-4 text-sm">
+            <div class="bg-rose-800/50 px-3 py-2 rounded flex items-center gap-2">
+              <span class="text-rose-200">💰 Tổng giá trị:</span>
+              <span class="text-rose-100 font-bold">${totalValue.toLocaleString()} RP</span>
+            </div>
+            <div class="bg-rose-800/50 px-3 py-2 rounded flex items-center gap-2">
+              <span class="text-rose-200">📊 Giá trung bình:</span>
+              <span class="text-rose-100 font-bold">${avgPrice.toLocaleString()} RP</span>
+            </div>
+          </div>
+          
+          <!-- Skins grid với layout mới -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
+            ${skinsHtml}
+          </div>
+          
+          <!-- Action buttons -->
+          <div class="mt-4 flex flex-wrap gap-2 justify-center">
+            <button onclick="window.runeterra.showAllSkinsForChampion('${
+              champion.name
+            }')" 
+                    class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded transition-colors flex items-center gap-2">
+              <span>🔍</span> Xem tất cả skin của ${champion.name}
+            </button>
+            <button onclick="window.runeterra.showSkinThemes()" 
+                    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors flex items-center gap-2">
+              <span>🎭</span> Xem chủ đề skin
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  // Load skin themes section
+  async loadSkinThemes() {
+    console.log("Loading skin themes...");
+    const container = document.getElementById("skinThemesGrid");
+    if (!container) {
+      console.error("Skin themes container not found!");
+      return;
+    }
+
+    // Initialize skin themes manager if not already done
+    if (!window.skinThemesManager) {
+      window.skinThemesManager = new SkinThemesManager();
+    }
+
+    // Load and display skin themes
+    await skinThemesManager.initializeThemes();
+  }
+
+  // Helper functions for skin interactions
+  showAllSkinsForChampion(championName) {
+    // Switch to skin themes tab and filter by champion
+    this.switchChampionType("skinThemes");
+    // You can add more specific filtering logic here
+    console.log("Showing all skins for:", championName);
+  }
+
+  showSkinThemes() {
+    // Switch to skin themes tab
+    this.switchChampionType("skinThemes");
+  }
+
+  loadMoreSkins(championName) {
+    // Trigger skin loading if not already loaded
+    if (skinService && !skinService.loading && skinService.skins.length === 0) {
+      skinService.loadSkinsData().then(() => {
+        // Refresh the modal if still open
+        console.log("Skins loaded, refreshing modal for:", championName);
+      });
+    }
   }
 }
 

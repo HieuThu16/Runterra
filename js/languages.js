@@ -19,11 +19,14 @@ const languages = {
       demacia: "⚜️ Demacia",
       noxus: "🗡️ Noxus",
       ionia: "🌸 Ionia",
-      piltover: "⚙️ Piltover", // Champion Types
-      oldChampions: "📚 Tướng Cũ",
+      piltover: "⚙️ Piltover", // Champion Types      oldChampions: "📚 Tướng Cũ",
       newChampions: "✨ Tướng Mới",
+      skinThemes: "🎨 Chủ Đề Skin",
       addChampion: "➕ Thêm Tướng",
       statistics: "📊 Thống Kê",
+
+      // Skin Themes
+      skinThemesTitle: "🎨 Chủ Đề Skin & Trang Phục",
 
       // Statistics
       statisticsTitle: "📊 Thống Kê Tướng & Vùng Đất",
@@ -155,11 +158,14 @@ const languages = {
       demacia: "⚜️ Demacia",
       noxus: "🗡️ Noxus",
       ionia: "🌸 Ionia",
-      piltover: "⚙️ Piltover", // Champion Types
-      oldChampions: "📚 Existing Champions",
+      piltover: "⚙️ Piltover", // Champion Types      oldChampions: "📚 Existing Champions",
       newChampions: "✨ New Champions",
+      skinThemes: "🎨 Skin Themes",
       addChampion: "➕ Add Champion",
       statistics: "📊 Statistics",
+
+      // Skin Themes
+      skinThemesTitle: "🎨 Skin Themes & Cosmetics",
 
       // Statistics
       statisticsTitle: "📊 Champion & Region Statistics",
@@ -291,11 +297,14 @@ const languages = {
       demacia: "⚜️ 德玛西亚",
       noxus: "🗡️ 诺克萨斯",
       ionia: "🌸 艾欧尼亚",
-      piltover: "⚙️ 皮尔特沃夫", // Champion Types
-      oldChampions: "📚 现有英雄",
+      piltover: "⚙️ 皮尔特沃夫", // Champion Types      oldChampions: "📚 现有英雄",
       newChampions: "✨ 新英雄",
+      skinThemes: "🎨 皮肤主题",
       addChampion: "➕ 添加英雄",
       statistics: "📊 统计",
+
+      // Skin Themes
+      skinThemesTitle: "🎨 皮肤主题与外观",
 
       // Statistics
       statisticsTitle: "📊 英雄与地区统计",

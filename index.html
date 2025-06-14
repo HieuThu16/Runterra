@@ -21,39 +21,51 @@
           🎮 Runeterra Games Hub
         </h1>
 
-        <!-- Language Selector -->
-        <div class="relative">
+        <div class="flex items-center space-x-4">
+          <!-- Crawl Champions Button -->
           <button
-            id="languageSelector"
-            class="flex items-center space-x-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-all duration-300"
+            id="crawlChampionsBtn"
+            class="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300"
+            onclick="forceCrawlChampions()"
           >
-            🇻🇳 Tiếng Việt
+            <span>🔄</span>
+            <span>Cào tướng mới</span>
           </button>
-          <div
-            id="languageMenu"
-            class="absolute right-0 mt-2 bg-slate-800 border border-slate-600 rounded-lg shadow-lg hidden z-50"
-          >
+
+          <!-- Language Selector -->
+          <div class="relative">
             <button
-              class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
-              data-lang="vi"
+              id="languageSelector"
+              class="flex items-center space-x-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-all duration-300"
             >
-              <span>🇻🇳</span>
-              <span>Tiếng Việt</span>
+              🇻🇳 Tiếng Việt
             </button>
-            <button
-              class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
-              data-lang="en"
+            <div
+              id="languageMenu"
+              class="absolute right-0 mt-2 bg-slate-800 border border-slate-600 rounded-lg shadow-lg hidden z-50"
             >
-              <span>🇺🇸</span>
-              <span>English</span>
-            </button>
-            <button
-              class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
-              data-lang="zh"
-            >
-              <span>🇨🇳</span>
-              <span>中文</span>
-            </button>
+              <button
+                class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
+                data-lang="vi"
+              >
+                <span>🇻🇳</span>
+                <span>Tiếng Việt</span>
+              </button>
+              <button
+                class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
+                data-lang="en"
+              >
+                <span>🇺🇸</span>
+                <span>English</span>
+              </button>
+              <button
+                class="language-option w-full px-4 py-2 text-left text-white hover:bg-slate-700 flex items-center space-x-2"
+                data-lang="zh"
+              >
+                <span>🇨🇳</span>
+                <span>中文</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -126,6 +138,13 @@
             data-translate="newChampions"
           >
             ✨ Tướng Mới
+          </button>
+          <button
+            id="skinThemesTab"
+            class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+            data-translate="skinThemes"
+          >
+            🎨 Chủ Đề Skin
           </button>
           <button
             id="addChampionBtn"
@@ -214,6 +233,52 @@
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           <!-- Champions will be loaded here -->
+        </div>
+
+        <!-- Skin Themes Section -->
+        <div id="skinThemesSection" class="hidden">
+          <div class="bg-slate-800 rounded-lg p-6 shadow-lg">
+            <h2
+              class="text-3xl font-bold text-cyan-400 mb-6 text-center"
+              data-translate="skinThemesTitle"
+            >
+              🎨 Chủ Đề Skin & Trang Phục
+            </h2>
+
+            <!-- Skin Themes Controls -->
+            <div class="mb-6 flex flex-wrap gap-4 justify-center">
+              <button
+                id="skinViewModeBtn"
+                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+              >
+                🔀 Chế Độ Xem
+              </button>
+              <select
+                id="skinThemeFilter"
+                class="bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2"
+              >
+                <option value="all">🎭 Tất Cả Chủ Đề</option>
+                <option value="legendary">⭐ Legendary</option>
+                <option value="epic">🔥 Epic</option>
+                <option value="rare">💎 Rare</option>
+                <option value="common">✨ Common</option>
+              </select>
+              <input
+                type="text"
+                id="skinSearchInput"
+                placeholder="Tìm kiếm skin..."
+                class="bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 flex-1 max-w-md"
+              />
+            </div>
+
+            <!-- Skin Themes Grid -->
+            <div
+              id="skinThemesGrid"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              <!-- Skin themes will be loaded here -->
+            </div>
+          </div>
         </div>
 
         <!-- Statistics Section -->
@@ -987,13 +1052,9 @@
     <!-- Load main data file after regions -->
     <script src="js/data.js?v=2.8"></script>
     <script src="js/database.js?v=2.8"></script>
+    <script src="js/skin-service.js?v=2.8"></script>
+    <script src="js/skin-themes.js?v=2.8"></script>
     <script src="js/app.js?v=2.8"></script>
-
-    <script>
-      // Initialize the application when DOM is loaded
-      document.addEventListener("DOMContentLoaded", function () {
-        window.runeterra = new RuneterraApp();
-      });
-    </script>
+    <script src="enhanced-auto-crawl.js?v=2.8"></script>
   </body>
 </html>

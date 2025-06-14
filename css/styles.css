@@ -326,3 +326,137 @@ body {
   border-top-color: #1e293b;
   z-index: 1000;
 }
+
+/* Skin System Styles */
+.skin-card-mini {
+  transition: all 0.3s ease;
+}
+
+.skin-card-mini:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.2);
+}
+
+.rarity-badge {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rarity-badge.epic {
+  background: linear-gradient(45deg, #8b4cb8, #a855f7);
+  color: white;
+}
+
+.rarity-badge.legendary {
+  background: linear-gradient(45deg, #ff8c00, #ffa500);
+  color: white;
+}
+
+.rarity-badge.ultimate {
+  background: linear-gradient(45deg, #ff6b6b, #e53e3e);
+  color: white;
+}
+
+.rarity-badge.mythic {
+  background: linear-gradient(45deg, #ffd700, #ffa500);
+  color: #1a1a1a;
+}
+
+.rarity-badge.common {
+  background: linear-gradient(45deg, #64748b, #94a3b8);
+  color: white;
+}
+
+/* Skin card styles */
+.skin-card {
+  transition: all 0.3s ease;
+  background: rgba(51, 65, 85, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.skin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+  background: rgba(51, 65, 85, 0.7);
+}
+
+.skin-card img {
+  transition: transform 0.3s ease;
+}
+
+.skin-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Improved grid layout */
+.skin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .skin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .skin-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* Smooth scrollbar for skin containers */
+.max-h-96::-webkit-scrollbar {
+  width: 6px;
+}
+
+.max-h-96::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 3px;
+}
+
+.max-h-96::-webkit-scrollbar-thumb {
+  background: rgba(239, 68, 68, 0.6);
+  border-radius: 3px;
+}
+
+.max-h-96::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 68, 68, 0.8);
+}
+
+/* Champion sort and filter animations */
+.champions-grid {
+  transition: all 0.5s ease;
+}
+
+.champion-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.champion-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.champion-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.champion-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.champion-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.champion-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

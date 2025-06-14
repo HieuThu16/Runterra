@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Champion Crawler Pro</title>
+    <style>
+      body {
+        font-family: monospace;
+        background: #001122;
+        color: #00ff88;
+        padding: 20px;
+      }
+      .panel {
+        background: #002233;
+        padding: 15px;
+        margin: 10px 0;
+        border: 1px solid #00ff88;
+        border-radius: 5px;
+      }
+      .log {
+        background: #001111;
+        padding: 8px;
+        margin: 3px 0;
+        border-left: 3px solid #00ff88;
+        font-size: 12px;
+      }
+      .error {
+        border-left-color: #ff0044;
+        color: #ff0044;
+      }
+      .info {
+        border-left-color: #0088ff;
+        color: #0088ff;
+      }
+      .success {
+        border-left-color: #00ff44;
+        color: #00ff44;
+      }
+      .warning {
+        border-left-color: #ffaa00;
+        color: #ffaa00;
+      }
+      button {
+        background: #003344;
+        color: #00ff88;
+        border: 1px solid #00ff88;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      button:hover {
+        background: #00ff88;
+        color: #001122;
+      }
+      button:disabled {
+        background: #666;
+        color: #999;
+        cursor: not-allowed;
+      }
+      .progress {
+        width: 100%;
+        height: 25px;
+        background: #003344;
+        border: 1px solid #00ff88;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #00ff88, #00cc66);
+        width: 0%;
+        transition: width 0.5s;
+        text-align: center;
+        line-height: 25px;
+        color: #001122;
+        font-weight: bold;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .full-width {
+        grid-column: span 2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🚀 Champion Crawler Pro</h1>
+
+    <div class="grid">
+      <div class="panel">
+        <h3>📊 Current Status</h3>
+        <div id="status">Initializing...</div>
+      </div>
+
+      <div class="panel">
+        <h3>🎯 Actions</h3>
+        <button onclick="quickCheck()" id="checkBtn">📊 Quick Check</button>
+        <button onclick="crawlMissing()" id="crawlBtn">⬇️ Crawl Missing</button>
+        <button onclick="forceFullCrawl()" id="fullBtn">🔥 Force Full</button>
+        <button onclick="exportData()" id="exportBtn">💾 Export</button>
+      </div>
+    </div>
+
+    <div class="panel full-width">
+      <h3>📈 Progress</h3>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar">Ready...</div>
+      </div>
+    </div>
+
+    <div class="panel full-width">
+      <h3>📜 Console Log</h3>
+      <div
+        id="output"
+        style="
+          height: 400px;
+          overflow-y: auto;
+          background: #000011;
+          padding: 10px;
+          border: 1px solid #00ff88;
+          border-radius: 3px;
+        "
+      ></div>
+    </div>
+
+    <script src="js/regions/void.js"></script>
+    <script src="js/regions/shadowisles.js"></script>
+    <script src="js/regions/demacia.js"></script>
+    <script src="js/regions/noxus.js"></script>
+    <script src="js/regions/ionia.js"></script>
+    <script src="js/regions/piltover.js"></script>
+    <script src="js/regions/specialChampions.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      let skinService;
+      let totalChampions = 0;
+
+      function log(msg, type = "log") {
+        const div = document.createElement("div");
+        div.className = `log ${type}`;
+        div.innerHTML = `<span style="color: #666">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+        document.getElementById("output").appendChild(div);
+        document.getElementById("output").scrollTop =
+          document.getElementById("output").scrollHeight;
+        console.log(msg);
+      }
+
+      function updateProgress(percent, text) {
+        const bar = document.getElementById("progressBar");
+        bar.style.width = percent + "%";
+        bar.textContent = `${Math.round(percent)}% - ${text}`;
+      }
+
+      function updateStatus() {
+        const current = skinService ? skinService.getCurrentChampionCount() : 0;
+        document.getElementById("status").innerHTML = `
+                <div style="margin: 5px 0;">📊 <strong>${current}</strong> champions in database</div>
+                <div style="margin: 5px 0;">🌐 <strong>${totalChampions}</strong> champions in API</div>
+                <div style="margin: 5px 0;">❌ <strong>${Math.max(
+                  0,
+                  totalChampions - current
+                )}</strong> missing champions</div>
+                <div style="margin: 5px 0;">🔧 SkinService: <span style="color: ${
+                  skinService ? "#00ff44" : "#ff0044"
+                }">${skinService ? "Ready" : "Not initialized"}</span></div>
+            `;
+      }
+
+      async function quickCheck() {
+        log("📊 Running quick check...", "info");
+
+        try {
+          if (!skinService) {
+            skinService = new SkinService();
+            log("🔧 SkinService initialized", "success");
+          }
+
+          updateProgress(25, "Checking API...");
+          const apiCount = await skinService.getAPIChampionCount();
+          totalChampions = apiCount;
+
+          updateProgress(50, "Counting current...");
+          const currentCount = skinService.getCurrentChampionCount();
+
+          updateProgress(75, "Calculating...");
+          const missing = apiCount - currentCount;
+
+          log(`📊 API Champions: ${apiCount}`, "info");
+          log(`📊 Current Champions: ${currentCount}`, "info");
+          log(
+            `❌ Missing Champions: ${missing}`,
+            missing > 0 ? "warning" : "success"
+          );
+
+          updateProgress(100, "Complete!");
+          updateStatus();
+
+          if (missing > 0) {
+            log(`🎯 Ready to crawl ${missing} missing champions!`, "warning");
+          } else {
+            log("✅ All champions are already in database!", "success");
+          }
+        } catch (error) {
+          log(`❌ Quick check failed: ${error.message}`, "error");
+          updateProgress(0, "Failed!");
+        }
+      }
+
+      async function crawlMissing() {
+        log("⬇️ Starting to crawl missing champions...", "info");
+
+        const btn = document.getElementById("crawlBtn");
+        btn.disabled = true;
+
+        try {
+          updateProgress(10, "Initializing crawl...");
+
+          if (!skinService) {
+            skinService = new SkinService();
+          }
+
+          updateProgress(20, "Finding missing champions...");
+          const newChampions = await skinService.crawlMissingChampions();
+
+          updateProgress(80, "Processing results...");
+
+          if (newChampions.length > 0) {
+            log(
+              `✅ Successfully crawled ${newChampions.length} new champions!`,
+              "success"
+            );
+
+            newChampions.forEach((champ, index) => {
+              setTimeout(() => {
+                log(
+                  `  ➕ ${champ.name} (${champ.region}, ${champ.role})`,
+                  "success"
+                );
+              }, index * 50);
+            });
+
+            setTimeout(() => {
+              const finalCount = skinService.getCurrentChampionCount();
+              log(`🎯 Database now has ${finalCount} champions!`, "success");
+              updateStatus();
+            }, newChampions.length * 50 + 500);
+          } else {
+            log(
+              "ℹ️ No missing champions found. Database is up to date!",
+              "info"
+            );
+          }
+
+          updateProgress(100, `Added ${newChampions.length} champions!`);
+        } catch (error) {
+          log(`❌ Crawl failed: ${error.message}`, "error");
+          updateProgress(0, "Crawl failed!");
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      async function forceFullCrawl() {
+        if (
+          !confirm(
+            "🚨 This will re-crawl ALL champions. This may take a while. Continue?"
+          )
+        ) {
+          return;
+        }
+
+        log("🔥 Starting FORCE FULL CRAWL...", "warning");
+
+        const btn = document.getElementById("fullBtn");
+        btn.disabled = true;
+
+        try {
+          // Clear current data
+          updateProgress(10, "Clearing existing data...");
+          log("🗑️ Clearing existing champion data...", "warning");
+
+          if (window.championsDatabase?.regions) {
+            window.championsDatabase.regions.forEach((region) => {
+              if (region.existingChampions) region.existingChampions.length = 0;
+              if (region.newChampions) region.newChampions.length = 0;
+            });
+          }
+
+          updateProgress(20, "Re-initializing service...");
+          skinService = new SkinService();
+
+          updateProgress(30, "Starting fresh crawl...");
+          await crawlMissing();
+
+          log("🔥 FORCE FULL CRAWL COMPLETE!", "success");
+        } catch (error) {
+          log(`❌ Force crawl failed: ${error.message}`, "error");
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      function exportData() {
+        log("💾 Exporting all champion data...", "info");
+
+        const data = {
+          timestamp: new Date().toISOString(),
+          version: "2.0-pro",
+          stats: {
+            totalChampions: skinService
+              ? skinService.getCurrentChampionCount()
+              : 0,
+            apiChampions: totalChampions,
+            regions: window.championsDatabase?.regions?.length || 0,
+          },
+          database: window.championsDatabase,
+          crawledChampions: window.crawledChampions || [],
+          metadata: {
+            exportedBy: "Champion Crawler Pro",
+            userAgent: navigator.userAgent,
+          },
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `champions-pro-${
+          new Date().toISOString().split("T")[0]
+        }.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        log(
+          `💾 Exported ${data.stats.totalChampions} champions to file!`,
+          "success"
+        );
+      }
+
+      // Initialize on load
+      window.addEventListener("load", () => {
+        log("🚀 Champion Crawler Pro initialized!", "success");
+        skinService = new SkinService();
+
+        setTimeout(() => {
+          log("🔄 Running initial check...", "info");
+          quickCheck();
+        }, 1000);
+
+        // Auto-update status every 10 seconds
+        setInterval(updateStatus, 10000);
+      });
+    </script>
+  </body>
+</html>

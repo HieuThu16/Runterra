@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Debug Champions Count</title>
+    <style>
+      body {
+        font-family: monospace;
+        background: #000;
+        color: #0f0;
+        padding: 20px;
+      }
+      .log {
+        background: #111;
+        padding: 10px;
+        margin: 5px 0;
+        border-left: 3px solid #0f0;
+      }
+      .error {
+        border-left-color: #f00;
+        color: #f00;
+      }
+      .info {
+        border-left-color: #00f;
+        color: #0ff;
+      }
+      .success {
+        border-left-color: #0f0;
+        color: #0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔍 Debug Champions Count</h1>
+    <button onclick="checkCount()">🔄 Check Count</button>
+    <button onclick="showAllChampions()">👥 Show All</button>
+    <div id="output"></div>
+
+    <script src="js/regions/void.js"></script>
+    <script src="js/regions/shadowisles.js"></script>
+    <script src="js/regions/demacia.js"></script>
+    <script src="js/regions/noxus.js"></script>
+    <script src="js/regions/ionia.js"></script>
+    <script src="js/regions/piltover.js"></script>
+    <script src="js/regions/specialChampions.js"></script>
+    <script src="js/data.js"></script>
+
+    <script>
+      function log(msg, type = "log") {
+        const div = document.createElement("div");
+        div.className = `log ${type}`;
+        div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        document.getElementById("output").appendChild(div);
+        console.log(msg);
+      }
+
+      function checkCount() {
+        log("🔍 Checking current champion count...", "info");
+
+        if (!window.championsDatabase) {
+          log("❌ championsDatabase not found!", "error");
+          return;
+        }
+
+        log(
+          `📊 Database found with ${championsDatabase.regions.length} regions`,
+          "success"
+        );
+
+        let totalCount = 0;
+        championsDatabase.regions.forEach((region) => {
+          const existing = region.existingChampions?.length || 0;
+          const newChamps = region.newChampions?.length || 0;
+          const total = existing + newChamps;
+          totalCount += total;
+
+          log(
+            `📍 ${region.name}: ${total} champions (${existing} existing + ${newChamps} new)`
+          );
+        });
+
+        log(`🎯 TOTAL CHAMPIONS IN DATABASE: ${totalCount}`, "success");
+
+        // Check special champions
+        if (championsDatabase.specialChampions) {
+          log(
+            `⭐ Special champions: ${championsDatabase.specialChampions.length}`
+          );
+          totalCount += championsDatabase.specialChampions.length;
+          log(`🎯 GRAND TOTAL: ${totalCount}`, "success");
+        }
+      }
+
+      function showAllChampions() {
+        log("👥 Showing all champions...", "info");
+
+        const allChampions = [];
+
+        championsDatabase.regions.forEach((region) => {
+          if (region.existingChampions) {
+            region.existingChampions.forEach((champ) => {
+              allChampions.push(`${champ.name} (${region.name})`);
+            });
+          }
+          if (region.newChampions) {
+            region.newChampions.forEach((champ) => {
+              allChampions.push(`${champ.name} (${region.name}) [NEW]`);
+            });
+          }
+        });
+
+        if (championsDatabase.specialChampions) {
+          championsDatabase.specialChampions.forEach((champ) => {
+            allChampions.push(`${champ.name} [SPECIAL]`);
+          });
+        }
+
+        allChampions.sort();
+
+        log(`📋 All ${allChampions.length} champions:`, "info");
+        allChampions.forEach((champ) => {
+          log(`  • ${champ}`);
+        });
+      }
+
+      // Auto check on load
+      setTimeout(checkCount, 1000);
+    </script>
+  </body>
+</html>

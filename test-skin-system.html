@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Skin System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="bg-slate-900 text-slate-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <h1
+        class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+      >
+        🎨 Test Skin System
+      </h1>
+
+      <!-- Test Buttons -->
+      <div class="flex justify-center space-x-4 mb-8">
+        <button
+          onclick="testSkinService()"
+          class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+        >
+          Test Skin Service
+        </button>
+        <button
+          onclick="testSkinThemes()"
+          class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+        >
+          Test Skin Themes
+        </button>
+        <button
+          onclick="showSkinModal()"
+          class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+        >
+          Show Skin Modal
+        </button>
+      </div>
+
+      <!-- Results Container -->
+      <div id="results" class="bg-slate-800 p-6 rounded-lg min-h-96">
+        <h2 class="text-xl font-bold mb-4">Test Results:</h2>
+        <div id="output" class="text-slate-300">
+          Click a test button to see results...
+        </div>
+      </div>
+
+      <!-- Champion Grid for Skin Themes -->
+      <div id="champion-grid" class="mt-8">
+        <!-- Skin themes will be rendered here -->
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/skin-service.js"></script>
+    <script src="js/skin-themes.js"></script>
+
+    <script>
+      // Test functions
+      async function testSkinService() {
+        const output = document.getElementById("output");
+        output.innerHTML =
+          '<p class="text-yellow-300">Testing Skin Service...</p>';
+
+        try {
+          // Test skin service loading
+          await skinService.loadSkinsData();
+
+          const stats = skinService.getSkinsStats();
+          const themes = skinService.getAllThemes();
+          const asheSkinsTest = skinService.getSkinsByChampion("Ashe");
+          const starGuardianTest = skinService.getSkinsByTheme("Star Guardian");
+
+          output.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="text-green-400">✅ Skin Service Test Results:</div>
+                        <div class="bg-slate-700 p-4 rounded">
+                            <h3 class="text-cyan-300 font-bold mb-2">Statistics:</h3>
+                            <p>Total Skins: ${stats.total}</p>
+                            <p>Total Themes: ${themes.length}</p>
+                            <p>Average Price: ${stats.avgPrice} RP</p>
+                        </div>
+                        <div class="bg-slate-700 p-4 rounded">
+                            <h3 class="text-cyan-300 font-bold mb-2">Test Queries:</h3>
+                            <p>Ashe Skins: ${asheSkinsTest.length}</p>
+                            <p>Star Guardian Skins: ${
+                              starGuardianTest.length
+                            }</p>
+                        </div>
+                        <div class="bg-slate-700 p-4 rounded">
+                            <h3 class="text-cyan-300 font-bold mb-2">Available Themes:</h3>
+                            <p>${themes.join(", ")}</p>
+                        </div>
+                    </div>
+                `;
+        } catch (error) {
+          output.innerHTML = `<p class="text-red-400">❌ Error: ${error.message}</p>`;
+        }
+      }
+
+      async function testSkinThemes() {
+        const output = document.getElementById("output");
+        output.innerHTML =
+          '<p class="text-yellow-300">Testing Skin Themes Manager...</p>';
+
+        try {
+          // Initialize themes manager
+          if (!window.skinThemesManager) {
+            window.skinThemesManager = new SkinThemesManager();
+          }
+
+          await skinThemesManager.initializeThemes();
+
+          output.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="text-green-400">✅ Skin Themes Manager Test Results:</div>
+                        <div class="bg-slate-700 p-4 rounded">
+                            <p>Themes manager initialized successfully!</p>
+                            <p>Check the champion-grid below for theme display.</p>
+                        </div>
+                    </div>
+                `;
+        } catch (error) {
+          output.innerHTML = `<p class="text-red-400">❌ Error: ${error.message}</p>`;
+        }
+      }
+
+      function showSkinModal() {
+        const output = document.getElementById("output");
+
+        // Test skin preview modal
+        const testSkin = {
+          id: 1,
+          name: "Ashe Cung Thủ Hoàng Gia",
+          champion: "Ashe",
+          theme: "Hoàng Gia",
+          rarity: "Legendary",
+          price: 1820,
+          splashArt:
+            "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_1.jpg",
+          loadingScreen:
+            "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_1.jpg",
+          description: "Ashe với bộ trang phục hoàng gia lộng lẫy",
+        };
+
+        if (window.skinThemesManager) {
+          skinThemesManager.showSkinPreview(testSkin.id);
+          output.innerHTML = `
+                    <div class="text-green-400">✅ Skin Modal Test:</div>
+                    <div class="bg-slate-700 p-4 rounded mt-2">
+                        <p>Skin preview modal should be displayed!</p>
+                    </div>
+                `;
+        } else {
+          output.innerHTML = `<p class="text-red-400">❌ Skin Themes Manager not initialized</p>`;
+        }
+      }
+
+      // Auto-run basic test on load
+      document.addEventListener("DOMContentLoaded", function () {
+        const output = document.getElementById("output");
+        output.innerHTML = `
+                <div class="space-y-2">
+                    <p class="text-cyan-300">🚀 Skin System Test Environment Loaded</p>
+                    <p class="text-slate-400">Skin Service Available: ${
+                      typeof skinService !== "undefined" ? "✅" : "❌"
+                    }</p>
+                    <p class="text-slate-400">Skin Themes Manager Available: ${
+                      typeof SkinThemesManager !== "undefined" ? "✅" : "❌"
+                    }</p>
+                    <p class="text-slate-300 mt-4">Click test buttons above to run tests.</p>
+                </div>
+            `;
+      });
+    </script>
+  </body>
+</html>

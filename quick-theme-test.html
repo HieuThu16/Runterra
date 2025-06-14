@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Theme Crawler Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <h1 class="text-3xl font-bold mb-6">🚀 Quick Theme Crawler Test</h1>
+
+    <div class="mb-6 space-y-4">
+      <button
+        id="testProjectTheme"
+        class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold mr-4"
+      >
+        🤖 Test PROJECT Theme (25 skins)
+      </button>
+      <button
+        id="testStarGuardian"
+        class="px-6 py-3 bg-pink-600 hover:bg-pink-700 rounded-lg font-bold mr-4"
+      >
+        ⭐ Test Star Guardian (20 skins)
+      </button>
+      <button
+        id="testDataDragon"
+        class="px-6 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg font-bold mr-4"
+      >
+        🐉 Test Data Dragon API
+      </button>
+      <button
+        id="testAllThemes"
+        class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold"
+      >
+        🔥 Test All Popular Themes
+      </button>
+    </div>
+
+    <div id="results" class="bg-slate-800 p-4 rounded-lg mb-6">
+      <h3 class="font-bold mb-2">Results:</h3>
+      <div id="resultContent" class="text-sm font-mono text-green-400">
+        Waiting for test...
+      </div>
+    </div>
+
+    <div id="skinCount" class="text-xl font-bold mb-4">
+      Total Skins: <span id="count" class="text-cyan-400">0</span>
+    </div>
+
+    <div id="themeStats" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <!-- Theme stats will appear here -->
+    </div>
+
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      let skinService;
+
+      function log(message) {
+        const content = document.getElementById("resultContent");
+        content.innerHTML += message + "<br>";
+        content.scrollTop = content.scrollHeight;
+        console.log(message);
+      }
+
+      function updateStats() {
+        document.getElementById("count").textContent = skinService.skins.length;
+
+        const stats = skinService.getSkinsStats();
+        const themeStatsDiv = document.getElementById("themeStats");
+        themeStatsDiv.innerHTML = "";
+
+        Object.entries(stats.byTheme).forEach(([theme, count]) => {
+          const div = document.createElement("div");
+          div.className = "bg-slate-700 p-3 rounded-lg text-center";
+          div.innerHTML = `
+                    <div class="font-bold text-cyan-300">${theme}</div>
+                    <div class="text-2xl font-bold">${count}</div>
+                `;
+          themeStatsDiv.appendChild(div);
+        });
+      }
+
+      document
+        .getElementById("testProjectTheme")
+        .addEventListener("click", async () => {
+          log("🤖 Testing PROJECT theme crawling...");
+          try {
+            const newSkins = await skinService.loadThemeSpecificSkins(
+              "PROJECT",
+              25
+            );
+            log(`✅ PROJECT: Generated ${newSkins.length} skins`);
+            updateStats();
+          } catch (error) {
+            log(`❌ Error: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("testStarGuardian")
+        .addEventListener("click", async () => {
+          log("⭐ Testing Star Guardian theme crawling...");
+          try {
+            const newSkins = await skinService.loadThemeSpecificSkins(
+              "Star Guardian",
+              20
+            );
+            log(`✅ Star Guardian: Generated ${newSkins.length} skins`);
+            updateStats();
+          } catch (error) {
+            log(`❌ Error: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("testDataDragon")
+        .addEventListener("click", async () => {
+          log("🐉 Testing Data Dragon API crawling...");
+          try {
+            await skinService.crawlFromDataDragonAPI();
+            log(`✅ Data Dragon: Crawled from official API`);
+            updateStats();
+          } catch (error) {
+            log(`❌ Error: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("testAllThemes")
+        .addEventListener("click", async () => {
+          log("🔥 Testing all popular themes crawling...");
+          try {
+            await skinService.crawlPopularThemes();
+            log(`✅ All Themes: Crawled all popular themes`);
+            updateStats();
+          } catch (error) {
+            log(`❌ Error: ${error.message}`);
+          }
+        });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        log("🚀 Initializing skin service...");
+        skinService = new SkinService();
+        log("✅ Ready! Click buttons to test crawling.");
+      });
+    </script>
+  </body>
+</html>

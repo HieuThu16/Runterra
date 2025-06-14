@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔥 Mass Skin Crawler by Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <div class="max-w-7xl mx-auto">
+      <h1
+        class="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+      >
+        🔥 Mass Skin Crawler by Theme
+      </h1>
+
+      <!-- Controls -->
+      <div class="bg-slate-800 rounded-lg p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-4">🎯 Crawl Controls</h2>
+
+        <!-- Theme Selection -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <div>
+            <label class="block text-sm font-medium mb-2"
+              >🎨 Select Theme:</label
+            >
+            <select
+              id="themeSelect"
+              class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white"
+            >
+              <option value="PROJECT">PROJECT (Cyber/Tech)</option>
+              <option value="Star Guardian">
+                Star Guardian (Magical Girl)
+              </option>
+              <option value="K/DA">K/DA (Pop Star)</option>
+              <option value="Dark Star">Dark Star (Cosmic)</option>
+              <option value="Blood Moon">Blood Moon (Demon)</option>
+              <option value="Spirit Blossom">Spirit Blossom (Festival)</option>
+              <option value="High Noon">High Noon (Western)</option>
+              <option value="Pool Party">Pool Party (Summer)</option>
+              <option value="Halloween">Halloween (Spooky)</option>
+              <option value="Arcade">Arcade (Retro Game)</option>
+              <option value="Lunar Beast">Lunar Beast</option>
+              <option value="Battle Academia">Battle Academia</option>
+              <option value="True Damage">True Damage</option>
+              <option value="Elderwood">Elderwood</option>
+              <option value="Coven">Coven</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">📊 Max Count:</label>
+            <input
+              type="number"
+              id="maxCount"
+              value="25"
+              min="1"
+              max="100"
+              class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2"
+              >👤 Specific Champion:</label
+            >
+            <input
+              type="text"
+              id="championName"
+              placeholder="e.g., Yasuo, Jinx..."
+              class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white"
+            />
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-4">
+          <button
+            id="crawlThemeBtn"
+            class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold transition-colors"
+          >
+            🎨 Crawl Theme Skins
+          </button>
+          <button
+            id="crawlAllThemesBtn"
+            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-colors"
+          >
+            🔥 Crawl All Popular Themes
+          </button>
+          <button
+            id="crawlChampionBtn"
+            class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-bold transition-colors"
+          >
+            👤 Crawl Champion Skins
+          </button>
+          <button
+            id="crawlDataDragonBtn"
+            class="px-6 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg font-bold transition-colors"
+          >
+            🐉 Crawl Data Dragon API
+          </button>
+          <button
+            id="clearBtn"
+            class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition-colors"
+          >
+            🗑️ Clear All
+          </button>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div id="statusPanel" class="bg-slate-800 rounded-lg p-4 mb-8">
+        <h3 class="font-bold mb-2">📊 Crawling Status:</h3>
+        <div id="statusContent" class="text-slate-300 text-sm font-mono">
+          Ready to crawl...
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div id="statsPanel" class="bg-slate-800 rounded-lg p-6 mb-8">
+        <h3 class="text-xl font-bold mb-4">📈 Statistics</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="statsGrid">
+          <div class="bg-slate-700 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-cyan-400" id="totalSkins">
+              0
+            </div>
+            <div class="text-sm text-slate-400">Total Skins</div>
+          </div>
+          <div class="bg-slate-700 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-purple-400" id="totalThemes">
+              0
+            </div>
+            <div class="text-sm text-slate-400">Themes</div>
+          </div>
+          <div class="bg-slate-700 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-green-400" id="totalChampions">
+              0
+            </div>
+            <div class="text-sm text-slate-400">Champions</div>
+          </div>
+          <div class="bg-slate-700 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold text-yellow-400" id="avgPrice">
+              0
+            </div>
+            <div class="text-sm text-slate-400">Avg Price</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Breakdown -->
+      <div id="themeBreakdown" class="bg-slate-800 rounded-lg p-6 mb-8">
+        <h3 class="text-xl font-bold mb-4">🎨 Theme Breakdown</h3>
+        <div
+          id="themeList"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+          <!-- Theme cards will appear here -->
+        </div>
+      </div>
+
+      <!-- Skin Grid -->
+      <div
+        id="skinGrid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
+        <!-- Skin cards will appear here -->
+      </div>
+    </div>
+
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      let skinService;
+
+      function log(message) {
+        const content = document.getElementById("statusContent");
+        const timestamp = new Date().toLocaleTimeString();
+        content.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+        content.scrollTop = content.scrollHeight;
+        console.log(message);
+      }
+
+      function updateStats() {
+        if (!skinService || !skinService.skins) return;
+
+        const stats = skinService.getSkinsStats();
+        document.getElementById("totalSkins").textContent = stats.total;
+        document.getElementById("totalThemes").textContent = Object.keys(
+          stats.byTheme
+        ).length;
+        document.getElementById("totalChampions").textContent = Object.keys(
+          stats.byChampion
+        ).length;
+        document.getElementById("avgPrice").textContent =
+          Math.round(stats.avgPrice) + " RP";
+
+        // Update theme breakdown
+        updateThemeBreakdown(stats.byTheme);
+      }
+
+      function updateThemeBreakdown(themes) {
+        const themeList = document.getElementById("themeList");
+        themeList.innerHTML = "";
+
+        Object.entries(themes).forEach(([theme, count]) => {
+          const themeCard = document.createElement("div");
+          themeCard.className = "bg-slate-700 p-4 rounded-lg";
+          themeCard.innerHTML = `
+                    <h4 class="font-bold text-lg text-cyan-300">${theme}</h4>
+                    <p class="text-2xl font-bold text-white">${count} skins</p>
+                    <button onclick="showThemeSkins('${theme}')" 
+                            class="mt-2 px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm transition-colors">
+                        View Skins
+                    </button>
+                `;
+          themeList.appendChild(themeCard);
+        });
+      }
+
+      function displaySkins(skins) {
+        const grid = document.getElementById("skinGrid");
+        grid.innerHTML = "";
+
+        skins.forEach((skin) => {
+          const skinCard = document.createElement("div");
+          skinCard.className =
+            "bg-slate-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all transform hover:scale-105";
+
+          const rarityColors = {
+            ultimate: "text-orange-400 border-orange-400",
+            legendary: "text-yellow-400 border-yellow-400",
+            epic: "text-purple-400 border-purple-400",
+            common: "text-blue-400 border-blue-400",
+          };
+
+          skinCard.innerHTML = `
+                    <div class="relative">
+                        <img src="${skin.splashArt}" alt="${skin.name}"
+                             class="w-full h-48 object-cover"
+                             onerror="this.src='https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg'"
+                             onload="this.parentElement.querySelector('.loading-indicator').style.display='none'">
+                        <div class="loading-indicator absolute inset-0 bg-slate-700 flex items-center justify-center">
+                            <div class="text-slate-400">Loading...</div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-black/70 rounded border ${
+                          rarityColors[skin.rarity]
+                        }">
+                            ${skin.rarity.toUpperCase()}
+                        </div>
+                        <div class="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-xs text-cyan-300">
+                            ${skin.theme}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg text-white mb-1 truncate">${
+                          skin.name
+                        }</h3>
+                        <p class="text-slate-400 text-sm mb-2">${
+                          skin.champion
+                        }</p>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-cyan-400 font-bold">${skin.price.toLocaleString()} RP</span>
+                            <span class="text-slate-500 text-xs">${
+                              skin.releaseDate
+                            }</span>
+                        </div>
+                        <p class="text-slate-300 text-xs line-clamp-2">${
+                          skin.description
+                        }</p>
+                        <div class="mt-2 flex flex-wrap gap-1">
+                            ${skin.effects
+                              .slice(0, 2)
+                              .map(
+                                (effect) =>
+                                  `<span class="px-2 py-1 bg-slate-700 text-xs rounded">${effect}</span>`
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `;
+
+          grid.appendChild(skinCard);
+        });
+      }
+
+      function showThemeSkins(themeName) {
+        const themeSkins = skinService.skins.filter(
+          (skin) => skin.theme === themeName
+        );
+        displaySkins(themeSkins);
+        log(`Showing ${themeSkins.length} skins for theme: ${themeName}`);
+      }
+
+      // Event Listeners
+      document
+        .getElementById("crawlThemeBtn")
+        .addEventListener("click", async () => {
+          const theme = document.getElementById("themeSelect").value;
+          const maxCount = parseInt(document.getElementById("maxCount").value);
+
+          log(`🎨 Starting crawl for theme: ${theme} (${maxCount} skins)`);
+
+          try {
+            const newSkins = await skinService.loadThemeSpecificSkins(
+              theme,
+              maxCount
+            );
+            log(
+              `✅ Successfully crawled ${newSkins.length} new skins for ${theme}`
+            );
+            updateStats();
+            displaySkins(skinService.skins);
+          } catch (error) {
+            log(`❌ Error crawling theme ${theme}: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("crawlAllThemesBtn")
+        .addEventListener("click", async () => {
+          log(`🔥 Starting mass crawl for all popular themes...`);
+
+          try {
+            await skinService.crawlPopularThemes();
+            log(`✅ Successfully crawled all popular themes`);
+            updateStats();
+            displaySkins(skinService.skins);
+          } catch (error) {
+            log(`❌ Error in mass crawl: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("crawlChampionBtn")
+        .addEventListener("click", async () => {
+          const championName = document
+            .getElementById("championName")
+            .value.trim();
+          if (!championName) {
+            log(`⚠️ Please enter a champion name`);
+            return;
+          }
+
+          log(`👤 Crawling all skins for champion: ${championName}`);
+
+          try {
+            const championSkins = await skinService.loadAllChampionSkins(
+              championName
+            );
+            log(`✅ Found ${championSkins.length} skins for ${championName}`);
+            updateStats();
+            displaySkins(championSkins);
+          } catch (error) {
+            log(`❌ Error crawling ${championName}: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("crawlDataDragonBtn")
+        .addEventListener("click", async () => {
+          log(`🐉 Crawling from Data Dragon API...`);
+
+          try {
+            await skinService.crawlFromDataDragonAPI();
+            log(`✅ Successfully crawled from Data Dragon API`);
+            updateStats();
+            displaySkins(skinService.skins);
+          } catch (error) {
+            log(`❌ Error crawling Data Dragon: ${error.message}`);
+          }
+        });
+
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        skinService.skins = [];
+        skinService.skinsByChampion.clear();
+        skinService.skinThemes.clear();
+        document.getElementById("skinGrid").innerHTML = "";
+        updateStats();
+        log(`🗑️ Cleared all skin data`);
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", async () => {
+        log("🚀 Initializing Skin Crawler...");
+        skinService = new SkinService();
+        log("✅ Skin Crawler ready!");
+        log('💡 Select a theme and click "Crawl Theme Skins" to start!');
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Database Unification Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-white min-h-screen p-8">
+    <div class="max-w-6xl mx-auto">
+      <h1
+        class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+      >
+        🔧 Database Unification Tool
+      </h1>
+
+      <!-- Current Status -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-slate-800 rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-blue-400" id="currentCount">
+            -
+          </div>
+          <div class="text-sm text-slate-400">Current Count</div>
+        </div>
+        <div class="bg-slate-800 rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-green-400" id="apiCount">-</div>
+          <div class="text-sm text-slate-400">API Count</div>
+        </div>
+        <div class="bg-slate-800 rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-orange-400" id="regionCount">
+            -
+          </div>
+          <div class="text-sm text-slate-400">Regions</div>
+        </div>
+        <div class="bg-slate-800 rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-purple-400" id="specialCount">
+            -
+          </div>
+          <div class="text-sm text-slate-400">Special Champions</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <button
+          id="checkStatusBtn"
+          class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-all"
+        >
+          📊 Check Status
+        </button>
+        <button
+          id="unifyBtn"
+          class="px-6 py-3 bg-yellow-600 hover:bg-yellow-700 rounded-lg font-bold transition-all"
+        >
+          🔧 Unify Existing Champions
+        </button>
+        <button
+          id="crawlBtn"
+          class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-bold transition-all"
+        >
+          🔄 Crawl Missing Champions
+        </button>
+        <button
+          id="saveBtn"
+          class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold transition-all"
+        >
+          💾 Save Database
+        </button>
+        <button
+          id="loadBtn"
+          class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold transition-all"
+        >
+          📂 Load Database
+        </button>
+        <button
+          id="resetBtn"
+          class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition-all"
+        >
+          🗑️ Reset Database
+        </button>
+      </div>
+
+      <!-- Process Log -->
+      <div class="bg-slate-800 rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-bold mb-4 text-cyan-300">📋 Process Log</h2>
+        <div id="processLog" class="max-h-96 overflow-y-auto space-y-2">
+          <div class="text-slate-400">Ready to start...</div>
+        </div>
+      </div>
+
+      <!-- Region Statistics -->
+      <div class="bg-slate-800 rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-4 text-cyan-300">
+          🏛️ Region Statistics
+        </h2>
+        <div
+          id="regionStats"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+          <div class="text-slate-400">Loading statistics...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/database.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/skin-service.js"></script>
+    <script src="js/app.js"></script>
+    <script src="enhanced-auto-crawl.js"></script>
+
+    <script>
+      // UI Elements
+      const currentCountEl = document.getElementById("currentCount");
+      const apiCountEl = document.getElementById("apiCount");
+      const regionCountEl = document.getElementById("regionCount");
+      const specialCountEl = document.getElementById("specialCount");
+      const processLog = document.getElementById("processLog");
+      const regionStats = document.getElementById("regionStats");
+
+      // Log function
+      function addLog(message, type = "info") {
+        const div = document.createElement("div");
+        div.className = `text-sm p-3 rounded ${
+          type === "error"
+            ? "bg-red-900 text-red-200"
+            : type === "success"
+            ? "bg-green-900 text-green-200"
+            : type === "warning"
+            ? "bg-yellow-900 text-yellow-200"
+            : type === "process"
+            ? "bg-blue-900 text-blue-200"
+            : "bg-slate-700 text-slate-200"
+        }`;
+        div.innerHTML = `
+                <span class="text-slate-400">[${new Date().toLocaleTimeString()}]</span> 
+                ${message}
+            `;
+        processLog.appendChild(div);
+        processLog.scrollTop = processLog.scrollHeight;
+      }
+
+      // Check status function
+      async function checkStatus() {
+        try {
+          addLog("🔍 Checking database status...", "process");
+
+          const current = window.skinService.getCurrentChampionCount();
+          const api = await window.skinService.getAPIChampionCount();
+
+          currentCountEl.textContent = current;
+          apiCountEl.textContent = api;
+
+          const stats = window.showDatabaseStats();
+
+          regionCountEl.textContent = stats.totalRegions;
+          specialCountEl.textContent = stats.specialCount;
+
+          updateRegionStats();
+
+          addLog(
+            `📊 Status checked: ${current}/${api} champions, ${stats.totalRegions} regions`,
+            "success"
+          );
+        } catch (error) {
+          addLog(`❌ Error checking status: ${error.message}`, "error");
+        }
+      }
+
+      // Update region statistics display
+      function updateRegionStats() {
+        regionStats.innerHTML = "";
+
+        if (!window.championsDatabase?.regions) {
+          regionStats.innerHTML =
+            '<div class="text-slate-400 col-span-full">No regions found</div>';
+          return;
+        }
+
+        window.championsDatabase.regions.forEach((region) => {
+          const existing = region.existingChampions?.length || 0;
+          const newChamps = region.newChampions?.length || 0;
+          const total = existing + newChamps;
+
+          const div = document.createElement("div");
+          div.className = "bg-slate-700 rounded-lg p-4";
+          div.innerHTML = `
+                    <h3 class="font-bold text-cyan-300 mb-2">${region.name}</h3>
+                    <div class="text-sm text-slate-300">
+                        <div>Existing: ${existing}</div>
+                        <div>New: ${newChamps}</div>
+                        <div class="font-bold text-yellow-300">Total: ${total}</div>
+                    </div>
+                `;
+          regionStats.appendChild(div);
+        });
+      }
+
+      // Unify existing champions
+      async function unifyExistingChampions() {
+        try {
+          addLog("🔧 Starting unification of existing champions...", "process");
+
+          const btn = document.getElementById("unifyBtn");
+          btn.disabled = true;
+          btn.textContent = "⏳ Unifying...";
+
+          const updated = window.unifyExistingChampions();
+
+          addLog(
+            `✅ Unification complete! Updated ${updated} champions`,
+            "success"
+          );
+
+          await checkStatus();
+        } catch (error) {
+          addLog(`❌ Unification error: ${error.message}`, "error");
+        } finally {
+          const btn = document.getElementById("unifyBtn");
+          btn.disabled = false;
+          btn.textContent = "🔧 Unify Existing Champions";
+        }
+      }
+
+      // Crawl missing champions
+      async function crawlMissingChampions() {
+        try {
+          addLog("🔄 Starting crawl of missing champions...", "process");
+
+          const btn = document.getElementById("crawlBtn");
+          btn.disabled = true;
+          btn.textContent = "⏳ Crawling...";
+
+          const result = await window.enhancedForceCrawl(false);
+
+          addLog(
+            `✅ Crawl complete! Added ${result.added} new champions`,
+            "success"
+          );
+
+          await checkStatus();
+        } catch (error) {
+          addLog(`❌ Crawl error: ${error.message}`, "error");
+        } finally {
+          const btn = document.getElementById("crawlBtn");
+          btn.disabled = false;
+          btn.textContent = "🔄 Crawl Missing Champions";
+        }
+      }
+
+      // Save database
+      function saveDatabase() {
+        try {
+          addLog("💾 Saving database to localStorage...", "process");
+          window.skinService.saveDatabase();
+          addLog("✅ Database saved successfully!", "success");
+        } catch (error) {
+          addLog(`❌ Save error: ${error.message}`, "error");
+        }
+      }
+
+      // Load database
+      function loadDatabase() {
+        try {
+          addLog("📂 Loading database from localStorage...", "process");
+          if (window.skinService.loadDatabase()) {
+            addLog("✅ Database loaded successfully!", "success");
+            checkStatus();
+          } else {
+            addLog("⚠️ No saved database found, using default", "warning");
+          }
+        } catch (error) {
+          addLog(`❌ Load error: ${error.message}`, "error");
+        }
+      }
+
+      // Reset database
+      function resetDatabase() {
+        if (
+          confirm(
+            "⚠️ Are you sure you want to reset the database? This cannot be undone!"
+          )
+        ) {
+          try {
+            addLog("🗑️ Resetting database...", "process");
+            localStorage.removeItem("championsDatabase");
+            window.championsDatabase = { regions: [], specialChampions: [] };
+            addLog("✅ Database reset successfully!", "success");
+            checkStatus();
+          } catch (error) {
+            addLog(`❌ Reset error: ${error.message}`, "error");
+          }
+        }
+      }
+
+      // Event listeners
+      document
+        .getElementById("checkStatusBtn")
+        .addEventListener("click", checkStatus);
+      document
+        .getElementById("unifyBtn")
+        .addEventListener("click", unifyExistingChampions);
+      document
+        .getElementById("crawlBtn")
+        .addEventListener("click", crawlMissingChampions);
+      document
+        .getElementById("saveBtn")
+        .addEventListener("click", saveDatabase);
+      document
+        .getElementById("loadBtn")
+        .addEventListener("click", loadDatabase);
+      document
+        .getElementById("resetBtn")
+        .addEventListener("click", resetDatabase);
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        addLog("🚀 Database Unification Tool initialized", "success");
+        setTimeout(checkStatus, 1000);
+      });
+    </script>
+  </body>
+</html>
