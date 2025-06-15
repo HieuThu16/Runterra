@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Real Skin Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <h1 class="text-3xl font-bold mb-6">🎨 Test Ảnh Skin Thật</h1>
+
+    <div class="mb-6">
+      <button
+        id="loadRealSkins"
+        class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg text-white font-bold"
+      >
+        🚀 Load Real Skin Images
+      </button>
+      <span id="loadingStatus" class="ml-4 text-yellow-400"></span>
+    </div>
+
+    <div
+      id="skinGrid"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+    >
+      <!-- Real skin cards will appear here -->
+    </div>
+
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      document
+        .getElementById("loadRealSkins")
+        .addEventListener("click", async () => {
+          const button = document.getElementById("loadRealSkins");
+          const status = document.getElementById("loadingStatus");
+          const grid = document.getElementById("skinGrid");
+
+          button.disabled = true;
+          button.textContent = "⏳ Loading...";
+          status.textContent = "Đang tải skin data...";
+
+          try {
+            // Initialize skin service
+            if (!window.skinService) {
+              window.skinService = new SkinService();
+            }
+
+            // Load skin data
+            await skinService.loadSkinsData();
+            status.textContent = `✅ Loaded ${skinService.skins.length} skins`;
+
+            // Display skins
+            grid.innerHTML = "";
+            skinService.skins.forEach((skin) => {
+              const skinCard = document.createElement("div");
+              skinCard.className =
+                "bg-slate-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow";
+
+              skinCard.innerHTML = `
+                        <div class="relative">
+                            <img 
+                                src="${skin.splashArt}" 
+                                alt="${skin.name}"
+                                class="w-full h-48 object-cover"
+                                onload="this.parentElement.querySelector('.loading-indicator').style.display='none'"
+                                onerror="this.src='https://via.placeholder.com/400x225/1e293b/64748b?text=Failed+to+Load'; this.parentElement.querySelector('.loading-indicator').style.display='none'"
+                            />
+                            <div class="loading-indicator absolute inset-0 bg-slate-700 flex items-center justify-center">
+                                <div class="text-slate-400">Loading...</div>
+                            </div>
+                            <div class="absolute top-2 right-2 px-2 py-1 bg-black/50 rounded text-xs ${
+                              skin.rarity === "ultimate"
+                                ? "text-orange-400"
+                                : skin.rarity === "legendary"
+                                ? "text-yellow-400"
+                                : skin.rarity === "epic"
+                                ? "text-purple-400"
+                                : "text-blue-400"
+                            }">
+                                ${skin.rarity.toUpperCase()}
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg text-white mb-1">${
+                              skin.name
+                            }</h3>
+                            <p class="text-slate-400 text-sm mb-2">${
+                              skin.champion
+                            } • ${skin.theme}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-cyan-400 font-bold">${
+                                  skin.price
+                                } RP</span>
+                                <span class="text-slate-500 text-xs">${
+                                  skin.releaseDate
+                                }</span>
+                            </div>
+                            <p class="text-slate-300 text-xs mt-2 line-clamp-2">${
+                              skin.description
+                            }</p>
+                        </div>
+                    `;
+
+              grid.appendChild(skinCard);
+            });
+
+            button.textContent = "✅ Skins Loaded";
+            button.className =
+              "px-6 py-3 bg-green-600 rounded-lg text-white font-bold opacity-75 cursor-not-allowed";
+          } catch (error) {
+            console.error("Error loading skins:", error);
+            status.textContent = `❌ Error: ${error.message}`;
+            button.disabled = false;
+            button.textContent = "🚀 Load Real Skin Images";
+          }
+        });
+    </script>
+  </body>
+</html>

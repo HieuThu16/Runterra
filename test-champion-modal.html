@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Champion Translation Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8 text-center">
+        🧪 Champion Translation Test
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Controls -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-xl font-semibold mb-4">Test Controls</h2>
+          <div class="space-y-3">
+            <button
+              id="testVi"
+              class="w-full px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+            >
+              🇻🇳 Switch to Vietnamese
+            </button>
+            <button
+              id="testEn"
+              class="w-full px-4 py-2 bg-green-600 rounded hover:bg-green-700"
+            >
+              🇺🇸 Switch to English (Translate)
+            </button>
+            <div class="flex space-x-2">
+              <button
+                id="getThreshData"
+                class="flex-1 px-4 py-2 bg-purple-600 rounded hover:bg-purple-700"
+              >
+                📊 Get Thresh Data
+              </button>
+              <button
+                id="showModal"
+                class="flex-1 px-4 py-2 bg-orange-600 rounded hover:bg-orange-700"
+              >
+                🔍 Show Modal
+              </button>
+            </div>
+          </div>
+          <div id="currentStatus" class="mt-4 p-3 bg-gray-700 rounded text-sm">
+            Status: Initializing...
+          </div>
+        </div>
+
+        <!-- Thresh Data Display -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-xl font-semibold mb-4">Thresh Data</h2>
+          <div id="threshInfo" class="space-y-3 text-sm">
+            <div class="bg-gray-700 p-3 rounded">
+              <strong>Name:</strong> <span id="threshName">-</span>
+            </div>
+            <div class="bg-gray-700 p-3 rounded">
+              <strong>Role:</strong> <span id="threshRole">-</span>
+            </div>
+            <div class="bg-gray-700 p-3 rounded">
+              <strong>Lore:</strong>
+              <div id="threshLore" class="mt-1 text-gray-300 text-xs">-</div>
+            </div>
+            <div class="bg-gray-700 p-3 rounded">
+              <strong>Skills Count:</strong> <span id="threshSkills">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Console Log -->
+      <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Console Log</h2>
+        <div
+          id="consoleLog"
+          class="bg-black p-4 rounded text-green-400 font-mono text-xs h-48 overflow-y-auto"
+        >
+          Starting test...<br />
+        </div>
+      </div>
+    </div>
+
+    <!-- Load scripts -->
+    <script src="js/translation-service.js?v=2.5"></script>
+    <script src="js/languages.js?v=2.5"></script>
+    <script src="js/data.js?v=2.5"></script>
+    <script src="js/database.js?v=2.5"></script>
+    <script src="js/app.js?v=2.5"></script>
+
+    <script>
+      let app, languageManager, db;
+      let currentThresh = null;
+
+      function log(message) {
+        const logDiv = document.getElementById("consoleLog");
+        const timestamp = new Date().toLocaleTimeString();
+        logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+        console.log(message);
+      }
+
+      function updateStatus(message) {
+        document.getElementById(
+          "currentStatus"
+        ).innerHTML = `Status: ${message}`;
+      }
+
+      function getThreshFromDB() {
+        try {
+          const champions = db.getChampions("shadowisles", "old");
+          const thresh = champions.find((c) => c.name === "Thresh");
+          log(`Found Thresh from DB: ${thresh ? "YES" : "NO"}`);
+          if (thresh) {
+            log(`- Name: "${thresh.name}"`);
+            log(`- Role: "${thresh.role}"`);
+            log(`- Lore length: ${thresh.lore ? thresh.lore.length : 0} chars`);
+            log(`- Skills count: ${thresh.skills ? thresh.skills.length : 0}`);
+          }
+          return thresh;
+        } catch (error) {
+          log(`Error getting Thresh: ${error.message}`);
+          return null;
+        }
+      }
+
+      function updateThreshDisplay(thresh) {
+        if (!thresh) {
+          document.getElementById("threshName").textContent = "NOT FOUND";
+          document.getElementById("threshRole").textContent = "NOT FOUND";
+          document.getElementById("threshLore").textContent = "NOT FOUND";
+          document.getElementById("threshSkills").textContent = "NOT FOUND";
+          return;
+        }
+
+        document.getElementById("threshName").textContent =
+          thresh.name || "N/A";
+        document.getElementById("threshRole").textContent =
+          thresh.role || "N/A";
+        document.getElementById("threshLore").textContent =
+          (thresh.lore || "N/A").substring(0, 100) + "...";
+        document.getElementById("threshSkills").textContent = thresh.skills
+          ? thresh.skills.length
+          : 0;
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          log("Initializing app...");
+          app = new RuneterraApp();
+          languageManager = app.languageManager;
+          db = app.db;
+
+          updateStatus("Ready");
+          log("App initialized successfully");
+
+          // Get initial Thresh data
+          currentThresh = getThreshFromDB();
+          updateThreshDisplay(currentThresh);
+
+          // Event listeners
+          document
+            .getElementById("testVi")
+            .addEventListener("click", async () => {
+              log("=== SWITCHING TO VIETNAMESE ===");
+              updateStatus("Switching to Vietnamese...");
+              await languageManager.changeLanguage("vi");
+              updateStatus("Vietnamese active");
+
+              currentThresh = getThreshFromDB();
+              updateThreshDisplay(currentThresh);
+              log("=== VIETNAMESE SWITCH COMPLETE ===");
+            });
+
+          document
+            .getElementById("testEn")
+            .addEventListener("click", async () => {
+              log("=== SWITCHING TO ENGLISH ===");
+              updateStatus("Translating to English...");
+              await languageManager.changeLanguage("en");
+              updateStatus("English active");
+
+              currentThresh = getThreshFromDB();
+              updateThreshDisplay(currentThresh);
+              log("=== ENGLISH SWITCH COMPLETE ===");
+            });
+
+          document
+            .getElementById("getThreshData")
+            .addEventListener("click", () => {
+              log("=== GETTING THRESH DATA ===");
+              currentThresh = getThreshFromDB();
+              updateThreshDisplay(currentThresh);
+              log("=== THRESH DATA RETRIEVED ===");
+            });
+
+          document.getElementById("showModal").addEventListener("click", () => {
+            if (currentThresh) {
+              log("=== OPENING MODAL FOR THRESH ===");
+              app.openModal(currentThresh);
+              log("=== MODAL OPENED ===");
+            } else {
+              log("No Thresh data to show modal");
+              alert("Please get Thresh data first");
+            }
+          });
+        } catch (error) {
+          log(`Initialization error: ${error.message}`);
+          updateStatus("Error");
+        }
+      });
+    </script>
+  </body>
+</html>

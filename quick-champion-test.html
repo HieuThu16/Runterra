@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quick Champion Test</title>
+    <style>
+      body {
+        font-family: monospace;
+        background: #1a1a1a;
+        color: #fff;
+        padding: 20px;
+      }
+      .log {
+        background: #333;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      button {
+        background: #555;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🚀 Quick Champion Count Test</h1>
+
+    <div>
+      <button onclick="testCount()">📊 Check Count</button>
+      <button onclick="crawlMissing()">⬇️ Crawl Missing</button>
+      <button onclick="showRegions()">🗺️ Show Regions</button>
+    </div>
+
+    <div id="log"></div>
+
+    <script src="js/regions/void.js"></script>
+    <script src="js/regions/shadowisles.js"></script>
+    <script src="js/regions/demacia.js"></script>
+    <script src="js/regions/noxus.js"></script>
+    <script src="js/regions/ionia.js"></script>
+    <script src="js/regions/piltover.js"></script>
+    <script src="js/regions/specialChampions.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      // Initialize
+      window.skinService = new SkinService();
+
+      function log(msg) {
+        document.getElementById(
+          "log"
+        ).innerHTML += `<div class="log">${new Date().toLocaleTimeString()}: ${msg}</div>`;
+        console.log(msg);
+      }
+
+      async function testCount() {
+        log("🔍 Checking champion counts...");
+
+        const current = window.skinService.getCurrentChampionCount();
+        log(`📊 Current database: ${current} champions`);
+
+        const api = await window.skinService.getAPIChampionCount();
+        log(`📊 API available: ${api} champions`);
+
+        const missing = api - current;
+        log(`❌ Missing: ${missing} champions`);
+      }
+
+      async function crawlMissing() {
+        log("🚀 Starting crawl...");
+
+        try {
+          const result = await window.skinService.crawlMissingChampions();
+          log(`✅ Crawled ${result.length} new champions!`);
+
+          result.forEach((champ) => {
+            log(`  + ${champ.name} (${champ.region})`);
+          });
+
+          if (result.length > 0) {
+            setTimeout(testCount, 1000);
+          }
+        } catch (error) {
+          log(`❌ Error: ${error.message}`);
+        }
+      }
+
+      function showRegions() {
+        log("🗺️ Current regions:");
+
+        if (window.championsDatabase?.regions) {
+          window.championsDatabase.regions.forEach((region) => {
+            const existing = region.existingChampions?.length || 0;
+            const newChamps = region.newChampions?.length || 0;
+            log(`  📍 ${region.name}: ${existing + newChamps} champions`);
+          });
+        }
+      }
+
+      // Auto check on load
+      setTimeout(testCount, 1000);
+      log("🚀 Ready!");
+    </script>
+  </body>
+</html>

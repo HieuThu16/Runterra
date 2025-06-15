@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Force Update Champions - Quick Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-white min-h-screen p-8">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="text-3xl font-bold text-center mb-8 text-cyan-400">
+        🔄 Force Update Champions
+      </h1>
+
+      <div class="bg-slate-800 rounded-lg p-6 mb-6">
+        <h2 class="text-xl font-bold mb-4">📊 Current Status</h2>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-blue-400" id="currentCount">
+              -
+            </div>
+            <div class="text-sm text-slate-400">Current</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-green-400" id="apiCount">-</div>
+            <div class="text-sm text-slate-400">API Total</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-red-400" id="missingCount">
+              -
+            </div>
+            <div class="text-sm text-slate-400">Missing</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <button
+          id="checkBtn"
+          class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold"
+        >
+          📊 Check Current Status
+        </button>
+
+        <button
+          id="crawlBtn"
+          class="w-full px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-bold"
+        >
+          🔄 Force Crawl Missing Champions
+        </button>
+
+        <button
+          id="refreshBtn"
+          class="w-full px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold"
+        >
+          🔄 Refresh Display
+        </button>
+
+        <button
+          id="mainPageBtn"
+          class="w-full px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg font-bold"
+        >
+          🏠 Go to Main Page
+        </button>
+      </div>
+
+      <div
+        id="log"
+        class="bg-slate-800 rounded-lg p-4 mt-6 max-h-96 overflow-y-auto"
+      >
+        <div class="text-slate-400">Initialization...</div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/database.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/skin-service.js"></script>
+    <script src="js/app.js"></script>
+    <script src="enhanced-auto-crawl.js"></script>
+
+    <script>
+      const currentCountEl = document.getElementById("currentCount");
+      const apiCountEl = document.getElementById("apiCount");
+      const missingCountEl = document.getElementById("missingCount");
+      const logEl = document.getElementById("log");
+
+      function log(message, type = "info") {
+        const div = document.createElement("div");
+        div.className = `text-sm p-2 rounded mb-1 ${
+          type === "error"
+            ? "bg-red-900 text-red-200"
+            : type === "success"
+            ? "bg-green-900 text-green-200"
+            : type === "warning"
+            ? "bg-yellow-900 text-yellow-200"
+            : "bg-slate-700 text-slate-200"
+        }`;
+        div.innerHTML = `<span class="text-slate-400">[${new Date().toLocaleTimeString()}]</span> ${message}`;
+        logEl.appendChild(div);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      async function checkStatus() {
+        try {
+          log("🔍 Checking status...");
+
+          const current = window.skinService.getCurrentChampionCount();
+          const api = await window.skinService.getAPIChampionCount();
+          const missing = Math.max(0, api - current);
+
+          currentCountEl.textContent = current;
+          apiCountEl.textContent = api;
+          missingCountEl.textContent = missing;
+
+          log(
+            `📊 Status: ${current}/${api} champions (${missing} missing)`,
+            missing > 0 ? "warning" : "success"
+          );
+        } catch (error) {
+          log(`❌ Error checking status: ${error.message}`, "error");
+        }
+      }
+
+      async function forceCrawl() {
+        try {
+          log("🔄 Starting force crawl...");
+          const btn = document.getElementById("crawlBtn");
+          btn.disabled = true;
+          btn.textContent = "⏳ Crawling...";
+
+          const result = await window.enhancedForceCrawl(false);
+
+          log(`✅ Crawl completed! Added ${result.added} champions`, "success");
+
+          // Update display
+          await checkStatus();
+        } catch (error) {
+          log(`❌ Crawl error: ${error.message}`, "error");
+        } finally {
+          document.getElementById("crawlBtn").disabled = false;
+          document.getElementById("crawlBtn").textContent =
+            "🔄 Force Crawl Missing Champions";
+        }
+      }
+
+      function refreshDisplay() {
+        log("🔄 Refreshing display...");
+        window.refreshChampionDisplay();
+        checkStatus();
+        log("✅ Display refreshed", "success");
+      }
+
+      function goToMainPage() {
+        window.location.href = "index.html";
+      }
+
+      // Event listeners
+      document
+        .getElementById("checkBtn")
+        .addEventListener("click", checkStatus);
+      document.getElementById("crawlBtn").addEventListener("click", forceCrawl);
+      document
+        .getElementById("refreshBtn")
+        .addEventListener("click", refreshDisplay);
+      document
+        .getElementById("mainPageBtn")
+        .addEventListener("click", goToMainPage);
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", async () => {
+        log("🚀 Initializing...");
+
+        // Wait a bit for services to initialize
+        setTimeout(async () => {
+          log("✅ Ready!");
+          await checkStatus();
+        }, 1000);
+      });
+
+      log("📱 Quick update page loaded");
+    </script>
+  </body>
+</html>

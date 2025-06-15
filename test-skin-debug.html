@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Skin Debug</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <h1 class="text-3xl font-bold mb-6">🔍 Debug Skin System</h1>
+
+    <div class="mb-6">
+      <button
+        id="testSkinService"
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg mr-4"
+      >
+        Test Skin Service
+      </button>
+      <button
+        id="testSkinThemes"
+        class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg mr-4"
+      >
+        Test Skin Themes
+      </button>
+      <button
+        id="testImages"
+        class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg mr-4"
+      >
+        Test Images
+      </button>
+      <button
+        id="testAllSkinImages"
+        class="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg"
+      >
+        Test All Skin Images
+      </button>
+    </div>
+
+    <div id="debugOutput" class="bg-slate-800 p-4 rounded-lg mb-6">
+      <h3 class="font-bold mb-2">Debug Output:</h3>
+      <div id="debugContent" class="text-sm"></div>
+    </div>
+
+    <div
+      id="skinThemesGrid"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
+      <!-- Skin cards will appear here -->
+    </div>
+
+    <!-- Load scripts -->
+    <script src="js/skin-service.js"></script>
+    <script src="js/skin-themes.js"></script>
+
+    <script>
+      function log(message) {
+        const content = document.getElementById("debugContent");
+        content.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+        console.log(message);
+      }
+
+      document
+        .getElementById("testSkinService")
+        .addEventListener("click", async () => {
+          log("🔄 Testing Skin Service...");
+
+          if (!window.skinService) {
+            window.skinService = new SkinService();
+            log("✅ Created new SkinService instance");
+          }
+
+          try {
+            await skinService.loadSkinsData();
+            log(`✅ Loaded ${skinService.skins.length} skins`);
+            log(`📊 Skin themes: ${skinService.skinThemes.size}`);
+
+            // Show first few skins
+            skinService.skins.slice(0, 3).forEach((skin) => {
+              log(`🎨 ${skin.name} (${skin.champion}) - ${skin.theme}`);
+            });
+          } catch (error) {
+            log(`❌ Error: ${error.message}`);
+          }
+        });
+
+      document
+        .getElementById("testSkinThemes")
+        .addEventListener("click", async () => {
+          log("🔄 Testing Skin Themes Manager...");
+
+          if (!window.skinThemesManager) {
+            window.skinThemesManager = new SkinThemesManager();
+            log("✅ Created new SkinThemesManager instance");
+          }
+
+          try {
+            await skinThemesManager.initializeThemes();
+            log("✅ Skin Themes Manager initialized");
+          } catch (error) {
+            log(`❌ Error: ${error.message}`);
+          }
+        });
+
+      document.getElementById("testImages").addEventListener("click", () => {
+        log("🔄 Testing image loading...");
+
+        const testUrls = [
+          "https://picsum.photos/300/200?random=1",
+          "https://picsum.photos/300/200?random=2",
+          "https://picsum.photos/300/200?random=3",
+        ];
+
+        testUrls.forEach((url, index) => {
+          const img = new Image();
+          img.onload = () => log(`✅ Image ${index + 1} loaded successfully`);
+          img.onerror = () => log(`❌ Image ${index + 1} failed to load`);
+          img.src = url;
+        });
+      });
+
+      document
+        .getElementById("testAllSkinImages")
+        .addEventListener("click", async () => {
+          log("🔄 Testing all skin images...");
+
+          if (!window.skinService) {
+            log("❌ SkinService not available");
+            return;
+          }
+
+          if (skinService.skins.length === 0) {
+            log("⚠️ No skins loaded. Loading skins first...");
+            await skinService.loadSkinsData();
+          }
+
+          try {
+            const results = await skinService.testAllSkinImages();
+            log(
+              `📊 Test completed: ${results.success}/${results.total} images loaded successfully`
+            );
+
+            if (results.failed > 0) {
+              log(`❌ Failed images: ${results.failed}`);
+              results.failedUrls.forEach((fail) => {
+                log(`   - ${fail.name}: ${fail.url}`);
+              });
+            }
+          } catch (error) {
+            log(`❌ Error testing images: ${error.message}`);
+          }
+        });
+
+      // Auto-run test on load
+      document.addEventListener("DOMContentLoaded", () => {
+        log("🚀 Debug page loaded");
+        log(
+          "📝 Available globals: skinService=" +
+            (typeof skinService !== "undefined")
+        );
+        log(
+          "📝 Available globals: SkinThemesManager=" +
+            (typeof SkinThemesManager !== "undefined")
+        );
+      });
+    </script>
+  </body>
+</html>

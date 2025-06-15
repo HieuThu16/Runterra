@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Modal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-slate-100">
+    <div class="container mx-auto p-8">
+      <h1 class="text-2xl font-bold mb-4">Test Thresh Modal</h1>
+      <button id="testBtn" class="bg-blue-600 px-4 py-2 rounded text-white">
+        Test Thresh Modal
+      </button>
+
+      <!-- Modal -->
+      <div
+        id="testModal"
+        class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+      >
+        <div
+          class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-y-auto relative"
+        >
+          <button
+            id="closeBtn"
+            class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+          >
+            &times;
+          </button>
+          <div id="modalContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+      const threshData = {
+        id: "thresh",
+        name: "Thresh",
+        fullName: "Thresh, Cai Ngục Xiềng Xích (The Chain Warden)",
+        icon: "⛓️",
+        role: "Hỗ Trợ/Đỡ Đòn",
+        region: "shadowisles",
+        species: "Hồn ma/Thực thể ma quái",
+        age: "Nhiều thập kỷ và thế kỷ sau Đại Suy Vong",
+        weapon: "Xiềng xích và lồng đèn ma quái",
+        lore: "Một linh hồn tàn bạo và xảo quyệt, Thresh từng là một cai ngục độc ác khi còn sống.",
+        fullLore: "Thresh từng là một người quản ngục khiêm tốn...",
+        gameplay:
+          "Thresh là một tướng hỗ trợ và đỡ đòn với độ khó trung bình...",
+        skills: [
+          {
+            type: "Passive",
+            name: "Đọa Đày (Damnation)",
+            description: "Thresh có thể thu thập linh hồn...",
+          },
+          {
+            type: "Q",
+            name: "Án Tử (Death Sentence)",
+            description: "Thresh trói kẻ địch bằng xiềng xích...",
+          },
+        ],
+        specialFeatures: [
+          "Khả năng thu thập linh hồn vĩnh viễn",
+          "Chiếc lồng đèn là công cụ hỗ trợ linh hoạt",
+        ],
+      };
+
+      document.getElementById("testBtn").addEventListener("click", function () {
+        showModal(threshData);
+      });
+
+      document
+        .getElementById("closeBtn")
+        .addEventListener("click", function () {
+          document.getElementById("testModal").classList.add("hidden");
+        });
+
+      function showModal(champion) {
+        console.log("Champion data:", champion);
+
+        const modalContent = document.getElementById("modalContent");
+
+        // Skills HTML
+        let skillsHtml = "";
+        if (champion.skills && champion.skills.length > 0) {
+          skillsHtml = `
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-cyan-300 mb-3">🎯 Kỹ Năng Chi Tiết:</h4>
+                        <div class="space-y-3">
+                            ${champion.skills
+                              .map(
+                                (skill) => `
+                                <div class="bg-slate-700 p-4 rounded-lg border-l-4 border-cyan-500">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="bg-cyan-600 text-white px-2 py-1 rounded text-xs font-bold">${skill.type}</span>
+                                        <h5 class="text-cyan-300 font-semibold">${skill.name}</h5>
+                                    </div>
+                                    <p class="text-sm text-slate-300 leading-relaxed">${skill.description}</p>
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `;
+        }
+
+        // Special features HTML
+        let specialFeaturesHtml = "";
+        if (champion.specialFeatures && champion.specialFeatures.length > 0) {
+          specialFeaturesHtml = `
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-yellow-300 mb-3">⭐ Điểm Đặc Biệt:</h4>
+                        <div class="space-y-2">
+                            ${champion.specialFeatures
+                              .map(
+                                (feature) => `
+                                <div class="bg-yellow-900/30 p-3 rounded-md border border-yellow-600/50">
+                                    <p class="text-sm text-yellow-100">• ${feature}</p>
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `;
+        }
+
+        modalContent.innerHTML = `
+                <div class="text-6xl mb-4 text-center">${champion.icon}</div>
+                <h2 class="text-2xl font-bold text-cyan-300 mb-2 text-center">${champion.name}</h2>
+                <p class="text-lg text-slate-400 mb-4 text-center">${champion.role} - Shadow Isles</p>
+                
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold text-slate-300 mb-3">📜 Tóm Tắt:</h4>
+                    <div class="text-slate-300 leading-relaxed bg-slate-700/50 p-4 rounded-lg">
+                        <p>${champion.lore}</p>
+                    </div>
+                </div>
+                
+                ${skillsHtml}
+                ${specialFeaturesHtml}
+            `;
+
+        document.getElementById("testModal").classList.remove("hidden");
+      }
+    </script>
+  </body>
+</html>

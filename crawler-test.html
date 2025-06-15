@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Champion Crawler Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-6 text-center text-cyan-400">
+        🔍 Champion Crawler Test
+      </h1>
+
+      <!-- Status -->
+      <div class="bg-slate-800 p-4 rounded-lg mb-6">
+        <h2 class="text-xl font-semibold text-green-400 mb-4">📊 Status</h2>
+        <div id="status" class="space-y-2">
+          <div>📱 Loading...</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="bg-slate-800 p-4 rounded-lg mb-6">
+        <h2 class="text-xl font-semibold text-blue-400 mb-4">🚀 Actions</h2>
+        <div class="flex flex-wrap gap-3">
+          <button
+            onclick="checkStatus()"
+            class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+          >
+            🔄 Check Status
+          </button>
+          <button
+            onclick="crawlMissing()"
+            class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded"
+          >
+            ⬇️ Crawl Missing
+          </button>
+          <button
+            onclick="showChampions()"
+            class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded"
+          >
+            👥 Show Champions
+          </button>
+          <button
+            onclick="exportData()"
+            class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded"
+          >
+            📁 Export Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="bg-slate-800 p-4 rounded-lg">
+        <h2 class="text-xl font-semibold text-orange-400 mb-4">📋 Results</h2>
+        <div
+          id="results"
+          class="bg-slate-900 p-4 rounded text-sm font-mono max-h-96 overflow-y-auto"
+        >
+          Ready...
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/regions/void.js"></script>
+    <script src="js/regions/shadowisles.js"></script>
+    <script src="js/regions/demacia.js"></script>
+    <script src="js/regions/noxus.js"></script>
+    <script src="js/regions/ionia.js"></script>
+    <script src="js/regions/piltover.js"></script>
+    <script src="js/regions/specialChampions.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/skin-service.js"></script>
+
+    <script>
+      // Initialize
+      console.log("🚀 Initializing crawler test...");
+      window.skinService = new SkinService();
+
+      function log(message) {
+        const results = document.getElementById("results");
+        const time = new Date().toLocaleTimeString();
+        results.innerHTML += `<div>[${time}] ${message}</div>`;
+        results.scrollTop = results.scrollHeight;
+        console.log(message);
+      }
+
+      async function checkStatus() {
+        log("🔍 Checking status...");
+
+        try {
+          const currentCount = window.skinService.getCurrentChampionCount();
+          const apiCount = await window.skinService.getAPIChampionCount();
+          const missing = apiCount - currentCount;
+
+          const status = document.getElementById("status");
+          status.innerHTML = `
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="bg-blue-900/50 p-3 rounded">
+                            <div class="text-2xl font-bold text-blue-400">${currentCount}</div>
+                            <div class="text-sm">Current</div>
+                        </div>
+                        <div class="bg-green-900/50 p-3 rounded">
+                            <div class="text-2xl font-bold text-green-400">${apiCount}</div>
+                            <div class="text-sm">API Total</div>
+                        </div>
+                        <div class="bg-red-900/50 p-3 rounded">
+                            <div class="text-2xl font-bold text-red-400">${missing}</div>
+                            <div class="text-sm">Missing</div>
+                        </div>
+                    </div>
+                `;
+
+          log(
+            `✅ Status: ${currentCount}/${apiCount} champions (${missing} missing)`
+          );
+        } catch (error) {
+          log(`❌ Error checking status: ${error.message}`);
+        }
+      }
+
+      async function crawlMissing() {
+        log("🔍 Starting crawl missing champions...");
+
+        try {
+          const newChampions = await window.skinService.crawlMissingChampions();
+          log(`✅ Crawled ${newChampions.length} new champions!`);
+
+          if (newChampions.length > 0) {
+            log("New champions:");
+            newChampions.forEach((champ) => {
+              log(`  - ${champ.name} (${champ.region})`);
+            });
+
+            // Update status
+            setTimeout(checkStatus, 1000);
+          }
+        } catch (error) {
+          log(`❌ Error crawling: ${error.message}`);
+        }
+      }
+
+      function showChampions() {
+        log("👥 Showing all champions...");
+
+        if (!window.championsDatabase?.regions) {
+          log("❌ No champions database found");
+          return;
+        }
+
+        window.championsDatabase.regions.forEach((region) => {
+          const existing = region.existingChampions?.length || 0;
+          const newChamps = region.newChampions?.length || 0;
+          const total = existing + newChamps;
+
+          log(
+            `📍 ${region.name}: ${total} champions (${existing} existing, ${newChamps} new)`
+          );
+
+          if (region.existingChampions) {
+            region.existingChampions.forEach((champ) => {
+              log(`  - ${champ.name}`);
+            });
+          }
+        });
+      }
+
+      function exportData() {
+        log("📁 Exporting data...");
+
+        const data = {
+          timestamp: new Date().toISOString(),
+          champions: window.championsDatabase,
+          crawledChampions: window.crawledChampions || [],
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `champions-${new Date().toISOString().split("T")[0]}.json`;
+        a.click();
+
+        log("✅ Data exported!");
+      }
+
+      // Auto check status on load
+      setTimeout(checkStatus, 1000);
+
+      log("🚀 Crawler test ready!");
+    </script>
+  </body>
+</html>

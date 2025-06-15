@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complete Translation Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-2xl font-bold mb-6 text-center">
+        🔬 Complete Translation Test
+      </h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Step 1: Language Control -->
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <h2 class="text-lg font-semibold mb-3">Step 1: Language Control</h2>
+          <div class="space-y-2">
+            <button
+              id="setVi"
+              class="w-full px-3 py-2 bg-blue-600 rounded text-sm hover:bg-blue-700"
+            >
+              🇻🇳 Vietnamese (Original)
+            </button>
+            <button
+              id="setEn"
+              class="w-full px-3 py-2 bg-green-600 rounded text-sm hover:bg-green-700"
+            >
+              🇺🇸 English (Translate)
+            </button>
+            <button
+              id="setCh"
+              class="w-full px-3 py-2 bg-red-600 rounded text-sm hover:bg-red-700"
+            >
+              🇨🇳 Chinese (Translate)
+            </button>
+          </div>
+          <div id="langStatus" class="mt-3 p-2 bg-gray-700 rounded text-xs">
+            Current: Loading...
+          </div>
+        </div>
+
+        <!-- Step 2: Data Source Check -->
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <h2 class="text-lg font-semibold mb-3">Step 2: Data Sources</h2>
+          <div class="space-y-2">
+            <button
+              id="checkOriginal"
+              class="w-full px-3 py-2 bg-purple-600 rounded text-sm hover:bg-purple-700"
+            >
+              📊 Check Original DB
+            </button>
+            <button
+              id="checkTranslated"
+              class="w-full px-3 py-2 bg-orange-600 rounded text-sm hover:bg-orange-700"
+            >
+              🌐 Check Translated DB
+            </button>
+            <button
+              id="checkAppDB"
+              class="w-full px-3 py-2 bg-pink-600 rounded text-sm hover:bg-pink-700"
+            >
+              🔍 Check App DB
+            </button>
+          </div>
+          <div id="dataStatus" class="mt-3 p-2 bg-gray-700 rounded text-xs">
+            Data: Ready to check
+          </div>
+        </div>
+
+        <!-- Step 3: Modal Test -->
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <h2 class="text-lg font-semibold mb-3">Step 3: Modal Test</h2>
+          <div class="space-y-2">
+            <button
+              id="openThreshModal"
+              class="w-full px-3 py-2 bg-cyan-600 rounded text-sm hover:bg-cyan-700"
+            >
+              🎭 Open Thresh Modal
+            </button>
+            <button
+              id="loadChampions"
+              class="w-full px-3 py-2 bg-indigo-600 rounded text-sm hover:bg-indigo-700"
+            >
+              🔄 Reload Champions
+            </button>
+            <button
+              id="clearCache"
+              class="w-full px-3 py-2 bg-yellow-600 rounded text-sm hover:bg-yellow-700"
+            >
+              🗑️ Clear Cache
+            </button>
+          </div>
+          <div id="modalStatus" class="mt-3 p-2 bg-gray-700 rounded text-xs">
+            Modal: Ready
+          </div>
+        </div>
+      </div>
+
+      <!-- Thresh Data Comparison -->
+      <div class="mt-6 bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-lg font-semibold mb-3">Thresh Data Comparison</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-gray-700 p-3 rounded">
+            <h3 class="font-semibold text-purple-300 mb-2">
+              Original championsDatabase
+            </h3>
+            <div id="originalThresh" class="text-xs space-y-1">-</div>
+          </div>
+          <div class="bg-gray-700 p-3 rounded">
+            <h3 class="font-semibold text-orange-300 mb-2">
+              window.championsDatabase
+            </h3>
+            <div id="translatedThresh" class="text-xs space-y-1">-</div>
+          </div>
+          <div class="bg-gray-700 p-3 rounded">
+            <h3 class="font-semibold text-pink-300 mb-2">
+              app.db.getChampions()
+            </h3>
+            <div id="appThresh" class="text-xs space-y-1">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="mt-6 bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-lg font-semibold mb-3">Activity Log</h2>
+        <div
+          id="activityLog"
+          class="bg-black p-3 rounded text-green-400 font-mono text-xs h-48 overflow-y-auto"
+        >
+          Test initialized...<br />
+        </div>
+        <button
+          id="clearLog"
+          class="mt-2 px-3 py-1 bg-red-600 rounded text-xs hover:bg-red-700"
+        >
+          Clear Log
+        </button>
+      </div>
+    </div>
+    <!-- Load scripts -->
+    <script src="js/translation-service.js?v=2.6"></script>
+    <script src="js/languages.js?v=2.6"></script>
+    <script src="js/data.js?v=2.6"></script>
+    <script src="js/database.js?v=2.6"></script>
+    <script src="js/app.js?v=2.6"></script>
+
+    <script>
+      let app, languageManager, db;
+      let originalData = null;
+
+      function log(message, isError = false) {
+        const logDiv = document.getElementById("activityLog");
+        const timestamp = new Date().toLocaleTimeString();
+        const color = isError ? "text-red-400" : "text-green-400";
+        logDiv.innerHTML += `<span class="${color}">[${timestamp}] ${message}</span><br>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+        console.log(message);
+      }
+
+      function updateStatus(elementId, message, isError = false) {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.innerHTML = message;
+          element.className = element.className.replace(
+            /text-\w+-400/,
+            isError ? "text-red-400" : "text-gray-300"
+          );
+        }
+      }
+
+      function displayThreshData(threshData, containerId, source) {
+        const container = document.getElementById(containerId);
+        if (!threshData) {
+          container.innerHTML = '<div class="text-red-400">NOT FOUND</div>';
+          return;
+        }
+
+        container.innerHTML = `
+                <div><strong>Name:</strong> ${threshData.name || "N/A"}</div>
+                <div><strong>Role:</strong> ${threshData.role || "N/A"}</div>
+                <div><strong>Lore:</strong> ${(
+                  threshData.lore || "N/A"
+                ).substring(0, 50)}...</div>
+                <div><strong>Skills:</strong> ${
+                  threshData.skills ? threshData.skills.length : 0
+                }</div>
+                <div><strong>Features:</strong> ${
+                  threshData.specialFeatures
+                    ? threshData.specialFeatures.length
+                    : 0
+                }</div>
+            `;
+        log(
+          `${source} Thresh data: Name="${threshData.name}", Lore=${
+            threshData.lore ? threshData.lore.length : 0
+          } chars`
+        );
+      }
+
+      function checkOriginalData() {
+        try {
+          if (!originalData) {
+            // Save original data on first check
+            originalData = JSON.parse(JSON.stringify(window.championsDatabase));
+            log("Original data saved for comparison");
+          }
+
+          const thresh = originalData.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          displayThreshData(thresh, "originalThresh", "Original");
+          updateStatus("dataStatus", "Original data checked");
+        } catch (error) {
+          log(`Error checking original data: ${error.message}`, true);
+          updateStatus("dataStatus", "Error checking original", true);
+        }
+      }
+
+      function checkTranslatedData() {
+        try {
+          const thresh = window.championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          displayThreshData(thresh, "translatedThresh", "Translated");
+          updateStatus("dataStatus", "Translated data checked");
+        } catch (error) {
+          log(`Error checking translated data: ${error.message}`, true);
+          updateStatus("dataStatus", "Error checking translated", true);
+        }
+      }
+
+      function checkAppData() {
+        try {
+          const champions = db.getChampions("shadowisles", "old");
+          const thresh = champions.find((c) => c.name === "Thresh");
+
+          displayThreshData(thresh, "appThresh", "App DB");
+          updateStatus("dataStatus", "App data checked");
+        } catch (error) {
+          log(`Error checking app data: ${error.message}`, true);
+          updateStatus("dataStatus", "Error checking app", true);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          log("Initializing complete translation test...");
+          app = new RuneterraApp();
+          languageManager = app.languageManager;
+          db = app.db;
+
+          updateStatus(
+            "langStatus",
+            `Current: ${languageManager.getCurrentLanguage()}`
+          );
+          log("App components initialized");
+
+          // Initial data check
+          checkOriginalData();
+          checkTranslatedData();
+          checkAppData();
+
+          // Event listeners
+          document
+            .getElementById("setVi")
+            .addEventListener("click", async () => {
+              log(">>> SWITCHING TO VIETNAMESE <<<");
+              updateStatus("langStatus", "Switching to Vietnamese...");
+              await languageManager.changeLanguage("vi");
+              updateStatus("langStatus", "Vietnamese active");
+              checkTranslatedData();
+              checkAppData();
+            });
+
+          document
+            .getElementById("setEn")
+            .addEventListener("click", async () => {
+              log(">>> SWITCHING TO ENGLISH (TRANSLATING) <<<");
+              updateStatus("langStatus", "Translating to English...");
+              await languageManager.changeLanguage("en");
+              updateStatus("langStatus", "English active");
+              checkTranslatedData();
+              checkAppData();
+            });
+
+          document
+            .getElementById("setCh")
+            .addEventListener("click", async () => {
+              log(">>> SWITCHING TO CHINESE (TRANSLATING) <<<");
+              updateStatus("langStatus", "Translating to Chinese...");
+              await languageManager.changeLanguage("zh");
+              updateStatus("langStatus", "Chinese active");
+              checkTranslatedData();
+              checkAppData();
+            });
+
+          document
+            .getElementById("checkOriginal")
+            .addEventListener("click", checkOriginalData);
+          document
+            .getElementById("checkTranslated")
+            .addEventListener("click", checkTranslatedData);
+          document
+            .getElementById("checkAppDB")
+            .addEventListener("click", checkAppData);
+
+          document
+            .getElementById("openThreshModal")
+            .addEventListener("click", () => {
+              const champions = db.getChampions("shadowisles", "old");
+              const thresh = champions.find((c) => c.name === "Thresh");
+              if (thresh) {
+                log("Opening Thresh modal...");
+                app.openModal(thresh);
+                updateStatus("modalStatus", "Modal opened");
+              } else {
+                log("Thresh not found for modal", true);
+                updateStatus("modalStatus", "Thresh not found", true);
+              }
+            });
+
+          document
+            .getElementById("loadChampions")
+            .addEventListener("click", () => {
+              log("Reloading champions...");
+              app.loadChampions();
+              updateStatus("modalStatus", "Champions reloaded");
+            });
+
+          document
+            .getElementById("clearCache")
+            .addEventListener("click", () => {
+              log("Clearing translation cache...");
+              languageManager.translationService.clearCache();
+              updateStatus("modalStatus", "Cache cleared");
+            });
+
+          document.getElementById("clearLog").addEventListener("click", () => {
+            document.getElementById("activityLog").innerHTML =
+              "Log cleared.<br>";
+          });
+        } catch (error) {
+          log(`Initialization error: ${error.message}`, true);
+          updateStatus("langStatus", "Initialization failed", true);
+        }
+      });
+    </script>
+  </body>
+</html>

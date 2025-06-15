@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Runeterra Enhanced Test</title>
+    <link rel="icon" href="https://fav.farm/🎮" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="bg-slate-900 text-slate-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-slate-800 shadow-lg">
+      <div class="container mx-auto px-4 py-6">
+        <h1
+          class="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-center"
+        >
+          🚀 Runeterra Enhanced Test
+        </h1>
+        <p class="text-center text-slate-400 mt-2">
+          Test tính năng mới: Sắp xếp ABC, thay ảnh tướng, loại bỏ skin default
+        </p>
+      </div>
+    </header>
+
+    <!-- Controls -->
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex flex-wrap gap-4 justify-center">
+        <button
+          onclick="debugData()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          🔍 Debug Data
+        </button>
+        <button
+          onclick="crawlMissing()"
+          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+        >
+          🚀 Crawl Missing Champions
+        </button>
+        <button
+          onclick="window.skinService.exportSkinsData()"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+        >
+          📁 Export Skins
+        </button>
+        <button
+          onclick="window.skinService.testAllSkinImages()"
+          class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded"
+        >
+          🧪 Test Images
+        </button>
+        <button
+          onclick="window.runeterra.loadChampions()"
+          class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded"
+        >
+          🔄 Reload Champions
+        </button>
+        <button
+          onclick="showChampionComparison()"
+          class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded"
+        >
+          📊 Champion Count
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Display -->
+    <div class="container mx-auto px-4 mb-6">
+      <div class="bg-slate-800 p-4 rounded-lg">
+        <h3 class="text-lg font-semibold text-cyan-300 mb-2">📊 Status</h3>
+        <div id="statusDisplay" class="text-sm text-slate-300">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Main Content from index.html -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Region Filter -->
+      <div class="mb-6">
+        <label
+          for="regionFilter"
+          class="block text-sm font-medium text-slate-300 mb-2"
+          >Chọn Vùng Đất:</label
+        >
+        <select
+          id="regionFilter"
+          class="bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5"
+        >
+          <option value="all">Tất Cả Vùng Đất</option>
+          <option value="demacia">Demacia</option>
+          <option value="noxus">Noxus</option>
+          <option value="ionia">Ionia</option>
+          <option value="piltover">Piltover</option>
+          <option value="shadowisles">Shadow Isles</option>
+          <option value="void">The Void</option>
+        </select>
+      </div>
+
+      <!-- Champion Type Tabs -->
+      <div class="mb-6">
+        <div class="flex justify-center space-x-4">
+          <button
+            id="oldChampionsTab"
+            class="champion-type-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
+          >
+            👥 Tướng Cũ
+          </button>
+          <button
+            id="newChampionsTab"
+            class="champion-type-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+          >
+            ⭐ Tướng Mới
+          </button>
+          <button
+            id="skinThemesTab"
+            class="champion-type-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+          >
+            🎨 Skin Themes
+          </button>
+        </div>
+      </div>
+
+      <!-- Champions Grid -->
+      <div
+        id="championsGrid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
+        <!-- Champions will be loaded here -->
+      </div>
+
+      <!-- Skin Themes Section -->
+      <div id="skinThemesSection" class="hidden">
+        <div
+          id="skinThemesGrid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <!-- Skin themes will be loaded here -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Champion Modal -->
+    <div
+      id="championModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+      >
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-cyan-300">Chi Tiết Tướng</h2>
+            <button
+              id="modalCloseButton"
+              class="text-slate-400 hover:text-white text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          <div id="modalBody" class="modal-content">
+            <!-- Modal content will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/regions/void.js"></script>
+    <script src="js/regions/shadowisles.js"></script>
+    <script src="js/regions/demacia.js"></script>
+    <script src="js/regions/noxus.js"></script>
+    <script src="js/regions/ionia.js"></script>
+    <script src="js/regions/piltover.js"></script>
+    <script src="js/regions/specialChampions.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/languages.js"></script>
+    <script src="js/translation-service.js"></script>
+    <script src="js/skin-service.js"></script>
+    <script src="js/skin-themes.js"></script>
+    <script src="js/app.js"></script>
+    <script src="init-enhanced.js"></script>
+
+    <script>
+      // Update status display
+      function updateStatus() {
+        const statusEl = document.getElementById("statusDisplay");
+        if (!statusEl) return;
+
+        const skinCount = window.skinService
+          ? window.skinService.skins.length
+          : 0;
+        const championCount = window.crawledChampions
+          ? window.crawledChampions.length
+          : 0;
+
+        statusEl.innerHTML = `
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <span class="text-cyan-400">🎨 Skins loaded:</span> 
+                        <span class="font-bold">${skinCount}</span>
+                    </div>
+                    <div>
+                        <span class="text-green-400">👥 Champions crawled:</span> 
+                        <span class="font-bold">${championCount}</span>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Show champion comparison
+      window.showChampionComparison = async function () {
+        if (!window.skinService) return;
+
+        const current = window.skinService.getCurrentChampionCount();
+        const api = await window.skinService.getAPIChampionCount();
+        const missing = api - current;
+        const percentage = Math.round((current / api) * 100);
+
+        alert(`📊 Champion Comparison:
+        
+Current in Database: ${current}
+Total in API: ${api}
+Missing: ${missing}
+Completion: ${percentage}%
+
+${
+  missing > 0
+    ? 'Click "🚀 Crawl Missing Champions" to add missing champions!'
+    : "All champions are in database! ✅"
+}`);
+      };
+
+      // Update status every 2 seconds
+      setInterval(updateStatus, 2000);
+      updateStatus();
+    </script>
+  </body>
+</html>

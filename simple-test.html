@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Translation Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-2xl font-bold mb-6 text-center">
+        🔬 Simple Translation Test
+      </h1>
+
+      <div class="bg-gray-800 p-6 rounded-lg mb-6">
+        <h2 class="text-lg font-semibold mb-4">Quick Test</h2>
+        <div class="flex space-x-3 mb-4">
+          <button
+            id="testTranslate"
+            class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+          >
+            🧪 Test Translation Service
+          </button>
+          <button
+            id="testThresh"
+            class="px-4 py-2 bg-green-600 rounded hover:bg-green-700"
+          >
+            🎭 Test Thresh Translation
+          </button>
+          <button
+            id="switchToEn"
+            class="px-4 py-2 bg-red-600 rounded hover:bg-red-700"
+          >
+            🇺🇸 Switch to English
+          </button>
+        </div>
+        <div
+          id="results"
+          class="bg-black p-4 rounded text-green-400 font-mono text-sm h-64 overflow-y-auto"
+        >
+          Ready for testing...<br />
+        </div>
+      </div>
+    </div>
+
+    <script src="js/translation-service.js?v=2.7"></script>
+    <script src="js/languages.js?v=2.7"></script>
+    <script src="js/data.js?v=2.7"></script>
+    <script src="js/database.js?v=2.7"></script>
+
+    <script>
+      let translationService, languageManager;
+
+      function log(message) {
+        const div = document.getElementById("results");
+        const timestamp = new Date().toLocaleTimeString();
+        div.innerHTML += `[${timestamp}] ${message}<br>`;
+        div.scrollTop = div.scrollHeight;
+        console.log(message);
+      }
+
+      async function testTranslationService() {
+        log("🧪 Testing translation service...");
+        try {
+          const result = await translationService.translateText(
+            "Thresh là một tướng rất mạnh",
+            "en",
+            "vi"
+          );
+          log(`✅ Translation result: "${result}"`);
+        } catch (error) {
+          log(`❌ Translation error: ${error.message}`);
+        }
+      }
+
+      async function testThreshTranslation() {
+        log("🎭 Testing Thresh translation...");
+        try {
+          // Find Thresh
+          const thresh = window.championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          if (!thresh) {
+            log("❌ Thresh not found!");
+            return;
+          }
+
+          log(`📊 Original Thresh:`);
+          log(`- Name: "${thresh.name}"`);
+          log(`- Lore: "${thresh.lore.substring(0, 50)}..."`);
+
+          // Translate Thresh
+          log("🔄 Translating Thresh...");
+          const translatedThresh = await translationService.translateChampion(
+            thresh,
+            "en",
+            "vi"
+          );
+
+          log(`📊 Translated Thresh:`);
+          log(`- Name: "${translatedThresh.name}"`);
+          log(`- Lore: "${translatedThresh.lore.substring(0, 50)}..."`);
+
+          // Apply to original
+          log("🔧 Applying to original...");
+          Object.assign(thresh, translatedThresh);
+
+          log(`📊 After assignment:`);
+          log(`- Name: "${thresh.name}"`);
+          log(`- Lore: "${thresh.lore.substring(0, 50)}..."`);
+        } catch (error) {
+          log(`❌ Thresh translation error: ${error.message}`);
+        }
+      }
+
+      async function switchToEnglish() {
+        log("🇺🇸 Switching to English...");
+        try {
+          await languageManager.changeLanguage("en");
+          log("✅ Language switched successfully");
+
+          // Check Thresh after language switch
+          const thresh = window.championsDatabase?.regions
+            ?.find((r) => r.id === "shadowisles")
+            ?.existingChampions?.find((c) => c.name === "Thresh");
+
+          if (thresh) {
+            log(`📊 Thresh after language switch:`);
+            log(`- Name: "${thresh.name}"`);
+            log(`- Lore: "${thresh.lore.substring(0, 50)}..."`);
+          }
+        } catch (error) {
+          log(`❌ Language switch error: ${error.message}`);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          log("🚀 Initializing...");
+          translationService = new TranslationService();
+          languageManager = new LanguageManager();
+          log("✅ Services initialized");
+
+          document
+            .getElementById("testTranslate")
+            .addEventListener("click", testTranslationService);
+          document
+            .getElementById("testThresh")
+            .addEventListener("click", testThreshTranslation);
+          document
+            .getElementById("switchToEn")
+            .addEventListener("click", switchToEnglish);
+        } catch (error) {
+          log(`❌ Initialization error: ${error.message}`);
+        }
+      });
+    </script>
+  </body>
+</html>
