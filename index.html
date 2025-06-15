@@ -6,6 +6,10 @@
     <title>Runeterra Games Hub</title>
     <link rel="icon" href="https://fav.farm/🎮" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body class="bg-slate-900 text-slate-100 min-h-screen">
@@ -645,7 +649,7 @@
       class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
     >
       <div
-        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-y-auto modal-content relative"
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-7xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
       >
         <button
           id="modalCloseButton"
@@ -654,6 +658,27 @@
           &times;
         </button>
         <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <!-- Edit Champion Modal -->
+    <div
+      id="editChampionModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          onclick="closeEditModal()"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          &times;
+        </button>
+        <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center">
+          Sửa Thông Tin Tướng
+        </h2>
+        <div id="editModalBody"></div>
       </div>
     </div>
 
