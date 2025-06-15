@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Individual Champion Files</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl font-bold mb-6">🎯 Test Individual Champion Files</h1>
+
+      <!-- Status -->
+      <div
+        id="status"
+        class="bg-blue-900/30 border border-blue-600/50 rounded-lg p-4 mb-6"
+      >
+        <h3 class="text-lg font-bold text-blue-300 mb-2">📊 Status</h3>
+        <p id="statusText" class="text-slate-300">Initializing...</p>
+      </div>
+
+      <!-- Controls -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <button
+          onclick="loadTestData()"
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          📥 Load Test Data
+        </button>
+        <button
+          onclick="generateTestFiles()"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          🎯 Generate Individual Files
+        </button>
+        <button
+          onclick="downloadAllFiles()"
+          class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          💾 Download All Files
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div id="results" class="bg-gray-800 rounded-lg p-4">
+        <h3 class="text-lg font-bold mb-4">📁 Generated Files</h3>
+        <div id="filesList" class="text-gray-300">
+          No files generated yet...
+        </div>
+      </div>
+
+      <!-- File Content Preview -->
+      <div
+        id="preview"
+        class="bg-gray-800 rounded-lg p-4 mt-6"
+        style="display: none"
+      >
+        <h3 class="text-lg font-bold mb-4">👀 File Preview</h3>
+        <pre
+          id="previewContent"
+          class="text-sm bg-gray-900 p-4 rounded overflow-auto max-h-96"
+        ></pre>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="database/enhanced-database.js"></script>
+    <script src="database/individual-file-generator.js"></script>
+
+    <script>
+      let testData = {};
+      let generatedFiles = [];
+
+      // Update status
+      function updateStatus(message, type = "info") {
+        const statusText = document.getElementById("statusText");
+        const statusDiv = document.getElementById("status");
+
+        statusText.textContent = message;
+
+        // Update border color based on type
+        statusDiv.className = `bg-${
+          type === "success" ? "green" : type === "error" ? "red" : "blue"
+        }-900/30 border border-${
+          type === "success" ? "green" : type === "error" ? "red" : "blue"
+        }-600/50 rounded-lg p-4 mb-6`;
+      }
+
+      // Load test data (sample champions)
+      async function loadTestData() {
+        updateStatus("Loading test champions data...");
+
+        try {
+          // Create sample champion data
+          testData = {
+            Ahri: {
+              id: "Ahri",
+              name: "Ahri",
+              title: "the Nine-Tailed Fox",
+              blurb: "Innately connected to the latent power of Runeterra...",
+              image:
+                "https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/Ahri.png",
+              splashArt:
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+              region: {
+                id: "ionia",
+                name: "Ionia",
+                icon: "🌸",
+                color: "#ff69b4",
+              },
+              role: "Mage",
+              tags: ["Mage", "Assassin"],
+              stats: {
+                hp: 570,
+                mp: 418,
+                movespeed: 330,
+                armor: 21,
+                spellblock: 30,
+                attackrange: 550,
+              },
+              abilities: [
+                {
+                  key: "Passive",
+                  name: "Essence Theft",
+                  description: "Ahri gains essence",
+                },
+                {
+                  key: "Q",
+                  name: "Orb of Deception",
+                  description: "Sends orb",
+                },
+                { key: "W", name: "Fox-Fire", description: "Fox flames" },
+                { key: "E", name: "Charm", description: "Charms enemy" },
+                {
+                  key: "R",
+                  name: "Spirit Rush",
+                  description: "Dashes forward",
+                },
+              ],
+            },
+            Garen: {
+              id: "Garen",
+              name: "Garen",
+              title: "the Might of Demacia",
+              blurb: "A proud and noble warrior...",
+              image:
+                "https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/Garen.png",
+              splashArt:
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
+              region: {
+                id: "demacia",
+                name: "Demacia",
+                icon: "🏰",
+                color: "#d4af37",
+              },
+              role: "Fighter",
+              tags: ["Fighter", "Tank"],
+              stats: {
+                hp: 620,
+                mp: 0,
+                movespeed: 340,
+                armor: 36,
+                spellblock: 32,
+                attackrange: 175,
+              },
+              abilities: [
+                {
+                  key: "Passive",
+                  name: "Perseverance",
+                  description: "Regenerates health",
+                },
+                {
+                  key: "Q",
+                  name: "Decisive Strike",
+                  description: "Next attack silences",
+                },
+                { key: "W", name: "Courage", description: "Reduces damage" },
+                { key: "E", name: "Judgment", description: "Spins sword" },
+                {
+                  key: "R",
+                  name: "Demacian Justice",
+                  description: "Executes enemies",
+                },
+              ],
+            },
+            KaiSa: {
+              id: "KaiSa",
+              name: "Kai'Sa",
+              title: "Daughter of the Void",
+              blurb: "Claimed by the Void when she was only a child...",
+              image:
+                "https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/KaiSa.png",
+              splashArt:
+                "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/KaiSa_0.jpg",
+              region: {
+                id: "void",
+                name: "The Void",
+                icon: "🕳️",
+                color: "#9370db",
+              },
+              role: "Marksman",
+              tags: ["Marksman"],
+              stats: {
+                hp: 600,
+                mp: 344,
+                movespeed: 335,
+                armor: 28,
+                spellblock: 30,
+                attackrange: 525,
+              },
+              abilities: [
+                {
+                  key: "Passive",
+                  name: "Second Skin",
+                  description: "Living weapon adapts",
+                },
+                {
+                  key: "Q",
+                  name: "Icathian Rain",
+                  description: "Fires missiles",
+                },
+                {
+                  key: "W",
+                  name: "Void Seeker",
+                  description: "Fires projectile",
+                },
+                { key: "E", name: "Supercharge", description: "Charges up" },
+                {
+                  key: "R",
+                  name: "Killer Instinct",
+                  description: "Dashes to enemy",
+                },
+              ],
+            },
+          };
+
+          updateStatus(
+            `✅ Loaded ${Object.keys(testData).length} test champions`,
+            "success"
+          );
+          console.log("Test data loaded:", testData);
+        } catch (error) {
+          updateStatus(`❌ Error loading test data: ${error.message}`, "error");
+          console.error("Error loading test data:", error);
+        }
+      }
+
+      // Generate individual files
+      async function generateTestFiles() {
+        if (Object.keys(testData).length === 0) {
+          updateStatus(
+            "❌ No test data loaded. Please load test data first.",
+            "error"
+          );
+          return;
+        }
+
+        updateStatus("Generating individual champion files...");
+
+        try {
+          const generator = new IndividualFileGenerator();
+          generatedFiles = await generator.generateAllFiles(testData);
+
+          if (generatedFiles.length > 0) {
+            updateStatus(
+              `✅ Generated ${generatedFiles.length} individual files`,
+              "success"
+            );
+            displayGeneratedFiles();
+            generator.showStats();
+          } else {
+            updateStatus("❌ Failed to generate files", "error");
+          }
+        } catch (error) {
+          updateStatus(`❌ Error generating files: ${error.message}`, "error");
+          console.error("Error generating files:", error);
+        }
+      }
+
+      // Display generated files
+      function displayGeneratedFiles() {
+        const filesList = document.getElementById("filesList");
+
+        if (generatedFiles.length === 0) {
+          filesList.innerHTML = "No files generated yet...";
+          return;
+        }
+
+        let html = `<div class="grid gap-4">`;
+
+        generatedFiles.forEach((file, index) => {
+          html += `
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-blue-300">${
+                              file.originalName
+                            }</h4>
+                            <span class="text-xs text-gray-400">${
+                              file.size
+                            } bytes</span>
+                        </div>
+                        <p class="text-sm text-gray-300 mb-2">📄 ${
+                          file.fileName
+                        }</p>
+                        <p class="text-xs text-gray-400 mb-3">📅 ${new Date(
+                          file.created
+                        ).toLocaleString()}</p>
+                        <button onclick="previewFile(${index})" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition-all">
+                            👀 Preview
+                        </button>
+                    </div>
+                `;
+        });
+
+        html += `</div>`;
+        filesList.innerHTML = html;
+      }
+
+      // Preview file content
+      function previewFile(index) {
+        if (index < 0 || index >= generatedFiles.length) return;
+
+        const file = generatedFiles[index];
+        const preview = document.getElementById("preview");
+        const previewContent = document.getElementById("previewContent");
+
+        previewContent.textContent = file.content;
+        preview.style.display = "block";
+
+        // Scroll to preview
+        preview.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Download all files
+      function downloadAllFiles() {
+        if (generatedFiles.length === 0) {
+          updateStatus(
+            "❌ No files to download. Generate files first.",
+            "error"
+          );
+          return;
+        }
+
+        try {
+          const generator = new IndividualFileGenerator();
+          generator.generatedFiles = generatedFiles;
+          generator.downloadAllFiles();
+
+          updateStatus("✅ Download started!", "success");
+        } catch (error) {
+          updateStatus(`❌ Error downloading files: ${error.message}`, "error");
+          console.error("Error downloading files:", error);
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        updateStatus('Ready! Click "Load Test Data" to start.');
+      });
+    </script>
+  </body>
+</html>

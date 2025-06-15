@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug Final Crawler - Runeterra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white p-8">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl font-bold mb-6">🔍 Debug Final Crawler</h1>
+
+      <!-- Status -->
+      <div
+        id="status"
+        class="bg-blue-900/30 border border-blue-600/50 rounded-lg p-4 mb-6"
+      >
+        <h3 class="text-lg font-bold text-blue-300 mb-2">
+          📊 Debugging Status
+        </h3>
+        <p id="statusText" class="text-slate-300">Loading scripts...</p>
+      </div>
+
+      <!-- Controls -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <button
+          onclick="checkFinalCrawler()"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          🔍 Check Final Crawler
+        </button>
+        <button
+          onclick="runCrawl()"
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          🚀 Run Crawl
+        </button>
+        <button
+          onclick="checkEnhancedDB()"
+          class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          📊 Check Enhanced DB
+        </button>
+        <button
+          onclick="forceRebuild()"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition-all"
+        >
+          🔄 Force Rebuild
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Final Crawler Data -->
+        <div class="bg-gray-800 rounded-lg p-4">
+          <h3 class="text-lg font-bold mb-4">🎯 Final Crawler Data</h3>
+          <pre
+            id="finalCrawlerData"
+            class="text-sm bg-gray-900 p-4 rounded overflow-auto max-h-96 text-green-300"
+          >
+                    No data loaded yet...
+                </pre
+          >
+        </div>
+
+        <!-- Enhanced DB Data -->
+        <div class="bg-gray-800 rounded-lg p-4">
+          <h3 class="text-lg font-bold mb-4">🏰 Enhanced DB Data</h3>
+          <pre
+            id="enhancedDBData"
+            class="text-sm bg-gray-900 p-4 rounded overflow-auto max-h-96 text-blue-300"
+          >
+                    No data loaded yet...
+                </pre
+          >
+        </div>
+      </div>
+
+      <!-- Raw Debug -->
+      <div class="bg-gray-800 rounded-lg p-4 mt-6">
+        <h3 class="text-lg font-bold mb-4">📋 Debug Log</h3>
+        <pre
+          id="debugLog"
+          class="text-sm bg-gray-900 p-4 rounded overflow-auto max-h-96 text-yellow-300 whitespace-pre-wrap"
+        >
+                Debug log will appear here...
+            </pre
+        >
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="database/final-crawler.js"></script>
+    <script src="database/auto-writer.js"></script>
+    <script src="database/enhanced-database.js"></script>
+    <script src="database/individual-file-generator.js"></script>
+    <script src="database/app.js"></script>
+
+    <script>
+      let debugLog = [];
+
+      function log(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = `[${timestamp}] ${message}`;
+        debugLog.push(logEntry);
+
+        document.getElementById("debugLog").textContent = debugLog.join("\\n");
+        document.getElementById("statusText").textContent = message;
+        console.log(logEntry);
+      }
+
+      function checkFinalCrawler() {
+        log("🔍 Checking Final Crawler...");
+
+        try {
+          // Check if final crawler exists
+          if (window.finalCrawler) {
+            log("✅ Final Crawler found!");
+
+            const data = {
+              exists: true,
+              hasRegions: !!window.finalCrawler.regions,
+              regionsCount: window.finalCrawler.regions
+                ? Object.keys(window.finalCrawler.regions).length
+                : 0,
+              regionNames: window.finalCrawler.regions
+                ? Object.keys(window.finalCrawler.regions)
+                : [],
+              hasChampions: false,
+              totalChampions: 0,
+              championsByRegion: {},
+            };
+
+            if (window.finalCrawler.regions) {
+              Object.entries(window.finalCrawler.regions).forEach(
+                ([regionId, region]) => {
+                  if (region.champions && region.champions.length > 0) {
+                    data.hasChampions = true;
+                    data.totalChampions += region.champions.length;
+                    data.championsByRegion[regionId] = region.champions.length;
+                  }
+                }
+              );
+            }
+
+            document.getElementById("finalCrawlerData").textContent =
+              JSON.stringify(data, null, 2);
+            log(
+              `📊 Regions: ${data.regionsCount}, Champions: ${data.totalChampions}`
+            );
+          } else {
+            log("❌ Final Crawler not found!");
+            document.getElementById("finalCrawlerData").textContent =
+              "Final Crawler not found";
+          }
+        } catch (error) {
+          log(`❌ Error checking Final Crawler: ${error.message}`);
+          document.getElementById(
+            "finalCrawlerData"
+          ).textContent = `Error: ${error.message}`;
+        }
+      }
+
+      function runCrawl() {
+        log("🚀 Running crawl...");
+
+        try {
+          if (window.startFinalCrawl) {
+            window.startFinalCrawl();
+            log("✅ Crawl started!");
+
+            // Check results after 5 seconds
+            setTimeout(() => {
+              checkFinalCrawler();
+              checkEnhancedDB();
+            }, 5000);
+          } else {
+            log("❌ startFinalCrawl function not found!");
+          }
+        } catch (error) {
+          log(`❌ Error running crawl: ${error.message}`);
+        }
+      }
+
+      function checkEnhancedDB() {
+        log("🏰 Checking Enhanced DB...");
+
+        try {
+          if (window.enhancedDB) {
+            const data = {
+              exists: true,
+              allChampionsCount: window.enhancedDB.allChampions
+                ? window.enhancedDB.allChampions.length
+                : 0,
+              championsDataCount: window.enhancedDB.championsData
+                ? Object.keys(window.enhancedDB.championsData).length
+                : 0,
+              sampleChampions: window.enhancedDB.allChampions
+                ? window.enhancedDB.allChampions.slice(0, 3).map((c) => ({
+                    id: c.id,
+                    name: c.name,
+                    region: c.region.name,
+                  }))
+                : [],
+            };
+
+            document.getElementById("enhancedDBData").textContent =
+              JSON.stringify(data, null, 2);
+            log(`📊 Enhanced DB: ${data.allChampionsCount} champions`);
+          } else {
+            log("❌ Enhanced DB not found!");
+            document.getElementById("enhancedDBData").textContent =
+              "Enhanced DB not found";
+          }
+        } catch (error) {
+          log(`❌ Error checking Enhanced DB: ${error.message}`);
+          document.getElementById(
+            "enhancedDBData"
+          ).textContent = `Error: ${error.message}`;
+        }
+      }
+
+      function forceRebuild() {
+        log("🔄 Force rebuilding...");
+
+        try {
+          // Clear localStorage
+          localStorage.removeItem("enhancedChampionsDatabase");
+          log("🗑️ Cleared localStorage");
+
+          // Recreate enhanced DB
+          if (window.enhancedDB) {
+            window.enhancedDB.loadChampions().then(() => {
+              log("✅ Enhanced DB rebuilt!");
+              checkEnhancedDB();
+            });
+          } else {
+            log("❌ Enhanced DB not available for rebuild");
+          }
+        } catch (error) {
+          log(`❌ Error force rebuilding: ${error.message}`);
+        }
+      }
+
+      // Auto-check on load
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          log("🔄 Auto-checking on load...");
+          checkFinalCrawler();
+          checkEnhancedDB();
+        }, 2000);
+      });
+
+      // Override console.log to capture debug info
+      const originalLog = console.log;
+      console.log = function (...args) {
+        originalLog.apply(console, args);
+
+        // Capture important logs
+        const message = args.join(" ");
+        if (
+          message.includes("champions") ||
+          message.includes("database") ||
+          message.includes("regions")
+        ) {
+          log(`📝 Console: ${message}`);
+        }
+      };
+    </script>
+  </body>
+</html>

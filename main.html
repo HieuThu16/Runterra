@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Runeterra Champions Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        min-height: 100vh;
+      }
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 2s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .champion-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .champion-card:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+      .champion-image {
+        width: 112px;
+        height: 112px;
+        object-fit: cover;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+      .champion-card:hover .champion-image {
+        transform: scale(1.1);
+      }
+      /* Ẩn admin panel */
+      .admin-panel {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="text-white">
+    <!-- Header -->
+    <header class="bg-slate-900 shadow-lg">
+      <div class="container mx-auto px-4 py-6">
+        <h1 class="text-4xl font-bold text-cyan-300 text-center">
+          🏰 Runeterra Champions Database
+        </h1>
+        <p class="text-center text-slate-400 mt-2">
+          170 Tướng - Sắp xếp A-Z - Ảnh lớn - Database chi tiết
+        </p>
+      </div>
+    </header>
+
+    <!-- Control Panel -->
+    <div class="container mx-auto px-4 py-6">
+      <div class="bg-slate-800 rounded-lg p-6 mb-6">
+        <h2 class="text-2xl font-bold text-yellow-300 mb-4">
+          🎮 Khám phá Tướng
+        </h2>
+
+        <!-- Status Bar -->
+        <div class="bg-slate-700 rounded-lg p-4 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div>
+              <p class="text-slate-400">Tổng số tướng</p>
+              <p id="totalChampions" class="text-2xl font-bold text-green-400">
+                170
+              </p>
+            </div>
+            <div>
+              <p class="text-slate-400">Hiển thị</p>
+              <p
+                id="filteredChampions"
+                class="text-2xl font-bold text-blue-400"
+              >
+                170
+              </p>
+            </div>
+            <div>
+              <p class="text-slate-400">Trạng thái</p>
+              <p id="statusText" class="text-sm text-yellow-400">
+                🔄 Đang tải database...
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Admin Controls (Hidden) -->
+        <div
+          class="admin-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6"
+        >
+          <button
+            onclick="crawlAllChampions()"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded transition-all"
+          >
+            🚀 Cào Dữ Liệu
+          </button>
+          <button
+            onclick="generateAllFiles()"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded transition-all"
+          >
+            📁 Tạo Files
+          </button>
+          <button
+            onclick="generateIndividualChampionFiles()"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded transition-all text-sm"
+          >
+            🎯 File Từng Tướng
+          </button>
+          <button
+            onclick="downloadAllChampionFiles()"
+            class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-3 rounded transition-all text-sm"
+          >
+            💾 Download All
+          </button>
+          <button
+            onclick="showCrawlerStats()"
+            class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded transition-all"
+          >
+            📊 Thống Kê
+          </button>
+          <button
+            onclick="loadFromDatabase()"
+            class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded transition-all"
+          >
+            💾 Load Database
+          </button>
+          <button
+            onclick="clearAllData()"
+            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition-all"
+          >
+            🗑️ Xóa Dữ Liệu
+          </button>
+          <button
+            onclick="location.reload()"
+            class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded transition-all"
+          >
+            🔄 Tải Lại
+          </button>
+        </div>
+
+        <!-- User Info -->
+        <div
+          class="bg-green-900/30 border border-green-600/50 rounded-lg p-4 mb-6"
+        >
+          <h3 class="text-lg font-bold text-green-300 mb-2">
+            ✨ Database Runeterra
+          </h3>
+          <p class="text-slate-300 text-sm">
+            Database chứa <strong id="currentTotal">170</strong> tướng với đầy
+            đủ thông tin: Stats, Abilities, Lore, Skins. Click vào tướng để xem
+            chi tiết!
+          </p>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-slate-300 mb-2">🔍 Tìm kiếm tướng:</label>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Nhập tên tướng (VD: Ahri, Yasuo)..."
+              class="w-full p-3 bg-slate-700 text-white rounded border border-slate-600 focus:border-cyan-500"
+            />
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-2"
+              >🗺️ Lọc theo vùng đất:</label
+            >
+            <select
+              id="regionFilter"
+              class="w-full p-3 bg-slate-700 text-white rounded border border-slate-600 focus:border-cyan-500"
+            >
+              <option value="all">Tất cả vùng đất</option>
+              <option value="demacia">🏰 Demacia</option>
+              <option value="noxus">⚔️ Noxus</option>
+              <option value="ionia">🌸 Ionia</option>
+              <option value="piltover">🔧 Piltover</option>
+              <option value="zaun">⚗️ Zaun</option>
+              <option value="freljord">❄️ Freljord</option>
+              <option value="bilgewater">🏴‍☠️ Bilgewater</option>
+              <option value="shadowisles">💀 Shadow Isles</option>
+              <option value="targon">⭐ Targon</option>
+              <option value="shurima">🏜️ Shurima</option>
+              <option value="void">🕳️ The Void</option>
+              <option value="ixtal">🌿 Ixtal</option>
+              <option value="bandle">🍄 Bandle City</option>
+              <option value="no">❓ Unknown Region</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Champions Grid -->
+      <div class="bg-slate-800 rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-cyan-300 mb-4">
+          ⚔️ Danh Sách Tướng (Sắp xếp A-Z)
+          <span id="sortingIndicator" class="text-sm text-slate-400"
+            >🔤 Alphabetical</span
+          >
+        </h2>
+        <!-- Debug Button -->
+        <div class="mb-4">
+          <button
+            onclick="loadAndRenderChampions()"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+          >
+            🔄 Reload Champions
+          </button>
+          <button
+            onclick="checkDebugInfo()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded ml-2"
+          >
+            🔍 Debug Info
+          </button>
+        </div>
+        <div
+          id="championsContainer"
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-4"
+        >
+          <div class="col-span-full text-center py-8">
+            <div class="loading mx-auto mb-4"></div>
+            <p class="text-slate-400">Đang tải database 170 tướng...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Champion Modal (Enhanced) -->
+    <div
+      id="championModal"
+      class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+      onclick="closeChampionModal(event)"
+    >
+      <div
+        id="modalContent"
+        class="bg-slate-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        onclick="event.stopPropagation()"
+      >
+        <!-- Modal content will be dynamically inserted here -->
+      </div>
+    </div>
+    <!-- Scripts -->
+    <script src="database/final-crawler.js"></script>
+    <script src="database/auto-writer.js"></script>
+    <script src="database/enhanced-database.js"></script>
+    <script src="database/individual-file-generator.js"></script>
+    <script src="database/app.js"></script>
+
+    <!-- Individual Champion Files -->
+    <script src="database/champions/ahri.js"></script>
+    <script src="database/champions/dr-mundo.js"></script>
+    <script src="database/champions/garen.js"></script>
+    <script src="database/champions/kaisa.js"></script>
+    <script src="database/champions/miss-fortune.js"></script>
+
+    <script>
+      // Enhanced Champions App
+      let currentSearchText = "";
+      let currentRegionFilter = "all";
+
+      // Show champion modal với thông tin chi tiết
+      window.showChampionModal = function (championId) {
+        const champion = window.enhancedDB.getChampion(championId);
+        if (!champion) {
+          alert("❌ Không tìm thấy thông tin tướng!");
+          return;
+        }
+
+        const modalContent = `
+          <div class="relative">
+            <!-- Close Button -->
+            <button onclick="closeChampionModal()" 
+                    class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 w-10 h-10 rounded-full">
+              ✕
+            </button>
+
+            <!-- Champion Header -->
+            <div class="flex flex-col md:flex-row gap-6 p-6">
+              <!-- Champion Image -->
+              <div class="flex-shrink-0">
+                <img src="${champion.splashArt}" 
+                     alt="${champion.name}"
+                     class="w-64 h-64 object-cover rounded-lg border-4 border-slate-600"
+                     onerror="this.src='${champion.image}'">
+              </div>
+
+              <!-- Champion Info -->
+              <div class="flex-1">
+                <h2 class="text-3xl font-bold text-cyan-300 mb-2">${
+                  champion.name
+                }</h2>
+                <p class="text-lg text-slate-300 mb-4">${champion.title}</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <span class="text-slate-400">Region:</span>
+                    <span class="ml-2" style="color: ${champion.region.color}">
+                      ${champion.region.icon} ${champion.region.name}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400">Role:</span>
+                    <span class="ml-2 text-yellow-400">${champion.role}</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400">Difficulty:</span>
+                    <span class="ml-2">${"★".repeat(
+                      champion.difficulty
+                    )}${"☆".repeat(10 - champion.difficulty)}</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400">Species:</span>
+                    <span class="ml-2 text-green-400">${champion.species}</span>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="bg-slate-700 rounded p-3 mb-4">
+                  <h4 class="font-bold text-yellow-300 mb-2">📊 Base Stats</h4>
+                  <div class="grid grid-cols-3 gap-2 text-sm">
+                    <div>HP: <span class="text-green-400">${
+                      champion.stats.hp
+                    }</span></div>
+                    <div>MP: <span class="text-blue-400">${
+                      champion.stats.mp
+                    }</span></div>
+                    <div>AD: <span class="text-red-400">${
+                      champion.stats.attackdamage
+                    }</span></div>
+                    <div>Armor: <span class="text-yellow-400">${
+                      champion.stats.armor
+                    }</span></div>
+                    <div>MR: <span class="text-purple-400">${
+                      champion.stats.spellblock
+                    }</span></div>
+                    <div>MS: <span class="text-cyan-400">${
+                      champion.stats.movespeed
+                    }</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Abilities -->
+            <div class="px-6 pb-4">
+              <h3 class="text-xl font-bold text-purple-300 mb-3">⚡ Abilities</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                ${champion.abilities
+                  .map(
+                    (ability) => `
+                  <div class="bg-slate-700 rounded p-3">
+                    <div class="font-bold text-yellow-400">${ability.key}: ${ability.name}</div>
+                    <div class="text-sm text-slate-300 mt-1">${ability.description}</div>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            </div>
+
+            <!-- Lore -->
+            <div class="px-6 pb-4">
+              <h3 class="text-xl font-bold text-green-300 mb-3">📜 Lore</h3>
+              <div class="bg-slate-700 rounded p-4">
+                <p class="text-slate-300 text-sm leading-relaxed">${
+                  champion.lore
+                }</p>
+              </div>
+            </div>
+
+            <!-- Fun Facts -->
+            <div class="px-6 pb-4">
+              <h3 class="text-xl font-bold text-pink-300 mb-3">🎯 Fun Facts</h3>
+              <div class="bg-slate-700 rounded p-4">
+                <ul class="list-disc list-inside text-slate-300 text-sm space-y-1">
+                  ${champion.funFacts
+                    .map((fact) => `<li>${fact}</li>`)
+                    .join("")}
+                </ul>
+              </div>
+            </div>            <!-- Skins -->
+            <div class="px-6 pb-6">
+              <h3 class="text-xl font-bold text-blue-300 mb-3">🎨 Skins (${
+                champion.skins.length
+              })</h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                ${champion.skins
+                  .slice(0, 6)
+                  .map(
+                    (skin) => `
+                  <div class="bg-slate-700 rounded p-2">
+                    <img src="${skin.image}" 
+                         alt="${skin.name}"
+                         class="w-full h-24 object-cover rounded mb-2"
+                         onerror="this.src='${champion.image}'">
+                    <div class="text-xs font-medium text-center">${skin.name}</div>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="px-6 pb-6 border-t border-slate-600 pt-4">
+              <div class="flex gap-3 justify-center">
+                <button 
+                  onclick="editChampion('${champion.id}')"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition-all">
+                  ✏️ Chỉnh Sửa
+                </button>
+                <button 
+                  onclick="saveChampion('${champion.id}')"
+                  class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition-all">
+                  💾 Lưu Lại
+                </button>
+                <button 
+                  onclick="resetChampion('${champion.id}')"
+                  class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded transition-all">
+                  🔄 Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("modalContent").innerHTML = modalContent;
+        document.getElementById("championModal").classList.remove("hidden");
+      };
+
+      // Close modal
+      window.closeChampionModal = function (event) {
+        if (!event || event.target === event.currentTarget) {
+          document.getElementById("championModal").classList.add("hidden");
+        }
+      }; // Load and render champions
+      async function loadAndRenderChampions() {
+        const statusText = document.getElementById("statusText");
+        const container = document.getElementById("championsContainer");
+
+        statusText.textContent = "🔄 Đang tải database...";
+        try {
+          console.log("🔍 Checking window.enhancedDB:", window.enhancedDB);
+          console.log("🔍 Checking window.app:", window.app);
+          console.log("🔍 Checking window.app.db:", window.app?.db);
+          console.log(
+            "🔍 Checking window.app.db.champions:",
+            window.app?.db?.champions
+          );
+
+          if (!window.enhancedDB) {
+            throw new Error("Enhanced database not initialized");
+          }
+
+          const loaded = await window.enhancedDB.loadChampions();
+
+          if (loaded && window.enhancedDB.allChampions.length > 0) {
+            // Render tất cả tướng (đã sắp xếp A-Z)
+            window.enhancedDB.renderAllChampions(
+              container,
+              currentSearchText,
+              currentRegionFilter
+            );
+            statusText.textContent = "✅ Database sẵn sàng!";
+            console.log(
+              `✅ Loaded ${window.enhancedDB.allChampions.length} champions (A-Z sorted)`
+            );
+            console.log(
+              "📋 Champions alphabetical list:",
+              window.enhancedDB.allChampions.map((c) => c.name).join(", ")
+            );
+          } else {
+            container.innerHTML = `
+              <div class="col-span-full text-center py-8">
+                <p class="text-red-400">❌ Không có dữ liệu!</p>
+                <p class="text-slate-400 text-sm mt-2">Cần cào dữ liệu trước</p>
+              </div>
+            `;
+            statusText.textContent = "⚠️ Không có dữ liệu!";
+          }
+        } catch (error) {
+          console.error("❌ Error loading champions:", error);
+          statusText.textContent = "❌ Lỗi tải database!";
+        }
+      }
+
+      // Debug function
+      function checkDebugInfo() {
+        console.log("🔍 Debug Info:");
+        console.log("- window.enhancedDB:", window.enhancedDB);
+        console.log("- window.app:", window.app);
+        console.log("- window.app?.db:", window.app?.db);
+        console.log("- window.app?.db?.champions:", window.app?.db?.champions);
+        console.log(
+          "- localStorage finalChampionsData:",
+          localStorage.getItem("finalChampionsData")
+        );
+        console.log(
+          "- enhancedDB allChampions length:",
+          window.enhancedDB?.allChampions?.length
+        );
+
+        if (window.enhancedDB?.allChampions?.length > 0) {
+          console.log("- Sample champion:", window.enhancedDB.allChampions[0]);
+          console.log(
+            "- Champions names:",
+            window.enhancedDB.allChampions.map((c) => c.name).slice(0, 10)
+          );
+        }
+
+        alert("Debug info logged to console!");
+      }
+
+      // Search function
+      function handleSearch() {
+        currentSearchText = document.getElementById("searchInput").value;
+        const container = document.getElementById("championsContainer");
+        window.enhancedDB.renderAllChampions(
+          container,
+          currentSearchText,
+          currentRegionFilter
+        );
+      }
+
+      // Region filter function
+      function handleRegionFilter() {
+        currentRegionFilter = document.getElementById("regionFilter").value;
+        const container = document.getElementById("championsContainer");
+        window.enhancedDB.renderAllChampions(
+          container,
+          currentSearchText,
+          currentRegionFilter
+        );
+      } // Event listeners
+      document.addEventListener("DOMContentLoaded", function () {
+        // Setup search
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+          searchInput.addEventListener("input", handleSearch);
+        }
+
+        // Setup region filter
+        const regionFilter = document.getElementById("regionFilter");
+        if (regionFilter) {
+          regionFilter.addEventListener("change", handleRegionFilter);
+        } // Wait for app to initialize, then load champions
+        const waitForApp = () => {
+          if (window.app && window.app.db && window.app.db.isLoaded) {
+            console.log("✅ App is ready, loading champions...");
+            loadAndRenderChampions();
+          } else if (window.enhancedDB) {
+            // Try fallback loading from localStorage or other sources
+            console.log("⚠️ App not ready, trying fallback loading...");
+            loadAndRenderChampions();
+          } else {
+            console.log("⏳ Waiting for app to initialize...");
+            setTimeout(waitForApp, 500);
+          }
+        };
+
+        waitForApp();
+      });
+
+      // Admin functions (hidden)
+      window.loadFromDatabase = loadAndRenderChampions;
+      window.crawlAllChampions = function () {
+        alert("⚠️ Admin function - Database đã sẵn sàng!");
+      };
+      window.generateAllFiles = function () {
+        if (window.enhancedDB && window.enhancedDB.allChampions.length > 0) {
+          const files = window.enhancedDB.generateIndividualFiles();
+          console.log(`🔥 Generated ${files.length} individual champion files`);
+          alert(
+            `✅ Generated ${files.length} individual files! Check console.`
+          );
+        }
+      };
+      window.showCrawlerStats = function () {
+        if (window.enhancedDB && window.enhancedDB.allChampions.length > 0) {
+          const total = window.enhancedDB.allChampions.length;
+          const regions = {};
+
+          window.enhancedDB.allChampions.forEach((champion) => {
+            const regionName = champion.region.name;
+            regions[regionName] = (regions[regionName] || 0) + 1;
+          });
+
+          const regionStats = Object.entries(regions).map(
+            ([name, count]) => `${name}: ${count}`
+          );
+
+          document.getElementById("statusText").innerHTML = `
+            <strong>📊 Stats:</strong> ${total} champions | ${regionStats
+            .slice(0, 3)
+            .join(", ")}...
+          `;
+
+          console.log("📊 Enhanced Database Statistics:", { total, regions });
+        }
+      };
+      window.clearAllData = function () {
+        if (confirm("⚠️ Xóa database?")) {
+          localStorage.removeItem("enhancedChampionsDatabase");
+          location.reload();
+        }
+      };
+
+      // ===== CHAMPION EDIT/SAVE FUNCTIONS =====
+
+      // Edit champion
+      window.editChampion = function (championId) {
+        const champion = window.enhancedDB.getChampion(championId);
+        if (!champion) {
+          alert("❌ Không tìm thấy tướng!");
+          return;
+        }
+
+        // Tạo form edit
+        const editForm = `
+          <div class="p-6 bg-slate-800 rounded-lg max-w-4xl mx-auto max-h-96 overflow-y-auto">
+            <h2 class="text-2xl font-bold text-cyan-300 mb-4">✏️ Chỉnh Sửa: ${
+              champion.name
+            }</h2>
+            
+            <!-- Basic Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label class="block text-slate-300 mb-1">Tên:</label>
+                <input id="edit_name" type="text" value="${champion.name}" 
+                       class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1">Title:</label>
+                <input id="edit_title" type="text" value="${champion.title}" 
+                       class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1">Role:</label>
+                <select id="edit_role" class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                  <option value="Fighter" ${
+                    champion.role === "Fighter" ? "selected" : ""
+                  }>Fighter</option>
+                  <option value="Mage" ${
+                    champion.role === "Mage" ? "selected" : ""
+                  }>Mage</option>
+                  <option value="Marksman" ${
+                    champion.role === "Marksman" ? "selected" : ""
+                  }>Marksman</option>
+                  <option value="Tank" ${
+                    champion.role === "Tank" ? "selected" : ""
+                  }>Tank</option>
+                  <option value="Assassin" ${
+                    champion.role === "Assassin" ? "selected" : ""
+                  }>Assassin</option>
+                  <option value="Support" ${
+                    champion.role === "Support" ? "selected" : ""
+                  }>Support</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1">Species:</label>
+                <input id="edit_species" type="text" value="${
+                  champion.species
+                }" 
+                       class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="mb-6">
+              <h3 class="text-lg font-bold text-yellow-300 mb-3">📊 Stats</h3>
+              <div class="grid grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-slate-300 mb-1">HP:</label>
+                  <input id="edit_hp" type="number" value="${
+                    champion.stats.hp
+                  }" 
+                         class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                </div>
+                <div>
+                  <label class="block text-slate-300 mb-1">MP:</label>
+                  <input id="edit_mp" type="number" value="${
+                    champion.stats.mp
+                  }" 
+                         class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                </div>
+                <div>
+                  <label class="block text-slate-300 mb-1">Attack Damage:</label>
+                  <input id="edit_ad" type="number" value="${
+                    champion.stats.attackdamage
+                  }" 
+                         class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                </div>
+                <div>
+                  <label class="block text-slate-300 mb-1">Armor:</label>
+                  <input id="edit_armor" type="number" value="${
+                    champion.stats.armor
+                  }" 
+                         class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                </div>
+                <div>
+                  <label class="block text-slate-300 mb-1">Magic Resist:</label>
+                  <input id="edit_mr" type="number" value="${
+                    champion.stats.spellblock
+                  }" 
+                         class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                </div>
+                <div>
+                  <label class="block text-slate-300 mb-1">Movement Speed:</label>
+                  <input id="edit_ms" type="number" value="${
+                    champion.stats.movespeed
+                  }" 
+                         class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                </div>
+              </div>
+            </div>
+
+            <!-- Lore -->
+            <div class="mb-6">
+              <label class="block text-slate-300 mb-1">Lore:</label>
+              <textarea id="edit_lore" rows="3" 
+                        class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">${
+                          champion.lore
+                        }</textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 justify-center">
+              <button onclick="applyChampionEdit('${championId}')" 
+                      class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition-all">
+                ✅ Áp Dụng
+              </button>
+              <button onclick="cancelChampionEdit()" 
+                      class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded transition-all">
+                ❌ Hủy
+              </button>
+            </div>
+          </div>
+        `;
+
+        // Show edit form
+        document.getElementById("modalContent").innerHTML = editForm;
+      };
+
+      // Apply champion edit
+      window.applyChampionEdit = function (championId) {
+        try {
+          const updates = {
+            name: document.getElementById("edit_name").value,
+            title: document.getElementById("edit_title").value,
+            role: document.getElementById("edit_role").value,
+            species: document.getElementById("edit_species").value,
+            lore: document.getElementById("edit_lore").value,
+            stats: {
+              hp: parseInt(document.getElementById("edit_hp").value) || 0,
+              mp: parseInt(document.getElementById("edit_mp").value) || 0,
+              attackdamage:
+                parseInt(document.getElementById("edit_ad").value) || 0,
+              armor: parseInt(document.getElementById("edit_armor").value) || 0,
+              spellblock:
+                parseInt(document.getElementById("edit_mr").value) || 0,
+              movespeed:
+                parseInt(document.getElementById("edit_ms").value) || 0,
+            },
+          };
+
+          const result = window.enhancedDB.editChampion(championId, updates);
+
+          if (result.success) {
+            alert(`✅ Đã cập nhật thông tin ${result.champion.name}!`);
+
+            // Refresh display
+            window.showChampionModal(championId);
+
+            // Re-render champions list to show updated info
+            const container = document.getElementById("championsContainer");
+            window.enhancedDB.renderAllChampions(
+              container,
+              currentSearchText,
+              currentRegionFilter
+            );
+          } else {
+            alert("❌ Lỗi khi cập nhật tướng!");
+          }
+        } catch (error) {
+          console.error("Error applying edit:", error);
+          alert("❌ Lỗi khi áp dụng chỉnh sửa!");
+        }
+      };
+
+      // Cancel champion edit
+      window.cancelChampionEdit = function () {
+        const championId = document
+          .querySelector('[onclick*="applyChampionEdit"]')
+          ?.onclick?.toString()
+          ?.match(/'([^']+)'/)?.[1];
+        if (championId) {
+          window.showChampionModal(championId);
+        } else {
+          closeChampionModal();
+        }
+      };
+
+      // Save champion
+      window.saveChampion = function (championId) {
+        try {
+          const success = window.enhancedDB.saveChampion(championId);
+
+          if (success) {
+            alert("✅ Đã lưu thông tin tướng vào database!");
+          } else {
+            alert("❌ Lỗi khi lưu tướng!");
+          }
+        } catch (error) {
+          console.error("Error saving champion:", error);
+          alert("❌ Lỗi khi lưu!");
+        }
+      };
+
+      // Reset champion
+      window.resetChampion = function (championId) {
+        if (!confirm("⚠️ Reset tướng về dữ liệu gốc?")) {
+          return;
+        }
+
+        try {
+          const result = window.enhancedDB.resetChampion(championId);
+
+          if (result) {
+            alert(`✅ Đã reset ${result.name} về dữ liệu gốc!`);
+
+            // Refresh modal and list
+            window.showChampionModal(championId);
+
+            const container = document.getElementById("championsContainer");
+            window.enhancedDB.renderAllChampions(
+              container,
+              currentSearchText,
+              currentRegionFilter
+            );
+          } else {
+            alert("❌ Lỗi khi reset tướng!");
+          }
+        } catch (error) {
+          console.error("Error resetting champion:", error);
+          alert("❌ Lỗi khi reset!");
+        }
+      };
+
+      console.log("🏰 Enhanced Runeterra Champions Database!");
+      console.log(
+        "✨ Features: 170 champions, A-Z sorted, large images, detailed modals"
+      );
+    </script>
+  </body>
+</html>

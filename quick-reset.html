@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Reset - Runeterra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
+  >
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-8">🔄 Quick Reset</h1>
+
+      <div class="space-y-4">
+        <button
+          onclick="clearAndReload()"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all text-xl"
+        >
+          🗑️ Clear Database & Reload
+        </button>
+
+        <div>
+          <a
+            href="main.html"
+            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all"
+          >
+            🏠 Back to Main
+          </a>
+        </div>
+      </div>
+
+      <div id="status" class="mt-8 text-lg text-gray-400">
+        Click to clear all stored data and force reload fresh data
+      </div>
+    </div>
+
+    <script>
+      function clearAndReload() {
+        document.getElementById("status").textContent =
+          "🔄 Clearing database...";
+
+        // Clear all relevant localStorage
+        localStorage.removeItem("enhancedChampionsDatabase");
+        localStorage.removeItem("finalChampionsData");
+        localStorage.removeItem("runeterra_champions");
+
+        // Clear any other keys that might be related
+        const keys = Object.keys(localStorage);
+        keys.forEach((key) => {
+          if (
+            key.toLowerCase().includes("champion") ||
+            key.toLowerCase().includes("rune") ||
+            key.toLowerCase().includes("league")
+          ) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        document.getElementById("status").textContent =
+          "✅ Database cleared! Redirecting...";
+
+        setTimeout(() => {
+          window.location.href = "main.html";
+        }, 1000);
+      }
+
+      // Auto-execute after 2 seconds if no interaction
+      setTimeout(() => {
+        if (confirm("Auto-clear database and reload?")) {
+          clearAndReload();
+        }
+      }, 3000);
+    </script>
+  </body>
+</html>
