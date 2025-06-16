@@ -1,31 +1,45 @@
 // Application Logic
 class RuneterraApp {
   constructor() {
-    // Ensure window.championsDatabase is initialized for translations
-    if (!window.championsDatabase) {
+    // Khởi tạo database trước để có thể load từ localStorage
+    this.db = new ChampionsDB();
+
+    // Ưu tiên localStorage nhưng merge với data gốc để không mất tướng đã cào
+    const savedData = localStorage.getItem("runeterra_champions_db");
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+
+        // Merge localStorage data với original data để không mất tướng đã cào
+        const mergedData = this.mergeChampionData(
+          championsDatabase,
+          parsedData
+        );
+
+        // Sử dụng merged data
+        window.championsDatabase = mergedData;
+        this.db.data = mergedData;
+        console.log(
+          "✅ Merged localStorage with original data (preserving all champions)"
+        );
+      } catch (error) {
+        console.error("Error parsing localStorage data:", error);
+        // Fallback to original data
+        window.championsDatabase = JSON.parse(
+          JSON.stringify(championsDatabase)
+        );
+        this.db.data = championsDatabase;
+        console.log("⚠️ Fallback to original championsDatabase");
+      }
+    } else {
+      // Lần đầu load, sử dụng data gốc
       window.championsDatabase = JSON.parse(JSON.stringify(championsDatabase));
-      console.log(
-        "RuneterraApp constructor - Initialized window.championsDatabase"
-      );
+      this.db.data = championsDatabase;
+      // Lưu vào localStorage để lần sau sử dụng
+      this.db.saveToStorage();
+      console.log("📁 First time load - saved original data to localStorage");
     }
 
-    // Debug: Check if championsDatabase is loaded properly
-    console.log(
-      "RuneterraApp constructor - championsDatabase:",
-      championsDatabase
-    );
-    if (championsDatabase && championsDatabase.regions) {
-      const shadowIsles = championsDatabase.regions.find(
-        (r) => r.id === "shadowisles"
-      );
-      if (shadowIsles) {
-        const thresh = shadowIsles.existingChampions.find(
-          (c) => c.name === "Thresh"
-        );
-        console.log("RuneterraApp constructor - Raw Thresh data:", thresh);
-      }
-    }
-    this.db = new ChampionsDB();
     this.currentGame = "lol";
     this.currentRegion = "all";
     this.currentChampionType = "official";
@@ -36,6 +50,54 @@ class RuneterraApp {
 
     this.initializeEventListeners();
     this.loadChampions();
+  }
+
+  // Merge localStorage data với original data để không mất champions
+  mergeChampionData(originalData, savedData) {
+    const merged = JSON.parse(JSON.stringify(originalData)); // Deep copy original
+
+    // Merge từng region
+    savedData.regions.forEach((savedRegion) => {
+      const originalRegion = merged.regions.find(
+        (r) => r.id === savedRegion.id
+      );
+      if (originalRegion) {
+        // Merge existingChampions - ưu tiên saved data cho champions đã edit
+        if (savedRegion.existingChampions) {
+          savedRegion.existingChampions.forEach((savedChampion) => {
+            const existingIndex = originalRegion.existingChampions.findIndex(
+              (c) => c.name === savedChampion.name
+            );
+            if (existingIndex !== -1) {
+              // Update existing champion với saved data
+              originalRegion.existingChampions[existingIndex] = savedChampion;
+            } else {
+              // Thêm champion mới từ saved data (có thể là champion đã cào)
+              originalRegion.existingChampions.push(savedChampion);
+            }
+          });
+        }
+
+        // Merge newChampions
+        if (savedRegion.newChampions) {
+          originalRegion.newChampions = savedRegion.newChampions;
+        }
+      }
+    });
+
+    console.log(
+      "🔄 Merged data - Original champions:",
+      originalData.regions.reduce(
+        (total, r) => total + r.existingChampions.length,
+        0
+      )
+    );
+    console.log(
+      "🔄 Merged data - Final champions:",
+      merged.regions.reduce((total, r) => total + r.existingChampions.length, 0)
+    );
+
+    return merged;
   }
 
   initializeEventListeners() {
@@ -1554,12 +1616,19 @@ class RuneterraApp {
     container.innerHTML = "";
 
     skills.forEach((skill) => {
-      if (typeof skill === "object" && skill.type) {
-        // Detailed skill object
-        this.addEditSkillField(skill.type, skill.name, skill.description);
-      } else {
+      if (typeof skill === "object" && (skill.type || skill.key)) {
+        // Detailed skill object - support both old format (type) and new format (key)
+        const skillType = skill.key || skill.type || "Passive";
+        const skillName = skill.name || "";
+        const skillDescription = skill.description || "";
+        this.addEditSkillField(skillType, skillName, skillDescription);
+      } else if (typeof skill === "string") {
         // Simple skill string
         this.addEditSkillField("Passive", "", skill);
+      } else {
+        // Fallback for any other format
+        console.warn("Unknown skill format:", skill);
+        this.addEditSkillField("Passive", "", String(skill));
       }
     });
   }
@@ -1662,18 +1731,29 @@ class RuneterraApp {
   handleEditChampion(e) {
     e.preventDefault();
 
+    console.log("=== handleEditChampion START ===");
+    console.log("currentEditingChampion:", this.currentEditingChampion);
+
     if (!this.currentEditingChampion) {
       alert("Không tìm thấy thông tin champion để chỉnh sửa!");
       return;
     }
 
     try {
+      console.log("Collecting form data...");
       // Lấy dữ liệu từ form
-      const updatedChampion = this.collectEditFormData(); // Validate dữ liệu bắt buộc - chỉ cần tên
+      const updatedChampion = this.collectEditFormData();
+      console.log("Form data collected:", updatedChampion);
+
+      // Validate dữ liệu bắt buộc - chỉ cần tên
       if (!updatedChampion.name) {
         alert("Vui lòng điền tên champion!");
         return;
       }
+
+      console.log("Calling updateChampionInDatabase...");
+      console.log("Original champion:", this.currentEditingChampion);
+      console.log("Updated champion:", updatedChampion);
 
       // Cập nhật champion trong database
       const success = this.updateChampionInDatabase(
@@ -1682,6 +1762,9 @@ class RuneterraApp {
       );
 
       if (success) {
+        // Lưu thông tin để hiển thị thông báo trước khi đóng modal
+        const originalChampion = { ...this.currentEditingChampion };
+
         // Lưu vào localStorage
         this.db.saveToStorage();
 
@@ -1702,9 +1785,9 @@ class RuneterraApp {
 
         // Hiển thị thông báo thành công với thông tin chi tiết
         const regionChanged =
-          this.currentEditingChampion.region !== updatedChampion.region;
+          originalChampion.region !== updatedChampion.region;
         const successMessage = regionChanged
-          ? `✅ Cập nhật tướng thành công!\n🔄 ${updatedChampion.name} đã được chuyển từ ${this.currentEditingChampion.region} sang ${updatedChampion.region}\n📋 Code để cập nhật data.js đã được tạo.`
+          ? `✅ Cập nhật tướng thành công!\n🔄 ${updatedChampion.name} đã được chuyển từ ${originalChampion.region} sang ${updatedChampion.region}\n📋 Code để cập nhật data.js đã được tạo.`
           : `✅ Cập nhật tướng ${updatedChampion.name} thành công!\n📋 Code để cập nhật data.js đã được tạo.`;
 
         alert(successMessage);
@@ -1716,13 +1799,47 @@ class RuneterraApp {
       }
     } catch (error) {
       console.error("Error updating champion:", error);
+      console.error("Error stack:", error.stack);
       alert("❌ Có lỗi xảy ra khi cập nhật: " + error.message);
     }
+
+    console.log("=== handleEditChampion END ===");
   }
 
   // Cập nhật champion trong database
   updateChampionInDatabase(originalChampion, updatedChampion) {
     try {
+      // Validate input parameters
+      if (!originalChampion) {
+        console.error("originalChampion is null or undefined");
+        alert("❌ Lỗi: Không tìm thấy thông tin tướng gốc!");
+        return false;
+      }
+
+      if (!updatedChampion) {
+        console.error("updatedChampion is null or undefined");
+        alert("❌ Lỗi: Không có dữ liệu cập nhật!");
+        return false;
+      }
+
+      if (!originalChampion.region) {
+        console.error(
+          "originalChampion.region is null or undefined:",
+          originalChampion
+        );
+        alert("❌ Lỗi: Tướng gốc không có thông tin region!");
+        return false;
+      }
+
+      if (!updatedChampion.region) {
+        console.error(
+          "updatedChampion.region is null or undefined:",
+          updatedChampion
+        );
+        alert("❌ Lỗi: Vui lòng chọn region cho tướng!");
+        return false;
+      }
+
       // Kiểm tra xem có thay đổi region không
       const regionChanged = originalChampion.region !== updatedChampion.region;
 
@@ -1738,6 +1855,7 @@ class RuneterraApp {
       }
     } catch (error) {
       console.error("Error updating champion in database:", error);
+      alert(`❌ Có lỗi xảy ra khi cập nhật: ${error.message}`);
       return false;
     }
   }
@@ -1792,16 +1910,7 @@ class RuneterraApp {
 
   // Chuyển champion sang region mới
   moveChampionToNewRegion(originalChampion, updatedChampion) {
-    console.log("=== DEBUG moveChampionToNewRegion ===");
-    console.log("Original champion:", originalChampion);
-    console.log("Updated champion:", updatedChampion);
-    console.log("Database data:", this.db.data);
-    console.log(
-      "Database regions:",
-      this.db.data?.regions?.map((r) => ({ id: r.id, name: r.name }))
-    );
-
-    // Validate region IDs trước khi tìm
+    // Validate region IDs - tất cả regions
     const validRegionIds = [
       "void",
       "demacia",
@@ -1846,13 +1955,8 @@ class RuneterraApp {
         originalChampion.region,
         updatedChampion.region
       );
-      console.error(
-        "Available regions in database:",
-        this.db.data.regions.map((r) => r.id)
-      );
-      console.error("Database structure:", this.db.data);
       alert(
-        `❌ Không tìm thấy region trong database!\nRegion cũ: ${originalChampion.region}\nRegion mới: ${updatedChampion.region}\n\nKiểm tra Console để xem chi tiết.`
+        `❌ Không tìm thấy region trong database!\nRegion cũ: ${originalChampion.region}\nRegion mới: ${updatedChampion.region}`
       );
       return false;
     }
@@ -1938,7 +2042,26 @@ class RuneterraApp {
       notes: document.getElementById("editChampionNotes").value.trim(),
     };
 
-    // Validate region
+    // Validate required fields
+    if (!data.name) {
+      throw new Error("Tên champion là bắt buộc!");
+    }
+
+    // Ensure region has a value - use original champion's region if not selected
+    if (
+      !data.region &&
+      this.currentEditingChampion &&
+      this.currentEditingChampion.region
+    ) {
+      data.region = this.currentEditingChampion.region;
+      console.log("Using original champion region:", data.region);
+    }
+
+    if (!data.region) {
+      throw new Error("Vui lòng chọn region cho champion!");
+    }
+
+    // Validate region - tất cả regions
     const validRegionIds = [
       "void",
       "demacia",
@@ -2004,6 +2127,7 @@ class RuneterraApp {
       data.specialFeatures = features;
     }
 
+    console.log("Collected form data:", data);
     return data;
   }
 
@@ -2019,24 +2143,30 @@ class RuneterraApp {
     );
     const arrayName = isInExisting ? "existingChampions" : "newChampions";
 
-    // Tạo code JavaScript
+    // Tạo code JavaScript cho champion
     const championCode = this.generateChampionCode(champion);
 
-    const fullCode = `// Cập nhật champion "${champion.name}" trong ${region.name}
-// File: js/regions/${champion.region}.js
-// Tìm champion trong ${arrayName} và thay thế bằng code này:
+    // Tạo code để cập nhật file region cụ thể
+    const regionFileName = `js/regions/${champion.region}.js`;
+    const fullCode = `// 🔄 Cập nhật champion "${champion.name}" trong ${region.name}
+// File: ${regionFileName}
+// 
+// HƯỚNG DẪN:
+// 1. Mở file ${regionFileName}
+// 2. Tìm champion có name: "${champion.name}" trong array ${arrayName}
+// 3. Thay thế toàn bộ object champion đó bằng code dưới đây:
 
 ${championCode}
 
-// Hoặc nếu muốn cập nhật từng field riêng lẻ:
-// 1. Tìm champion trong array ${arrayName}
-// 2. Cập nhật các field cần thiết
-// 3. Save file và deploy lại
+// 📝 LƯU Ý QUAN TRỌNG:
+// - Sau khi cập nhật file .js, cần reload trang để thấy thay đổi
+// - Hoặc có thể tiếp tục edit trong localStorage và cập nhật file sau
+// - Để giữ thay đổi vĩnh viễn, PHẢI cập nhật file .js
 
-// Lưu ý: Sau khi cập nhật data.js, cần deploy lại ứng dụng để thấy thay đổi.`;
+// 🚀 CÁCH NHANH: Copy code trên và paste vào đúng vị trí trong file ${regionFileName}`;
 
-    // Hiển thị modal code
-    this.showCodeModal(fullCode, `Cập nhật champion ${champion.name}`);
+    // Hiển thị modal code với button copy
+    this.showCodeModal(fullCode, `Cập nhật ${regionFileName}`, championCode);
   }
 
   // Tạo code JavaScript cho champion
@@ -2179,7 +2309,7 @@ ${championCode}
   }
 
   // Hiển thị modal code (sử dụng lại modal hiện có)
-  showCodeModal(code, title = "Code cho data.js") {
+  showCodeModal(code, title = "Code cho data.js", codeToCopy = "") {
     const modal = document.getElementById("codeModal");
     const codeDisplay = document.getElementById("codeDisplay");
 
@@ -2211,6 +2341,29 @@ ${championCode}
               // Fallback cho browsers không hỗ trợ clipboard API
               const textArea = document.createElement("textarea");
               textArea.value = code;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand("copy");
+              document.body.removeChild(textArea);
+              alert("✅ Code đã được copy vào clipboard!");
+            });
+        });
+      }
+
+      // Add copy button for code to copy
+      if (codeToCopy) {
+        const copyCodeBtn = document.getElementById("copyCodeBtn");
+        copyCodeBtn.textContent = "Copy Code";
+        copyCodeBtn.addEventListener("click", () => {
+          navigator.clipboard
+            .writeText(codeToCopy)
+            .then(() => {
+              alert("✅ Code đã được copy vào clipboard!");
+            })
+            .catch(() => {
+              // Fallback cho browsers không hỗ trợ clipboard API
+              const textArea = document.createElement("textarea");
+              textArea.value = codeToCopy;
               document.body.appendChild(textArea);
               textArea.select();
               document.execCommand("copy");
