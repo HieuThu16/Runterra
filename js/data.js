@@ -7,6 +7,12 @@ const championsDatabase = {
     noxusData,
     ioniaData,
     piltoverData,
+    shurimaRegion,
+    freljordRegion,
+    bilgewaterRegion,
+    targonRegion,
+    bandleRegion,
+    unknownRegion,
   ],
   specialChampions: specialChampionsData,
 };

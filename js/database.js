@@ -79,22 +79,17 @@ class ChampionsDB {
   }
 
   // Thêm tướng mới
-  addChampion(regionId, championData, isNew = true) {
+  addChampion(championData) {
+    const regionId = championData.region;
     const region = this.getRegion(regionId);
     if (!region) {
       throw new Error(`Không tìm thấy region: ${regionId}`);
     }
 
-    const championList = isNew ? "newChampions" : "existingChampions";
-
-    // Kiểm tra trùng tên
-    const exists = region[championList].some(
-      (champ) => champ.name.toLowerCase() === championData.name.toLowerCase()
-    );
-
-    if (exists) {
-      throw new Error("Tướng này đã tồn tại trong vùng đất!");
-    }
+    // Determine if it's official or creative champion
+    const isOfficial =
+      championData.isOfficial || championData.source === "scraped";
+    const championList = isOfficial ? "existingChampions" : "newChampions";
 
     // Tạo ID tự động nếu chưa có
     if (!championData.id) {
@@ -103,9 +98,35 @@ class ChampionsDB {
         .replace(/[^a-z0-9]/g, "");
     }
 
+    // Kiểm tra trùng ID và tên trong cả hai danh sách
+    const existsInExisting = region.existingChampions.some(
+      (champ) =>
+        champ.id === championData.id ||
+        champ.name.toLowerCase() === championData.name.toLowerCase()
+    );
+    const existsInNew = region.newChampions.some(
+      (champ) =>
+        champ.id === championData.id ||
+        champ.name.toLowerCase() === championData.name.toLowerCase()
+    );
+
+    if (existsInExisting || existsInNew) {
+      console.warn(
+        `Tướng ${championData.name} (ID: ${championData.id}) đã tồn tại, bỏ qua...`
+      );
+      return false; // Return false instead of throwing error
+    }
+
     region[championList].push(championData);
     this.saveToStorage();
     return true;
+  }
+
+  // Legacy method for backward compatibility
+  addChampionToRegion(regionId, championData, isNew = true) {
+    championData.region = regionId;
+    championData.isOfficial = !isNew;
+    return this.addChampion(championData);
   }
 
   // Xóa tướng
@@ -130,13 +151,58 @@ class ChampionsDB {
   }
 
   // Cập nhật tướng
-  updateChampion(regionId, championName, newData, isNew = true) {
+  updateChampion(championData) {
+    const regionId = championData.region;
     const region = this.getRegion(regionId);
     if (!region) {
       throw new Error(`Không tìm thấy region: ${regionId}`);
     }
 
+    // Find champion in both lists
+    let championIndex = -1;
+    let championList = null;
+
+    // Check existing champions first
+    championIndex = region.existingChampions.findIndex(
+      (champ) =>
+        champ.id === championData.id ||
+        champ.name.toLowerCase() === championData.name.toLowerCase()
+    );
+
+    if (championIndex !== -1) {
+      championList = "existingChampions";
+    } else {
+      // Check new champions
+      championIndex = region.newChampions.findIndex(
+        (champ) =>
+          champ.id === championData.id ||
+          champ.name.toLowerCase() === championData.name.toLowerCase()
+      );
+      if (championIndex !== -1) {
+        championList = "newChampions";
+      }
+    }
+
+    if (championIndex === -1) {
+      throw new Error("Không tìm thấy tướng để cập nhật!");
+    }
+
+    region[championList][championIndex] = {
+      ...region[championList][championIndex],
+      ...championData,
+    };
+    this.saveToStorage();
+    return true;
+  }
+
+  // Legacy method for backward compatibility
+  updateChampionInRegion(regionId, championName, newData, isNew = true) {
     const championList = isNew ? "newChampions" : "existingChampions";
+    const region = this.getRegion(regionId);
+    if (!region) {
+      throw new Error(`Không tìm thấy region: ${regionId}`);
+    }
+
     const championIndex = region[championList].findIndex(
       (champ) => champ.name.toLowerCase() === championName.toLowerCase()
     );
@@ -153,7 +219,7 @@ class ChampionsDB {
     return true;
   }
   // Lấy tất cả champions theo filter
-  getChampions(regionId = "all", championType = "old") {
+  getChampions(regionId = "all", championType = "official") {
     let champions = [];
 
     // Always prioritize window.championsDatabase for translated data
@@ -168,7 +234,7 @@ class ChampionsDB {
     dataSource.regions.forEach((region) => {
       if (regionId === "all" || regionId === region.id) {
         const championList =
-          championType === "old"
+          championType === "official"
             ? region.existingChampions
             : region.newChampions;
         if (championList && championList.length > 0) {
@@ -177,6 +243,7 @@ class ChampionsDB {
               // Create a copy to avoid modifying original data
               const championWithRegion = { ...champ };
               championWithRegion.regionName = region.name;
+              championWithRegion.isOfficial = championType === "official";
 
               // Debug log for Thresh specifically
               if (champ.name === "Thresh") {

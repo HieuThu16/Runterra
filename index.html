@@ -67,11 +67,11 @@
       <div class="container mx-auto px-4 py-4">
         <div class="flex justify-center space-x-4">
           <button
-            id="game5vs5Tab"
+            id="lolGameTab"
             class="game-tab px-6 py-3 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
-            data-translate="game5vs5"
+            data-translate="lolGame"
           >
-            ⚔️ Game 5vs5
+            ⚔️ League of Legends
           </button>
           <button
             id="cardGameTab"
@@ -86,8 +86,8 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
-      <!-- 5vs5 Game Content -->
-      <section id="game5vs5Content" class="game-content">
+      <!-- League of Legends Game Content -->
+      <section id="lolGameContent" class="game-content">
         <!-- Region Filter -->
         <div class="mb-6">
           <label
@@ -113,30 +113,51 @@
             <option value="piltover" data-translate="piltover">
               ⚙️ Piltover
             </option>
+            <option value="freljord" data-translate="freljord">
+              ❄️ Freljord
+            </option>
+            <option value="shurima" data-translate="shurima">🏜️ Shurima</option>
+            <option value="bilgewater" data-translate="bilgewater">
+              🏴‍☠️ Bilgewater
+            </option>
+            <option value="targon" data-translate="targon">⭐ Targon</option>
+            <option value="bandle" data-translate="bandle">
+              🎪 Bandle City
+            </option>
+            <option value="unknown" data-translate="unknown">
+              ❓ Không Rõ
+            </option>
           </select>
         </div>
         <!-- Champion Type Tabs -->
         <div class="flex justify-center space-x-4 mb-6">
           <button
-            id="oldChampionsTab"
+            id="officialChampionsTab"
             class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300 active"
-            data-translate="oldChampions"
+            data-translate="officialChampions"
           >
-            📚 Tướng Cũ
+            🏆 Tướng Chính Thức
           </button>
           <button
-            id="newChampionsTab"
+            id="creativeChampionsTab"
             class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
-            data-translate="newChampions"
+            data-translate="creativeChampions"
           >
-            ✨ Tướng Mới
+            ✨ Tướng Sáng Tạo
           </button>
           <button
             id="addChampionBtn"
             class="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-all duration-300"
             data-translate="addChampion"
           >
-            ➕ Thêm Tướng
+            ➕ Thêm Tướng Mới
+          </button>
+          <button
+            id="importDataBtn"
+            class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-300"
+            data-translate="importData"
+          >
+            📥 Cập Nhật Dữ Liệu
           </button>
           <button
             id="statisticsTab"
@@ -661,27 +682,6 @@
       </div>
     </div>
 
-    <!-- Edit Champion Modal -->
-    <div
-      id="editChampionModal"
-      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
-    >
-      <div
-        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
-      >
-        <button
-          onclick="closeEditModal()"
-          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
-        >
-          &times;
-        </button>
-        <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center">
-          Sửa Thông Tin Tướng
-        </h2>
-        <div id="editModalBody"></div>
-      </div>
-    </div>
-
     <!-- Add Champion Modal -->
     <div
       id="addChampionModal"
@@ -812,12 +812,18 @@
                 required
               >
                 <option value="">Chọn vùng đất</option>
-                <option value="void">Hư Không</option>
-                <option value="shadowisles">Quần Đảo Bóng Đêm</option>
-                <option value="demacia">Demacia</option>
-                <option value="noxus">Noxus</option>
-                <option value="ionia">Ionia</option>
-                <option value="piltover">Piltover</option>
+                <option value="void">🕳️ Hư Không</option>
+                <option value="demacia">⚜️ Demacia</option>
+                <option value="noxus">🗡️ Noxus</option>
+                <option value="ionia">🌸 Ionia</option>
+                <option value="piltover">⚙️ Piltover</option>
+                <option value="shadowisles">👻 Quần Đảo Bóng Đêm</option>
+                <option value="shurima">🏜️ Shurima</option>
+                <option value="freljord">❄️ Freljord</option>
+                <option value="bilgewater">🏴‍☠️ Bilgewater</option>
+                <option value="targon">⭐ Targon</option>
+                <option value="bandle">🎪 Bandle City</option>
+                <option value="unknown">❓ Không Rõ</option>
               </select>
             </div>
           </div>
@@ -915,57 +921,332 @@
       </div>
     </div>
 
-    <!-- Code Display Modal -->
+    <!-- Edit Champion Modal -->
     <div
-      id="codeModal"
+      id="editChampionModal"
       class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
     >
       <div
-        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
       >
         <button
-          id="codeModalCloseButton"
-          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl"
+          id="editModalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10"
         >
           &times;
         </button>
-        <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center">
-          💾 Code để thêm vào data.js
+        <h2
+          class="text-2xl font-bold text-cyan-300 mb-6 text-center"
+          id="editModalTitle"
+        >
+          ✏️ Chỉnh Sửa Thông Tin Tướng
         </h2>
-        <div class="bg-slate-900 p-4 rounded-lg border border-slate-600">
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-slate-300 text-sm">
-              ⚠️ Copy code này và thêm vào file js/data.js để lưu vĩnh viễn
-            </span>
-            <button
-              id="copyCodeBtn"
-              class="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+        <form id="editChampionForm" class="space-y-6">
+          <!-- Basic Info Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Name -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tên Tướng *</label
+              >
+              <input
+                type="text"
+                id="editChampionName"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                required
+              />
+            </div>
+
+            <!-- Full Name -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tên Đầy Đủ</label
+              >
+              <input
+                type="text"
+                id="editChampionFullName"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              />
+            </div>
+
+            <!-- Icon -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Icon/Emoji</label
+              >
+              <input
+                type="text"
+                id="editChampionIcon"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="🎭"
+              />
+            </div>
+
+            <!-- Role -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Vai Trò *</label
+              >
+              <input
+                type="text"
+                id="editChampionRole"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                required
+              />
+            </div>
+            <!-- Release Date -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Ngày Phát Hành</label
+              >
+              <input
+                type="text"
+                id="editChampionReleaseDate"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="YYYY-MM-DD"
+              />
+            </div>
+
+            <!-- Age -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tuổi</label
+              >
+              <input
+                type="text"
+                id="editChampionAge"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              />
+            </div>
+
+            <!-- Gender -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Giới Tính</label
+              >
+              <select
+                id="editChampionGender"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              >
+                <option value="">-- Chọn --</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Không xác định">Không xác định</option>
+                <option value="Khác">Khác</option>
+              </select>
+            </div>
+
+            <!-- Species -->
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Loài</label
+              >
+              <input
+                type="text"
+                id="editChampionSpecies"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+                placeholder="Ví dụ: Con người, Yordle, v.v."
+              />
+            </div>
+          </div>
+          <!-- Region -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Vùng Đất</label
             >
-              📋 Copy
+            <select
+              id="editChampionRegion"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+            >
+              <option value="">-- Chọn Vùng Đất --</option>
+              <option value="void">🕳️ Hư Không</option>
+              <option value="demacia">⚜️ Demacia</option>
+              <option value="noxus">🗡️ Noxus</option>
+              <option value="ionia">🌸 Ionia</option>
+              <option value="piltover">⚙️ Piltover</option>
+              <option value="shadowisles">👻 Quần Đảo Bóng Đêm</option>
+              <option value="shurima">🏜️ Shurima</option>
+              <option value="freljord">❄️ Freljord</option>
+              <option value="bilgewater">🏴‍☠️ Bilgewater</option>
+              <option value="targon">⭐ Targon</option>
+              <option value="bandle">🎪 Bandle City</option>
+              <option value="unknown">❓ Không Rõ</option>
+            </select>
+          </div>
+
+          <!-- Image URL -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >URL Hình Ảnh</label
+            >
+            <input
+              type="url"
+              id="editChampionImage"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          <!-- Weapon Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Vũ Khí</label
+              >
+              <input
+                type="text"
+                id="editChampionWeapon"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-300 mb-2"
+                >Tóm Tắt Vũ Khí</label
+              >
+              <input
+                type="text"
+                id="editChampionWeaponSummary"
+                class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              />
+            </div>
+          </div>
+          <!-- Lore -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Cốt Truyện Ngắn</label
+            >
+            <textarea
+              id="editChampionLore"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Full Lore -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Cốt Truyện Đầy Đủ</label
+            >
+            <textarea
+              id="editChampionFullLore"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              rows="5"
+            ></textarea>
+          </div>
+          <!-- Affiliation field only -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Tổ Chức</label
+            >
+            <input
+              type="text"
+              id="editChampionAffiliation"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+            />
+          </div>
+          <!-- Status only -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Trạng Thái</label
+            >
+            <input
+              type="text"
+              id="editChampionStatus"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+            />
+          </div>
+
+          <!-- Lore Connections -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Liên Kết Cốt Truyện (cách nhau bởi dấu phẩy)</label
+            >
+            <input
+              type="text"
+              id="editChampionLoreConnections"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              placeholder="Tên tướng 1, Tên tướng 2, ..."
+            />
+          </div>
+
+          <!-- Gameplay -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Lối Chơi</label
+            >
+            <textarea
+              id="editChampionGameplay"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Notes/Trivia -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Ghi Chú/Trivia</label
+            >
+            <textarea
+              id="editChampionNotes"
+              class="w-full bg-slate-700 border border-slate-600 text-slate-100 rounded-lg p-2.5"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Skills Section -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Kỹ Năng</label
+            >
+            <div id="editSkillsContainer" class="space-y-3">
+              <!-- Skills will be populated dynamically -->
+            </div>
+            <button
+              type="button"
+              onclick="app.addEditSkillField()"
+              class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+            >
+              ➕ Thêm Kỹ Năng
             </button>
           </div>
-          <pre
-            id="codeDisplay"
-            class="text-green-400 text-sm overflow-x-auto whitespace-pre-wrap"
-          ></pre>
-        </div>
-        <div class="mt-6 p-4 bg-yellow-900 border border-yellow-600 rounded-lg">
-          <h3 class="text-yellow-300 font-semibold mb-2">📝 Hướng dẫn:</h3>
-          <ol class="text-yellow-100 text-sm space-y-1">
-            <li>1. Copy code ở trên</li>
-            <li>
-              2. Mở file
-              <code class="bg-slate-700 px-1 rounded">js/data.js</code>
-            </li>
-            <li>
-              3. Tìm đúng region và array (newChampions hoặc existingChampions)
-            </li>
-            <li>4. Paste code vào cuối array, nhớ thêm dấu phẩy</li>
-            <li>5. Save file và deploy lại lên Vercel</li>
-          </ol>
-        </div>
+
+          <!-- Special Features Section -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2"
+              >Điểm Đặc Biệt</label
+            >
+            <div id="editFeaturesContainer" class="space-y-2">
+              <!-- Features will be populated dynamically -->
+            </div>
+            <button
+              type="button"
+              onclick="app.addEditFeatureField()"
+              class="mt-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors text-sm"
+            >
+              ➕ Thêm Điểm Đặc Biệt
+            </button>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex justify-center space-x-4 pt-6">
+            <button
+              type="button"
+              onclick="app.closeEditModal()"
+              class="px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              ❌ Hủy
+            </button>
+            <button
+              type="submit"
+              class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              💾 Lưu Thay Đổi
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+
     <!-- Region Lore Modal -->
     <div
       id="regionLoreModal"
@@ -992,6 +1273,194 @@
         ></div>
       </div>
     </div>
+
+    <!-- Import Data Modal -->
+    <div
+      id="importDataModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          id="importModalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          &times;
+        </button>
+        <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center">
+          📥 Cập Nhật Dữ Liệu Tướng
+        </h2>
+
+        <!-- Import Statistics -->
+        <div id="importStats" class="mb-6 bg-slate-700 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-cyan-300 mb-3">
+            📊 Thống Kê Dữ Liệu
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+              <div
+                class="text-2xl font-bold text-green-400"
+                id="totalScrapedChampions"
+              >
+                0
+              </div>
+              <div class="text-sm text-slate-400">Tổng Tướng Đã Cào</div>
+            </div>
+            <div class="text-center">
+              <div
+                class="text-2xl font-bold text-blue-400"
+                id="newChampionsCount"
+              >
+                0
+              </div>
+              <div class="text-sm text-slate-400">Tướng Mới</div>
+            </div>
+            <div class="text-center">
+              <div
+                class="text-2xl font-bold text-orange-400"
+                id="existingChampionsCount"
+              >
+                0
+              </div>
+              <div class="text-sm text-slate-400">Tướng Đã Có</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Import Options -->
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-cyan-300 mb-3">
+            ⚙️ Tùy Chọn Import
+          </h3>
+          <div class="space-y-3">
+            <label class="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="importNewChampions"
+                checked
+                class="form-checkbox text-cyan-500"
+              />
+              <span class="text-slate-300"
+                >Import tướng mới chưa có trong database</span
+              >
+            </label>
+            <label class="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="updateExistingChampions"
+                class="form-checkbox text-cyan-500"
+              />
+              <span class="text-slate-300"
+                >Cập nhật thông tin tướng đã có (hình ảnh, kỹ năng)</span
+              >
+            </label>
+            <label class="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="importImages"
+                checked
+                class="form-checkbox text-cyan-500"
+              />
+              <span class="text-slate-300">Import hình ảnh mặc định</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Preview New Champions -->
+        <div id="newChampionsPreview" class="mb-6">
+          <h3 class="text-lg font-semibold text-cyan-300 mb-3">
+            👀 Xem Trước Tướng Mới
+          </h3>
+          <div
+            id="newChampionsList"
+            class="max-h-60 overflow-y-auto bg-slate-700 p-4 rounded-lg"
+          >
+            <!-- New champions list will be populated here -->
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancelImportBtn"
+            class="px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+          >
+            ❌ Hủy
+          </button>
+          <button
+            id="startImportBtn"
+            class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
+            📥 Bắt Đầu Import
+          </button>
+        </div>
+
+        <!-- Import Progress -->
+        <div id="importProgress" class="hidden mt-6">
+          <div class="bg-slate-700 p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-slate-300">Đang import...</span>
+              <span id="importProgressText" class="text-cyan-400">0%</span>
+            </div>
+            <div class="w-full bg-slate-600 rounded-full h-2">
+              <div
+                id="importProgressBar"
+                class="bg-cyan-500 h-2 rounded-full transition-all duration-300"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Modal -->
+    <div
+      id="codeModal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-slate-800 p-8 rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content relative"
+      >
+        <button
+          id="codeModalCloseButton"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl z-10 bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          &times;
+        </button>
+        <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center">
+          💾 Code cho data.js
+        </h2>
+
+        <!-- Code Display -->
+        <div class="mb-6">
+          <div class="bg-slate-900 p-4 rounded-lg border border-slate-600">
+            <pre
+              id="codeDisplay"
+              class="text-sm text-green-400 whitespace-pre-wrap overflow-x-auto"
+            ></pre>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-center space-x-4">
+          <button
+            id="copyCodeBtn"
+            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            📋 Copy Code
+          </button>
+          <button
+            onclick="app.closeCodeModal()"
+            class="px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+          >
+            ❌ Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer -->
     <footer class="text-center py-8 mt-12 border-t border-slate-700">
       <p class="text-slate-500 text-sm" data-translate="footerText">
@@ -999,25 +1468,33 @@
       </p>
     </footer>
     <!-- Load JavaScript modules -->
-    <script src="js/translation-service.js?v=2.8"></script>
-    <script src="js/languages.js?v=2.8"></script>
+    <script src="js/translation-service.js?v=3.0"></script>
+    <script src="js/languages.js?v=3.0"></script>
+    <!-- Load scraped champions data manager -->
+    <script src="js/scraped-champions.js?v=3.0"></script>
     <!-- Load region data files first -->
-    <script src="js/regions/void.js?v=2.8"></script>
-    <script src="js/regions/shadowisles.js?v=2.8"></script>
-    <script src="js/regions/demacia.js?v=2.8"></script>
-    <script src="js/regions/noxus.js?v=2.8"></script>
-    <script src="js/regions/ionia.js?v=2.8"></script>
-    <script src="js/regions/piltover.js?v=2.8"></script>
-    <script src="js/regions/specialChampions.js?v=2.8"></script>
+    <script src="js/regions/void.js?v=3.0"></script>
+    <script src="js/regions/shadowisles.js?v=3.0"></script>
+    <script src="js/regions/demacia.js?v=3.0"></script>
+    <script src="js/regions/noxus.js?v=3.0"></script>
+    <script src="js/regions/ionia.js?v=3.0"></script>
+    <script src="js/regions/piltover.js?v=3.0"></script>
+    <script src="js/regions/shurima.js?v=3.0"></script>
+    <script src="js/regions/freljord.js?v=3.0"></script>
+    <script src="js/regions/bilgewater.js?v=3.0"></script>
+    <script src="js/regions/targon.js?v=3.0"></script>
+    <script src="js/regions/bandle.js?v=3.0"></script>
+    <script src="js/regions/unknown.js?v=3.0"></script>
+    <script src="js/regions/specialChampions.js?v=3.0"></script>
     <!-- Load main data file after regions -->
-    <script src="js/data.js?v=2.8"></script>
-    <script src="js/database.js?v=2.8"></script>
-    <script src="js/app.js?v=2.8"></script>
-
+    <script src="js/data.js?v=3.0"></script>
+    <script src="js/database.js?v=3.0"></script>
+    <script src="js/app.js?v=3.0"></script>
     <script>
       // Initialize the application when DOM is loaded
       document.addEventListener("DOMContentLoaded", function () {
         window.runeterra = new RuneterraApp();
+        window.app = window.runeterra; // Global app reference
       });
     </script>
   </body>

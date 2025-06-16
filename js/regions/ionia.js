@@ -1,1188 +1,2039 @@
-// Ionia Region Data
+// 🌸 Ionia Region Data - Version 3.2 (Enhanced with Skills)
 const ioniaData = {
-  id: "ionia",
-  name: "Ionia",
-  icon: "🌸",
-  existingChampions: [
+  "id": "ionia",
+  "name": "🌸 Ionia",
+  "description": "Vùng đất 🌸 Ionia",
+  "lore": "Câu chuyện về 🌸 Ionia",
+  "existingChampions": [
     {
-      id: "yasuo",
-      name: "Yasuo",
-      role: "Đấu Sĩ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
-      lore: "Kiếm sĩ bất tài với lời nguyền gió, tìm kiếm sự cứu rỗi và tha thứ.",
-      releaseDate: "13/12/2013",
-      loreConnections: ["Yone", "Taliyah"],
-      weaponSummary: "Kiếm",
-      gender: "Nam",
-      species: "Người",
+      "id": "ahri",
+      "name": "Ahri",
+      "fullName": "Ahri, the Nine-Tailed Fox",
+      "icon": "🦊",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+      "gender": "Nữ",
+      "species": "Vastaya",
+      "age": "200+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Orb of Deception - Quả cầu ma thuật",
+      "releaseDate": "2011",
+      "lore": "Innately connected to the magic of the spirit realm, Ahri is a fox-like vastaya who can manipulate her prey's emotions and consume their essence—receiving flashes of their memory and insight from each soul she consumes. Once a powerful yet wayward predator, Ahri is now traveling the world in search of remnants of her ancestors while also trying to replace her stolen memories with ones of her own making.",
+      "fullLore": "Innately connected to the magic of the spirit realm, Ahri is a fox-like vastaya who can manipulate her prey's emotions and consume their essence—receiving flashes of their memory and insight from each soul she consumes. Once a powerful yet wayward predator, Ahri is now traveling the world in search of remnants of her ancestors while also trying to replace her stolen memories with ones of her own making.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Essence Theft",
+          "description": "After killing 9 minions or monsters, Ahri heals.After taking down an enemy champion, Ahri heals for a greater amount.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Ahri_SoulEater2.png"
+        },
+        {
+          "key": "Q",
+          "name": "Orb of Deception",
+          "description": "Ahri sends out and pulls back her orb, dealing magic damage on the way out and true damage on the way back. ",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AhriQ.png",
+          "cooldown": "7",
+          "cost": "55/65/75/85/95",
+          "range": "970"
+        },
+        {
+          "key": "W",
+          "name": "Fox-Fire",
+          "description": "Ahri gains a brief burst of Move Speed and releases three fox-fires, that lock onto and attack nearby enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AhriW.png",
+          "cooldown": "9/8/7/6/5",
+          "cost": "30",
+          "range": "700"
+        },
+        {
+          "key": "E",
+          "name": "Charm",
+          "description": "Ahri blows a kiss that damages and charms an enemy it encounters, instantly stopping movement abilities and causing them to walk harmlessly towards her.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AhriE.png",
+          "cooldown": "14",
+          "cost": "60",
+          "range": "975"
+        },
+        {
+          "key": "R",
+          "name": "Spirit Rush",
+          "description": "Ahri dashes forward and fires essence bolts, damaging nearby enemies. Spirit Rush can be cast up to three times before going on cooldown, and gains additional recasts when taking down enemy champions.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AhriR.png",
+          "cooldown": "130/105/80",
+          "cost": "100",
+          "range": "450"
+        }
+      ],
+      "specialFeatures": []
     },
     {
-      id: "ahri",
-      name: "Ahri",
-      role: "Pháp Sư",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
-      lore: "Hồ ly chín đuôi, tìm kiếm nguồn gốc thật sự của mình giữa hai thế giới.",
-      releaseDate: "14/12/2011",
-      loreConnections: ["Không có liên kết trực tiếp được liệt kê"],
-      weaponSummary: "Ma thuật",
-      gender: "Nữ",
-      species: "Hồ Ly",
+      "id": "akali",
+      "name": "Akali",
+      "fullName": "Akali, the Rogue Assassin",
+      "icon": "🗡️",
+      "role": "Sát Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Akali_0.jpg",
+      "gender": "Nữ",
+      "species": "Con Người",
+      "age": "19-20 tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Kama and Kunai - Liềm và phi tiêu ninja",
+      "releaseDate": "2010",
+      "lore": "Abandoning the Kinkou Order and her title of the Fist of Shadow, Akali now strikes alone, ready to be the deadly weapon her people need. Though she holds onto all she learned from her master Shen, she has pledged to defend Ionia from its enemies, one kill at a time. Akali may strike in silence, but her message will be heard loud and clear: fear the assassin with no master.",
+      "fullLore": "Abandoning the Kinkou Order and her title of the Fist of Shadow, Akali now strikes alone, ready to be the deadly weapon her people need. Though she holds onto all she learned from her master Shen, she has pledged to defend Ionia from its enemies, one kill at a time. Akali may strike in silence, but her message will be heard loud and clear: fear the assassin with no master.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Assassin's Mark",
+          "description": "Dealing spell damage to a champion creates a ring of energy around them. Exiting that ring empowers Akali's next Attack with bonus range and damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Akali_P.png"
+        },
+        {
+          "key": "Q",
+          "name": "Five Point Strike",
+          "description": "Akali throws out five kunai, dealing damage based on her bonus Attack Damage and Ability Power and slowing.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AkaliQ.png",
+          "cooldown": "1.5",
+          "cost": "110/100/90/80/70",
+          "range": "550"
+        },
+        {
+          "key": "W",
+          "name": "Twilight Shroud",
+          "description": "Akali drops a cover of smoke and briefly gains Move Speed. While inside the shroud, Akali becomes invisible and unable to be selected by enemy spells and attacks. Attacking or using abilities will briefly reveal her.  ",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AkaliW.png",
+          "cooldown": "20",
+          "cost": "0",
+          "range": "350"
+        },
+        {
+          "key": "E",
+          "name": "Shuriken Flip",
+          "description": "Flip backward and fire a shuriken forward, dealing magic damage. The first enemy or smoke cloud hit is marked. Re-cast to dash to the marked target, dealing additional damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AkaliE.png",
+          "cooldown": "16/14.5/13/11.5/10",
+          "cost": "30",
+          "range": "825"
+        },
+        {
+          "key": "R",
+          "name": "Perfect Execution",
+          "description": "Akali leaps in a direction, damaging enemies she strikes. Re-cast: Akali dashes in a direction, executing all enemies she strikes.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AkaliR.png",
+          "cooldown": "100/80/60",
+          "cost": "0",
+          "range": "675"
+        }
+      ],
+      "specialFeatures": []
     },
     {
-      id: "irelia",
-      name: "Irelia",
-      role: "Đấu Sĩ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg",
-      lore: "Vũ công lưỡi dao, dẫn đầu kháng chiến chống lại sự xâm lược của Noxus.",
-      releaseDate: "16/11/2010",
-      loreConnections: ["Karma", "Syndra"],
-      weaponSummary: "Kiếm",
-      gender: "Nữ",
-      species: "Người",
+      "id": "anivia",
+      "name": "Anivia",
+      "fullName": "Anivia, the Cryophoenix",
+      "icon": "🦅",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Anivia_0.jpg",
+      "gender": "Nữ",
+      "species": "Hồn Ma",
+      "age": "10000+ tuổi",
+      "weapon": "Unknown",
+      "weaponSummary": "Ice Magic - Ma thuật băng",
+      "releaseDate": "2010",
+      "lore": "Anivia is a benevolent winged spirit who endures endless cycles of life, death, and rebirth to protect the Freljord. A demigod born of unforgiving ice and bitter winds, she wields those elemental powers to thwart any who dare disturb her homeland. Anivia guides and protects the tribes of the harsh north, who revere her as a symbol of hope, and a portent of great change. She fights with every ounce of her being, knowing that through her sacrifice, her memory will endure, and she will be reborn into a new tomorrow.",
+      "fullLore": "Anivia is a benevolent winged spirit who endures endless cycles of life, death, and rebirth to protect the Freljord. A demigod born of unforgiving ice and bitter winds, she wields those elemental powers to thwart any who dare disturb her homeland. Anivia guides and protects the tribes of the harsh north, who revere her as a symbol of hope, and a portent of great change. She fights with every ounce of her being, knowing that through her sacrifice, her memory will endure, and she will be reborn into a new tomorrow.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Rebirth",
+          "description": "Upon taking fatal damage, Anivia reverts to an egg and is reborn with full health.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Anivia_P.png"
+        },
+        {
+          "key": "Q",
+          "name": "Flash Frost",
+          "description": "Anivia brings her wings together and summons a sphere of ice that flies towards her opponents, chilling and damaging anyone in its path. When the sphere explodes it does moderate damage in a radius, stunning anyone in the area.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/FlashFrost.png",
+          "cooldown": "12/11/10/9/8",
+          "cost": "80/85/90/95/100",
+          "range": "1075"
+        },
+        {
+          "key": "W",
+          "name": "Crystallize",
+          "description": "Anivia condenses the moisture in the air into an impassable wall of ice to block all movement. The wall only lasts a short duration before it melts.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/Crystallize.png",
+          "cooldown": "17",
+          "cost": "70",
+          "range": "1000"
+        },
+        {
+          "key": "E",
+          "name": "Frostbite",
+          "description": "With a flap of her wings, Anivia blasts a freezing gust of wind at her target, dealing damage. If the target was recently hit by Flash Frost or damaged by a fully formed Glacial Storm, the damage they take is doubled.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/Frostbite.png",
+          "cooldown": "4",
+          "cost": "50",
+          "range": "650"
+        },
+        {
+          "key": "R",
+          "name": "Glacial Storm",
+          "description": "Anivia summons a driving rain of ice and hail to damage her enemies and slow their advance.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/GlacialStorm.png",
+          "cooldown": "4/3/2",
+          "cost": "60",
+          "range": "750"
+        }
+      ],
+      "specialFeatures": []
     },
     {
-      id: "akali",
-      name: "Akali",
-      fullName: "Akali, Sát Thủ Đơn Độc (The Rogue Assassin)",
-      role: "Sát Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Akali_0.jpg",
-      gender: "Nữ",
-      species: "Người",
-      age: "Trưởng thành (được đào tạo từ năm 14 tuổi, sau đó rời bỏ hội)",
-      weapon: "Kama và Kunai (liềm cầm tay và dao găm ném)",
-      releaseDate: "11/05/2010",
-      loreConnections: ["Shen", "Kennen", "Zed"],
-      weaponSummary: "Kama, Kunai",
-      lore: "Akali sinh ra trong Hội Kinkou, được đào tạo để duy trì sự cân bằng của Ionia. Bực bội vì sự thiếu hành động của Kinkou trước các mối đe dọa, đặc biệt là sau cuộc xâm lược của Noxus, cô đã rời bỏ hội để chiến đấu trực tiếp với tư cách là một sát thủ đơn độc.",
-      fullLore:
-        "Akali Jhomen Tethi được nuôi dưỡng trong Hội Kinkou dưới sự lãnh đạo của Đại Sư Kusho và con trai ông, Shen. Cô là một chiến binh tài năng, thành thạo kama và kunai, và được kỳ vọng sẽ kế nhiệm mẹ mình trở thành Nắm Đấm Bóng Tối. Tuy nhiên, cô dần cảm thấy không yên và đặt câu hỏi về cách tiếp cận thụ động của Kinkou trong việc duy trì sự cân bằng, đặc biệt khi Ionia phải chịu đựng cuộc xâm lược của Noxus.\n\nCô công khai chỉ trích sự bất lực của họ và rời bỏ hội, cống hiến mình để loại bỏ các mối đe dọa trực tiếp trong thế giới vật chất, trở thành một sát thủ không có chủ nhân. Sự rời bỏ của Akali khỏi Hội Kinkou do sự 'thiếu hành động' của họ và niềm tin của cô vào 'hành động trực tiếp' là một sự chia rẽ tư tưởng rõ ràng. Điều này phản ánh cuộc nổi dậy trước đó của Zed chống lại Kusho và Shen.",
-      gameplay:
-        "Akali là một sát thủ có tính cơ động cao, sử dụng các kỹ năng của mình để lao vào và thoát khỏi giao tranh, gây sát thương dồn dập và trở nên không thể bị nhắm mục tiêu trong màn khói của cô. Lối chơi của cô tập trung vào sự chính xác, nhanh nhẹn và các đòn tấn công cơ hội.",
-      skills: [
+      "id": "aurora",
+      "name": "Aurora",
+      "fullName": "Aurora, the Witch Between Worlds",
+      "icon": "⚔️",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aurora_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "Không rõ",
+      "weapon": "Magic",
+      "weaponSummary": "Magic",
+      "releaseDate": "2024",
+      "lore": "From the moment she was born, Aurora navigated life with a unique ability to move between the spirit and material realms. Determined to learn more about the spirit realm's inhabitants, she left her home to further her research and happened upon a wayward demigod who'd become twisted and lost to time. Witnessing his desperation, Aurora resolved to find a way to help her feral friend regain his forgotten identity—a journey that would take her to the farthest reaches of the Freljord.",
+      "fullLore": "From the moment she was born, Aurora navigated life with a unique ability to move between the spirit and material realms. Determined to learn more about the spirit realm's inhabitants, she left her home to further her research and happened upon a wayward demigod who'd become twisted and lost to time. Witnessing his desperation, Aurora resolved to find a way to help her feral friend regain his forgotten identity—a journey that would take her to the farthest reaches of the Freljord.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Đọa Đày (Assassin's Mark)",
-          description:
-            "Gây sát thương kỹ năng lên tướng địch tạo ra một vòng năng lượng xung quanh chúng. Rời khỏi vòng đó sẽ cường hóa đòn đánh thường tiếp theo của Akali với tầm đánh và sát thương cộng thêm.",
+          "name": "Twofold Hex",
+          "description": "Aurora sends out a missile that curses any enemies it hits. She can then recast the ability to draw active curses back toward herself, damaging foes who are hit along the way.",
+          "key": "AuroraQ"
         },
         {
-          type: "Q",
-          name: "Ngũ Đẳng Liên Hoàn (Five Point Strike)",
-          description:
-            "Akali ném năm phi tiêu, gây sát thương dựa trên sát thương vật lý cộng thêm và sức mạnh phép thuật của cô, đồng thời làm chậm.",
+          "name": "Across the Veil",
+          "description": "Aurora leaps in a direction of her choosing, entering the spirit realm upon landing, becoming invisible, and gaining Move Speed for a short duration of time.",
+          "key": "AuroraW"
         },
         {
-          type: "W",
-          name: "Bom Khói (Twilight Shroud)",
-          description:
-            "Akali thả một màn khói và tăng tốc độ di chuyển trong thời gian ngắn. Khi ở trong màn khói, Akali trở nên vô hình và không thể bị chọn làm mục tiêu bởi các phép và đòn tấn công của kẻ địch. Tấn công hoặc sử dụng kỹ năng sẽ khiến cô bị lộ diện trong thời gian ngắn.",
+          "name": "The Weirding",
+          "description": "Aurora converges the realms, sending out a blast of spirit magic that damages and slows enemies before Aurora hops backward to safety.",
+          "key": "AuroraE"
         },
         {
-          type: "E",
-          name: "Phi Hồ Liên Hoàn (Shuriken Flip)",
-          description:
-            "Lộn ngược ra sau và bắn một phi tiêu về phía trước, gây sát thương phép. Kẻ địch hoặc đám khói đầu tiên trúng phải sẽ bị đánh dấu. Tái kích hoạt kỹ năng để lướt đến mục tiêu bị đánh dấu, gây thêm sát thương.",
-        },
-        {
-          type: "R",
-          name: "Sát Chiêu Hoàn Hảo (Perfect Execution)",
-          description:
-            "Akali lao theo một hướng, gây sát thương cho kẻ địch trúng phải. Tái kích hoạt: Akali lướt theo một hướng, kết liễu tất cả kẻ địch trúng phải.",
-        },
+          "name": "Between Worlds",
+          "description": "Aurora leaps in a direction of her choosing, releasing a shockwave that damages and slows any enemies it hits. Afterward, she creates an area that slows enemies within it and allows Aurora to teleport from one side of the area to the other.",
+          "key": "AuroraR"
+        }
       ],
-      specialFeatures: [
-        "Từng là thành viên của Hội Kinkou, được đào tạo bởi Shen và Kennen",
-        "Tin vào hành động trực tiếp, gây chết người để bảo vệ Ionia",
-        "Triết lý 'không chủ nhân' là đặc điểm nổi bật",
-        "Phản ánh cuộc xung đột nội bộ sâu sắc trong Ionia",
-        "Đại diện cho sự chia rẽ tư tưởng trong Hội Kinkou",
-        "Cuộc đấu tranh giữa phương pháp truyền thống và thực dụng",
-        "Thể hiện tác động của cuộc xâm lược Noxus lên tư tưởng Ionia",
-        "Sự chọn lựa giữa cân bằng thụ động và hành động trực tiếp",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "ivern",
-      name: "Ivern",
-      fullName: "Ivern, Người Bạn Của Rừng Già (The Green Father)",
-      icon: "🌳",
-      role: "Hỗ Trợ/Pháp Sư",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ivern_0.jpg",
-      species: "Nửa người, nửa cây (người đã biến đổi)",
-      age: "Cổ đại (từ 'Vorrijaard cổ đại,' 'nhiều thế kỷ trước')",
-      gender: "Nam (he/him)",
-      weapon:
-        "Mối liên kết với thiên nhiên và người bạn đồng hành được triệu hồi, Daisy",
-      releaseDate: "05/10/2016",
-      loreConnections: ["Lillia"],
-      weaponSummary: "Cây",
-      lore: "Từng là chiến binh hung tợn Ivern Tàn Bạo, ông tìm kiếm nguồn gốc của tất cả ma thuật ở Ionia. Khi tấn công Cây Thần-Liễu huyền thoại, ông đã bị hủy diệt và tái sinh thành một sinh vật nửa người, nửa cây kỳ lạ, tràn đầy sự ăn năn và tình yêu sâu sắc với thiên nhiên.",
-      fullLore:
-        "Ivern Tàn Bạo, một lãnh chúa từ Vorrijaard cổ đại, đã đi thuyền về phía đông đến Ionia để tìm kiếm nguồn gốc của tất cả ma thuật. Ông và lực lượng của mình đã chiến đấu với các sinh vật lai cho đến khi họ đến Cây Thần-Liễu linh thiêng. Khi ông tấn công cây, ông ngay lập tức bị hủy diệt và biến đổi thành một sinh vật bằng vỏ cây và lá, được truyền năng lượng bởi ma thuật của cây.\n\nVượt qua sự ăn năn về bạo lực trong quá khứ, ông trở thành Bramblefoot, Người Cha Xanh. Ông đã phát triển tình bạn sâu sắc với tất cả các sinh vật, bao gồm một golem đá mà ông đặt tên là Daisy, và giờ đây lang thang, làm phong phú thêm các khu rừng và chia sẻ trí tuệ, buồn bã trước sự bất cẩn của con người. Cốt truyện của Ivern là một ví dụ điển hình về ma thuật của Ionia có tác động sâu sắc, biến đổi cá nhân, không chỉ về sức mạnh mà còn về đạo đức.",
-      gameplay:
-        "Ivern là một tướng đi rừng/hỗ trợ độc đáo, không thể trực tiếp tấn công các quái vật không phải quái vật lớn. Thay vào đó, ông giải phóng chúng khỏi các khu rừng ma thuật. Lối chơi của ông xoay quanh việc kiểm soát các bãi quái rừng, che chắn cho đồng minh, tạo bụi cây để có lợi thế chiến thuật và triệu hồi Daisy để chiến đấu.",
-      skills: [
+      "id": "bard",
+      "name": "Bard",
+      "fullName": "Bard, the Wandering Caretaker",
+      "icon": "🎵",
+      "role": "Hỗ Trợ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Bard_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "Vô tận",
+      "weapon": "Magic",
+      "weaponSummary": "Cosmic Chimes - Chuông vũ trụ",
+      "releaseDate": "2015",
+      "lore": "A traveler from beyond the stars, Bard is an agent of serendipity who fights to maintain a balance where life can endure the indifference of chaos. Many Runeterrans sing songs that ponder his extraordinary nature, yet they all agree that the cosmic vagabond is drawn to artifacts of great magical power. Surrounded by a jubilant choir of helpful spirit meeps, it is impossible to mistake his actions as malevolent, as Bard always serves the greater good... in his own odd way.",
+      "fullLore": "A traveler from beyond the stars, Bard is an agent of serendipity who fights to maintain a balance where life can endure the indifference of chaos. Many Runeterrans sing songs that ponder his extraordinary nature, yet they all agree that the cosmic vagabond is drawn to artifacts of great magical power. Surrounded by a jubilant choir of helpful spirit meeps, it is impossible to mistake his actions as malevolent, as Bard always serves the greater good... in his own odd way.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Người Bạn Của Rừng Già (Friend of the Forest)",
-          description:
-            "Ivern không thể tấn công hoặc bị tấn công bởi các quái vật không phải quái vật lớn. Ivern có thể tạo ra các khu rừng ma thuật trên các bãi quái rừng, chúng sẽ phát triển theo thời gian. Khi khu rừng phát triển hoàn toàn, Ivern có thể giải phóng các quái vật để nhận vàng và kinh nghiệm.",
+          "key": "Passive",
+          "name": "Traveler's Call",
+          "description": "Meeps: Bard attracts lesser spirits that assist with his basic attacks to deal extra magic damage. When Bard has collected enough  Chimes, his meeps will also deal damage in an area and slow enemies hit.Chimes: Ancient chimes randomly appear for Bard to collect. These grant experience, restore mana, and provide out of combat Move Speed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Bard_Passive.png"
         },
         {
-          type: "Q",
-          name: "Rễ Trói (Rootcaller)",
-          description:
-            "Ivern tạo ra một dây leo, gây sát thương phép và trói chân kẻ địch trúng phải. Đồng minh của Ivern có thể lướt đến mục tiêu bị trói chân.",
+          "key": "Q",
+          "name": "Cosmic Binding",
+          "description": "Bard fires a missile which will slow the first enemy struck, and continue onward. If it strikes a wall, it will stun the initial target; if it strikes another enemy, it will stun them both.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BardQ.png",
+          "cooldown": "11/10/9/8/7",
+          "cost": "60",
+          "range": "25000"
         },
         {
-          type: "W",
-          name: "Kiến Tạo Bụi (Brushmaker)",
-          description:
-            "Trong bụi cây, các đòn tấn công của Ivern và đồng minh gần đó gây thêm sát thương phép. Ivern có thể kích hoạt kỹ năng này để tạo ra một bụi cây.",
+          "key": "W",
+          "name": "Caretaker's Shrine",
+          "description": "Reveals a Health shrine which powers up over a short time, disappearing after healing and speeding up the first ally that touches it.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BardW.png",
+          "cooldown": "0",
+          "cost": "70",
+          "range": "800"
         },
         {
-          type: "E",
-          name: "Hạt Hư Hỏng (Triggerseed)",
-          description:
-            "Ivern đặt một lá chắn lên một đồng minh, lá chắn này sẽ nổ sau một thời gian ngắn, làm chậm và gây sát thương cho kẻ địch. Lá chắn sẽ được làm mới nếu không trúng kẻ địch nào.",
+          "key": "E",
+          "name": "Magical Journey",
+          "description": "Bard opens a portal in nearby terrain. Allies and enemies alike can take a one-way trip through that terrain by moving into the portal.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BardE.png",
+          "cooldown": "22/20.5/19/17.5/16",
+          "cost": "30",
+          "range": "900"
         },
         {
-          type: "R",
-          name: "Daisy! (Daisy!)",
-          description:
-            "Ivern triệu hồi người bạn Sentinel của mình, Daisy, để chiến đấu cùng ông. Kích hoạt lại để ra lệnh cho Daisy tấn công hoặc di chuyển.",
-        },
+          "key": "R",
+          "name": "Tempered Fate",
+          "description": "Bard sends spirit energy arcing to a location, putting all champions, minions, monsters, and turrets hit into stasis for a brief time.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BardR.png",
+          "cooldown": "110/95/80",
+          "cost": "100",
+          "range": "3400"
+        }
       ],
-      specialFeatures: [
-        "Cơ chế đi rừng 'hòa bình' độc đáo",
-        "Sự biến đổi từ lãnh chúa tàn bạo thành linh hồn thiên nhiên nhân từ",
-        "Daisy, người bạn golem là phần cốt lõi trong bản sắc",
-        "Thể hiện ma thuật Ionia có tác động biến đổi sâu sắc",
-        "Đại diện cho sự thay đổi đạo đức qua ma thuật",
-        "Ma thuật Ionia như lực lượng sống, có tri giác",
-        "Sức mạnh đến từ sự hòa hợp với bản chất tự nhiên",
-        "Câu hỏi về ý chí tự do so với định mệnh trong tâm linh Ionia",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "jhin",
-      name: "Jhin",
-      fullName: "Jhin, Nghệ Sĩ Tử Thần (The Virtuoso)",
-      icon: "🎭",
-      role: "Xạ Thủ/Pháp Sư",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jhin_0.jpg",
-      species: "Con người",
-      age: "Không rõ, nhưng đã hoạt động 'trong nhiều năm' trước khi bị bắt, sau đó 'nhiều năm' trôi qua trong tù. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Whisper (súng cầm tay/đại bác gắn vai)",
-      releaseDate: "01/02/2016",
-      loreConnections: ["Shen", "Zed", "Akali", "Hwei"],
-      weaponSummary: "Súng",
-      lore: "Khada Jhin, được biết đến với cái tên 'Quỷ Vàng,' là một kẻ tâm thần tội phạm tỉ mỉ, coi giết người là nghệ thuật. Hắn bị Hội Kinkou giam cầm nhưng sau đó được giải thoát bởi các yếu tố bí ẩn trong hội đồng cầm quyền của Ionia để phục vụ như một sát thủ của họ.",
-      fullLore:
-        "Trong nhiều năm, Jhin, khi đó được biết đến với cái tên 'Quỷ Vàng,' đã hoành hành ở các ngọn núi phía nam Ionia, để lại những màn trình diễn xác chết bị vặn vẹo. Hắn bị Đại Sư Kusho, Shen và Zed truy lùng, cuối cùng được tiết lộ là một người dàn cảnh tên là Khada Jhin. Kusho đã chọn giam cầm hắn ở Tuula thay vì hành quyết, tin rằng điều đó sẽ làm suy yếu văn hóa Ionia.\n\nJhin bị giam cầm trong nhiều năm, xuất sắc trong nhiều loại hình nghệ thuật nhưng không bao giờ mất đi sự ám ảnh bệnh hoạn của mình. Hắn sau đó được giải thoát sau cuộc chiến tranh Noxus, có thể bởi các yếu tố cấp tiến của Ionia, và giờ đây hoạt động như một sát thủ của họ, sử dụng khẩu súng Whisper của mình để tạo ra 'sự tàn bạo nghệ thuật'. Việc Jhin được giải thoát bởi 'các yếu tố bí ẩn trong hội đồng cầm quyền của Ionia' cho thấy sự xói mòn đáng kể các giá trị cốt lõi của Ionia.",
-      gameplay:
-        "Jhin là một xạ thủ độc đáo với tốc độ tấn công cố định và một khẩu súng cầm tay bốn viên. Lối chơi của hắn xoay quanh các phát bắn chính xác, có tác động cao, đặt bẫy và kết liễu tầm xa, thường lên đến đỉnh điểm là chiêu cuối Sân Khấu Tử Thần.",
-      skills: [
+      "id": "gragas",
+      "name": "Gragas",
+      "fullName": "Gragas, the Rabble Rouser",
+      "icon": "🍺",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Gragas_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "40-45 tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Cask - Thùng rượu",
+      "releaseDate": "2010",
+      "lore": "Equal parts jolly and imposing, Gragas is a massive, rowdy brewmaster who's always on the lookout for new ways to raise everyone's spirits. Hailing from parts unknown, he searches for ingredients among the unblemished wastes of the Freljord to help him perfect his latest concoction. He is impulsive, headstrong, and renowned for the brawls he starts, which often end in all-night parties and widespread property damage. Any appearance from Gragas must surely foreshadow merriment and destruction—in that order.",
+      "fullLore": "Equal parts jolly and imposing, Gragas is a massive, rowdy brewmaster who's always on the lookout for new ways to raise everyone's spirits. Hailing from parts unknown, he searches for ingredients among the unblemished wastes of the Freljord to help him perfect his latest concoction. He is impulsive, headstrong, and renowned for the brawls he starts, which often end in all-night parties and widespread property damage. Any appearance from Gragas must surely foreshadow merriment and destruction—in that order.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Lời Thì Thầm (Whisper)",
-          description:
-            "Súng cầm tay của Jhin, Whisper, bắn với tốc độ cố định và chỉ có bốn viên đạn. Jhin truyền năng lượng cho viên đạn cuối cùng để chí mạng và gây thêm sát thương kết liễu. Bất cứ khi nào Whisper chí mạng, nó sẽ truyền cảm hứng cho Jhin một lượng lớn Tốc Độ Di Chuyển.",
+          "key": "Passive",
+          "name": "Happy Hour",
+          "description": "Gragas periodically heals upon using a skill.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/GragasPassiveHeal.png"
         },
         {
-          type: "Q",
-          name: "Lựu Đạn Nhảy Múa (Dancing Grenade)",
-          description:
-            "Jhin phóng một hộp đạn ma thuật vào kẻ địch. Nó có thể trúng tối đa bốn mục tiêu và tăng sát thương mỗi khi tiêu diệt được mục tiêu.",
+          "key": "Q",
+          "name": "Barrel Roll",
+          "description": "Gragas rolls his cask to a location, which can be activated to explode or will explode on its own after 4 seconds. The potency of the explosion increases over time. Enemies struck by the blast have their Move Speed slowed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/GragasQ.png",
+          "cooldown": "10/9/8/7/6",
+          "cost": "80/75/70/65/60",
+          "range": "850"
         },
         {
-          type: "W",
-          name: "Nét Hoa Mĩ (Deadly Flourish)",
-          description:
-            "Jhin vung gậy, bắn một phát bắn duy nhất với tầm xa đáng kinh ngạc. Nó xuyên qua lính và quái vật, nhưng dừng lại ở tướng đầu tiên trúng phải. Nếu mục tiêu gần đây bị đồng minh của Jhin, bẫy hoa sen hoặc bị Jhin gây sát thương, chúng sẽ bị trói chân.",
+          "key": "W",
+          "name": "Drunken Rage",
+          "description": "Gragas guzzles down brew from his cask for 1 second. After finishing, he becomes drunkenly empowered, dealing magic damage to all nearby enemies on his next basic attack and reducing damage received.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/GragasW.png",
+          "cooldown": "5",
+          "cost": "30",
+          "range": "20"
         },
         {
-          type: "E",
-          name: "Cạm Bẫy Nghệ Sĩ (Captive Audience)",
-          description:
-            "Jhin đặt một bẫy hoa sen vô hình sẽ nở ra khi bị giẫm lên. Nó làm chậm kẻ địch gần đó trước khi gây sát thương bằng một vụ nổ cánh hoa răng cưa. Sắc Đẹp Trong Cái Chết - Khi Jhin tiêu diệt một tướng địch, một bẫy hoa sen sẽ nở ra gần xác chết của chúng.",
+          "key": "E",
+          "name": "Body Slam",
+          "description": "Gragas charges to a location and collides with the first enemy unit he comes across, dealing damage to all nearby enemy units and stunning them.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/GragasE.png",
+          "cooldown": "14/13.5/13/12.5/12",
+          "cost": "50",
+          "range": "600"
         },
         {
-          type: "R",
-          name: "Sân Khấu Tử Thần (Curtain Call)",
-          description:
-            "Jhin vận sức, biến Whisper thành một khẩu đại bác gắn vai. Nó có thể bắn 4 siêu phát bắn ở tầm cực xa xuyên qua lính và quái vật, nhưng dừng lại ở tướng đầu tiên trúng phải. Whisper làm suy yếu kẻ địch trúng phải, làm chậm chúng và gây sát thương kết liễu. Phát bắn thứ 4 được chế tạo hoàn hảo, cực kỳ mạnh mẽ và chắc chắn chí mạng.",
-        },
+          "key": "R",
+          "name": "Explosive Cask",
+          "description": "Gragas hurls his cask to a location, dealing damage and knocking back enemies caught in the blast radius.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/GragasR.png",
+          "cooldown": "120/100/80",
+          "cost": "100",
+          "range": "1000"
+        }
       ],
-      specialFeatures: [
-        "Một 'kẻ tâm thần tội phạm' coi giết người là 'nghệ thuật'",
-        "Được giải thoát bởi 'các yếu tố bí ẩn' ở Ionia",
-        "Thể hiện khía cạnh đen tối, thực dụng của cấu trúc quyền lực Ionia",
-        "Bị Kusho, Shen và Zed bắt giữ - sự kiện then chốt",
-        "Đại diện cho sự xói mòn giá trị cốt lõi của Ionia",
-        "Sự tham nhũng hoặc tuyệt vọng sâu sắc sau cuộc xâm lược Noxus",
-        "Sử dụng bởi các phe phái Ionia cho mục đích đáng ngờ",
-        "Tiềm năng dẫn đến một Ionia 'đen tối' hơn",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "karma",
-      name: "Karma",
-      fullName: "Karma, Linh Hồn Thăng Hoa (The Enlightened One)",
-      icon: "🌸",
-      role: "Pháp Sư/Hỗ Trợ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Karma_0.jpg",
-      species: "Con người (linh hồn Ionia cổ đại tái sinh)",
-      age: "Darha (hiện thân hiện tại) 12 tuổi, nhưng linh hồn là 'cổ đại'",
-      gender: "Nữ (she/her)",
-      weapon: "Năng lượng linh hồn, sức mạnh của linh hồn tổ tiên",
-      releaseDate: "01/02/2011",
-      loreConnections: ["Irelia", "Syndra"],
-      weaponSummary: "Ma thuật",
-      lore: "Karma là hiện thân sống của một linh hồn Ionia cổ đại, tái sinh qua nhiều thế hệ để dẫn dắt người dân của mình. Hiện thân hiện tại, Darha, vật lộn với những lời dạy hòa bình truyền thống của các Karma trước đây, đặc biệt là sau cuộc xâm lược của Noxus.",
-      fullLore:
-        "Darha, một cô bé 12 tuổi, bắt đầu trải qua những hình ảnh kỳ lạ về kiếp trước, mà các nhà sư từ Bàn Thờ Vĩnh Cửu nhận ra là dấu hiệu của Karma tiếp theo. Cô đã đến Bàn Thờ, học cách kết nối với linh hồn cổ đại của mình và giao tiếp với hàng ngàn kiếp trước, những người đã ủng hộ hòa bình và hài hòa.\n\nTuy nhiên, cuộc xâm lược của Noxus đã buộc Darha phải đối mặt với thực tế chiến tranh và đặt câu hỏi về những nguyên tắc này. Bất chấp tiếng nói của quá khứ, cô đã giải phóng cơn thịnh nộ thần thánh của mình lên một tàu chiến Noxus, phá hủy nó. Hành động này, dù được nhiều người Ionia ca ngợi, lại bị các nhà sư coi là một sai lầm.\n\nKarma, được dẫn dắt bởi Tinh Thần Ionia trong trái tim mình, giờ đây tìm cách dẫn dắt người dân của mình đến hòa bình khi có thể và hành động khi cần thiết, thừa nhận rằng trí tuệ thực sự nằm ở việc chấp nhận sự thay đổi.",
-      gameplay:
-        "Karma là một pháp sư/hỗ trợ đa năng, có thể tạo lá chắn, trói chân và gây sát thương. Kỹ năng độc đáo của cô, Nội Lực (Mantra), cường hóa phép thuật tiếp theo của cô, cho phép cô thích nghi với nhiều tình huống chiến đấu khác nhau.",
-      skills: [
+      "id": "illaoi",
+      "name": "Illaoi",
+      "fullName": "Illaoi, the Kraken Priestess",
+      "icon": "🐙",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Illaoi_0.jpg",
+      "gender": "Nữ",
+      "species": "Hồn Ma",
+      "age": "35-40 tuổi",
+      "weapon": "Unknown",
+      "weaponSummary": "Idol of Nagakabouros - Thần tượng Nagakabouros",
+      "releaseDate": "2015",
+      "lore": "Illaoi's powerful physique is dwarfed only by her indomitable faith. As the prophet of the Great Kraken, she uses a huge, golden idol to rip her foes' spirits from their bodies and shatter their perception of reality. All who challenge the “Truth Bearer of Nagakabouros” soon discover Illaoi never battles alone—the god of the Serpent Isles fights by her side.",
+      "fullLore": "Illaoi's powerful physique is dwarfed only by her indomitable faith. As the prophet of the Great Kraken, she uses a huge, golden idol to rip her foes' spirits from their bodies and shatter their perception of reality. All who challenge the “Truth Bearer of Nagakabouros” soon discover Illaoi never battles alone—the god of the Serpent Isles fights by her side.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Hỏa Châu (Gathering Fire)",
-          description:
-            "Sau khi sử dụng 5 phép hoặc đòn đánh, kỹ năng tiếp theo của Karma sẽ được cường hóa.",
+          "key": "Passive",
+          "name": "Prophet of an Elder God",
+          "description": "Illaoi and the Vessels she creates spawn Tentacles on nearby impassible terrain. Tentacles swing at spirits, Vessels, and victims of Illaoi's Harsh lesson. Tentacles deal physical damage to enemies hit, and will heal Illaoi if they damage a champion.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Illaoi_P.png"
         },
         {
-          type: "Q",
-          name: "Nội Hỏa (Inner Flame)",
-          description:
-            "Karma phóng ra một quả cầu năng lượng linh hồn nổ tung và gây sát thương phép khi trúng một đơn vị địch. Mantra Bonus: Ngoài vụ nổ, Mantra tăng sức mạnh hủy diệt của Nội Hỏa, tạo ra một trận đại hồng thủy gây sát thương sau một thời gian ngắn.",
+          "key": "Q",
+          "name": "Tentacle Smash",
+          "description": "Increases the damage dealt by Tentacles. When activated, Illaoi smashes down a Tentacle that deals physical damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/IllaoiQ.png",
+          "cooldown": "10/9/8/7/6",
+          "cost": "40/45/50/55/60",
+          "range": "850"
         },
         {
-          type: "W",
-          name: "Chuyên Tâm (Focused Resolve)",
-          description:
-            "Karma tạo ra một sợi dây liên kết giữa bản thân và một kẻ địch được chọn làm mục tiêu, gây sát thương và tiết lộ vị trí của chúng. Nếu sợi dây không bị đứt, kẻ địch sẽ bị trói chân và bị sát thương lần nữa. Mantra Bonus: Karma tăng cường liên kết, hồi máu cho bản thân và kéo dài thời gian trói chân.",
+          "key": "W",
+          "name": "Harsh Lesson",
+          "description": "Illaoi leaps to her target, dealing physical damage and causing nearby Tentacles to also swing at the target.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/IllaoiW.png",
+          "cooldown": "4",
+          "cost": "30",
+          "range": "400"
         },
         {
-          type: "E",
-          name: "Linh Giáp (Inspire)",
-          description:
-            "Karma triệu hồi một lá chắn bảo vệ hấp thụ sát thương nhận vào và tăng tốc độ di chuyển của đồng minh được bảo vệ. Mantra Bonus: Năng lượng tỏa ra từ mục tiêu của cô, tăng cường lá chắn ban đầu và áp dụng Inspire cho các tướng đồng minh gần đó.",
+          "key": "E",
+          "name": "Test of Spirit",
+          "description": "Illaoi rips the spirit from a foe's body, forcing it to stand before her. Spirits echo a percentage of the damage they take to the original target. If killed, or if the target gets too far from the spirit, the target will become a Vessel and begin spawning Tentacles.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/IllaoiE.png",
+          "cooldown": "16/15/14/13/12",
+          "cost": "35/40/45/50/55",
+          "range": "900"
         },
         {
-          type: "R",
-          name: "Nội Lực (Mantra)",
-          description:
-            "Karma cường hóa kỹ năng tiếp theo của mình để có thêm hiệu ứng. Mantra có sẵn ở cấp độ 1 và không yêu cầu điểm kỹ năng.",
-        },
+          "key": "R",
+          "name": "Leap of Faith",
+          "description": "Illaoi smashes her idol into the ground, dealing physical damage to nearby enemies. A Tentacle spawns for each enemy champion hit.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/IllaoiR.png",
+          "cooldown": "120/95/70",
+          "cost": "100",
+          "range": "450"
+        }
       ],
-      specialFeatures: [
-        "Hiện thân của một linh hồn Ionia cổ đại, mang theo ký ức của các kiếp trước",
-        "Cuộc xung đột nội tâm giữa chủ nghĩa hòa bình truyền thống và sự hung hãn cần thiết",
-        "Thủ lĩnh tinh thần của Ionia",
-        "Tâm linh Ionia đang tích cực phát triển để đáp ứng các áp lực bên ngoài",
-        "Tinh Thần Ionia thúc đẩy hành động, thể hiện khía cạnh nguyên thủy hơn",
-        "Sự thay đổi tiềm tàng trong các niềm tin nền tảng của khu vực",
-        "Hướng tới một tâm linh chủ động hơn, thậm chí mang tính quân sự",
-        "Khả năng dẫn đến các dạng ma thuật Ionia mới hoặc giải thích mới về lời tiên tri cổ đại",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "kayn",
-      name: "Kayn",
-      fullName: "Kayn, Tử Thần Bóng Tối (The Shadow Reaper)",
-      icon: "🌙",
-      role: "Đấu Sĩ/Sát Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kayn_0.jpg",
-      species: "Con người (biến đổi bởi Darkin)",
-      age: "Lính trẻ con trong cuộc xâm lược Noxus, sau đó được Zed huấn luyện. Có thể là người trưởng thành trẻ tuổi",
-      gender: "Nam (he/him)",
-      weapon: "Rhaast (lưỡi hái Darkin có tri giác)",
-      releaseDate: "12/07/2017",
-      loreConnections: ["Aatrox", "Varus", "Zed"],
-      weaponSummary: "Lưỡi hái",
-      lore: "Shieda Kayn, một cựu lính trẻ con Noxus, được Zed nhận nuôi và huấn luyện, thành thạo ma thuật bóng tối. Anh ta sử dụng lưỡi hái Darkin có tri giác Rhaast, chiến đấu để giành quyền kiểm soát nó.",
-      fullLore:
-        "Sinh ra ở Noxus, Kayn bị bắt làm lính trẻ con. Trong cuộc xâm lược Ionia của Noxus, anh ta được Zed tìm thấy sau một trận chiến và được đưa vào Hội Bóng Tối. Kayn nhanh chóng thành thạo tất cả các loại vũ khí, coi mình là vũ khí tối thượng. Sự kiêu ngạo của anh ta ngày càng tăng, tin rằng mình sẽ vượt qua Zed.\n\nThử thách cuối cùng của anh ta là lấy một vũ khí Darkin, Rhaast, từ Noxus. Thay vì phá hủy nó, Kayn đã lấy lưỡi hái sống đó cho mình, bắt đầu một cuộc đấu tranh để giành quyền kiểm soát. Rhaast tìm cách nuốt chửng anh ta và tàn phá Runeterra, nhưng Kayn chống lại, nhằm mục đích làm chủ vũ khí và trở về Ionia với tư cách là thủ lĩnh mới của Hội Bóng Tối.\n\nCốt truyện của Kayn là một hệ quả trực tiếp của việc Zed theo đuổi sức mạnh bị cấm, khởi xướng một cuộc chiến tranh giành quyền kiểm soát theo đúng nghĩa đen. Điều này làm nổi bật chủ đề lặp đi lặp lại ở Ionia: sự hấp dẫn và nguy hiểm của sức mạnh to lớn từ các nguồn đen tối hoặc cổ xưa.",
-      gameplay:
-        "Kayn là một tướng độc đáo, biến đổi trong trận đấu dựa trên tương tác của anh ta với các tướng địch. Anh ta có thể trở thành Sát Thủ Bóng Tối (sát thương dồn dập cơ động) hoặc Darkin (đấu sĩ bền bỉ), mỗi dạng có bộ kỹ năng và lối chơi riêng biệt.",
-      skills: [
+      "id": "janna",
+      "name": "Janna",
+      "fullName": "Janna, the Storm's Fury",
+      "icon": "💨",
+      "role": "Hỗ Trợ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Janna_0.jpg",
+      "gender": "Nữ",
+      "species": "Hồn Ma",
+      "age": "1000+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Staff of Flowing Water - Gậy dòng nước",
+      "releaseDate": "2010",
+      "lore": "Armed with the power of Runeterra's gales, Janna is a mysterious, elemental wind spirit who protects the dispossessed of Zaun. Some believe she was brought into existence by the pleas of Runeterra's sailors who prayed for fair winds as they navigated treacherous waters and braved rough tempests. Her favor and protection has since been called into the depths of Zaun, where Janna has become a beacon of hope to those in need. No one knows where or when she will appear, but more often than not, she's come to help.",
+      "fullLore": "Armed with the power of Runeterra's gales, Janna is a mysterious, elemental wind spirit who protects the dispossessed of Zaun. Some believe she was brought into existence by the pleas of Runeterra's sailors who prayed for fair winds as they navigated treacherous waters and braved rough tempests. Her favor and protection has since been called into the depths of Zaun, where Janna has become a beacon of hope to those in need. No one knows where or when she will appear, but more often than not, she's come to help.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Lưỡi Hái Darkin (The Darkin Scythe)",
-          description:
-            "Kayn sử dụng một vũ khí cổ xưa và chiến đấu với Rhaast, Darkin bên trong nó, để giành quyền kiểm soát. Darkin: Hồi máu bằng một phần trăm sát thương kỹ năng gây ra cho tướng. Sát Thủ Bóng Tối: Trong vài giây đầu tiên giao tranh với tướng địch, gây thêm sát thương.",
+          "key": "Passive",
+          "name": "Tailwind",
+          "description": "Janna's allies gain Move Speed moving towards her.Janna deals a portion of bonus Move Speed as bonus magic damage on hit and with Zephyr.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Janna_Tailwind.png"
         },
         {
-          type: "Q",
-          name: "Trảm (Reaping Slash)",
-          description: "Kayn lướt đi, sau đó chém. Cả hai đều gây sát thương.",
+          "key": "Q",
+          "name": "Howling Gale",
+          "description": "By creating a localized change in pressure and temperature, Janna is able to create a small storm that grows in size with time. She can activate the spell again to release the storm. On release this storm will fly towards the direction it was cast in, dealing damage and knocking away any enemies in its path.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/HowlingGale.png",
+          "cooldown": "14",
+          "cost": "90/95/100/105/110",
+          "range": "1075"
         },
         {
-          type: "W",
-          name: "Phá Hoại (Blade's Reach)",
-          description:
-            "Kayn gây sát thương và làm chậm mục tiêu theo một đường thẳng.",
+          "key": "W",
+          "name": "Zephyr",
+          "description": "Janna summons an air elemental that passively increases her Move Speed and enables her to pass through units. She may also activate this ability to deal damage and slow an enemy's Move Speed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SowTheWind.png",
+          "cooldown": "8/7.5/7/6.5/6",
+          "cost": "50/55/60/65/70",
+          "range": "4294967295"
         },
         {
-          type: "E",
-          name: "Bước Nhảy Bóng Tối (Shadow Step)",
-          description: "Kayn có thể đi xuyên địa hình.",
+          "key": "E",
+          "name": "Eye Of The Storm",
+          "description": "Janna conjures a defensive gale that shields an ally champion or turret from incoming damage and increases their Attack Damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/EyeOfTheStorm.png",
+          "cooldown": "16/15/14/13/12",
+          "cost": "70/75/80/85/90",
+          "range": "800"
         },
         {
-          type: "R",
-          name: "Nhập (Umbral Trespass)",
-          description:
-            "Kayn ẩn mình trong cơ thể kẻ địch, gây sát thương lớn khi anh ta thoát ra.",
-        },
+          "key": "R",
+          "name": "Monsoon",
+          "description": "Janna surrounds herself in a magical storm, throwing enemies back. After the storm has settled, soothing winds heal nearby allies while the ability is active.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/ReapTheWhirlwind.png",
+          "cooldown": "130/115/100",
+          "cost": "100",
+          "range": "725"
+        }
       ],
-      specialFeatures: [
-        "Cơ chế biến hình độc đáo là tính năng cốt lõi trong lối chơi và cốt truyện",
-        "Cuộc đấu tranh nội tâm với Rhaast đại diện cho trận chiến vì linh hồn và định mệnh",
-        "Học trò cá nhân của Zed, được coi là tương lai của Hội Bóng Tối",
-        "Hệ quả trực tiếp của việc Zed theo đuổi sức mạnh bị cấm",
-        "Thể hiện sự hấp dẫn và nguy hiểm của sức mạnh từ nguồn đen tối",
-        "Khám phá khái niệm bản sắc - con người, ma thuật bóng tối, hay Darkin",
-        "Sự hiện diện của Darkin cho thấy Ionia dễ bị tổn thương trước thế lực cổ xưa",
-        "Cuộc đấu tranh kiểm soát như mô hình thu nhỏ cho đấu tranh lớn hơn của Ionia",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "kennen",
-      name: "Kennen",
-      fullName: "Kennen, Trái Tim Của Bão Tố (The Heart of the Tempest)",
-      icon: "⚡",
-      role: "Pháp Sư/Xạ Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kennen_0.jpg",
-      species: "Yordle",
-      age: "Hàng thiên niên kỷ",
-      gender: "Nam (he/him)",
-      weapon: "Phi tiêu, năng lượng điện",
-      lore: "Kennen là thành viên lâu đời nhất của Hội Kinkou và là Trái Tim của Bão Tố đầu tiên và duy nhất. Một yordle rời Thành Phố Bandle để tìm kiếm sự cân bằng, giờ đây anh ta làm việc với Shen để duy trì sự cân bằng ở Ionia.",
-      fullLore:
-        "Kennen, một yordle, đã rời Thành Phố Bandle hàng thiên niên kỷ trước để tìm kiếm sự hài hòa, cuối cùng định cư ở Ionia. Anh ta bị cuốn hút bởi những nỗ lực của con người để bảo vệ sự cân bằng và phát hiện ra Hội Kinkou, trở thành Trái Tim của Bão Tố đầu tiên, tạo thành một bộ ba với Mắt Hoàng Hôn (Kusho, sau đó là Shen) và Nắm Đấm Bóng Tối (Mayym, sau đó là Akali).\n\nAnh ta đóng vai trò là người phân xử, truyền đạt các phán quyết của hội, và thực thi chúng bằng vũ lực khi cần thiết. Trong cuộc xâm lược của Noxus và hậu quả của nó, anh ta phản đối việc tham gia kháng chiến, thay vào đó dẫn dắt Hội Kinkou bị chia cắt cùng với Shen sau cuộc đảo chính của Zed. Anh ta đã huấn luyện Akali từ nhỏ và thúc giục Mayym coi cô là người kế nhiệm, mặc dù Akali cuối cùng đã rời bỏ hội.\n\nViệc Kennen là một yordle từ Thành Phố Bandle đến Ionia để tìm kiếm sự cân bằng làm nổi bật rằng ý nghĩa tâm linh và ma thuật của Ionia vượt ra ngoài biên giới của nó.",
-      gameplay:
-        "Kennen là một pháp sư tầm xa xuất sắc trong việc mở giao tranh bằng chiêu cuối của mình, Bão Sấm Sét, làm choáng nhiều kẻ địch. Các kỹ năng của anh ta áp dụng các điểm cộng dồn 'Dấu Ấn Sấm Sét', dẫn đến các hiệu ứng làm choáng.",
-      skills: [
+      "id": "jhin",
+      "name": "Jhin",
+      "fullName": "Jhin, the Virtuoso",
+      "icon": "🎭",
+      "role": "Xạ Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jhin_0.jpg",
+      "gender": "Nam",
+      "species": "Con Người",
+      "age": "35-40 tuổi",
+      "weapon": "Gun",
+      "weaponSummary": "Whisper - Súng trường Whisper",
+      "releaseDate": "2016",
+      "lore": "Jhin is a meticulous criminal psychopath who believes murder is art. Once an Ionian prisoner, but freed by shadowy elements within Ionia's ruling council, the serial killer now works as their cabal's assassin. Using his gun as his paintbrush, Jhin creates works of artistic brutality, horrifying victims and onlookers. He gains a cruel pleasure from putting on his gruesome theater, making him the ideal choice to send the most powerful of messages: terror.",
+      "fullLore": "Jhin is a meticulous criminal psychopath who believes murder is art. Once an Ionian prisoner, but freed by shadowy elements within Ionia's ruling council, the serial killer now works as their cabal's assassin. Using his gun as his paintbrush, Jhin creates works of artistic brutality, horrifying victims and onlookers. He gains a cruel pleasure from putting on his gruesome theater, making him the ideal choice to send the most powerful of messages: terror.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Dấu Ấn Sấm Sét (Mark of the Storm)",
-          description:
-            "Kennen làm choáng kẻ địch bị anh ta trúng 3 lần bằng kỹ năng của mình.",
+          "key": "Passive",
+          "name": "Whisper",
+          "description": "Jhin's hand cannon, Whisper, is a precise instrument designed to deal superior damage. It fires at a fixed rate and carries only four shots. Jhin imbues the final bullet with dark magics to critically strike and deal bonus execute damage. Whenever Whisper crits, it inspires Jhin with a burst of Move Speed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Jhin_P.png"
         },
         {
-          type: "Q",
-          name: "Phi Tiêu Sét (Thundering Shuriken)",
-          description:
-            "Kennen ném một phi tiêu di chuyển nhanh về một vị trí, gây sát thương và thêm Dấu Ấn Sấm Sét cho bất kỳ đối thủ nào trúng phải.",
+          "key": "Q",
+          "name": "Dancing Grenade",
+          "description": "Jhin launches a magical cartridge at an enemy. It can hit up to four targets and gains damage each time it kills.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/JhinQ.png",
+          "cooldown": "7/6.5/6/5.5/5",
+          "cost": "40/45/50/55/60",
+          "range": "550"
         },
         {
-          type: "W",
-          name: "Giật Sét (Electrical Surge)",
-          description:
-            "Kennen gây thêm sát thương phép và thêm Dấu Ấn Sấm Sét vào mục tiêu của mình sau mỗi vài đòn tấn công, và anh ta có thể kích hoạt kỹ năng này để gây sát thương và thêm một Dấu Ấn Sấm Sét khác cho các mục tiêu đã bị đánh dấu.",
+          "key": "W",
+          "name": "Deadly Flourish",
+          "description": "Jhin brandishes his cane, firing a single shot with incredible range. It pierces through minions and monsters, but stops on the first champion hit. If the target was recently struck by Jhin's allies, lotus traps, or damaged by Jhin, they are rooted.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/JhinW.png",
+          "cooldown": "12",
+          "cost": "50/55/60/65/70",
+          "range": "3000"
         },
         {
-          type: "E",
-          name: "Tốc Độ Sấm Sét (Lightning Rush)",
-          description:
-            "Kennen biến thành dạng sét, cho phép anh ta đi xuyên qua các đơn vị và áp dụng Dấu Ấn Sấm Sét. Kennen tăng tốc độ di chuyển khi vào dạng này và tốc độ tấn công khi rời khỏi nó.",
+          "key": "E",
+          "name": "Captive Audience",
+          "description": "Jhin places an invisible lotus trap that blooms when walked over. It slows nearby enemies before dealing damage with an explosion of serrated petals. Beauty in Death - When Jhin kills an enemy champion, a lotus trap will bloom near their corpse.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/JhinE.png",
+          "cooldown": "2",
+          "cost": "30",
+          "range": "750"
         },
         {
-          type: "R",
-          name: "Bão Sấm Sét (Slicing Maelstrom)",
-          description:
-            "Kennen triệu hồi một cơn bão tấn công các tướng địch gần đó gây sát thương phép.",
-        },
+          "key": "R",
+          "name": "Curtain Call",
+          "description": "Jhin channels, transforming Whisper into a shoulder-mounted mega-cannon. It is able to fire 4 super shots at extreme range that pierce through minions and monsters, but stop on the first champion impacted. Whisper cripples enemies hit, which slows them and deals execute damage. The 4th shot is perfectly crafted, epically powerful, and guaranteed to critically strike.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/JhinR.png",
+          "cooldown": "120/105/90",
+          "cost": "100",
+          "range": "25000"
+        }
       ],
-      specialFeatures: [
-        "Một yordle, khiến anh ta trở thành một trong số ít các tướng không phải người ở Ionia",
-        "Thành viên lâu đời nhất của Hội Kinkou",
-        "Vai trò 'Trái Tim của Bão Tố' bao gồm cả việc truyền đạt và thực thi sự cân bằng",
-        "Ý nghĩa tâm linh và ma thuật của Ionia vượt ra ngoài biên giới",
-        "Thu hút các sinh vật từ các khu vực khác tìm kiếm đặc tính độc đáo",
-        "Số phận của Ionia có ý nghĩa rộng lớn hơn đối với Runeterra",
-        "Sự cân bằng của Ionia là thành phần quan trọng của sự ổn định thế giới",
-        "Tiềm năng trở thành trung tâm của các động lực liên khu vực",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "leesin",
-      name: "Lee Sin",
-      fullName: "Lee Sin, Thầy Tu Mù (The Blind Monk)",
-      icon: "🥋",
-      role: "Đấu Sĩ/Sát Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg",
-      species: "Con người",
-      age: "Không rõ, nhưng là một cậu bé khi đến tu viện Shojin, sau đó 'nhiều năm trôi qua'. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Nắm đấm rực lửa, những cú đá xoay người rực lửa, tinh thần rồng",
-      lore: "Lee Sin là một nhà sư mù và bậc thầy võ thuật Ionia, người truyền năng lượng tinh thần rồng. Từng kiêu ngạo, anh ta vô tình làm tê liệt người hướng dẫn của mình, dẫn đến việc bị trục xuất và một cuộc tìm kiếm sự chuộc tội.",
-      fullLore:
-        "Lee Sin đến tu viện Shojin khi còn là một cậu bé, tuyên bố rằng con rồng đã chọn anh ta. Mặc dù tài năng, sự kiêu ngạo liều lĩnh của anh ta đã khiến anh ta giải phóng cơn thịnh nộ của con rồng trong một buổi học chiến đấu, làm tê liệt người hướng dẫn của mình. Bị trục xuất, anh ta lang thang, giúp đỡ người khác, và gặp Udyr ở Freljord.\n\nKhi trở về Ionia trong cuộc xâm lược Noxus, anh ta đã bảo vệ tu viện Hirana bằng cách triệu hồi tinh thần rồng, điều này đã làm anh ta mù nhưng lại ban cho anh ta sức mạnh để làm tê liệt những kẻ xâm lược. Nhận ra rằng không một người phàm nào có thể hoàn toàn kiểm soát tinh thần, anh ta ở lại để xây dựng lại tu viện, cống hiến mình cho sự giác ngộ và bảo vệ Ionia.\n\nCốt truyện của Lee Sin là một câu chuyện rõ ràng về sự kiêu ngạo dẫn đến hậu quả, sau đó là con đường chuộc tội và hy sinh. Chủ đề hy sinh vì lợi ích lớn hơn này ăn sâu vào các câu chuyện Ionia, thể hiện la bàn đạo đức coi trọng sự vị tha và sự sám hối.",
-      gameplay:
-        "Lee Sin là một đấu sĩ/sát thủ có tính cơ động cao, phụ thuộc vào kỹ năng định hướng, nổi tiếng với khả năng gây áp lực sớm trong trận đấu, giới hạn kỹ năng cao và khả năng tạo ra những pha đột biến bằng các cú đá của mình.",
-      skills: [
+      "id": "kalista",
+      "name": "Kalista",
+      "fullName": "Kalista, the Spear of Vengeance",
+      "icon": "👻",
+      "role": "Xạ Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kalista_0.jpg",
+      "gender": "Nữ",
+      "species": "Hồn Ma",
+      "age": "1000+ tuổi",
+      "weapon": "Spear",
+      "weaponSummary": "Spears - Giáo",
+      "releaseDate": "2014",
+      "lore": "A specter of wrath and retribution, Kalista is the undying spirit of vengeance, an armored nightmare summoned from the Shadow Isles to hunt deceivers and traitors. The betrayed may cry out in blood to be avenged, but Kalista only answers those willing to pay with their very souls. Those who become the focus of Kalista's wrath should make their final peace, for any pact sealed with this grim hunter can only end with the cold, piercing fire of her soul-spears.",
+      "fullLore": "A specter of wrath and retribution, Kalista is the undying spirit of vengeance, an armored nightmare summoned from the Shadow Isles to hunt deceivers and traitors. The betrayed may cry out in blood to be avenged, but Kalista only answers those willing to pay with their very souls. Those who become the focus of Kalista's wrath should make their final peace, for any pact sealed with this grim hunter can only end with the cold, piercing fire of her soul-spears.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Nộ Long Cước (Flurry)",
-          description:
-            "Sau khi Lee Sin sử dụng một kỹ năng, 2 đòn đánh thường tiếp theo của anh ta sẽ được tăng Tốc Độ Đánh và hồi Năng Lượng.",
+          "key": "Passive",
+          "name": "Martial Poise",
+          "description": "Enter a movement command while winding up Kalista's basic attack or Pierce to lunge a short distance when she launches her attack.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Kalista_Passive.png"
         },
         {
-          type: "Q",
-          name: "Sóng Âm / Vô Ảnh Cước (Sonic Wave / Resonating Strike)",
-          description:
-            "Sóng Âm: Lee Sin phóng ra một làn sóng âm thanh lạc điệu để định vị kẻ địch, gây sát thương vật lý cho kẻ địch đầu tiên trúng phải. Vô Ảnh Cước: Lee Sin lướt đến kẻ địch bị Sóng Âm trúng, gây sát thương vật lý dựa trên lượng máu đã mất của mục tiêu.",
+          "key": "Q",
+          "name": "Pierce",
+          "description": "Throw a fast moving spear that passes through enemies it kills.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KalistaMysticShot.png",
+          "cooldown": "8",
+          "cost": "50/55/60/65/70",
+          "range": "1150"
         },
         {
-          type: "W",
-          name: "Hộ Thể / Kiên Định (Safeguard / Iron Will)",
-          description:
-            "Hộ Thể: Lee Sin lao đến đồng minh được chọn làm mục tiêu, tạo lá chắn cho bản thân khỏi sát thương. Kiên Định: Lee Sin được tăng Hút Máu và Hút Phép trong 4 giây.",
+          "key": "W",
+          "name": "Sentinel",
+          "description": "Gain bonus damage when Kalista and her Oathsworn strike the same target. Activate to send a soul to scout out the path, revealing the area in front of it.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KalistaW.png",
+          "cooldown": "30",
+          "cost": "0",
+          "range": "5000"
         },
         {
-          type: "E",
-          name: "Địa Chấn / Dư Chấn (Tempest / Cripple)",
-          description:
-            "Địa Chấn: Lee Sin đập xuống đất, tạo ra một làn sóng xung kích gây sát thương phép và tiết lộ các đơn vị địch trúng phải. Dư Chấn: Lee Sin làm suy yếu kẻ địch gần đó, giảm Tốc Độ Di Chuyển của chúng trong 4 giây.",
+          "key": "E",
+          "name": "Rend",
+          "description": "Attacks impale their targets with spears. Activate to rip the spears out, slowing and dealing escalating damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KalistaExpungeWrapper.png",
+          "cooldown": "0",
+          "cost": "30",
+          "range": "1000"
         },
         {
-          type: "R",
-          name: "Nộ Long Cước (Dragon's Rage)",
-          description:
-            "Lee Sin thực hiện một cú đá xoay người mạnh mẽ, đẩy lùi mục tiêu của mình, gây sát thương vật lý cho mục tiêu và bất kỳ kẻ địch nào chúng va chạm. Kẻ địch bị mục tiêu va chạm sẽ bị hất tung lên không trong thời gian ngắn.",
-        },
+          "key": "R",
+          "name": "Fate's Call",
+          "description": "Kalista teleports the Oathsworn ally to herself. They gain the ability to dash toward a position, knocking enemy champions back.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KalistaRx.png",
+          "cooldown": "150/120/90",
+          "cost": "100",
+          "range": "1000"
+        }
       ],
-      specialFeatures: [
-        "Sự mù lòa là kết quả của sự hy sinh và biểu tượng cho hành trình tâm linh",
-        "Truyền năng lượng tinh thần rồng, một thực thể được tôn kính ở Ionia",
-        "Cốt truyện chuộc tội là trọng tâm của nhân vật",
-        "Thể hiện la bàn đạo đức coi trọng sự vị tha và sự sám hối",
-        "Sự kiêu ngạo dẫn đến hậu quả, sau đó là con đường chuộc tội",
-        "Khả năng phục hồi tinh thần được xây dựng dựa trên sự hy sinh cá nhân",
-        "Sức mạnh thực sự đến từ kỷ luật nội tâm và sự tự chủ",
-        "Đạt được thông qua gian khổ và sự cống hiến cho lợi ích chung",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "lillia",
-      name: "Lillia",
-      fullName: "Lillia, Nụ Hoa Ngại Ngùng (The Bashful Bloom)",
-      icon: "🦌",
-      role: "Đấu Sĩ/Pháp Sư",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lillia_0.jpg",
-      species: "Hươu thần (Fae fawn)",
-      age: "Không rõ, sinh ra từ một nụ hoa mơ ước",
-      gender: "Nữ (she/her)",
-      weapon: "Cành cây ma thuật",
-      lore: "Lillia là một hươu thần nhút nhát sinh ra từ một giấc mơ của Cây Mơ Ước cổ đại ở Ionia. Cô học về loài người thông qua những giấc mơ của họ nhưng bị đe dọa bởi bản chất bí ẩn của họ.",
-      fullLore:
-        "Lillia sinh ra khi một trong những giấc mơ của Cây Mơ Ước (mọc từ Cây Thần-Liễu) rơi xuống đất dưới dạng một nụ. Cô chăm sóc các nụ mơ ước khác, học về loài người thông qua chúng. Khi chiến tranh lan rộng và những giấc mơ giảm dần, Cây Mơ Ước trở nên ốm yếu.\n\nKhi các chiến binh vào rừng của cô và làm gãy một cành cây chứa giấc mơ chưa thành hiện thực của chính cô, Lillia hoảng sợ và khiến họ ngủ thiếp đi, nhận ra sự khác biệt giữa những người phàm cô nghĩ mình biết và những người đầy sợ hãi và 'rối rắm' cô gặp. Một giấc mơ sau đó đã đi vào cành cây bị gãy của cô, khiến nụ hoa của cô bung nở và ma thuật xoáy quanh cô.\n\nCô quyết định mang những giấc mơ của cây đến cho con người, giờ đây đi khắp thế giới để giúp mọi người hiện thực hóa những mong muốn sâu sắc nhất của họ. Sự tồn tại của Lillia nhấn mạnh sự kết nối sâu sắc giữa thế giới linh hồn và thế giới vật chất của Ionia.",
-      gameplay:
-        "Lillia là một pháp sư có tính cơ động cao, gây sát thương theo thời gian và có thể khiến kẻ địch ngủ thiếp đi bằng chiêu cuối của mình. Lối chơi của cô liên quan đến việc thả diều kẻ địch và sử dụng kỹ năng để duy trì tốc độ di chuyển của mình.",
-      skills: [
+      "id": "karthus",
+      "name": "Karthus",
+      "fullName": "Karthus, the Deathsinger",
+      "icon": "💀",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Karthus_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "1000+ tuổi",
+      "weapon": "Unknown",
+      "weaponSummary": "Staff - Gậy phép",
+      "releaseDate": "2010",
+      "lore": "The harbinger of oblivion, Karthus is an undying spirit whose haunting songs are a prelude to the horror of his nightmarish appearance. The living fear the eternity of undeath, but Karthus sees only beauty and purity in its embrace, a perfect union of life and death. When Karthus emerges from the Shadow Isles, it is to bring the joy of death to mortals, an apostle of the unliving.",
+      "fullLore": "The harbinger of oblivion, Karthus is an undying spirit whose haunting songs are a prelude to the horror of his nightmarish appearance. The living fear the eternity of undeath, but Karthus sees only beauty and purity in its embrace, a perfect union of life and death. When Karthus emerges from the Shadow Isles, it is to bring the joy of death to mortals, an apostle of the unliving.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Cành Cây Mộng Mị (Dream-Laden Bough)",
-          description:
-            "Đánh trúng tướng hoặc quái vật bằng kỹ năng sẽ gây thêm sát thương phép theo thời gian dựa trên máu tối đa.",
+          "key": "Passive",
+          "name": "Death Defied",
+          "description": "Upon dying, Karthus enters a spirit form that allows him to continue casting spells.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Karthus_Passive.png"
         },
         {
-          type: "Q",
-          name: "Đòn Đánh Hoa Lệ (Blooming Blows)",
-          description:
-            "Nội tại: Lillia nhận thêm tốc độ di chuyển cộng dồn khi đánh trúng kẻ địch bằng phép. Kích hoạt: Gây sát thương phép cho kẻ địch gần đó, gây thêm sát thương chuẩn ở rìa.",
+          "key": "Q",
+          "name": "Lay Waste",
+          "description": "Karthus unleashes a delayed blast at a location, dealing damage to nearby enemies. Deals increased damage to isolated enemies. ",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KarthusLayWasteA1.png",
+          "cooldown": "0",
+          "cost": "20/25/30/35/40",
+          "range": "875"
         },
         {
-          type: "W",
-          name: "Cẩn Thận! Eep! (Watch Out! Eep!)",
-          description:
-            "Lillia gây sát thương trong một khu vực gần đó, gây sát thương lớn ở trung tâm.",
+          "key": "W",
+          "name": "Wall of Pain",
+          "description": "Karthus creates a passable screen of leeching energy. Any enemy units that walk through the screen have their Move Speed and Magic Resist reduced for a period.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KarthusWallOfPain.png",
+          "cooldown": "15",
+          "cost": "70",
+          "range": "1000"
         },
         {
-          type: "E",
-          name: "Hạt Xoáy (Swirlseed)",
-          description:
-            "Lillia ném một hạt giống gây sát thương và làm chậm những kẻ địch nó chạm vào. Nếu không trúng gì, nó sẽ tiếp tục lăn cho đến khi trúng tường hoặc mục tiêu.",
+          "key": "E",
+          "name": "Defile",
+          "description": "Karthus passively steals energy from his victims, gaining Mana on each kill. Alternatively, Karthus can surround himself in the souls of his prey, dealing damage to nearby enemies, but quickly draining his own Mana.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KarthusDefile.png",
+          "cooldown": "0.5",
+          "cost": "30/42/54/66/78",
+          "range": "550"
         },
         {
-          type: "R",
-          name: "Khúc Ru Rừng Xanh (Lilting Lullaby)",
-          description:
-            "Lillia khiến tất cả kẻ địch có Bụi Mơ trên người trở nên Buồn Ngủ trước khi chìm vào giấc ngủ. Những kẻ địch đó sẽ nhận thêm sát thương khi bị đánh thức một cách cưỡng bức.",
-        },
+          "key": "R",
+          "name": "Requiem",
+          "description": "After channeling for 3 seconds, Karthus deals damage to all enemy champions.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KarthusFallenOne.png",
+          "cooldown": "200/180/160",
+          "cost": "100",
+          "range": "10000"
+        }
       ],
-      specialFeatures: [
-        "Sinh ra từ một giấc mơ, kết nối trực tiếp với Cây Mơ Ước và Cây Thần-Liễu",
-        "Tương tác độc đáo của cô với giấc mơ và nỗi sợ hãi của con người",
-        "Sự nhút nhát của cô đối lập với sứ mệnh của cô",
-        "Thể hiện sự kết nối sâu sắc giữa thế giới linh hồn và vật chất của Ionia",
-        "Sức khỏe của Cây Mơ Ước gắn liền với giấc mơ của con người",
-        "Bạo lực của thế giới tác động trực tiếp đến cảnh quan tinh thần",
-        "Các sự kiện vật chất có tác động hữu hình đến tinh thần Ionia",
-        "Khôi phục cân bằng đòi hỏi giải quyết cả mối đe dọa vật lý và hạnh phúc tinh thần",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "masteryi",
-      name: "Master Yi",
-      fullName: "Master Yi, Bậc Thầy Wuju (The Wuju Bladesman)",
-      icon: "⚔️",
-      role: "Sát Thủ/Đấu Sĩ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_0.jpg",
-      species: "Con người",
-      age: "Không rõ, nhưng là một cậu bé, sau đó 'nhiều năm trôi qua'. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Kiếm, phong cách Wuju",
-      lore: "Master Yi là một trong những người thực hành cuối cùng của võ thuật Wuju Ionia. Làng của ông và văn hóa Wuju đã bị Noxus phá hủy. Đau buồn, ông đã luyện tập trong ẩn dật cho đến khi gặp Wukong, người mà ông đã huấn luyện.",
-      fullLore:
-        "Yi lớn lên trong khu định cư trên núi Wuju ở Ionia, học kiếm thuật. Làng của ông bị cô lập, nghệ thuật thiêng liêng của họ không được chia sẻ. Khi các đội quân Noxus xâm lược, Yi và các đệ tử Wuju khác đã bảo vệ Ionia. Đáp lại, các chỉ huy Noxus đã phá hủy ngôi làng bằng lửa hóa học, xóa sổ người dân và văn hóa của họ.\n\nYi trở về chỉ thấy những tàn tích, trở thành đệ tử sống sót duy nhất. Đau buồn, ông luyện tập một cách ám ảnh trong ẩn dật, nghi ngờ liệu một mình ông có thể bảo tồn toàn bộ di sản hay không. Sau đó, ông gặp Kong (Wukong), một vastaya đã thách thức ông hàng ngày, làm sống lại tinh thần Wuju trong Yi.\n\nYi đã huấn luyện Kong, tặng ông một cây gậy ma thuật và danh hiệu 'Wukong', tìm thấy mục đích của mình trong việc truyền lại các phương pháp Wuju. Sự phá hủy ngôi làng bằng 'lửa hóa học' là một chi tiết đặc biệt tàn bạo, làm nổi bật sự tàn nhẫn của Noxus.",
-      gameplay:
-        "Master Yi là một sát thủ/đấu sĩ cận chiến nổi tiếng với tốc độ tấn công cao, khả năng không thể bị nhắm mục tiêu trong Tuyệt Kĩ Alpha, và khả năng đặt lại thời gian hồi chiêu khi tiêu diệt mục tiêu. Lối chơi của ông tập trung vào việc nhanh chóng loại bỏ mục tiêu và tạo lợi thế.",
-      skills: [
+      "id": "kayn",
+      "name": "Kayn",
+      "fullName": "Kayn, the Shadow Reaper",
+      "icon": "🌙",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kayn_0.jpg",
+      "gender": "Nam",
+      "species": "Ác Ma",
+      "age": "20-22 tuổi",
+      "weapon": "Sword",
+      "weaponSummary": "Rhaast - Lưỡi hái Darkin",
+      "releaseDate": "2017",
+      "lore": "A peerless practitioner of lethal shadow magic, Shieda Kayn battles to achieve his true destiny—to one day lead the Order of Shadow into a new era of Ionian supremacy. He wields the sentient darkin weapon Rhaast, undeterred by its creeping corruption of his body and mind. There are only two possible outcomes: either Kayn bends the weapon to his will... or the malevolent blade consumes him completely, paving the way for the destruction of all Runeterra.",
+      "fullLore": "A peerless practitioner of lethal shadow magic, Shieda Kayn battles to achieve his true destiny—to one day lead the Order of Shadow into a new era of Ionian supremacy. He wields the sentient darkin weapon Rhaast, undeterred by its creeping corruption of his body and mind. There are only two possible outcomes: either Kayn bends the weapon to his will... or the malevolent blade consumes him completely, paving the way for the destruction of all Runeterra.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Song Liên Kích (Double Strike)",
-          description:
-            "Cứ sau vài đòn đánh thường liên tiếp, Master Yi sẽ tấn công hai lần.",
+          "key": "Passive",
+          "name": "The Darkin Scythe",
+          "description": "Kayn wields an ancient weapon and fights Rhaast, the darkin within it, for control. Either the Darkin will triumph, or Kayn will master Rhaast and become the Shadow Assassin.Darkin: Heal for a percentage of spell damage dealt to champions.Shadow Assassin: For the first few seconds in combat with enemy champions, deal bonus damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Kayn_Passive_Primary.png"
         },
         {
-          type: "Q",
-          name: "Tuyệt Kĩ Alpha (Alpha Strike)",
-          description:
-            "Master Yi dịch chuyển khắp chiến trường với tốc độ chóng mặt, gây sát thương vật lý cho nhiều đơn vị trên đường đi, đồng thời trở nên không thể bị nhắm mục tiêu. Đòn đánh thường giảm thời gian hồi chiêu của Tuyệt Kĩ Alpha.",
+          "key": "Q",
+          "name": "Reaping Slash",
+          "description": "Kayn dashes, then slashes. Both deal damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KaynQ.png",
+          "cooldown": "7/6.5/6/5.5/5",
+          "cost": "50",
+          "range": "350"
         },
         {
-          type: "W",
-          name: "Thiền (Meditate)",
-          description:
-            "Master Yi làm trẻ hóa cơ thể bằng cách tập trung tâm trí, hồi máu và giảm sát thương nhận vào trong thời gian ngắn. Master Yi sẽ nhận các điểm cộng dồn của Song Liên Kích và tạm dừng thời gian còn lại của các kỹ năng khác.",
+          "key": "W",
+          "name": "Blade's Reach",
+          "description": "Kayn damages and slows targets in a line.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KaynW.png",
+          "cooldown": "13/12/11/10/9",
+          "cost": "60/65/70/75/80",
+          "range": "700"
         },
         {
-          type: "E",
-          name: "Võ Thuật Wuju (Wuju Style)",
-          description: "Tăng thêm sát thương chuẩn cho đòn đánh thường.",
+          "key": "E",
+          "name": "Shadow Step",
+          "description": "Kayn can walk through terrain.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KaynE.png",
+          "cooldown": "21/19/17/15/13",
+          "cost": "90",
+          "range": "400"
         },
         {
-          type: "R",
-          name: "Tuyệt Kĩ Highlander (Highlander)",
-          description:
-            "Master Yi di chuyển với sự nhanh nhẹn vô song, tạm thời tăng Tốc Độ Di Chuyển và Tốc Độ Đánh cũng như khiến anh ta miễn nhiễm với tất cả các hiệu ứng làm chậm. Tiêu diệt tướng hoặc hỗ trợ kéo dài thời gian của kỹ năng.",
-        },
+          "key": "R",
+          "name": "Umbral Trespass",
+          "description": "Kayn hides in an enemy's body, dealing massive damage when he bursts out.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/KaynR.png",
+          "cooldown": "120/100/80",
+          "cost": "100",
+          "range": "550"
+        }
       ],
-      specialFeatures: [
-        "Một trong những người thực hành cuối cùng của võ thuật Wuju",
-        "Vai trò của ông là người cố vấn cho Wukong",
-        "Ngôi làng bị phá hủy bởi 'lửa hóa học' - hình thức chiến tranh tàn khốc của Noxus",
-        "Thể hiện chủ đề về khả năng phục hồi và sự bảo tồn di sản văn hóa",
-        "Sự tiếp nối truyền thống ngay cả khi đối mặt với sự hủy diệt gần như hoàn toàn",
-        "Tinh thần của Ionia không dễ bị phá vỡ",
-        "Sức mạnh nằm ở các truyền thống văn hóa và tinh thần",
-        "Khả năng truyền lại và thích nghi truyền thống sau những mất mát thảm khốc",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "rakan",
-      name: "Rakan",
-      fullName: "Rakan, Kẻ Lôi Cuốn (The Charmer)",
-      icon: "✨",
-      role: "Hỗ Trợ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Rakan_0.jpg",
-      species: "Vastaya (bộ tộc Lhotlan)",
-      age: "Không rõ, nhưng đã biểu diễn 'nhiều năm'. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Sức hút, nhào lộn, lông vũ ma thuật",
-      lore: "Rakan là một vũ công chiến đấu vastaya thất thường và kẻ gây rối, người đã tìm thấy mục đích khi tham gia cùng người yêu của mình, Xayah, trong cuộc nổi dậy của cô để giải phóng ma thuật hoang dã của Ionia và khôi phục quyền thừa kế của vastaya.",
-      fullLore:
-        "Rakan sinh ra trong bộ tộc Lhotlan đang suy tàn, quan sát các khu định cư của con người lấn chiếm đất đai vastaya và chặn dòng ma thuật hoang dã của Ionia. Ban đầu, anh ta tin rằng mình có thể thuyết phục con người đánh giá cao ma thuật thông qua các màn trình diễn của mình nhưng nhận ra rằng mình chỉ là một sự giải trí.\n\nMục đích của anh ta đã thay đổi sau khi gặp Xayah, một người nổi loạn Lhotlan. Bị cuốn hút bởi khả năng miễn nhiễm với sức hút của cô, anh ta đã tìm hiểu về lý tưởng của cô và tham gia cùng cô. Phong cách chiến đấu của họ hài hòa một cách kỳ lạ, với những pha nhào lộn của Rakan làm phân tâm kẻ địch trong khi Xayah tấn công.\n\nCốt truyện của Rakan làm nổi bật hoàn cảnh khó khăn của Vastaya ở Ionia. Đất đai của họ bị lấn chiếm, và ma thuật hoang dã của họ bị 'chặn' bởi các khu định cư của con người. Đây không chỉ là về Noxus; đó là một cuộc xung đột nội bộ trong Ionia giữa con người và vastaya.",
-      gameplay:
-        "Rakan là một hỗ trợ mở giao tranh có tính cơ động cao, có thể lướt đến đồng minh, hất tung kẻ địch và quyến rũ kẻ thù bằng chiêu cuối của mình. Lối chơi của anh ta được đặc trưng bởi những pha mở đầu táo bạo và bảo vệ đối tác của mình.",
-      skills: [
+      "id": "leesin",
+      "name": "Lee Sin",
+      "fullName": "Lee Sin, the Blind Monk",
+      "icon": "🥋",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg",
+      "gender": "Nam",
+      "species": "Rồng",
+      "age": "35-40 tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Martial Arts - Võ thuật",
+      "releaseDate": "2011",
+      "lore": "A master of Ionia's ancient martial arts, Lee Sin is a principled fighter who channels the essence of the dragon spirit to face any challenge. Though he lost his sight many years ago, the warrior-monk has devoted his life to protecting his homeland against any who would dare upset its sacred balance. Enemies who underestimate his meditative demeanor will endure his fabled burning fists and blazing roundhouse kicks.",
+      "fullLore": "A master of Ionia's ancient martial arts, Lee Sin is a principled fighter who channels the essence of the dragon spirit to face any challenge. Though he lost his sight many years ago, the warrior-monk has devoted his life to protecting his homeland against any who would dare upset its sacred balance. Enemies who underestimate his meditative demeanor will endure his fabled burning fists and blazing roundhouse kicks.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Lông Vũ Ma Thuật (Fey Feathers)",
-          description: "Rakan định kỳ nhận được một lá chắn.",
+          "key": "Passive",
+          "name": "Flurry",
+          "description": "After Lee Sin uses an ability, his next 2 basic attacks gain Attack Speed and return Energy.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/LeeSinPassive.png"
         },
         {
-          type: "Q",
-          name: "Phi Tiêu Ma Thuật (Gleaming Quill)",
-          description:
-            "Phóng một chiếc lông vũ ma thuật gây sát thương phép. Đánh trúng tướng hoặc quái vật lớn cho phép Rakan hồi máu cho đồng minh của mình.",
+          "key": "Q",
+          "name": "Sonic Wave / Resonating Strike",
+          "description": "Sonic Wave: Lee Sin projects a discordant wave of sound to locate his enemies, dealing physical damage to the first enemy it encounters. If Sonic Wave hits, Lee Sin can cast Resonating Strike for the next 3 seconds.Resonating Strike: Lee Sin dashes to the enemy hit by Sonic Wave, dealing physical damage based on the target's missing Health.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BlindMonkQOne.png",
+          "cooldown": "10/9/8/7/6",
+          "cost": "50",
+          "range": "1100"
         },
         {
-          type: "W",
-          name: "Vũ Điệu Nhập Môn (Grand Entrance)",
-          description:
-            "Lướt đến một vị trí, hất tung kẻ địch gần đó khi đến nơi.",
+          "key": "W",
+          "name": "Safeguard / Iron Will",
+          "description": "Safeguard: Lee Sin rushes to target ally, shielding himself from damage. If the ally is a champion, they are also shielded. After using Safeguard, Lee Sin can cast Iron Will for the next 3 seconds.Iron Will: Lee Sin's intense training allows him to thrive in battle. For 4 seconds, Lee Sin gains Life Steal and Spell Vamp.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BlindMonkWOne.png",
+          "cooldown": "12",
+          "cost": "50",
+          "range": "700"
         },
         {
-          type: "E",
-          name: "Vũ Điệu Chiến Đấu (Battle Dance)",
-          description:
-            "Bay đến một tướng đồng minh, cấp cho họ một lá chắn. Có thể tái kích hoạt miễn phí trong thời gian ngắn.",
+          "key": "E",
+          "name": "Tempest / Cripple",
+          "description": "Tempest: Lee Sin smashes the ground, sending out a shockwave that deals magic damage and reveals enemy units hit. If Tempest hits an enemy, Lee Sin can cast cripple for the next 3 seconds.Cripple: Lee Sin cripples nearby enemies damaged by Tempest, reducing their Move Speed for 4 seconds. Move Speed recovers gradually over the duration.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BlindMonkEOne.png",
+          "cooldown": "9",
+          "cost": "50",
+          "range": "425"
         },
         {
-          type: "R",
-          name: "Bộ Pháp Thần Tốc (The Quickness)",
-          description:
-            "Tăng tốc độ di chuyển, quyến rũ và gây sát thương phép cho kẻ địch chạm phải.",
-        },
+          "key": "R",
+          "name": "Dragon's Rage",
+          "description": "Lee Sin performs a powerful roundhouse kick launching his target back, dealing physical damage to the target and any enemies they collide with. Enemies the target collides with are knocked into the air for a short duration. This technique was taught to him by Jesse Perring, although Lee Sin does not kick players off the map.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BlindMonkRKick.png",
+          "cooldown": "110/85/60",
+          "cost": "0",
+          "range": "375"
+        }
       ],
-      specialFeatures: [
-        "Mối quan hệ với Xayah là trọng tâm của nhân vật và lối chơi",
-        "Được biết đến là 'vũ công chiến đấu vĩ đại nhất' trong lịch sử Lhotlan",
-        "Sức hút và khả năng đọc cảm xúc bổ sung cho sự thẳng thắn của Xayah",
-        "Thể hiện hoàn cảnh khó khăn của Vastaya ở Ionia",
-        "Đất đai bị lấn chiếm và ma thuật hoang dã bị chặn bởi con người",
-        "Cuộc xung đột nội bộ giữa con người và vastaya về tài nguyên",
-        "Vastaya đang mất đi 'quyền thừa kế' và buộc phải nổi dậy",
-        "Mối đe dọa nội bộ đáng kể đối với sự ổn định của Ionia",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "sett",
-      name: "Sett",
-      fullName: "Sett, Ông Trùm Đấu Trường (The Boss)",
-      icon: "🥊",
-      role: "Đấu Sĩ/Đỡ Đòn",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Sett_0.jpg",
-      species: "Nửa vastaya",
-      age: "Không rõ, nhưng là một đứa trẻ khi cha anh ta biến mất, sau đó 'lớn nhanh'. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Nắm đấm",
-      lore: "Sinh ra là một kẻ bị ruồng bỏ nửa vastaya, Sett vươn lên từ những khởi đầu khiêm tốn trong các đấu trường ở Ionia. Bị người cha đấu sĩ bỏ rơi, anh ta nhanh chóng nổi tiếng với sức mạnh hoang dã và khả năng phục hồi, cuối cùng giành quyền kiểm soát để trở thành ông trùm của thế giới ngầm tội phạm Ionia.",
-      fullLore:
-        "Sett, một 'nửa quái thú' sinh ra từ một vastaya Ionia và một con người Noxus, là một kẻ bị ruồng bỏ. Người cha đấu sĩ của anh ta đã bỏ rơi anh ta và mẹ anh ta, khiến Sett trở nên chai sạn và sử dụng nắm đấm của mình để dập tắt những lời lăng mạ. Anh ta bí mật vào các đấu trường Noxus ở Ionia, hy vọng tìm thấy cha mình.\n\nAnh ta nhanh chóng trở thành một hiện tượng nhờ sức mạnh và sự hung dữ nguyên thủy của mình, giành được danh hiệu 'Vua Đấu Trường'. Nhận ra sức mạnh thực sự nằm ở việc sở hữu đấu trường, anh ta đã đối đầu một cách bạo lực với người môi giới Noxus và tay chân của hắn, giành quyền kiểm soát đấu trường sau một cuộc chạm trán bạo lực.\n\nSự vươn lên nắm quyền lực của Sett là một hệ quả trực tiếp của sự chiếm đóng của Noxus và sự hỗn loạn mà nó mang đến Ionia. Cuộc xâm lược không chỉ mang đến chiến tranh; nó còn tạo ra một khoảng trống quyền lực và nhu cầu mới về giải trí tàn bạo.",
-      gameplay:
-        "Sett là một đấu sĩ hạng nặng xuất sắc trong chiến đấu tầm gần, gây sát thương lớn bằng những cú đấm của mình và hấp thụ sát thương bằng Grit của mình. Chiêu cuối của anh ta cho phép anh ta mang kẻ địch và đập chúng xuống đất, mở giao tranh.",
-      skills: [
+      "id": "lillia",
+      "name": "Lillia",
+      "fullName": "Lillia, the Bashful Bloom",
+      "icon": "⚔️",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lillia_0.jpg",
+      "gender": "Nữ",
+      "species": "Con Người",
+      "age": "100+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Branch Censer - Cành hương",
+      "releaseDate": "2020",
+      "lore": "Intensely shy, the fae fawn Lillia skittishly wanders Ionia's forests. Hiding just out of sight of mortals—whose mysterious natures have long captivated, but intimidated, her—Lillia hopes to discover why their dreams no longer reach the ancient Dreaming Tree. She now travels Ionia with a magical branch in hand, in an effort to find people's unrealized dreams. Only then can Lillia herself bloom and help others untangle their fears to find the sparkle within. Eep!",
+      "fullLore": "Intensely shy, the fae fawn Lillia skittishly wanders Ionia's forests. Hiding just out of sight of mortals—whose mysterious natures have long captivated, but intimidated, her—Lillia hopes to discover why their dreams no longer reach the ancient Dreaming Tree. She now travels Ionia with a magical branch in hand, in an effort to find people's unrealized dreams. Only then can Lillia herself bloom and help others untangle their fears to find the sparkle within. Eep!",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Lì Đòn (Pit Grit)",
-          description:
-            "Các đòn đánh thường của Sett luân phiên giữa cú đấm trái và cú đấm phải. Cú đấm phải mạnh hơn và nhanh hơn một chút. Sett cũng ghét thua cuộc, nhận thêm hồi máu dựa trên lượng máu đã mất của mình.",
+          "key": "Passive",
+          "name": "Dream-Laden Bough",
+          "description": "Hitting a champion or monster with a skill will deal additional max Health damage over time.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Lillia_Icon_Passive.png"
         },
         {
-          type: "Q",
-          name: "Cú Đấm Quyền Vương (Knuckle Down)",
-          description:
-            "Hai đòn đánh tiếp theo của Sett gây thêm sát thương dựa trên máu tối đa của mục tiêu. Sett cũng tăng tốc độ di chuyển khi di chuyển về phía tướng địch.",
+          "key": "Q",
+          "name": "Blooming Blows",
+          "description": "Passively, Lillia gains stacking Move Speed when hitting enemies with spells. She can activate this to deal magic damage to nearby enemies, dealing extra true damage on the edge.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/LilliaQ.png",
+          "cooldown": "6/5.5/5/4.5/4",
+          "cost": "65",
+          "range": "450"
         },
         {
-          type: "W",
-          name: "Cuồng Thú Quyền (Haymaker)",
-          description:
-            "Nội tại: Sett tích trữ sát thương nhận vào dưới dạng Grit. Khi kích hoạt, Sett tiêu hao tất cả Grit đã tích trữ để nhận một lá chắn và đấm vào một khu vực, gây sát thương chuẩn ở trung tâm và sát thương vật lý ở các cạnh.",
+          "key": "W",
+          "name": "Watch Out! Eep!",
+          "description": "Lillia deals damage in a nearby area, dealing heavy damage in the center.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/LilliaW.png",
+          "cooldown": "14/13/12/11/10",
+          "cost": "50",
+          "range": "500"
         },
         {
-          type: "E",
-          name: "Song Phiên Thiết Quyền (Facebreaker)",
-          description:
-            "Sett kéo tất cả kẻ địch ở hai phía đối diện của mình vào, gây sát thương và làm choáng chúng. Nếu kẻ địch chỉ ở một phía, chúng sẽ bị làm chậm thay vì bị làm choáng.",
+          "key": "E",
+          "name": "Swirlseed",
+          "description": "Lillia hurls a seed that damages and slows those it lands on. If it doesn't hit anything, it will continue rolling until it hits a wall or target.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/LilliaE.png",
+          "cooldown": "14",
+          "cost": "70",
+          "range": "700"
         },
         {
-          type: "R",
-          name: "Hủy Diệt Đấu Trường (The Show Stopper)",
-          description:
-            "Sett mang một tướng địch qua không khí và đập chúng xuống đất, gây sát thương và làm chậm tất cả kẻ địch gần nơi chúng hạ cánh.",
-        },
+          "key": "R",
+          "name": "Lilting Lullaby",
+          "description": "Lillia causes all enemies with Dream Dust on them to become Drowsy before falling asleep. Those enemies will take extra damage on being forcibly woken up.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/LilliaR.png",
+          "cooldown": "150/130/110",
+          "cost": "50",
+          "range": "1600"
+        }
       ],
-      specialFeatures: [
-        "Di sản 'nửa vastaya' khiến anh ta trở thành kẻ bị ruồng bỏ trong cả cộng đồng",
-        "Sự vươn lên nắm quyền lực là hệ quả trực tiếp của sự chiếm đóng Noxus",
-        "Thể hiện sự suy thoái xã hội đáng kể trong Ionia",
-        "Các giá trị truyền thống được thay thế bằng thói hư tật xấu",
-        "Sự tồn tại của thế giới ngầm tội phạm đang phát triển mạnh",
-        "Sự phục hồi của Ionia còn lâu mới hoàn chỉnh",
-        "Các hình thức tham nhũng nội bộ mới đang nổi lên",
-        "Tiềm năng xung đột giữa phe phái truyền thống và yếu tố tội phạm mới",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "shen",
-      name: "Shen",
-      fullName: "Shen, Mắt Hoàng Hôn (The Eye of Twilight)",
-      icon: "👁️",
-      role: "Đỡ Đòn",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Shen_0.jpg",
-      species: "Con người",
-      age: "Không rõ, nhưng lớn lên cùng Zed. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Linh kiếm",
-      lore: "Shen là thủ lĩnh của Hội Kinkou, Mắt Hoàng Hôn, có nhiệm vụ duy trì sự cân bằng giữa thế giới linh hồn và thế giới vật chất. Anh ta phấn đấu cho sự phán xét vô tư, ngay cả sau cái chết của cha mình và sự phản bội của Zed.",
-      fullLore:
-        "Sinh ra trong một gia đình được tôn kính ở Navori, Shen được định sẵn là Mắt Hoàng Hôn, kế nhiệm cha mình, Đại Sư Kusho. Anh ta là một tấm gương trong việc học tập, tập trung vào việc duy trì sự cân bằng. Người bạn thân nhất của anh ta là Zed, và họ là những học trò triển vọng nhất của Kinkou.\n\nHọ đã săn lùng Quỷ Vàng (Jhin), người mà Kusho đã giam cầm thay vì hành quyết, một quyết định mà Shen chấp nhận bất chấp mong muốn của chính anh ta về một hình phạt khắc nghiệt hơn. Trong cuộc xâm lược của Noxus, Shen đã miễn cưỡng ủng hộ sự thiếu hành động của Kusho, tập trung vào sự hài hòa tâm linh.\n\nKhi vắng mặt, Zed đã dàn dựng một cuộc đảo chính, chiếm giữ ngôi đền và giết Kusho. Đè nén nỗi đau khổ của mình, Shen đã dẫn dắt những người còn lại của Kinkou đến nơi an toàn, tiếp quản linh kiếm và danh hiệu của cha mình. Anh ta đã xây dựng lại hội, huấn luyện các tân binh như Akali, thường thúc giục sự kiềm chế.",
-      gameplay:
-        "Shen là một tướng đỡ đòn có khả năng di chuyển toàn bản đồ, có thể tạo lá chắn cho đồng minh và dịch chuyển qua bản đồ bằng chiêu cuối của mình để bảo vệ họ. Lối chơi của anh ta liên quan đến việc định vị chiến thuật, khiêu khích kẻ địch và chặn các đòn tấn công bằng linh kiếm của mình.",
-      skills: [
+      "id": "maokai",
+      "name": "Maokai",
+      "fullName": "Maokai, the Twisted Treant",
+      "icon": "🌳",
+      "role": "Đỡ Đòn",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Maokai_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "1000+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Sapling Magic - Ma thuật cây con",
+      "releaseDate": "2011",
+      "lore": "Maokai is a rageful, towering treant who fights the unnatural horrors of the Shadow Isles. He was twisted into a force of vengeance after a magical cataclysm destroyed his home, surviving undeath only through the Waters of Life infused within his heartwood. Once a peaceful nature spirit, Maokai now furiously battles to banish the scourge of unlife from the Shadow Isles and restore his home to its former beauty.",
+      "fullLore": "Maokai is a rageful, towering treant who fights the unnatural horrors of the Shadow Isles. He was twisted into a force of vengeance after a magical cataclysm destroyed his home, surviving undeath only through the Waters of Life infused within his heartwood. Once a peaceful nature spirit, Maokai now furiously battles to banish the scourge of unlife from the Shadow Isles and restore his home to its former beauty.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Rào Chắn Ki (Ki Barrier)",
-          description:
-            "Sau khi sử dụng một kỹ năng, Shen nhận được một lá chắn. Ảnh hưởng đến các tướng khác làm giảm thời gian hồi chiêu của hiệu ứng này.",
+          "key": "Passive",
+          "name": "Sap Magic",
+          "description": "Maokai's basic attack also heals him and deals additional damage on a moderate cooldown. Each time Maokai casts a spell or is struck by an enemy's spell, this cooldown is reduced.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Maokai_Passive.png"
         },
         {
-          type: "Q",
-          name: "Công Kích Hoàng Hôn (Twilight Assault)",
-          description:
-            "Shen triệu hồi linh kiếm của mình để tấn công, gây sát thương phép dựa trên máu tối đa của mục tiêu. Các đòn tấn công được cường hóa rất nhiều nếu nó va chạm với một tướng địch, và tất cả kẻ địch bị va chạm sẽ bị làm chậm khi chạy trốn khỏi Shen.",
+          "key": "Q",
+          "name": "Bramble Smash",
+          "description": "Maokai knocks back nearby enemies with a shockwave, dealing magic damage and slowing them.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/MaokaiQ.png",
+          "cooldown": "8/7.25/6.5/5.75/5",
+          "cost": "60",
+          "range": "600"
         },
         {
-          type: "W",
-          name: "Nơi Nương Tựa Tinh Thần (Spirit's Refuge)",
-          description:
-            "Các đòn tấn công lẽ ra sẽ trúng Shen hoặc đồng minh của anh ta gần linh kiếm của anh ta sẽ bị chặn.",
+          "key": "W",
+          "name": "Twisted Advance",
+          "description": "Maokai contorts into a mass of moving roots, becoming untargetable and dashing to the target. Upon arrival, he roots the target.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/MaokaiW.png",
+          "cooldown": "13/12/11/10/9",
+          "cost": "60",
+          "range": "525"
         },
         {
-          type: "E",
-          name: "Vô Ảnh Bộ (Shadow Dash)",
-          description:
-            "Shen lao theo một hướng, khiêu khích kẻ địch trên đường đi của mình.",
+          "key": "E",
+          "name": "Sapling Toss",
+          "description": "Maokai flings a sapling to the target area to stand guard. More effective in brush.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/MaokaiE.png",
+          "cooldown": "14",
+          "cost": "45/55/65/75/85",
+          "range": "1100"
         },
         {
-          type: "R",
-          name: "Nhất Thống (Stand United)",
-          description:
-            "Shen tạo lá chắn cho tướng đồng minh được chọn làm mục tiêu khỏi sát thương nhận vào, và ngay sau đó dịch chuyển đến vị trí của họ.",
-        },
+          "key": "R",
+          "name": "Nature's Grasp",
+          "description": "Maokai summons a colossal wall of brambles and thorns that slowly advances forwards, damaging and rooting any enemies in the path.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/MaokaiR.png",
+          "cooldown": "120/110/100",
+          "cost": "100",
+          "range": "3000"
+        }
       ],
-      specialFeatures: [
-        "Thủ lĩnh của Hội Kinkou",
-        "Sự phán xét vô tư là một nguyên tắc cốt lõi, ngay cả trong bi kịch cá nhân",
-        "Mối thù và lịch sử với Zed là trọng tâm của cốt truyện",
-        "Gánh nặng duy trì lý tưởng 'phán xét vô tư' và 'cân bằng' của Kinkou",
-        "Đè nén nỗi đau khổ và vật lộn với lòng căm thù để duy trì nhiệm vụ",
-        "Việc duy trì sự cân bằng truyền thống phải trả giá đắt cho các nhà lãnh đạo",
-        "Vai trò lãnh đạo ở Ionia là trách nhiệm nặng nề, thường cô đơn",
-        "Sự cân bằng của khu vực được duy trì bởi ý chí mạnh mẽ và sự hy sinh to lớn",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "syndra",
-      name: "Syndra",
-      fullName: "Syndra, Nữ Chúa Bóng Tối (The Dark Sovereign)",
-      icon: "🔮",
-      role: "Pháp Sư",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Syndra_0.jpg",
-      species: "Con người",
-      age: "Không rõ, nhưng là một 'đứa trẻ,' sau đó 'nhiều năm' trôi qua, sau đó 'vĩnh cửu' trong giấc ngủ. Có thể là cổ đại do giấc ngủ",
-      gender: "Nữ (she/her)",
-      weapon: "Các quả cầu năng lượng tối",
-      lore: "Syndra là một pháp sư Ionia đáng sợ với sức mạnh thô sơ phi thường. Khi còn nhỏ, ma thuật hoang dã của cô đã làm phiền các trưởng lão. Được gửi đi để học cách kiểm soát, cô phát hiện ra người cố vấn của mình đang kìm hãm khả năng của cô.",
-      fullLore:
-        "Khi còn nhỏ ở Navori, ma thuật hoang dã của Syndra đã gây rắc rối, khiến cô bị đổ lỗi và sợ hãi. Cô được gửi đến một ẩn sĩ, Konigen, trên đảo Fae'lor để học cách kiểm soát. Trong nhiều năm, ma thuật của cô dường như yếu đi, và cô phát hiện ra Konigen cố tình kìm hãm sức mạnh của mình để đảm bảo an toàn.\n\nCảm thấy bị phản bội, cơn giận của cô bùng nổ, và cô đã giết ông ta bằng những quả cầu tối, khiến ngôi đền sụp đổ và hút cạn ma thuật từ hòn đảo. Tinh Thần Ionia đã kéo cô xuống một hang động dưới lòng đất, giam cầm cô trong một giấc ngủ ma thuật dường như vĩnh cửu. Cô được đánh thức trong cuộc chiến tranh Noxus bởi những kẻ tìm cách giết hoặc lợi dụng cô.\n\nCốt truyện của Syndra minh họa trực tiếp những nguy hiểm của việc kìm nén tài năng ma thuật tự nhiên, đặc biệt là ở một khu vực như Ionia nơi ma thuật là bẩm sinh. Việc Ionia theo đuổi 'sự hài hòa' đôi khi có thể dẫn đến những hậu quả không mong muốn.",
-      gameplay:
-        "Syndra là một pháp sư gây sát thương dồn dập, người thao túng các quả cầu tối để gây sát thương cao, làm choáng kẻ địch và kết liễu các mục tiêu yếu máu bằng chiêu cuối Bùng Nổ Sức Mạnh của mình.",
-      skills: [
+      "id": "masteryi",
+      "name": "Master Yi",
+      "fullName": "Master Yi, the Wuju Bladesman",
+      "icon": "⚔️",
+      "role": "Sát Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_0.jpg",
+      "gender": "Nam",
+      "species": "Con Người",
+      "age": "40-45 tuổi",
+      "weapon": "Sword",
+      "weaponSummary": "Wuju Blade - Kiếm Wuju",
+      "releaseDate": "2009",
+      "lore": "Master Yi has tempered his body and sharpened his mind, so that thought and action have become almost as one. Though he chooses to enter into violence only as a last resort, the grace and speed of his blade ensures resolution is always swift. As one of the last living practitioners of the Ionian art of Wuju, Yi has devoted his life to continuing the legacy of his people—scrutinizing potential new disciples with the Seven Lenses of Insight to identify the most worthy among them.",
+      "fullLore": "Master Yi has tempered his body and sharpened his mind, so that thought and action have become almost as one. Though he chooses to enter into violence only as a last resort, the grace and speed of his blade ensures resolution is always swift. As one of the last living practitioners of the Ionian art of Wuju, Yi has devoted his life to continuing the legacy of his people—scrutinizing potential new disciples with the Seven Lenses of Insight to identify the most worthy among them.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Sức Mạnh Tuyệt Đối (Transcendent)",
-          description:
-            "Syndra thu thập Mảnh Vỡ Thịnh Nộ từ việc lên cấp và gây sát thương cho kẻ địch, nâng cấp kỹ năng của cô.",
+          "key": "Passive",
+          "name": "Double Strike",
+          "description": "Every few consecutive basic attack, Master Yi strikes twice.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/MasterYi_Passive1.png"
         },
         {
-          type: "Q",
-          name: "Quả Cầu Bóng Tối (Dark Sphere)",
-          description:
-            "Syndra triệu hồi một Quả Cầu Bóng Tối gây sát thương phép. Quả cầu vẫn còn và có thể được thao túng bởi các sức mạnh khác của cô.",
+          "key": "Q",
+          "name": "Alpha Strike",
+          "description": "Master Yi teleports across the battlefield with blinding speed, dealing physical damage to multiple units in his path, while simultaneously becoming untargetable. Alpha Strike can critically strike and deals bonus physical damage to monsters. Basic attacks reduce Alpha Strike's cooldown.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/AlphaStrike.png",
+          "cooldown": "20/19.5/19/18.5/18",
+          "cost": "50/55/60/65/70",
+          "range": "600"
         },
         {
-          type: "W",
-          name: "Ý Chí Bất Khuất (Force of Will)",
-          description:
-            "Syndra nhặt và ném một Quả Cầu Bóng Tối hoặc lính địch, gây sát thương phép và làm chậm Tốc Độ Di Chuyển của kẻ địch.",
+          "key": "W",
+          "name": "Meditate",
+          "description": "Master Yi rejuvenates his body by focus of mind, restoring Health and taking reduced damage for a short time. In addition, Master Yi will gain stacks of Double Strike and pause the remaining duration on Wuju Style and Highlander for each second he channels.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/Meditate.png",
+          "cooldown": "9",
+          "cost": "40",
+          "range": "20"
         },
         {
-          type: "E",
-          name: "Lực Đẩy Kháng Cự (Scatter the Weak)",
-          description:
-            "Syndra đẩy lùi kẻ địch và Quả Cầu Bóng Tối, gây sát thương phép. Kẻ địch bị Quả Cầu Bóng Tối đánh trúng sẽ bị làm choáng.",
+          "key": "E",
+          "name": "Wuju Style",
+          "description": "Grants bonus true damage on basic attacks.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/WujuStyle.png",
+          "cooldown": "14",
+          "cost": "0",
+          "range": "20"
         },
         {
-          type: "R",
-          name: "Bùng Nổ Sức Mạnh (Unleashed Power)",
-          description:
-            "Syndra bắn phá một tướng địch bằng tất cả các Quả Cầu Bóng Tối của cô.",
-        },
+          "key": "R",
+          "name": "Highlander",
+          "description": "Master Yi moves with unparalleled agility, temporarily increasing his Move Speed and Attack Speed as well as making him immune to all slowing effects. While active, Champion kills or assists extend Highlander's duration. Passively reduces cooldown for his other abilities on a kill or assist.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/Highlander.png",
+          "cooldown": "85",
+          "cost": "100",
+          "range": "1"
+        }
       ],
-      specialFeatures: [
-        "Sở hữu sức mạnh ma thuật thô sơ khổng lồ, không thể kiểm soát",
-        "Câu chuyện về sự phản bội và khao khát mãnh liệt về sự tự quyết",
-        "Giấc ngủ ma thuật dài và sự thức tỉnh trong cuộc chiến tranh Noxus",
-        "Minh họa nguy hiểm của việc kìm nén tài năng ma thuật tự nhiên",
-        "Nỗ lực 'kiềm chế' khả năng đã phản tác dụng thảm khốc",
-        "Những nỗ lực 'kiểm soát' hoặc 'cân bằng' ma thuật có thể phản tác dụng",
-        "Việc theo đuổi 'sự hài hòa' đôi khi dẫn đến hậu quả không mong muốn",
-        "Đặt ra câu hỏi về sự khôn ngoan của những cách cũ",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "varus",
-      name: "Varus",
-      fullName: "Varus, Mũi Tên Báo Thù (The Arrow of Retribution)",
-      icon: "🏹",
-      role: "Xạ Thủ/Pháp Sư",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Varus_0.jpg",
-      species: "Darkin (hợp nhất với hai con người)",
-      age: "Cổ đại (một trong những 'Darkin cổ đại,' bị giam cầm 'hàng thế kỷ')",
-      gender: "Nam (he/him) - thực thể hợp nhất",
-      weapon: "Cung pha lê",
-      lore: "Varus, một Darkin cổ đại, là một cung thủ Shurima bị lòng báo thù nuốt chửng, sau đó bị giam cầm trong cây cung pha lê của mình. Hàng thế kỷ sau, hai thợ săn Ionia, Valmar và Kai, vô tình giải thoát hắn, trở thành vật chủ bất đắc dĩ của hắn.",
-      fullLore:
-        "Varus là một cung thủ Shurima trung thành bị lòng báo thù nuốt chửng chống lại Icathia và Hư Không. Hắn trở thành một trong những Thăng Hoa, sau đó là một Darkin, một kẻ giết người chết chóc. Hắn cuối cùng bị dồn vào đường cùng ở Valoran và bị giam cầm trong cây cung pha lê của mình bởi những người săn trăng vastaya và các pháp sư con người.\n\nMột nữ hoàng chiến binh áo vàng của Valoran sau đó đã sử dụng vũ khí chết chóc này, hy sinh bản thân để chôn sống nó trong một cái giếng không ánh sáng sâu dưới một ngôi đền trên núi ở Ionia. Hàng thế kỷ sau, trong cuộc xâm lược của Noxus, hai thợ săn Ionia, Valmar và Kai, đã bị sức mạnh của cây cung nuốt chửng, cơ thể họ hợp nhất thành một sinh vật mới.\n\nViệc Varus bị giam cầm ở Ionia và việc hắn vô tình được giải thoát do cuộc xâm lược của Noxus làm nổi bật vai trò lịch sử của Ionia như một khu vực giam giữ các thực thể mạnh mẽ, nguy hiểm. Cuộc xâm lược của Noxus đã vô tình làm tổn hại đến sự giam giữ này.",
-      gameplay:
-        "Varus là một xạ thủ tầm xa có thể cấu rỉa kẻ địch từ xa bằng Mũi Tên Xuyên Phá của mình, áp dụng các điểm cộng dồn Blight bằng các đòn đánh thường, và làm bất động nhiều mục tiêu bằng chiêu cuối Sợi Xích Tội Lỗi của mình.",
-      skills: [
+      "id": "nocturne",
+      "name": "Nocturne",
+      "fullName": "Nocturne, the Eternal Nightmare",
+      "icon": "👹",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Nocturne_0.jpg",
+      "gender": "Nam",
+      "species": "Ác Ma",
+      "age": "1000+ tuổi",
+      "weapon": "Sword",
+      "weaponSummary": "Umbra Blades - Lưỡi kiếm bóng tối",
+      "releaseDate": "2011",
+      "lore": "A demonic amalgamation drawn from the nightmares that haunt every sentient mind, the thing known as Nocturne has become a primordial force of pure evil. It is liquidly chaotic in aspect, a faceless shadow with cold eyes and armed with wicked-looking blades. After freeing itself from the spirit realm, Nocturne descended upon the waking world, to feed upon the kind of terror that can only thrive in true darkness.",
+      "fullLore": "A demonic amalgamation drawn from the nightmares that haunt every sentient mind, the thing known as Nocturne has become a primordial force of pure evil. It is liquidly chaotic in aspect, a faceless shadow with cold eyes and armed with wicked-looking blades. After freeing itself from the spirit realm, Nocturne descended upon the waking world, to feed upon the kind of terror that can only thrive in true darkness.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Sống Sót (Living Vengeance)",
-          description:
-            "Khi tiêu diệt hoặc hỗ trợ, Varus tạm thời tăng Tốc Độ Đánh. Phần thưởng này lớn hơn nếu kẻ địch là tướng.",
+          "key": "Passive",
+          "name": "Umbra Blades",
+          "description": "Every few seconds, Nocturne's next attack strikes surrounding enemies for bonus physical damage and heals himself. Nocturne's basic attacks reduce this cooldown.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Nocturne_UmbraBlades.png"
         },
         {
-          type: "Q",
-          name: "Mũi Tên Xuyên Phá (Piercing Arrow)",
-          description:
-            "Varus chuẩn bị và sau đó bắn một phát bắn mạnh mẽ tăng tầm và sát thương càng lâu anh ta chuẩn bị bắn.",
+          "key": "Q",
+          "name": "Duskbringer",
+          "description": "Nocturne throws a shadow blade that deals damage, leaves a Dusk Trail, and causes champions to leave a Dusk Trail. While on the trail, Nocturne can move through units and has increased Move Speed and Attack Damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/NocturneDuskbringer.png",
+          "cooldown": "8",
+          "cost": "60/65/70/75/80",
+          "range": "1125"
         },
         {
-          type: "W",
-          name: "Tên Độc (Blighted Quiver)",
-          description:
-            "Nội tại: Các đòn đánh thường của Varus gây thêm sát thương phép và áp dụng Blight. Các kỹ năng khác của Varus kích hoạt Blight, gây sát thương phép dựa trên máu tối đa của mục tiêu. Kích hoạt: Varus cường hóa Mũi Tên Xuyên Phá tiếp theo của mình.",
+          "key": "W",
+          "name": "Shroud of Darkness",
+          "description": "Nocturne empowers his blades, passively gaining Attack Speed. Activating Shroud of Darkness allows Nocturne to fade into the shadows, creating a magical barrier which blocks a single enemy ability and doubles his passive Attack Speed if successful.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/NocturneShroudofDarkness.png",
+          "cooldown": "20/18/16/14/12",
+          "cost": "50",
+          "range": "20"
         },
         {
-          type: "E",
-          name: "Mưa Tên (Hail of Arrows)",
-          description:
-            "Varus bắn một trận mưa tên gây sát thương vật lý và làm ô uế mặt đất. Mặt đất bị ô uế làm chậm Tốc Độ Di Chuyển của kẻ địch và giảm khả năng tự hồi máu và hồi phục của chúng.",
+          "key": "E",
+          "name": "Unspeakable Horror",
+          "description": "Nocturne plants a nightmare into his target's mind, dealing damage each second and applying fear to the target if they do not get out of range by the end of the duration.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/NocturneUnspeakableHorror.png",
+          "cooldown": "15/14/13/12/11",
+          "cost": "60/65/70/75/80",
+          "range": "425"
         },
         {
-          type: "R",
-          name: "Sợi Xích Tội Lỗi (Chain of Corruption)",
-          description:
-            "Varus phóng ra một xúc tu tham nhũng gây sát thương làm bất động tướng địch đầu tiên trúng phải và sau đó lan rộng đến các tướng chưa bị nhiễm bệnh gần đó, làm bất động chúng khi tiếp xúc.",
-        },
+          "key": "R",
+          "name": "Paranoia",
+          "description": "Nocturne reduces the sight radius of all enemy champions and removes their ally vision in the process. He can then launch himself at a nearby enemy champion.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/NocturneParanoia.png",
+          "cooldown": "140/115/90",
+          "cost": "100",
+          "range": "2500/3250/4000"
+        }
       ],
-      specialFeatures: [
-        "Một Darkin, đại diện cho thế lực cổ xưa, hủy diệt từ Shurima",
-        "Hình dạng hiện tại là sự hợp nhất của ba thực thể: Darkin Varus và hai thợ săn Ionia",
-        "Cuộc đấu tranh nội tâm giữa lòng căm thù của Darkin và tình yêu của con người",
-        "Ionia có vai trò lịch sử như khu vực giam giữ các thực thể mạnh mẽ, nguy hiểm",
-        "Ma thuật tự nhiên của Ionia được sử dụng để phong ấn các mối đe dọa",
-        "Biến Ionia thành vị trí chiến lược quan trọng cho toàn bộ Runeterra",
-        "Cuộc xâm lược Noxus vô tình giải phóng các mối đe dọa tiềm ẩn khác",
-        "Một số 'sự cân bằng' của Ionia là kết quả của việc tích cực trấn áp các lực lượng hỗn loạn",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "wukong",
-      name: "Wukong",
-      fullName: "Wukong, Vua Khỉ (The Monkey King)",
-      icon: "🐒",
-      role: "Đấu Sĩ/Đỡ Đòn",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Wukong_0.jpg",
-      species: "Vastaya (bộ tộc Shimon)",
-      age: "Không rõ, nhưng là một 'vastaya giống khỉ tò mò' khi gặp Master Yi. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Gậy ma thuật",
-      lore: "Kong, một vastaya lừa đảo từ bộ tộc Shimon, là một kẻ bị ruồng bỏ vì tính bốc đồng của mình. Anh ta tìm đến Master Yi, bậc thầy Wuju cuối cùng, và thông qua những thử thách kiên trì, đã thuyết phục Yi huấn luyện mình.",
-      fullLore:
-        "Kong, một vastaya lừa đảo từ bộ tộc Shimon, bốc đồng và dễ chán nản, khiến anh ta bị coi là kẻ bị ruồng bỏ. Anh ta tự xưng là 'Vua Khỉ' và thách đấu con người. Sau khi chứng kiến sự tàn bạo của Noxus ở Ionia, anh ta tìm đến các bậc thầy chiến đấu Wuju huyền thoại.\n\nAnh ta tìm thấy Master Yi, bậc thầy Wuju cuối cùng, và sau khi liên tục không đánh bại được ông, đã cầu xin được học hỏi. Yi đã huấn luyện Kong, biến sự liều lĩnh của anh ta thành một phong cách chiến đấu nhanh nhẹn và bất ngờ. Thông qua một trận đấu tập mà Kong đã đánh lừa Yi, anh ta đã biết được nỗi ám ảnh của Yi về sự hủy diệt của Wuju bởi Noxus.\n\nVai trò của Wukong với tư cách là học trò của Master Yi rất quan trọng đối với sự tiếp nối của phong cách Wuju sau khi nó gần như bị tuyệt chủng. Đây không chỉ là việc truyền lại kỹ năng; đó là việc thích nghi một truyền thống cổ xưa, cứng nhắc cho một thế hệ mới và một bối cảnh mới.",
-      gameplay:
-        "Wukong là một đấu sĩ có tính cơ động cao, có thể tạo ra một bản sao để đánh lừa kẻ địch, lướt đến mục tiêu và hất tung nhiều kẻ địch bằng chiêu cuối Lốc Xoáy của mình.",
-      skills: [
+      "id": "ornn",
+      "name": "Ornn",
+      "fullName": "Ornn, The Fire below the Mountain",
+      "icon": "🔨",
+      "role": "Đỡ Đòn",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ornn_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "10000+ tuổi",
+      "weapon": "Hammer",
+      "weaponSummary": "Hammer and Anvil - Búa và đe",
+      "releaseDate": "2017",
+      "lore": "Ornn is the Freljordian spirit of forging and craftsmanship. He works in the solitude of a massive smithy, hammered out from the lava caverns beneath the volcano Hearth-Home. There he stokes bubbling cauldrons of molten rock to purify ores and fashion items of unsurpassed quality. When other deities—especially Volibear—walk the earth and meddle in mortal affairs, Ornn arises to put these impetuous beings back in their place, either with his trusty hammer or the fiery power of the mountains themselves.",
+      "fullLore": "Ornn is the Freljordian spirit of forging and craftsmanship. He works in the solitude of a massive smithy, hammered out from the lava caverns beneath the volcano Hearth-Home. There he stokes bubbling cauldrons of molten rock to purify ores and fashion items of unsurpassed quality. When other deities—especially Volibear—walk the earth and meddle in mortal affairs, Ornn arises to put these impetuous beings back in their place, either with his trusty hammer or the fiery power of the mountains themselves.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Thiết Giáp (Stone Skin)",
-          description:
-            "Wukong nhận thêm giáp và hồi máu tối đa khi chiến đấu với tướng và quái vật.",
+          "key": "Passive",
+          "name": "Living Forge",
+          "description": "Ornn gains an additional bonus Armor and Magic Resistance from all sources.Ornn can spend gold to forge non-consumable items anywhere.Additionally, he can create masterwork items for himself and for his allies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/OrnnP.png"
         },
         {
-          type: "Q",
-          name: "Thiết Bảng Ngàn Cân (Crushing Blow)",
-          description:
-            "Đòn đánh tiếp theo của Wukong tăng tầm đánh, gây thêm sát thương và giảm giáp của mục tiêu trong vài giây.",
+          "key": "Q",
+          "name": "Volcanic Rupture",
+          "description": "Ornn slams the ground, sending out a fissure dealing damage and slowing enemies hit. After a small delay, a magma pillar forms at the end location.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/OrnnQ.png",
+          "cooldown": "9/8.5/8/7.5/7",
+          "cost": "45",
+          "range": "800"
         },
         {
-          type: "W",
-          name: "Chiến Binh Tinh Quái (Warrior Trickster)",
-          description:
-            "Wukong trở nên Vô Hình và lướt theo một hướng, để lại một bản sao sẽ tấn công kẻ địch gần đó.",
+          "key": "W",
+          "name": "Bellows Breath",
+          "description": "Ornn advances, breathing fire. Enemies hit by the final gout of flame become Brittle.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/OrnnW.png",
+          "cooldown": "12/11.5/11/10.5/10",
+          "cost": "45/50/55/60/65",
+          "range": "25000"
         },
         {
-          type: "E",
-          name: "Cân Đẩu Vân (Nimbus Strike)",
-          description:
-            "Wukong lướt đến một kẻ địch được chọn làm mục tiêu và gửi các hình ảnh tấn công kẻ địch gần mục tiêu của mình, gây sát thương cho mỗi kẻ địch trúng phải.",
+          "key": "E",
+          "name": "Searing Charge",
+          "description": "Ornn charges, dealing damage to enemies he passes through. If Ornn collides with terrain while charging, the impact creates a shockwave around him which deals damage and knocks up enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/OrnnE.png",
+          "cooldown": "16/15/14/13/12",
+          "cost": "35/40/45/50/55",
+          "range": "450"
         },
         {
-          type: "R",
-          name: "Lốc Xoáy (Cyclone)",
-          description:
-            "Wukong kéo dài cây gậy của mình và xoay nó liên tục, tăng Tốc Độ Di Chuyển. Kẻ địch trúng phải nhận sát thương và bị hất tung.",
-        },
+          "key": "R",
+          "name": "Call of the Forge God",
+          "description": "Ornn summons a massive elemental at a location which travels toward him with increasing speed. Enemies run over by the elemental take damage, are slowed and are made Brittle. Ornn can recast the ability to charge into the elemental, redirecting it in the direction he hits it, causing the elemental to affect any enemies it runs over to be knocked up, dealing the same damage and re-applying Brittle.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/OrnnR.png",
+          "cooldown": "140/120/100",
+          "cost": "100",
+          "range": "2500"
+        }
       ],
-      specialFeatures: [
-        "Lấy cảm hứng từ nhân vật thần thoại Tôn Ngộ Không",
-        "Học trò và bạn đồng hành duy nhất của Master Yi",
-        "Bản chất lừa đảo là một đặc điểm nổi bật",
-        "Quan trọng đối với sự tiếp nối của phong cách Wuju sau khi gần như tuyệt chủng",
-        "Thích nghi truyền thống cổ xưa, cứng nhắc cho thế hệ mới và bối cảnh mới",
-        "Sự 'liều lĩnh' được chuyển hóa thành phong cách chiến đấu nhanh nhẹn và bất ngờ",
-        "Các truyền thống Ionia không phải là bất biến, có thể phát triển",
-        "Đảm bảo khả năng phục hồi tinh thần và võ thuật của khu vực",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "xayah",
-      name: "Xayah",
-      fullName: "Xayah, Nữ Chúa Nổi Loạn (The Rebel)",
-      icon: "🦅",
-      role: "Xạ Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Xayah_0.jpg",
-      species: "Vastaya (bộ tộc Lhotlan)",
-      age: "Không rõ, nhưng là một 'đứa trẻ' khi sự xâm lấn của con người bắt đầu. Có thể là người trưởng thành",
-      gender: "Nữ (she/her)",
-      weapon: "Lông vũ sắc bén/lông vũ chết người",
-      lore: "Xayah là một nhà cách mạng vastaya chết chóc và chính xác, chiến đấu để đòi lại quyền thừa kế của người dân mình và giải phóng ma thuật hoang dã của Ionia khỏi sự xâm lấn của con người. Cô dẫn dắt các cuộc nổi dậy của vastaya, sử dụng lông vũ sắc bén của mình.",
-      fullLore:
-        "Khi còn nhỏ thuộc bộ tộc Lhotlan, Xayah chứng kiến sự xâm lấn của con người làm gián đoạn vùng đất và ma thuật vastaya, dẫn đến các hiệp ước bị phá vỡ. Bực bội vì sự rút lui của bộ tộc mình, cô trở thành một chiến binh tự do, sử dụng lông vũ chết người của mình để giải phóng ma thuật hoang dã và giành được biệt danh 'Kẻ Nổi Loạn Tím'.\n\nCô tham gia các cuộc nổi dậy của vastaya chống lại con người. Cuộc đời cô thay đổi khi gặp Rakan, người có sức hút và khả năng đánh lạc hướng đã chứng tỏ là vô giá. Mặc dù tính cách trái ngược nhau, họ trở nên không thể tách rời, điểm mạnh của họ bổ sung cho nhau. Cùng nhau, họ trở thành những chiến binh vastaya đáng gờm.\n\nCốt truyện của Xayah mô tả rõ ràng 'sự xâm lấn của con người' vào vùng đất vastaya và việc 'chặn' ma thuật hoang dã của Ionia, dẫn đến các hiệp ước bị phá vỡ. Đây là một cuộc xung đột nội bộ lâu dài trong Ionia, có trước và tách biệt với cuộc xâm lược của Noxus.",
-      gameplay:
-        "Xayah là một xạ thủ tầm xa sử dụng lông vũ của mình để gây sát thương và trói chân kẻ địch. Cơ chế độc đáo của cô liên quan đến việc triệu hồi lông vũ để trói chân mục tiêu, và chiêu cuối của cô cho phép cô trở nên không thể bị nhắm mục tiêu trong khi ném ra một quạt lông vũ.",
-      skills: [
+      "id": "rakan",
+      "name": "Rakan",
+      "fullName": "Rakan, The Charmer",
+      "icon": "🪶",
+      "role": "Hỗ Trợ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Rakan_0.jpg",
+      "gender": "Nam",
+      "species": "Vastaya",
+      "age": "200+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Feathers and Charm - Lông vũ và quyến rũ",
+      "releaseDate": "2017",
+      "lore": "As mercurial as he is charming, Rakan is an infamous vastayan troublemaker and the greatest battle-dancer in Lhotlan tribal history. To the humans of the Ionian highlands, his name has long been synonymous with wild festivals, uncontrollable parties, and anarchic music. Few would suspect this energetic, traveling showman is also partner to the rebel Xayah, and is dedicated to her cause.",
+      "fullLore": "As mercurial as he is charming, Rakan is an infamous vastayan troublemaker and the greatest battle-dancer in Lhotlan tribal history. To the humans of the Ionian highlands, his name has long been synonymous with wild festivals, uncontrollable parties, and anarchic music. Few would suspect this energetic, traveling showman is also partner to the rebel Xayah, and is dedicated to her cause.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Nhát Cắt Sạch Sẽ (Clean Cuts)",
-          description:
-            "Sau khi sử dụng một kỹ năng, các đòn đánh thường tiếp theo của Xayah sẽ trúng tất cả các mục tiêu trên đường đi của chúng và để lại một Lông Vũ.",
+          "key": "Passive",
+          "name": "Fey Feathers",
+          "description": "Rakan periodically gains a shield.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Rakan_P.png"
         },
         {
-          type: "Q",
-          name: "Phi Dao Đôi (Double Daggers)",
-          description:
-            "Xayah ném hai dao găm gây sát thương cũng để lại Lông Vũ mà cô có thể triệu hồi.",
+          "key": "Q",
+          "name": "Gleaming Quill",
+          "description": "Flings a magical feather that deals magic damage. Striking a champion or epic monster enables Rakan to heal his allies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RakanQ.png",
+          "cooldown": "11/10/9/8/7",
+          "cost": "45",
+          "range": "850"
         },
         {
-          type: "W",
-          name: "Bộ Lông Tàn Sát (Deadly Plumage)",
-          description:
-            "Xayah tạo ra một cơn bão lưỡi kiếm tăng Tốc Độ Đánh và sát thương của cô, đồng thời tăng Tốc Độ Di Chuyển nếu cô tấn công một tướng.",
+          "key": "W",
+          "name": "Grand Entrance",
+          "description": "Dashes to a location, knocking up nearby enemies on arrival.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RakanW.png",
+          "cooldown": "16/14.5/13/11.5/10",
+          "cost": "50/60/70/80/90",
+          "range": "600"
         },
         {
-          type: "E",
-          name: "Triệu Hồi Lông Vũ (Bladecaller)",
-          description:
-            "Xayah triệu hồi tất cả các Lông Vũ đã rơi của mình, gây sát thương và trói chân kẻ địch.",
+          "key": "E",
+          "name": "Battle Dance",
+          "description": "Flies to an allied champion granting them a shield. Can be re-cast for free for a short duration.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RakanE.png",
+          "cooldown": "0",
+          "cost": "40/45/50/55/60",
+          "range": "650"
         },
         {
-          type: "R",
-          name: "Bão Tố Nổi Loạn (Featherstorm)",
-          description:
-            "Xayah nhảy lên không trung, trở nên không thể bị nhắm mục tiêu và ném ra một quạt dao găm, để lại Lông Vũ mà cô có thể triệu hồi.",
-        },
+          "key": "R",
+          "name": "The Quickness",
+          "description": "Gains Move Speed, charming and dealing magic damage to enemies touched.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RakanR.png",
+          "cooldown": "130/110/90",
+          "cost": "100",
+          "range": "150"
+        }
       ],
-      specialFeatures: [
-        "Mối quan hệ với Rakan là yếu tố cốt lõi trong bản sắc và lối chơi",
-        "Thủ lĩnh trong cuộc nổi dậy của vastaya chống lại sự xâm lấn của con người",
-        "'Lông vũ sắc bén' là độc đáo và chết chóc",
-        "Mô tả rõ ràng cuộc xung đột nội bộ lâu dài trong Ionia",
-        "'Sự hài hòa' của Ionia chủ yếu là lý tưởng lấy con người làm trung tâm",
-        "Vastaya không chỉ là đồng minh mà còn là nhóm bị áp bức",
-        "Cuộc nổi dậy đại diện cho cuộc đấu tranh quyền lực nội bộ đáng kể",
-        "Có khả năng định hình lại cảnh quan chính trị và xã hội của khu vực",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "yone",
-      name: "Yone",
-      fullName: "Yone, Kẻ Về Từ Cõi Chết (The Unforgotten)",
-      icon: "👻",
-      role: "Đấu Sĩ/Sát Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg",
-      species: "Con người (tái sinh/liên kết linh hồn)",
-      age: "Không rõ, nhưng là anh em cùng cha khác mẹ của Yasuo. Đã chết, sau đó được tái sinh",
-      gender: "Nam (he/him)",
-      weapon:
-        "Kiếm của Azakana (linh kiếm) và kiếm thép của chính anh ta (song kiếm)",
-      lore: "Yone, anh em cùng cha khác mẹ của Yasuo và một kiếm sĩ nổi tiếng, đã bị Yasuo giết. Anh ta tỉnh dậy trong thế giới linh hồn, bị một thực thể độc ác tên là azakana săn đuổi, mà anh ta đã đánh bại bằng chính thanh kiếm của nó. Giờ đây bị nguyền rủa phải đeo chiếc mặt nạ quỷ của nó, anh ta không ngừng săn lùng các sinh vật như vậy để hiểu trạng thái mới của mình và tìm ra kẻ mà tiếng cười của nó vẫn ám ảnh anh ta.",
-      fullLore:
-        "Khi còn sống, Yone là anh em cùng cha khác mẹ kiên nhẫn và kỷ luật của Yasuo, một học trò nổi tiếng của trường kiếm thuật làng họ. Anh ta bị Yasuo giết, người bị buộc tội sai về vụ giết sư phụ của họ. Yone tỉnh dậy trong thế giới linh hồn, bị một thực thể độc ác tên là azakana truy đuổi. Anh ta đã đánh bại nó bằng chính thanh kiếm của nó, nhưng giờ đây bị nguyền rủa phải đeo chiếc mặt nạ quỷ của nó, điều này cho phép anh ta nhìn thấy các azakana khác.\n\nAnh ta không ngừng săn lùng các sinh vật này, những kẻ ăn mòn sự tiêu cực, để hiểu mình đã trở thành gì và để tìm ra azakana mà tiếng cười của nó vẫn ám ảnh anh ta, hy vọng tìm được tên của nó để biến nó thành một chiếc mặt nạ không hoạt động.\n\nCốt truyện của Yone mô tả rõ ràng sự thức tỉnh của anh ta trong 'thế giới linh hồn' và khả năng tương tác với 'azakana', những thực thể độc ác ăn mòn sự tiêu cực. Đây là một biểu hiện trực tiếp, hữu hình của ảnh hưởng của thế giới linh hồn đối với thế giới vật chất và đối với các cá nhân.",
-      gameplay:
-        "Yone là một đấu sĩ/sát thủ cận chiến sử dụng song kiếm, kết hợp sát thương vật lý và phép thuật. Anh ta có thể lướt, tạo lá chắn và tạm thời rời khỏi cơ thể để gây sát thương, sau đó quay trở lại, lặp lại một phần sát thương đã gây ra.",
-      skills: [
+      "id": "rengar",
+      "name": "Rengar",
+      "fullName": "Rengar, the Pridestalker",
+      "icon": "🦁",
+      "role": "Sát Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Rengar_0.jpg",
+      "gender": "Nam",
+      "species": "Vastaya",
+      "age": "30-35 tuổi",
+      "weapon": "Unknown",
+      "weaponSummary": "Bone Tooth Necklace - Vòng cổ răng xương",
+      "releaseDate": "2012",
+      "lore": "Rengar is a ferocious vastayan trophy hunter who lives for the thrill of tracking down and killing dangerous creatures. He scours the world for the most fearsome beasts he can find, especially seeking any trace of Kha'Zix, the void creature who scratched out his eye. Rengar stalks his prey neither for food nor glory, but for the sheer beauty of the pursuit.",
+      "fullLore": "Rengar is a ferocious vastayan trophy hunter who lives for the thrill of tracking down and killing dangerous creatures. He scours the world for the most fearsome beasts he can find, especially seeking any trace of Kha'Zix, the void creature who scratched out his eye. Rengar stalks his prey neither for food nor glory, but for the sheer beauty of the pursuit.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
         {
-          type: "Passive",
-          name: "Con Đường Thợ Săn (Way of the Hunter)",
-          description:
-            "Yone gây sát thương phép với mỗi đòn đánh thứ hai. Ngoài ra, tỷ lệ chí mạng của anh ta được tăng lên.",
+          "key": "Passive",
+          "name": "Unseen Predator",
+          "description": "While in Brush, Rengar leaps at his target with his basic attack.Rengar generates Ferocity whenever he casts an ability. At Max Ferocity, his next ability is empowered.Killing enemy champions awards trophies on Rengar's Bonetooth Necklace, granting bonus attack damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Rengar_P.png"
         },
         {
-          type: "Q",
-          name: "Tử Kiếm (Mortal Steel)",
-          description:
-            "Đâm về phía trước, gây sát thương vật lý cho tất cả kẻ địch theo một đường thẳng. Khi trúng, nhận một điểm cộng dồn của Bão Tố. Với 2 điểm cộng dồn, Tử Kiếm đẩy Yone về phía trước với một luồng gió hất tung kẻ địch.",
+          "key": "Q",
+          "name": "Savagery",
+          "description": "Rengar's next attack brutally stabs his target for bonus damage.Ferocity effect: deals increased damage and grants Attack Speed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RengarQ.png",
+          "cooldown": "0.25",
+          "cost": "0",
+          "range": "450"
         },
         {
-          type: "W",
-          name: "Linh Hồn Chia Cắt (Spirit Cleave)",
-          description:
-            "Chém về phía trước, gây sát thương vật lý và phép thuật theo hình nón. Cấp một lá chắn cho Yone, giá trị được tăng lên theo số lượng tướng bị trúng đòn chém. Thời gian hồi chiêu và thời gian vận sức của Linh Hồn Chia Cắt tăng theo tốc độ tấn công.",
+          "key": "W",
+          "name": "Battle Roar",
+          "description": "Rengar lets out a battle roar, damaging enemies and healing for some of the recent damage he has taken.Ferocity effect: additionally breaks crowd control effects.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RengarW.png",
+          "cooldown": "0.25",
+          "cost": "0",
+          "range": "450"
         },
         {
-          type: "E",
-          name: "Giải Thoát Linh Hồn (Soul Unbound)",
-          description:
-            "Linh hồn của Yone rời khỏi cơ thể, tăng tốc độ di chuyển. Khi kỹ năng này kết thúc, linh hồn của Yone bị buộc quay trở lại cơ thể và anh ta lặp lại một phần sát thương đã gây ra khi còn là linh hồn.",
+          "key": "E",
+          "name": "Bola Strike",
+          "description": "Rengar throws a bola, slowing the first target hit for a short duration.Ferocity effect: roots the target.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RengarE.png",
+          "cooldown": "0.25",
+          "cost": "0",
+          "range": "1000"
         },
         {
-          type: "R",
-          name: "Định Mệnh Triệu Hồi (Fate Sealed)",
-          description:
-            "Yone dịch chuyển tức thời phía sau tướng cuối cùng theo một đường thẳng với một cú chém mạnh mẽ đến mức kéo tất cả kẻ địch trúng phải về phía anh ta.",
-        },
+          "key": "R",
+          "name": "Thrill of the Hunt",
+          "description": "Rengar's predatory instincts take over, Camouflaging him and revealing the nearest enemy champion in a large radius around him. During Thrill of the Hunt, Rengar gains Move Speed and he can leap to the tracked enemy without being in brush, reducing their armor.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RengarR.png",
+          "cooldown": "110/100/90",
+          "cost": "0",
+          "range": "2500/3000/3500"
+        }
       ],
-      specialFeatures: [
-        "Sự hồi sinh và biến đổi sau cái chết",
-        "Mối liên hệ với thế giới linh hồn và khả năng nhìn/săn azakana",
-        "Mối quan hệ bi thảm với anh em cùng cha khác mẹ Yasuo",
-        "Biểu hiện trực tiếp của ảnh hưởng thế giới linh hồn đối với thế giới vật chất",
-        "Vượt ra ngoài 'sự cân bằng' của Kinkou",
-        "Khía cạnh đen tối, mang tính săn mồi của cõi tâm linh",
-        "Thực thể nguy hiểm, ký sinh săn mồi cảm xúc con người",
-        "Trận chiến thường xuyên, vô hình ảnh hưởng đến hạnh phúc cảm xúc và tinh thần người Ionia",
-      ],
+      "specialFeatures": []
     },
     {
-      id: "zed",
-      name: "Zed",
-      fullName: "Zed, Chúa Tể Bóng Tối (The Master of Shadows)",
-      icon: "👤",
-      role: "Sát Thủ",
-      region: "ionia",
-      image:
-        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg",
-      species: "Con người",
-      age: "Không rõ, nhưng là một 'cậu bé' được Kusho nhận nuôi, lớn lên cùng Shen. Có thể là người trưởng thành",
-      gender: "Nam (he/him)",
-      weapon: "Ma thuật bóng tối, phi tiêu, lưỡi kiếm",
-      releaseDate: "13/11/2012",
-      loreConnections: [
-        "Akali",
-        "Shen",
-        "Kennen",
-        "Jhin",
-        "Kayn",
-        "Nocturne",
-        "Gangplank",
-        "Hwei",
+      "id": "ryze",
+      "name": "Ryze",
+      "fullName": "Ryze, the Rune Mage",
+      "icon": "📜",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ryze_0.jpg",
+      "gender": "Nam",
+      "species": "Con Người",
+      "age": "1000+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "World Runes - Rune thế giới",
+      "releaseDate": "2009",
+      "lore": "Widely considered one of the most adept sorcerers on Runeterra, Ryze is an ancient, hard-bitten archmage with an impossibly heavy burden to bear. Armed with immense arcane power and a boundless constitution, he tirelessly hunts for World Runes—fragments of the raw magic that once shaped the world from nothingness. He must retrieve these artifacts before they fall into the wrong hands, for Ryze understands the horrors they could unleash on Runeterra.",
+      "fullLore": "Widely considered one of the most adept sorcerers on Runeterra, Ryze is an ancient, hard-bitten archmage with an impossibly heavy burden to bear. Armed with immense arcane power and a boundless constitution, he tirelessly hunts for World Runes—fragments of the raw magic that once shaped the world from nothingness. He must retrieve these artifacts before they fall into the wrong hands, for Ryze understands the horrors they could unleash on Runeterra.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Arcane Mastery",
+          "description": "Ryze's spells deal extra damage based on his Bonus Mana, and he gains a percentage increase to his maximum Mana based on his Ability Power.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Ryze_P.png"
+        },
+        {
+          "key": "Q",
+          "name": "Overload",
+          "description": "Passively, Ryze's other basic abilities reset the cooldown of Overload and charge a rune. When Ryze casts Overload with 2 runes charged, he gains a brief burst of Move Speed.On cast, Ryze throws a charge of pure energy in a line, dealing damage to the first enemy struck. If the target has Flux on it, Overload deals extra damage and bounces to nearby enemies with Flux.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RyzeQWrapper.png",
+          "cooldown": "5",
+          "cost": "40/38/36/34/32",
+          "range": "1000"
+        },
+        {
+          "key": "W",
+          "name": "Rune Prison",
+          "description": "Ryze traps a target in a cage of runes, damaging them and slowing their movement. If the target has Flux on it, they are instead rooted.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RyzeW.png",
+          "cooldown": "13/12/11/10/9",
+          "cost": "40/55/70/85/100",
+          "range": "615"
+        },
+        {
+          "key": "E",
+          "name": "Spell Flux",
+          "description": "Ryze releases an orb of pure magical power that damages an enemy and debuffs all nearby enemies. Ryze's spells have additional effects against the debuffed enemy.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RyzeE.png",
+          "cooldown": "3.5/3.25/3/2.75/2.5",
+          "cost": "35/45/55/65/75",
+          "range": "615"
+        },
+        {
+          "key": "R",
+          "name": "Realm Warp",
+          "description": "Passively, Overload deals even more damage against targets with Flux.On cast, Ryze creates a portal to a nearby location. After a few seconds, allies standing near the portal are teleported to the target location.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/RyzeR.png",
+          "cooldown": "210/180/150",
+          "cost": "100",
+          "range": "3000"
+        }
       ],
-      weaponSummary: "Dao găm",
-      lore: "Zed là người bạn thân nhất và đối thủ của Shen trong Hội Kinkou. Bực bội vì sự thiếu hành động của họ, anh ta đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen, sử dụng nó để dàn dựng một cuộc đảo chính, giết chết sư phụ Kusho, và thành lập Hội Bóng Tối. Giờ đây anh ta tàn nhẫn quân sự hóa các truyền thống của Ionia để trục xuất những kẻ xâm lược và đảm bảo sự thống trị của Ionia.",
-      fullLore:
-        "Zed được Đại Sư Kusho của Hội Kinkou nhận nuôi, nhanh chóng xuất sắc nhưng cảm thấy bị Shen che khuất. Họ như anh em. Họ đã săn lùng Khada Jhin, người mà Kusho đã chọn giam cầm. Zed oán giận sự thiếu hành động này và, tìm kiếm sức mạnh lớn hơn, đã khám phá ra ma thuật bóng tối bị cấm trong một chiếc hộp đen trong hầm mộ của ngôi đền.\n\nBóng tối đã nuôi dưỡng sự cay đắng của anh ta, cho anh ta thấy sự khinh thường đối với kẻ yếu. Anh ta trở về ngôi đền, đối mặt với Kusho, và giết ông ta, sau đó chiếm lấy ngôi đền cho Hội Bóng Tối của mình, huấn luyện các tân binh trong bóng tối. Anh ta tin rằng sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia, tàn nhẫn loại bỏ các mối đe dọa và nhận Kayn làm học trò cá nhân của mình.\n\nQuyết định của Zed chấp nhận ma thuật bóng tối bị cấm và giết sư phụ của mình được thúc đẩy bởi niềm tin rằng 'sự hài hòa tâm linh ít quan trọng hơn việc đảm bảo chiến thắng của Ionia.' Đây là một ví dụ rõ ràng về một nhân vật biện minh cho các phương tiện đen tối vì một lợi ích lớn hơn được nhận thức.",
-      gameplay:
-        "Zed là một sát thủ cận chiến dựa trên năng lượng, nổi tiếng với sát thương dồn dập cao, khả năng thao túng bóng tối và khả năng đánh dấu mục tiêu để kết liễu chậm. Lối chơi của anh ta liên quan đến việc sử dụng bóng tối một cách khéo léo để di chuyển, đánh lừa và tăng sát thương.",
-      skills: [
-        {
-          type: "Passive",
-          name: "Khinh Thường Kẻ Yếu (Contempt for the Weak)",
-          description:
-            "Các đòn đánh thường của Zed chống lại các mục tiêu yếu máu gây thêm sát thương phép.",
-        },
-        {
-          type: "Q",
-          name: "Phi Tiêu Sắc Lẻm (Razor Shuriken)",
-          description:
-            "Zed và các bóng của anh ta ném phi tiêu, gây sát thương vật lý.",
-        },
-        {
-          type: "W",
-          name: "Phân Thân Bóng Tối (Living Shadow)",
-          description:
-            "Nội tại: Zed nhận năng lượng bất cứ khi nào anh ta và các bóng của anh ta đánh trúng kẻ địch bằng cùng một kỹ năng. Năng lượng chỉ có thể nhận được một lần mỗi kỹ năng sử dụng. Kích hoạt: Bóng của Zed lướt về phía trước, ở lại vị trí trong vài giây. Tái kích hoạt Phân Thân Bóng Tối sẽ khiến Zed đổi vị trí với bóng này.",
-        },
-        {
-          type: "E",
-          name: "Đường Kiếm Bóng Tối (Shadow Slash)",
-          description:
-            "Zed và các bóng của anh ta chém, gây sát thương vật lý cho kẻ địch gần đó. Mỗi tướng địch bị chém bởi Zed giảm thời gian hồi chiêu của Phân Thân Bóng Tối đi 3 giây. Kẻ địch bị trúng nhiều nhát chém không nhận thêm sát thương nhưng hiệu ứng làm chậm được tăng thêm 50%.",
-        },
-        {
-          type: "R",
-          name: "Dấu Ấn Tử Thần (Death Mark)",
-          description:
-            "Zed trở nên không thể bị nhắm mục tiêu và lướt đến một tướng địch, đánh dấu chúng. Sau 3 giây, dấu ấn kích hoạt, lặp lại một phần sát thương vật lý mà Zed đã gây ra cho mục tiêu khi dấu ấn còn hiệu lực.",
-        },
-      ],
-      specialFeatures: [
-        "Người sáng lập và lãnh đạo Hội Bóng Tối",
-        "Thành thạo ma thuật bóng tối bị cấm",
-        "Sự phản bội Hội Kinkou và vụ giết Kusho là sự kiện then chốt",
-        "Phản ứng trực tiếp đối với sự 'thiếu hành động' được nhận thức của Hội Kinkou",
-        "Sự thay đổi tư tưởng nguy hiểm trong Ionia",
-        "Mục đích biện minh cho phương tiện",
-        "Thách thức trực tiếp đối với các giá trị truyền thống của Ionia",
-        "Thành công trong việc thu hút những người theo dõi như Kayn",
-        "Đại diện cho tương lai nơi khu vực mạnh mẽ nhưng bị tổn hại về mặt đạo đức",
-      ],
+      "specialFeatures": []
     },
+    {
+      "id": "syndra",
+      "name": "Syndra",
+      "fullName": "Syndra, the Dark Sovereign",
+      "icon": "🔮",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Syndra_0.jpg",
+      "gender": "Nữ",
+      "species": "Con Người",
+      "age": "25-30 tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Dark Spheres - Cầu tối",
+      "releaseDate": "2012",
+      "lore": "Syndra is a fearsome Ionian mage with incredible power at her command. As a child, she disturbed the village elders with her reckless and wild magic. She was sent away to be taught greater control, but eventually discovered her supposed mentor was restraining her abilities. Forming her feelings of betrayal and hurt into dark spheres of energy, Syndra has sworn to destroy all who would try to control her.",
+      "fullLore": "Syndra is a fearsome Ionian mage with incredible power at her command. As a child, she disturbed the village elders with her reckless and wild magic. She was sent away to be taught greater control, but eventually discovered her supposed mentor was restraining her abilities. Forming her feelings of betrayal and hurt into dark spheres of energy, Syndra has sworn to destroy all who would try to control her.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Transcendent",
+          "description": "Syndra collects Splinters of Wrath from gaining levels and damaging enemies which upgrade her abilities.Dark Sphere: Syndra can hold an additional chargeForce of Will: Bonus true damage.Scatter the Weak: Increased width and slows all targetsUnleashed Power: Executes low health targets",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/SyndraPassive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Dark Sphere",
+          "description": "Syndra conjures a Dark Sphere dealing magic damage. The sphere remains and can be manipulated by her other powers.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SyndraQ.png",
+          "cooldown": "7",
+          "cost": "40/45/50/55/60",
+          "range": "800"
+        },
+        {
+          "key": "W",
+          "name": "Force of Will",
+          "description": "Syndra picks up and throws a Dark Sphere or enemy minion dealing magic damage and slowing the Move Speed of enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SyndraW.png",
+          "cooldown": "12/11/10/9/8",
+          "cost": "60/70/80/90/100",
+          "range": "925"
+        },
+        {
+          "key": "E",
+          "name": "Scatter the Weak",
+          "description": "Syndra knocks enemies and Dark Spheres back dealing magic damage. Enemies hit by Dark Spheres become stunned.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SyndraE.png",
+          "cooldown": "17",
+          "cost": "50",
+          "range": "650"
+        },
+        {
+          "key": "R",
+          "name": "Unleashed Power",
+          "description": "Syndra bombards an enemy Champion with all of her Dark Spheres.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SyndraR.png",
+          "cooldown": "120/100/80",
+          "cost": "100",
+          "range": "675"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "taliyah",
+      "name": "Taliyah",
+      "fullName": "Taliyah, the Stoneweaver",
+      "icon": "🗿",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Taliyah_0.jpg",
+      "gender": "Nữ",
+      "species": "Hồn Ma",
+      "age": "16-18 tuổi",
+      "weapon": "Unknown",
+      "weaponSummary": "Stone Magic - Ma thuật đá",
+      "releaseDate": "2016",
+      "lore": "Taliyah is a nomadic mage from Shurima, torn between teenage wonder and adult responsibility. She has crossed nearly all of Valoran on a journey to learn the true nature of her growing powers, though more recently she has returned to protect her tribe. Some have mistaken her compassion for weakness and paid the ultimate price—for beneath Taliyah's youthful demeanor is a will strong enough to move mountains, and a spirit fierce enough to make the earth itself tremble.",
+      "fullLore": "Taliyah is a nomadic mage from Shurima, torn between teenage wonder and adult responsibility. She has crossed nearly all of Valoran on a journey to learn the true nature of her growing powers, though more recently she has returned to protect her tribe. Some have mistaken her compassion for weakness and paid the ultimate price—for beneath Taliyah's youthful demeanor is a will strong enough to move mountains, and a spirit fierce enough to make the earth itself tremble.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Rock Surfing",
+          "description": "Taliyah gains Move Speed near walls.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Taliyah_Passive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Threaded Volley",
+          "description": "Taliyah throws a volley of rocks in a target direction, moving freely as she casts. This creates Worked Ground below her. If Taliyah casts Threaded Volley on Worked Ground, she consumes the ground to throw a stronger boulder that slows enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/TaliyahQ.png",
+          "cooldown": "7/6/5/4/3",
+          "cost": "55/60/65/70/75",
+          "range": "1000"
+        },
+        {
+          "key": "W",
+          "name": "Seismic Shove",
+          "description": "Taliyah causes an area of ground to erupt and throws enemies within it in a direction of her choosing.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/TaliyahWVC.png",
+          "cooldown": "14/12.5/11/9.5/8",
+          "cost": "40/30/20/10/0",
+          "range": "900"
+        },
+        {
+          "key": "E",
+          "name": "Unraveled Earth",
+          "description": "Taliyah creates a slowing minefield. If enemies dash through it or are knocked through it, the mines explode and stun them.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/TaliyahE.png",
+          "cooldown": "16/15.5/15/14.5/14",
+          "cost": "90/95/100/105/110",
+          "range": "950"
+        },
+        {
+          "key": "R",
+          "name": "Weaver's Wall",
+          "description": "Taliyah creates a very long wall and then surfs it.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/TaliyahR.png",
+          "cooldown": "180/150/120",
+          "cost": "100",
+          "range": "2500/4500/6500"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "teemo",
+      "name": "Teemo",
+      "fullName": "Teemo, the Swift Scout",
+      "icon": "🍄",
+      "role": "Xạ Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg",
+      "gender": "Nam",
+      "species": "Yordle",
+      "age": "100+ tuổi",
+      "weapon": "Gun",
+      "weaponSummary": "Blowgun - Ống thổi",
+      "releaseDate": "2009",
+      "lore": "Undeterred by even the most dangerous and threatening of obstacles, Teemo scouts the world with boundless enthusiasm and a cheerful spirit. A yordle with an unwavering sense of morality, he takes pride in following the Bandle Scout's Code, sometimes with such eagerness that he is unaware of the broader consequences of his actions. Though some say the existence of the Scouts is questionable, one thing is for certain: Teemo's conviction is nothing to be trifled with.",
+      "fullLore": "Undeterred by even the most dangerous and threatening of obstacles, Teemo scouts the world with boundless enthusiasm and a cheerful spirit. A yordle with an unwavering sense of morality, he takes pride in following the Bandle Scout's Code, sometimes with such eagerness that he is unaware of the broader consequences of his actions. Though some say the existence of the Scouts is questionable, one thing is for certain: Teemo's conviction is nothing to be trifled with.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Guerrilla Warfare",
+          "description": "If Teemo stands still and takes no actions for a short duration, he becomes Invisible indefinitely. If he's in brush, Teemo can enter and maintain his Invisibility while moving. After leaving Invisibility, Teemo gains the Element of Surprise, increasing his Attack Speed for a few seconds.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Teemo_P.png"
+        },
+        {
+          "key": "Q",
+          "name": "Blinding Dart",
+          "description": "Obscures an enemy's vision with a powerful venom, dealing damage to the target unit and blinding it for the duration.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/BlindingDart.png",
+          "cooldown": "7",
+          "cost": "70/75/80/85/90",
+          "range": "680"
+        },
+        {
+          "key": "W",
+          "name": "Move Quick",
+          "description": "Teemo scampers around, passively increasing his Move Speed until he is struck by an enemy champion or turret. Teemo can sprint to gain bonus Move Speed that isn't stopped by being struck for a short time.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/MoveQuick.png",
+          "cooldown": "14",
+          "cost": "40",
+          "range": "20"
+        },
+        {
+          "key": "E",
+          "name": "Toxic Shot",
+          "description": "Each of Teemo's attacks will poison the target, dealing damage on impact and each second after for 4 seconds.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/ToxicShot.png",
+          "cooldown": "0",
+          "cost": "0",
+          "range": "680"
+        },
+        {
+          "key": "R",
+          "name": "Noxious Trap",
+          "description": "Teemo throws an explosive poisonous trap using one of the mushrooms stored in his pack. If an enemy steps on the trap, it will release a poisonous cloud, slowing enemies and damaging them over time. If Teemo throws a mushroom onto another mushroom it will bounce, gaining additional range.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/TeemoRCast.png",
+          "cooldown": "0.25",
+          "cost": "75/55/35",
+          "range": "600/750/900"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "udyr",
+      "name": "Udyr",
+      "fullName": "Udyr, the Spirit Walker",
+      "icon": "🐻",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Udyr_0.jpg",
+      "gender": "Nam",
+      "species": "Hồn Ma",
+      "age": "40-45 tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Spirit Stances - Tư thế linh thú",
+      "releaseDate": "2010",
+      "lore": "The most powerful spirit walker alive, Udyr communes with all the spirits of the Freljord, whether by empathically understanding their needs, or by channeling and transforming their ethereal energy into his own primal fighting style. He seeks balance within, so that his mind does not get lost amidst others, but he also seeks balance without—for the Freljord's mystical landscape can only thrive with the growth that comes from conflict and struggle, and Udyr knows that sacrifices must be made to keep peaceful stagnance at bay.",
+      "fullLore": "The most powerful spirit walker alive, Udyr communes with all the spirits of the Freljord, whether by empathically understanding their needs, or by channeling and transforming their ethereal energy into his own primal fighting style. He seeks balance within, so that his mind does not get lost amidst others, but he also seeks balance without—for the Freljord's mystical landscape can only thrive with the growth that comes from conflict and struggle, and Udyr knows that sacrifices must be made to keep peaceful stagnance at bay.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Bridge Between",
+          "description": "Udyr has four basic Abilities that swap between Stances and can Recast an Ability to renew it with additional benefits. Additionally, after using an Ability, Udyr's next two Attacks gain Attack Speed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Udyr_P.png"
+        },
+        {
+          "key": "Q",
+          "name": "Wilding Claw",
+          "description": "Udyr gains attack speed and his next two attacks deal bonus physical damage. Recast: Gain even more attack speed, and the next two attacks call lightning to strike the target.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/UdyrQ.png",
+          "cooldown": "6",
+          "cost": "20",
+          "range": "600"
+        },
+        {
+          "key": "W",
+          "name": "Iron Mantle",
+          "description": "Udyr gains a shield and his next two attacks heal him. Recast: Gain an even bigger shield and heal based on max health over the next couple seconds.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/UdyrW.png",
+          "cooldown": "6",
+          "cost": "40",
+          "range": "0"
+        },
+        {
+          "key": "E",
+          "name": "Blazing Stampede",
+          "description": "Udyr gains movement speed and his first attack against each target will Stun them. Recast: Gain even more movement speed and immunity to immobilizing effects for a couple seconds. ",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/UdyrE.png",
+          "cooldown": "6",
+          "cost": "40",
+          "range": "600"
+        },
+        {
+          "key": "R",
+          "name": "Wingborne Storm",
+          "description": "Udyr surrounds himself in a glacial storm, damaging and slowing nearby enemies. Recast: Empower and unleash the storm, causing it to track enemies and deal additional damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/UdyrR.png",
+          "cooldown": "6",
+          "cost": "40",
+          "range": "370"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "varus",
+      "name": "Varus",
+      "fullName": "Varus, the Arrow of Retribution",
+      "icon": "🏹",
+      "role": "Xạ Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Varus_0.jpg",
+      "gender": "Nam",
+      "species": "Ác Ma",
+      "age": "3000+ tuổi",
+      "weapon": "Bow",
+      "weaponSummary": "Darkin Bow - Cung Darkin",
+      "releaseDate": "2012",
+      "lore": "One of the ancient darkin, Varus was a deadly killer who loved to torment his foes, driving them almost to insanity before delivering the killing arrow. He was imprisoned at the end of the Great Darkin War, but escaped centuries later in the remade flesh of two Ionian hunters—they had unwittingly released him, cursed to bear the bow containing his bound essence. Varus now seeks out those who trapped him, in order to enact his brutal vengeance, but the mortal souls within still resist him every step of the way.",
+      "fullLore": "One of the ancient darkin, Varus was a deadly killer who loved to torment his foes, driving them almost to insanity before delivering the killing arrow. He was imprisoned at the end of the Great Darkin War, but escaped centuries later in the remade flesh of two Ionian hunters—they had unwittingly released him, cursed to bear the bow containing his bound essence. Varus now seeks out those who trapped him, in order to enact his brutal vengeance, but the mortal souls within still resist him every step of the way.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Living Vengeance",
+          "description": "On kill or assist, Varus temporarily gains Attack Speed. This bonus is larger if the enemy is a champion.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/VarusPassive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Piercing Arrow",
+          "description": "Varus readies and then fires a powerful shot that gains extra range and damage the longer he spends preparing to fire.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VarusQ.png",
+          "cooldown": "16/15/14/13/12",
+          "cost": "65/70/75/80/85",
+          "range": "925"
+        },
+        {
+          "key": "W",
+          "name": "Blighted Quiver",
+          "description": "Passive: Varus' basic attacks deal bonus magic damage and apply Blight. Varus' other abilities detonate Blight, dealing magic damage based on the target's maximum Health. Active: Varus empowers his next Piercing Arrow.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VarusW.png",
+          "cooldown": "40",
+          "cost": "0",
+          "range": "750"
+        },
+        {
+          "key": "E",
+          "name": "Hail of Arrows",
+          "description": "Varus fires a hail of arrows that deal physical damage and desecrate the ground. Desecrated ground slows enemies' Move Speed and reduces their self healing and regeneration.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VarusE.png",
+          "cooldown": "18/16/14/12/10",
+          "cost": "80",
+          "range": "925"
+        },
+        {
+          "key": "R",
+          "name": "Chain of Corruption",
+          "description": "Varus flings out a damaging tendril of corruption that immobilizes the first enemy champion hit and then spreads towards nearby uninfected champions, immobilizing them too on contact.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VarusR.png",
+          "cooldown": "100/80/60",
+          "cost": "100",
+          "range": "1300"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "veigar",
+      "name": "Veigar",
+      "fullName": "Veigar, the Tiny Master of Evil",
+      "icon": "🎩",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Veigar_0.jpg",
+      "gender": "Nam",
+      "species": "Yordle",
+      "age": "1000+ tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Staff - Gậy phép",
+      "releaseDate": "2010",
+      "lore": "An enthusiastic master of dark sorcery, Veigar has embraced powers that few mortals dare approach. As a free-spirited inhabitant of Bandle City, he longed to push beyond the limitations of yordle magic, and turned instead to arcane texts that had been hidden away for thousands of years. Now a stubborn creature with an endless fascination for the mysteries of the universe, Veigar is often underestimated by others—but even though he believes himself truly evil, he possesses an inner morality that leads some to question his deeper motivations.",
+      "fullLore": "An enthusiastic master of dark sorcery, Veigar has embraced powers that few mortals dare approach. As a free-spirited inhabitant of Bandle City, he longed to push beyond the limitations of yordle magic, and turned instead to arcane texts that had been hidden away for thousands of years. Now a stubborn creature with an endless fascination for the mysteries of the universe, Veigar is often underestimated by others—but even though he believes himself truly evil, he possesses an inner morality that leads some to question his deeper motivations.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Phenomenal Evil Power",
+          "description": "Veigar is the greatest Evil to ever strike at the hearts of Runeterra - and he's only getting bigger! Striking an enemy Champion with a spell or scoring a takedown grants Veigar permanently increased Ability Power.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/VeigarEntropy.png"
+        },
+        {
+          "key": "Q",
+          "name": "Baleful Strike",
+          "description": "Veigar unleashes a bolt of dark energy that deals magic damage to the first two enemies hit. Units killed by this bolt grant Veigar some ability power permanently.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VeigarBalefulStrike.png",
+          "cooldown": "6/5.5/5/4.5/4",
+          "cost": "30/35/40/45/50",
+          "range": "1000"
+        },
+        {
+          "key": "W",
+          "name": "Dark Matter",
+          "description": "Veigar calls a great mass of dark matter to fall from the sky to the target location, dealing magic damage when it lands. Stacks of Phenomenal Evil reduce Dark Matter's cooldown.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VeigarDarkMatter.png",
+          "cooldown": "0",
+          "cost": "60/65/70/75/80",
+          "range": "950"
+        },
+        {
+          "key": "E",
+          "name": "Event Horizon",
+          "description": "Veigar twists the edges of space, creating a cage that Stuns enemies that pass through.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VeigarEventHorizon.png",
+          "cooldown": "20/18.5/17/15.5/14",
+          "cost": "70/75/80/85/90",
+          "range": "725"
+        },
+        {
+          "key": "R",
+          "name": "Primordial Burst",
+          "description": "Blasts target enemy champion, dealing a large amount of magic damage, increasing based on the target's missing health.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/VeigarR.png",
+          "cooldown": "120/90/60",
+          "cost": "100",
+          "range": "650"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "viktor",
+      "name": "Viktor",
+      "fullName": "Viktor, the Herald of the Arcane",
+      "icon": "⚙️",
+      "role": "Pháp Sư",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viktor_0.jpg",
+      "gender": "Nam",
+      "species": "Con Người",
+      "age": "35-40 tuổi",
+      "weapon": "Magic",
+      "weaponSummary": "Hexcore - Lõi Hex",
+      "releaseDate": "2012",
+      "lore": "The fully biomechanical evolution of his former self, Viktor has embraced his Glorious Evolution and become something of a messiah to his followers. He sacrificed his own humanity under the logic that eliminating emotion would thereby eliminate suffering—and now seeks to bring the revelation of the hexcore to the rest of the world, even if they're incapable of understanding the benefit. After all, to this master of the arcane, violence is merely a variable necessary to balance the ultimate equation.",
+      "fullLore": "The fully biomechanical evolution of his former self, Viktor has embraced his Glorious Evolution and become something of a messiah to his followers. He sacrificed his own humanity under the logic that eliminating emotion would thereby eliminate suffering—and now seeks to bring the revelation of the hexcore to the rest of the world, even if they're incapable of understanding the benefit. After all, to this master of the arcane, violence is merely a variable necessary to balance the ultimate equation.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Glorious Evolution",
+          "description": "Viktor can augment his basic abilities when he gets kills on enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Viktor_Passive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Siphon Power",
+          "description": "Viktor blasts an enemy unit dealing magic damage, gaining a shield and empowering his next basic attack.Augment: Siphon Power's shield is increased by 60% and Viktor gains bonus Move Speed after casting.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/ViktorPowerTransfer.png",
+          "cooldown": "9/8/7/6/5",
+          "cost": "45/50/55/60/65",
+          "range": "600"
+        },
+        {
+          "key": "W",
+          "name": "Gravity Field",
+          "description": "Viktor conjures a heavy gravitational field that slows enemies in its radius. Enemies who stay within the device for too long are stunned.Augment: Viktor's non-periodic spells apply a slow to enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/ViktorGravitonField.png",
+          "cooldown": "17/16/15/14/13",
+          "cost": "65",
+          "range": "800"
+        },
+        {
+          "key": "E",
+          "name": "Death Ray",
+          "description": "Viktor uses his robotic arm to fire a chaos beam that cuts across the field in a line, dealing damage to all enemies in its path.Augment: An explosion follows the Death Ray's wake, dealing magic damage.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/ViktorDeathRay.png",
+          "cooldown": "12/11/10/9/8",
+          "cost": "70/80/90/100/110",
+          "range": "525"
+        },
+        {
+          "key": "R",
+          "name": "Chaos Storm",
+          "description": "Viktor conjures a singularity on the field which deals magic damage and interrupts enemy channels. The singularity then periodically does magic damage to all nearby enemies. Viktor can redirect the singularity.Augment: The Chaos Storm moves 25% faster.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/ViktorChaosStorm.png",
+          "cooldown": "120/100/80",
+          "cost": "100",
+          "range": "700"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "xayah",
+      "name": "Xayah",
+      "fullName": "Xayah, the Rebel",
+      "icon": "🪶",
+      "role": "Xạ Thủ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Xayah_0.jpg",
+      "gender": "Nữ",
+      "species": "Vastaya",
+      "age": "200+ tuổi",
+      "weapon": "Sword",
+      "weaponSummary": "Feather Daggers - Dao lông vũ",
+      "releaseDate": "2017",
+      "lore": "Deadly and precise, Xayah is a vastayan revolutionary waging a personal war to save her people. She uses her speed, guile, and razor-sharp feather blades to cut down anyone who stands in her way. Xayah fights alongside her partner and lover, Rakan, to protect their dwindling tribe, and restore their race to her vision of its former glory.",
+      "fullLore": "Deadly and precise, Xayah is a vastayan revolutionary waging a personal war to save her people. She uses her speed, guile, and razor-sharp feather blades to cut down anyone who stands in her way. Xayah fights alongside her partner and lover, Rakan, to protect their dwindling tribe, and restore their race to her vision of its former glory.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Clean Cuts",
+          "description": "After using an ability, Xayah's next basic attacks will hit all targets along their path and leave a Feather.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/XayahPassive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Double Daggers",
+          "description": "Xayah throws two damaging daggers that also drop Feathers she can recall.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/XayahQ.png",
+          "cooldown": "10/9.5/9/8.5/8",
+          "cost": "50",
+          "range": "400"
+        },
+        {
+          "key": "W",
+          "name": "Deadly Plumage",
+          "description": "Xayah creates a storm of blades that increase her Attack Speed and damage while also granting her Move Speed if she attacks a champion.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/XayahW.png",
+          "cooldown": "20/19/18/17/16",
+          "cost": "60/55/50/45/40",
+          "range": "1000"
+        },
+        {
+          "key": "E",
+          "name": "Bladecaller",
+          "description": "Xayah calls back all her dropped Feathers dealing damage and rooting enemies.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/XayahE.png",
+          "cooldown": "13/12/11/10/9",
+          "cost": "30",
+          "range": "2000"
+        },
+        {
+          "key": "R",
+          "name": "Featherstorm",
+          "description": "Xayah leaps into the air becoming untargetable and throwing out a fan of daggers, dropping Feathers she can recall.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/XayahR.png",
+          "cooldown": "140/120/100",
+          "cost": "100",
+          "range": "450"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "yasuo",
+      "name": "Yasuo",
+      "fullName": "Yasuo, the Unforgiven",
+      "icon": "🌪️",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
+      "gender": "Nam",
+      "species": "Con Người",
+      "age": "30-35 tuổi",
+      "weapon": "Sword",
+      "weaponSummary": "Steel Tempest - Bão thép",
+      "releaseDate": "2013",
+      "lore": "An Ionian of deep resolve, Yasuo is an agile swordsman who wields the air itself against his enemies. As a proud young man, he was falsely accused of murdering his master—unable to prove his innocence, he was forced to slay his own brother in self defense. Even after his master's true killer was revealed, Yasuo still could not forgive himself for all he had done, and now wanders his homeland with only the wind to guide his blade.",
+      "fullLore": "An Ionian of deep resolve, Yasuo is an agile swordsman who wields the air itself against his enemies. As a proud young man, he was falsely accused of murdering his master—unable to prove his innocence, he was forced to slay his own brother in self defense. Even after his master's true killer was revealed, Yasuo still could not forgive himself for all he had done, and now wanders his homeland with only the wind to guide his blade.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Way of the Wanderer",
+          "description": "Yasuo's Critical Strike Chance is increased. Additionally, Yasuo builds toward a shield whenever he is moving. The shield triggers when he takes damage from a champion or monster.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/Yasuo_Passive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Steel Tempest",
+          "description": "Thrusts forward, damaging all enemies in a line.On hit, grants a stack of Gathering Storm for a few seconds. At 2 stacks, Steel Tempest fires a whirlwind that knocks Airborne.Steel Tempest is treated as a basic attack and scales with all the same things.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YasuoQ1Wrapper.png",
+          "cooldown": "4",
+          "cost": "0",
+          "range": "475"
+        },
+        {
+          "key": "W",
+          "name": "Wind Wall",
+          "description": "Creates a moving wall that blocks all enemy projectiles for 4 seconds.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YasuoW.png",
+          "cooldown": "25/23/21/19/17",
+          "cost": "0",
+          "range": "400"
+        },
+        {
+          "key": "E",
+          "name": "Sweeping Blade",
+          "description": "Dashes through target enemy, dealing magic damage. Each cast increases subsequent dash's damage, up to a max amount.Cannot be re-cast on the same enemy for a few seconds.If Steel Tempest is cast while dashing, it will strike as a circle.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YasuoE.png",
+          "cooldown": "0.5/0.4/0.3/0.2/0.1",
+          "cost": "0",
+          "range": "475"
+        },
+        {
+          "key": "R",
+          "name": "Last Breath",
+          "description": "Blinks to an Airborne enemy champion, dealing physical damage and holding all Airborne enemies in the area in the air. Grants maximum Flow but resets all stacks of Gathering Storm.For a moderate time afterwards, Yasuo's critical strikes gain significant Bonus Armor Penetration.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YasuoR.png",
+          "cooldown": "70/50/30",
+          "cost": "0",
+          "range": "1400"
+        }
+      ],
+      "specialFeatures": []
+    },
+    {
+      "id": "yone",
+      "name": "Yone",
+      "fullName": "Yone, the Unforgotten",
+      "icon": "👹",
+      "role": "Đấu Sĩ",
+      "region": "ionia",
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg",
+      "gender": "Nam",
+      "species": "Ác Ma",
+      "age": "30-35 tuổi",
+      "weapon": "Sword",
+      "weaponSummary": "Azakana Blades - Kiếm Azakana",
+      "releaseDate": "2020",
+      "lore": "In life, he was Yone—half-brother of Yasuo, and renowned student of his village's sword school. But upon his death at the hands of his brother, he found himself hunted by a malevolent entity of the spirit realm, and was forced to slay it with its own sword. Now, cursed to wear its demonic mask upon his face, Yone tirelessly hunts all such creatures in order to understand what he has become.",
+      "fullLore": "In life, he was Yone—half-brother of Yasuo, and renowned student of his village's sword school. But upon his death at the hands of his brother, he found himself hunted by a malevolent entity of the spirit realm, and was forced to slay it with its own sword. Now, cursed to wear its demonic mask upon his face, Yone tirelessly hunts all such creatures in order to understand what he has become.",
+      "loreConnections": [],
+      "affiliation": "Không rõ",
+      "status": "Hoạt động",
+      "notes": "",
+      "skills": [
+        {
+          "key": "Passive",
+          "name": "Way of the Hunter",
+          "description": "Yone deals magic damage with every second Attack. In addition, his critical strike chance is increased.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/passive/YonePassive.png"
+        },
+        {
+          "key": "Q",
+          "name": "Mortal Steel",
+          "description": "Thrusts forward, damaging all enemies in a line.On hit, grants a stack of Gathering Storm for a few seconds. At 2 stacks, Mortal Steel dashes Yone forward with a gust of wind knocking enemies Airborne.Mortal Steel is treated as a basic attack and scales with all the same things.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YoneQ.png",
+          "cooldown": "4",
+          "cost": "0",
+          "range": "450"
+        },
+        {
+          "key": "W",
+          "name": "Spirit Cleave",
+          "description": "Cleaves forward, damaging all enemies in a cone. Grants a shield to Yone, the value is increased by the number of champions hit by the swipe.Spirit Cleave's cooldown and cast time scale with attack speed.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YoneW.png",
+          "cooldown": "14",
+          "cost": "0",
+          "range": "700"
+        },
+        {
+          "key": "E",
+          "name": "Soul Unbound",
+          "description": "Yone's spirit leaves his body behind, gaining Move Speed. When this skill ends, Yone's spirit is forced back to his body and he repeats a portion of the damage he dealt as a spirit.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YoneE.png",
+          "cooldown": "22/19/16/13/10",
+          "cost": "0",
+          "range": "25000"
+        },
+        {
+          "key": "R",
+          "name": "Fate Sealed",
+          "description": "Yone blinks behind the last champion in a line with a slash so powerful it pulls all enemies hit towards him.",
+          "image": "https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/YoneR.png",
+          "cooldown": "120/90/60",
+          "cost": "0",
+          "range": "1000"
+        }
+      ],
+      "specialFeatures": []
+    }
   ],
-  newChampions: [
-    {
-      name: "Kenshin, Thiền Sư Kiếm Đạo",
-      icon: "🧘",
-      role: "Đấu Sĩ",
-      region: "ionia",
-      lore: "Kiếm sĩ tu tâm, cân bằng giữa tĩnh tâm và chiến đấu quyết liệt.",
-      skills: [
-        "Q: Thiền Định",
-        "W: Kiếm Khí",
-        "E: Bước Nhảy Linh Hoạt",
-        "R: Thần Kiếm Vô Ngã",
-      ],
-    },
-  ],
+  "newChampions": []
 };
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ioniaData;
+}
