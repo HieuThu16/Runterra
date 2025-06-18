@@ -48,8 +48,15 @@ class RuneterraApp {
     // Initialize language manager
     this.languageManager = new LanguageManager();
 
+    // Initialize statistics and analytics system
+    this.statisticsManager = null;
+    this.analyticsManager = null;
+    this.statisticsUI = null;
+    this.analyticsUI = null;
+
     this.initializeEventListeners();
     this.loadChampions();
+    this.initializeStatisticsSystem();
   }
 
   // Merge localStorage data với original data để không mất champions
@@ -143,6 +150,9 @@ class RuneterraApp {
     document
       .getElementById("statisticsTab")
       ?.addEventListener("click", () => this.switchChampionType("statistics"));
+    document
+      .getElementById("analyticsTab")
+      ?.addEventListener("click", () => this.switchChampionType("analytics"));
 
     // Import data button
     document
@@ -170,6 +180,23 @@ class RuneterraApp {
       ?.addEventListener("click", () =>
         this.switchStatisticsTab("releaseYear")
       );
+
+    // Analytics navigation tabs
+    document
+      .getElementById("insightsTab")
+      ?.addEventListener("click", () => this.switchAnalyticsTab("insights"));
+    document
+      .getElementById("gapsTab")
+      ?.addEventListener("click", () => this.switchAnalyticsTab("gaps"));
+    document
+      .getElementById("suggestionsTab")
+      ?.addEventListener("click", () => this.switchAnalyticsTab("suggestions"));
+    document
+      .getElementById("qualityTab")
+      ?.addEventListener("click", () => this.switchAnalyticsTab("quality"));
+    document
+      .getElementById("exportAnalyticsBtn")
+      ?.addEventListener("click", () => this.exportAnalytics());
 
     // Add champion button
     document
@@ -357,16 +384,25 @@ class RuneterraApp {
       // Hide champions grid and show statistics
       document.getElementById("championsGrid").classList.add("hidden");
       document.getElementById("statisticsSection").classList.remove("hidden");
+      document.getElementById("analyticsSection").classList.add("hidden");
       this.loadStatistics();
+    } else if (type === "analytics") {
+      document.getElementById("analyticsTab")?.classList.add("active");
+      // Hide champions grid and show analytics
+      document.getElementById("championsGrid").classList.add("hidden");
+      document.getElementById("statisticsSection").classList.add("hidden");
+      document.getElementById("analyticsSection").classList.remove("hidden");
+      this.loadAnalytics();
     } else {
       document
         .getElementById(
           type === "official" ? "officialChampionsTab" : "creativeChampionsTab"
         )
         ?.classList.add("active");
-      // Show champions grid and hide statistics
+      // Show champions grid and hide statistics/analytics
       document.getElementById("championsGrid").classList.remove("hidden");
       document.getElementById("statisticsSection").classList.add("hidden");
+      document.getElementById("analyticsSection").classList.add("hidden");
       this.loadChampions();
     }
   }
@@ -401,32 +437,52 @@ class RuneterraApp {
     this.loadStatisticsForTab(tabType);
   }
   loadStatisticsForTab(tabType) {
-    switch (tabType) {
-      case "region":
-        this.updateRegionStatistics();
-        break;
-      case "role":
-        this.updateRoleStatistics();
-        break;
-      case "weapon":
-        this.updateWeaponStatistics();
-        break;
-      case "gender":
-        this.updateGenderStatistics();
-        break;
-      case "species":
-        this.updateSpeciesStatistics();
-        break;
-      case "releaseYear":
-        this.updateReleaseYearStatistics();
-        break;
+    if (!this.statisticsUI) return;
+
+    try {
+      switch (tabType) {
+        case "region":
+          this.statisticsUI.displayRegionStats();
+          break;
+        case "role":
+          this.statisticsUI.displayRoleStats();
+          break;
+        case "weapon":
+          this.statisticsUI.displayWeaponStats();
+          break;
+        case "gender":
+          this.statisticsUI.displayGenderStats();
+          break;
+        case "species":
+          this.statisticsUI.displaySpeciesStats();
+          break;
+        case "releaseYear":
+          this.statisticsUI.displayReleaseYearStats();
+          break;
+      }
+    } catch (error) {
+      console.error(`❌ Error loading ${tabType} statistics:`, error);
     }
   }
 
   // Load statistics for the current tab
   loadStatistics() {
-    // Load the default statistics tab (region)
-    this.loadStatisticsForTab(this.currentStatisticsTab || "region");
+    if (!this.statisticsUI) {
+      console.warn("Statistics UI not initialized");
+      return;
+    }
+
+    try {
+      // Load overview statistics
+      this.statisticsUI.displayOverviewStats();
+
+      // Load default tab statistics
+      this.loadStatisticsForTab(this.currentStatisticsTab || "region");
+
+      console.log("📊 Statistics loaded successfully");
+    } catch (error) {
+      console.error("❌ Error loading statistics:", error);
+    }
   }
 
   loadChampions() {
@@ -2385,6 +2441,190 @@ ${championCode}
   // Đóng modal code
   closeCodeModal() {
     document.getElementById("codeModal")?.classList.add("hidden");
+  }
+
+  // Initialize Statistics and Analytics System
+  initializeStatisticsSystem() {
+    try {
+      // Initialize statistics manager
+      this.statisticsManager = new StatisticsManager(this.db);
+
+      // Initialize analytics manager
+      this.analyticsManager = new AnalyticsManager(this.statisticsManager);
+
+      // Initialize UI managers
+      this.statisticsUI = new StatisticsUI(this.statisticsManager);
+      this.analyticsUI = new AnalyticsUI(this.analyticsManager, this);
+
+      console.log("✅ Statistics and Analytics system initialized");
+    } catch (error) {
+      console.error("❌ Error initializing statistics system:", error);
+    }
+  }
+
+  // Load and display analytics
+  loadAnalytics() {
+    if (!this.analyticsUI) {
+      console.warn("Analytics UI not initialized");
+      return;
+    }
+
+    try {
+      // Load analytics data
+      this.analyticsUI.displayInsights();
+
+      console.log("🔍 Analytics loaded successfully");
+    } catch (error) {
+      console.error("❌ Error loading analytics:", error);
+    }
+  }
+
+  // Refresh statistics when data changes
+  refreshStatistics() {
+    if (this.statisticsManager) {
+      this.statisticsManager.clearCache();
+    }
+
+    if (this.currentChampionType === "statistics") {
+      this.loadStatistics();
+    } else if (this.currentChampionType === "analytics") {
+      this.loadAnalytics();
+    }
+  }
+
+  // Switch analytics tab
+  switchAnalyticsTab(tabType) {
+    // Update tab styles
+    document.querySelectorAll(".analytics-tab-btn").forEach((btn) => {
+      btn.classList.remove("bg-purple-600", "text-white");
+      btn.classList.add("bg-slate-600", "text-slate-300");
+    });
+
+    // Activate current tab
+    const activeTab = document.getElementById(`${tabType}Tab`);
+    if (activeTab) {
+      activeTab.classList.remove("bg-slate-600", "text-slate-300");
+      activeTab.classList.add("bg-purple-600", "text-white");
+    }
+
+    // Hide all analytics sections
+    document.querySelectorAll(".analytics-section").forEach((section) => {
+      section.classList.add("hidden");
+    });
+
+    // Show current analytics section
+    const currentSection = document.getElementById(`${tabType}Section`);
+    if (currentSection) {
+      currentSection.classList.remove("hidden");
+    }
+
+    // Load appropriate analytics
+    this.loadAnalyticsForTab(tabType);
+  }
+
+  // Load analytics for specific tab
+  loadAnalyticsForTab(tabType) {
+    if (!this.analyticsUI) return;
+
+    try {
+      switch (tabType) {
+        case "insights":
+          this.analyticsUI.displayInsights();
+          break;
+        case "gaps":
+          this.analyticsUI.displayDataGaps();
+          break;
+        case "suggestions":
+          this.analyticsUI.displayChampionSuggestions();
+          break;
+        case "quality":
+          this.analyticsUI.displayDataQuality();
+          break;
+      }
+    } catch (error) {
+      console.error(`❌ Error loading ${tabType} analytics:`, error);
+    }
+  }
+
+  // Export analytics report
+  exportAnalytics() {
+    if (!this.analyticsManager) {
+      console.warn("Analytics manager not initialized");
+      return;
+    }
+
+    try {
+      const report = this.analyticsManager.generateReport();
+      const blob = new Blob([JSON.stringify(report, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `runeterra_analytics_report_${new Date()
+        .toISOString()
+        .slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      console.log("📤 Analytics report exported successfully");
+    } catch (error) {
+      console.error("❌ Error exporting analytics:", error);
+    }
+  }
+
+  // Create champion from analytics suggestion
+  createChampionFromSuggestion(suggestionJson) {
+    try {
+      const suggestion = JSON.parse(suggestionJson);
+
+      // Open add champion modal
+      this.openAddChampionModal();
+
+      // Pre-fill form with suggestion data
+      setTimeout(() => {
+        const form = document.getElementById("addChampionForm");
+        if (form) {
+          // Fill basic info
+          const regionSelect = document.getElementById("championRegion");
+          if (regionSelect) {
+            regionSelect.value = suggestion.region;
+          }
+
+          const roleInput = document.getElementById("championRole");
+          if (roleInput) {
+            roleInput.value = suggestion.role;
+          }
+
+          const weaponInput = document.getElementById("championWeapon");
+          if (weaponInput) {
+            weaponInput.value = suggestion.weapon;
+          }
+
+          const speciesInput = document.getElementById("championSpecies");
+          if (speciesInput) {
+            speciesInput.value = suggestion.species || "";
+          }
+
+          // Set placeholder name based on suggestion
+          const nameInput = document.getElementById("championName");
+          if (nameInput) {
+            nameInput.placeholder = `Tướng ${suggestion.role} từ ${suggestion.region}`;
+          }
+
+          // Add suggestion description to lore
+          const loreInput = document.getElementById("championLore");
+          if (loreInput) {
+            loreInput.value = suggestion.description || "";
+          }
+        }
+      }, 100);
+
+      console.log("🎯 Champion creation form opened with suggestion data");
+    } catch (error) {
+      console.error("❌ Error creating champion from suggestion:", error);
+      alert("Có lỗi khi tạo tướng từ gợi ý");
+    }
   }
 }
 

@@ -11,6 +11,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/statistics.css" />
   </head>
   <body class="bg-slate-900 text-slate-100 min-h-screen">
     <!-- Header -->
@@ -165,6 +166,13 @@
             data-translate="statistics"
           >
             📊 Thống Kê
+          </button>
+          <button
+            id="analyticsTab"
+            class="champion-type-tab px-4 py-2 rounded-lg bg-slate-700 text-white font-semibold hover:bg-slate-600 transition-all duration-300"
+            data-translate="analytics"
+          >
+            🔍 Phân Tích
           </button>
         </div>
         <!-- Database Management -->
@@ -606,6 +614,99 @@
                       <!-- Lore info will be loaded here -->
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analyticsSection" class="hidden">
+          <div class="bg-slate-800 rounded-lg p-6 shadow-lg">
+            <h2
+              class="text-3xl font-bold text-purple-400 mb-6 text-center"
+              data-translate="analyticsTitle"
+            >
+              🔍 Phân Tích & Gợi Ý Sáng Tạo
+            </h2>
+
+            <!-- Analytics Navigation -->
+            <div class="mb-8">
+              <div class="bg-slate-800 rounded-lg p-4">
+                <div class="flex flex-wrap gap-2 justify-center">
+                  <button
+                    id="insightsTab"
+                    class="analytics-tab-btn bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-purple-700"
+                  >
+                    💡 Thông Tin Chính
+                  </button>
+                  <button
+                    id="gapsTab"
+                    class="analytics-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    🎯 Thiếu Sót
+                  </button>
+                  <button
+                    id="suggestionsTab"
+                    class="analytics-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    ✨ Gợi Ý Tướng Mới
+                  </button>
+                  <button
+                    id="qualityTab"
+                    class="analytics-tab-btn bg-slate-600 text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-slate-500"
+                  >
+                    📈 Chất Lượng Dữ Liệu
+                  </button>
+                  <button
+                    id="exportAnalyticsBtn"
+                    class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors hover:bg-green-700"
+                  >
+                    📤 Xuất Báo Cáo
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Analytics Content Container -->
+            <div id="analyticsContent" class="mb-8">
+              <!-- Insights Section -->
+              <div id="insightsSection" class="analytics-section">
+                <h3 class="text-xl font-semibold text-purple-300 mb-4">
+                  💡 Thông Tin Chính
+                </h3>
+                <div id="insightsContainer">
+                  <!-- Insights will be loaded here -->
+                </div>
+              </div>
+
+              <!-- Data Gaps Section -->
+              <div id="gapsSection" class="analytics-section hidden">
+                <h3 class="text-xl font-semibold text-purple-300 mb-4">
+                  🎯 Phân Tích Thiếu Sót
+                </h3>
+                <div id="gapsContainer">
+                  <!-- Data gaps analysis will be loaded here -->
+                </div>
+              </div>
+
+              <!-- Champion Suggestions Section -->
+              <div id="suggestionsSection" class="analytics-section hidden">
+                <h3 class="text-xl font-semibold text-purple-300 mb-4">
+                  ✨ Gợi Ý Tướng Mới
+                </h3>
+                <div id="suggestionsContainer">
+                  <!-- Champion suggestions will be loaded here -->
+                </div>
+              </div>
+
+              <!-- Data Quality Section -->
+              <div id="qualitySection" class="analytics-section hidden">
+                <h3 class="text-xl font-semibold text-purple-300 mb-4">
+                  📈 Phân Tích Chất Lượng Dữ Liệu
+                </h3>
+                <div id="qualityContainer">
+                  <!-- Data quality analysis will be loaded here -->
                 </div>
               </div>
             </div>
@@ -1489,6 +1590,11 @@
     <!-- Load main data file after regions -->
     <script src="js/data.js?v=3.0"></script>
     <script src="js/database.js?v=3.0"></script>
+    <!-- Load statistics and analytics system -->
+    <script src="js/statistics.js?v=3.0"></script>
+    <script src="js/analytics.js?v=3.0"></script>
+    <script src="js/statistics-ui.js?v=3.0"></script>
+    <script src="js/analytics-ui.js?v=3.0"></script>
     <script src="js/app.js?v=3.0"></script>
     <script>
       // Initialize the application when DOM is loaded
